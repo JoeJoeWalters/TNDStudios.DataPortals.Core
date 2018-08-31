@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TNDStudios.DataPortals.Core
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TNDStudios.DataPortals.Definitions", "Definitions\TNDStudios.DataPortals.Definitions.csproj", "{AEF68360-47F0-4D3F-A932-C38C7471E203}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TNDStudios.DataPortals.Data.MSSQLProvider", "MSSQLProvider\TNDStudios.DataPortals.Data.MSSQLProvider.csproj", "{ABC36FCA-6CC4-4218-A98D-4C29B7DA267F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{AEF68360-47F0-4D3F-A932-C38C7471E203}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEF68360-47F0-4D3F-A932-C38C7471E203}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEF68360-47F0-4D3F-A932-C38C7471E203}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABC36FCA-6CC4-4218-A98D-4C29B7DA267F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABC36FCA-6CC4-4218-A98D-4C29B7DA267F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABC36FCA-6CC4-4218-A98D-4C29B7DA267F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABC36FCA-6CC4-4218-A98D-4C29B7DA267F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
