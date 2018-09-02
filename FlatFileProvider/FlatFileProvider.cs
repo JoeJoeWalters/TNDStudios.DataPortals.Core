@@ -24,17 +24,17 @@ namespace TNDStudios.DataPortals.Core.Data
             throw new NotImplementedException();
         }
 
-        public bool ExecuteNonQuery(IDataItemDefinition definition, string command)
+        public bool ExecuteNonQuery(DataItemDefinition definition, string command)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<IDataItem> ExecuteReader(IDataItemDefinition definition, String command)
+        public IEnumerable<DataItem> ExecuteReader(DataItemDefinition definition, String command)
         {
             throw new NotImplementedException();
         }
 
-        public IDataItem ExecuteScalar(IDataItemDefinition definition, string command)
+        public DataItem ExecuteScalar(DataItemDefinition definition, string command)
         {
             throw new NotImplementedException();
         }
