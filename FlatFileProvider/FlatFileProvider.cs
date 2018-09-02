@@ -5,6 +5,11 @@ namespace TNDStudios.DataPortals.Core.Data
 {
     public class FlatFileProvider : IDataProvider
     {
+        public FlatFileProvider()
+        {
+
+        }
+
         public string ConnectionString => throw new NotImplementedException();
 
         public bool Connected => throw new NotImplementedException();

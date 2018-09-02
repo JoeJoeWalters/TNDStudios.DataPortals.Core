@@ -5,6 +5,10 @@ namespace TNDStudios.DataPortals.Core.Data
 {
     public class MSSQLProvider : IDataProvider
     {
+        public MSSQLProvider()
+        {
+        }
+
         public string ConnectionString => throw new NotImplementedException();
 
         public bool Connected => throw new NotImplementedException();

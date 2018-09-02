@@ -17,6 +17,6 @@ namespace TNDStudios.DataPortals.Core.Data
 
         IEnumerable<IDataItem> ExecuteReader(IDataItemDefinition definition, String command);
         IDataItem ExecuteScalar(IDataItemDefinition definition, String command);
-        Boolean ExecuteNonQuery(String command);
+        Boolean ExecuteNonQuery(IDataItemDefinition definition, String command);
     }
 }
