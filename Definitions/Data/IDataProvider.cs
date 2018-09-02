@@ -15,8 +15,8 @@ namespace TNDStudios.DataPortals.Core.Data
         Boolean Connected { get; }
         Boolean Disconnect();
 
-        IEnumerable<IDataItem> ExecuteReader(String command);
-        IDataItem ExecuteScalar(String command);
+        IEnumerable<IDataItem> ExecuteReader(IDataItemDefinition definition, String command);
+        IDataItem ExecuteScalar(IDataItemDefinition definition, String command);
         Boolean ExecuteNonQuery(String command);
     }
 }

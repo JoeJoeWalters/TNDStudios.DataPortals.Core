@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TNDStudios.DataPortals.Core.Data
 {
-    public class MSSQLProvider : IDataProvider
+    public class FlatFileProvider : IDataProvider
     {
         public string ConnectionString => throw new NotImplementedException();
 
@@ -29,7 +29,7 @@ namespace TNDStudios.DataPortals.Core.Data
             throw new NotImplementedException();
         }
 
-        public IDataItem ExecuteScalar(IDataItemDefinition definition, string command) 
+        public IDataItem ExecuteScalar(IDataItemDefinition definition, string command)
         {
             throw new NotImplementedException();
         }

@@ -4,8 +4,8 @@ using System.Text;
 
 namespace TNDStudios.DataPortals.Core.Data
 {
-    public interface IDataItem
+    public interface IDataItemDefinition
     {
-        IDataItemDefinition Definition { get; set; }
+        IEnumerable<IDataItemProperty> Columns { get; set; }
     }
 }
