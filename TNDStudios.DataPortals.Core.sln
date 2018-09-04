@@ -3,13 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2047
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TNDStudios.DataPortals.Core", "Core\TNDStudios.DataPortals.Core.csproj", "{EF9B1E41-5AC2-42A8-8EC2-0B0EDA09257D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{EF9B1E41-5AC2-42A8-8EC2-0B0EDA09257D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TNDStudios.DataPortals.Definitions", "Definitions\TNDStudios.DataPortals.Definitions.csproj", "{AEF68360-47F0-4D3F-A932-C38C7471E203}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Definitions", "Definitions\Definitions.csproj", "{AEF68360-47F0-4D3F-A932-C38C7471E203}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TNDStudios.DataPortals.Data.MSSQLProvider", "MSSQLProvider\TNDStudios.DataPortals.Data.MSSQLProvider.csproj", "{ABC36FCA-6CC4-4218-A98D-4C29B7DA267F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MSSQLProvider", "MSSQLProvider\MSSQLProvider.csproj", "{ABC36FCA-6CC4-4218-A98D-4C29B7DA267F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TNDStudios.DataPortals.Data.FlatFileProvider", "FlatFileProvider\TNDStudios.DataPortals.Data.FlatFileProvider.csproj", "{D036DF1E-976C-47BC-995F-E88C86D45856}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlatFileProvider", "FlatFileProvider\FlatFileProvider.csproj", "{D036DF1E-976C-47BC-995F-E88C86D45856}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Providers", "Providers", "{37268162-FC85-4421-8FE2-9B79B801A0EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlatFileProvider.Tests", "FlatFileProvider.Tests\FlatFileProvider.Tests.csproj", "{B63F407F-BD66-435A-A775-E4428871A93C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,9 +37,18 @@ Global
 		{D036DF1E-976C-47BC-995F-E88C86D45856}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D036DF1E-976C-47BC-995F-E88C86D45856}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D036DF1E-976C-47BC-995F-E88C86D45856}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B63F407F-BD66-435A-A775-E4428871A93C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B63F407F-BD66-435A-A775-E4428871A93C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B63F407F-BD66-435A-A775-E4428871A93C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B63F407F-BD66-435A-A775-E4428871A93C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{ABC36FCA-6CC4-4218-A98D-4C29B7DA267F} = {37268162-FC85-4421-8FE2-9B79B801A0EA}
+		{D036DF1E-976C-47BC-995F-E88C86D45856} = {37268162-FC85-4421-8FE2-9B79B801A0EA}
+		{B63F407F-BD66-435A-A775-E4428871A93C} = {37268162-FC85-4421-8FE2-9B79B801A0EA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D8202D49-0076-4988-B655-6EFE04348F65}

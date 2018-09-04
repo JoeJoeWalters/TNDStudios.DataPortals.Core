@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Definitions\TNDStudios.DataPortals.Definitions.csproj" />
+    <ProjectReference Include="..\Definitions\Definitions.csproj" />
   </ItemGroup>
 
 </Project>

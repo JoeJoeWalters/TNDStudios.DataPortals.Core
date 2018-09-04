@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using CsvHelper;
 
@@ -58,10 +59,10 @@ namespace TNDStudios.DataPortals.Core.Data
         /// <param name="definition">The definition of the flat file</param>
         /// <param name="command">The command to execute on the definition</param>
         /// <returns>A list of data items that match the query</returns>
-        public IEnumerable<DataItem> ExecuteReader(DataItemDefinition definition, String command)
+        public DataTable ExecuteReader(DataItemDefinition definition, String command)
         {
             // Create a list of data items to return
-            List<DataItem> dataItems = new List<DataItem>();
+            DataTable dataItems = new DataTable();
 
             // Open up a text reader to stream the data to the CSV Reader
             using (TextReader textReader = File.OpenText(this.connectionString))
@@ -75,9 +76,6 @@ namespace TNDStudios.DataPortals.Core.Data
                     // Loop the records
                     while (csvReader.Read())
                     {
-                        // Create a new object to return
-                        DataItem dataItem = new DataItem();
-
                         // Match all of the properties in the definitions lists
                         definition.Properties.ForEach(
                             property => 
@@ -86,12 +84,10 @@ namespace TNDStudios.DataPortals.Core.Data
                                 Object field = null;
                                 if (csvReader.TryGetField(property.DataType, property.Name, out field))
                                 {
-                                    dataItem.Values[property.Name] = field;
+                                    //dataItem.Values[property.Name] = field;
                                 }
                             });
 
-                        // Add the record to the return list
-                        dataItems.Add(dataItem);
                     }
                 }
             }
@@ -106,7 +102,7 @@ namespace TNDStudios.DataPortals.Core.Data
         /// <param name="definition">The definition of the flat file</param>
         /// <param name="command">The command to execute on the definition</param>
         /// <returns>A single item that matched the query</returns>
-        public DataItem ExecuteScalar(DataItemDefinition definition, string command)
+        public DataTable ExecuteScalar(DataItemDefinition definition, string command)
         {
             throw new NotImplementedException();
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 
 namespace TNDStudios.DataPortals.Core.Data
@@ -39,7 +40,7 @@ namespace TNDStudios.DataPortals.Core.Data
         /// <param name="definition">The data defintion of the source of the data</param>
         /// <param name="command">The command to execute to retrieve the data</param>
         /// <returns>A list of data items that the reader found</returns>
-        IEnumerable<DataItem> ExecuteReader(DataItemDefinition definition, String command);
+        DataTable ExecuteReader(DataItemDefinition definition, String command);
 
         /// <summary>
         /// Retrieve a single data item based on the query passed to the source
@@ -47,7 +48,7 @@ namespace TNDStudios.DataPortals.Core.Data
         /// <param name="definition">The data defintion of the source of the data</param>
         /// <param name="command">The command to execute to retrieve the data</param>
         /// <returns>A single data item that was found</returns>
-        DataItem ExecuteScalar(DataItemDefinition definition, String command);
+        DataTable ExecuteScalar(DataItemDefinition definition, String command);
 
         /// <summary>
         /// Execute a query on the data source without expecting data back

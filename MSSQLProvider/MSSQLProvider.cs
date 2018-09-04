@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 
 namespace TNDStudios.DataPortals.Core.Data
 {
@@ -28,12 +29,12 @@ namespace TNDStudios.DataPortals.Core.Data
             throw new NotImplementedException();
         }
 
-        public IEnumerable<DataItem> ExecuteReader(DataItemDefinition definition, String command)
+        public DataTable ExecuteReader(DataItemDefinition definition, String command)
         {
             throw new NotImplementedException();
         }
 
-        public DataItem ExecuteScalar(DataItemDefinition definition, string command) 
+        public DataTable ExecuteScalar(DataItemDefinition definition, string command) 
         {
             throw new NotImplementedException();
         }
