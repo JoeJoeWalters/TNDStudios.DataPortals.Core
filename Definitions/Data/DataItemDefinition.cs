@@ -13,7 +13,7 @@ namespace TNDStudios.DataPortals.Core.Data
         /// <summary>
         /// The list of properties that define the data item
         /// </summary>
-        List<DataItemProperty> Properties { get; set; }
+        public List<DataItemProperty> Properties { get; set; }
 
         /// <summary>
         /// The default constructor

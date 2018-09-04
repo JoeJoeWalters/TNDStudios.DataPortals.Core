@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using CsvHelper;
 
 namespace TNDStudios.DataPortals.Core.Data
 {
@@ -59,7 +60,44 @@ namespace TNDStudios.DataPortals.Core.Data
         /// <returns>A list of data items that match the query</returns>
         public IEnumerable<DataItem> ExecuteReader(DataItemDefinition definition, String command)
         {
-            throw new NotImplementedException();
+            // Create a list of data items to return
+            List<DataItem> dataItems = new List<DataItem>();
+
+            // Open up a text reader to stream the data to the CSV Reader
+            using (TextReader textReader = File.OpenText(this.connectionString))
+            {
+                // Create an instance of the CSV Reader
+                using (CsvReader csvReader = new CsvReader(textReader))
+                {
+                    // Configure the CSV Reader
+                    csvReader.Configuration.HasHeaderRecord = false;
+
+                    // Loop the records
+                    while (csvReader.Read())
+                    {
+                        // Create a new object to return
+                        DataItem dataItem = new DataItem();
+
+                        // Match all of the properties in the definitions lists
+                        definition.Properties.ForEach(
+                            property => 
+                            {
+                                // Try and get the property from the record line
+                                Object field = null;
+                                if (csvReader.TryGetField(property.DataType, property.Name, out field))
+                                {
+                                    dataItem.Values[property.Name] = field;
+                                }
+                            });
+
+                        // Add the record to the return list
+                        dataItems.Add(dataItem);
+                    }
+                }
+            }
+
+            // Return the items
+            return dataItems;
         }
 
         /// <summary>
