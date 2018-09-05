@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 
-namespace TNDStudios.DataPortals.Core.Data
+namespace TNDStudios.DataPortals.Data
 {
     public class MSSQLProvider : IDataProvider
     {
@@ -15,6 +16,11 @@ namespace TNDStudios.DataPortals.Core.Data
         public bool Connected => throw new NotImplementedException();
 
         public bool Connect(string connectionString)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Connect(Stream stream)
         {
             throw new NotImplementedException();
         }

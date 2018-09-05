@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Text;
 
-namespace TNDStudios.DataPortals.Core.Data
+namespace TNDStudios.DataPortals.Data
 {
     /// <summary>
     /// Interface to define how a data provider should behave
@@ -15,13 +16,20 @@ namespace TNDStudios.DataPortals.Core.Data
         /// e.g. SQL connection string or path for a file etc.
         /// </summary>
         String ConnectionString { get; }
-
+        
         /// <summary>
-        /// Connect to the location of the data
+        /// Connect to the location of the data (Database connection, flat file, xml, etc.)
         /// </summary>
         /// <param name="connectionString">The connection string</param>
         /// <returns></returns>
         Boolean Connect(String connectionString);
+
+        /// <summary>
+        /// Connect to a given stream of data (could be a flat file, xml etc.)
+        /// </summary>
+        /// <param name="stream">The stream of data to process</param>
+        /// <returns></returns>
+        Boolean Connect(Stream stream);
 
         /// <summary>
         /// If the provider is connected

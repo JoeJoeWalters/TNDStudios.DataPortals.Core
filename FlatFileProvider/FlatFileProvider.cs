@@ -4,7 +4,7 @@ using System.Data;
 using System.IO;
 using CsvHelper;
 
-namespace TNDStudios.DataPortals.Core.Data
+namespace TNDStudios.DataPortals.Data
 {
     public class FlatFileProvider : IDataProvider
     {
@@ -21,6 +21,12 @@ namespace TNDStudios.DataPortals.Core.Data
         public Boolean Connected => connected;
 
         /// <summary>
+        /// The data that was derived from the stream given to connect to
+        /// if the connection was not via a connection string (file location)
+        /// </summary>
+        private String fileData;
+
+        /// <summary>
         /// Connect to the flat file source
         /// </summary>
         /// <param name="connectionString">The connection string to use</param>
@@ -28,8 +34,22 @@ namespace TNDStudios.DataPortals.Core.Data
         public Boolean Connect(String connectionString)
         {
             this.connectionString = connectionString; // Assign the connection string
+            this.fileData = ""; // The data if it came from a stream rather than a file on disk
             connected = (File.Exists(this.connectionString)); // Does the file exist? Therefor it is connected
             return connected;
+        }
+
+        /// <summary>
+        /// Connect to a stream of flat file data 
+        /// </summary>
+        /// <param name="stream">The stream of data to connect to</param>
+        /// <returns>If the data was valid and is a stream</returns>
+        public Boolean Connect(Stream stream)
+        {
+            this.connectionString = ""; // Blank out the connection string as we are using a stream instead
+            this.fileData = ""; // Read the data to the memory holding area
+            connected = ((this.fileData ?? "") != "");
+            return connected; 
         }
 
         /// <summary>

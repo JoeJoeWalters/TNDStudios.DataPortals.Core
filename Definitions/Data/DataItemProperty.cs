@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TNDStudios.DataPortals.Core.Data
+namespace TNDStudios.DataPortals.Data
 {
     /// <summary>
     /// Definition of a property member of a data item
