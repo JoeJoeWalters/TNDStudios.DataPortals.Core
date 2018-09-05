@@ -6,20 +6,8 @@ using CsvHelper;
 
 namespace TNDStudios.DataPortals.Data
 {
-    public class FlatFileProvider : IDataProvider
+    public class FlatFileProvider : DataProviderBase, IDataProvider
     {
-        /// <summary>
-        /// Provide a read-only view of the connection string
-        /// </summary>
-        private String connectionString;
-        public String ConnectionString => connectionString;
-
-        /// <summary>
-        /// Is the flat file provider connected to it's source?
-        /// </summary>
-        private Boolean connected;
-        public Boolean Connected => connected;
-
         /// <summary>
         /// The data that was derived from the stream given to connect to
         /// if the connection was not via a connection string (file location)
@@ -31,7 +19,7 @@ namespace TNDStudios.DataPortals.Data
         /// </summary>
         /// <param name="connectionString">The connection string to use</param>
         /// <returns>If the file exists when it is connected</returns>
-        public Boolean Connect(String connectionString)
+        public override Boolean Connect(String connectionString)
         {
             this.connectionString = connectionString; // Assign the connection string
             this.fileData = ""; // The data if it came from a stream rather than a file on disk
@@ -44,7 +32,7 @@ namespace TNDStudios.DataPortals.Data
         /// </summary>
         /// <param name="stream">The stream of data to connect to</param>
         /// <returns>If the data was valid and is a stream</returns>
-        public Boolean Connect(Stream stream)
+        public override Boolean Connect(Stream stream)
         {
             this.connectionString = ""; // Blank out the connection string as we are using a stream instead
             this.fileData = ""; // Read the data to the memory holding area
@@ -56,7 +44,7 @@ namespace TNDStudios.DataPortals.Data
         /// Disconnect (Pseudo-Disconnect) from the file
         /// </summary>
         /// <returns>Always true as the file will not actually be disconnected</returns>
-        public Boolean Disconnect()
+        public override Boolean Disconnect()
         { 
             connected = false; // Always disconnect
             return connected;
@@ -68,7 +56,7 @@ namespace TNDStudios.DataPortals.Data
         /// <param name="definition">The definition of the flat file</param>
         /// <param name="command">The command to execute on the definition</param>
         /// <returns>If the command executed correctly</returns>
-        public Boolean ExecuteNonQuery(DataItemDefinition definition, string command)
+        public override Boolean ExecuteNonQuery(DataItemDefinition definition, string command)
         {
             throw new NotImplementedException();
         }
@@ -79,7 +67,7 @@ namespace TNDStudios.DataPortals.Data
         /// <param name="definition">The definition of the flat file</param>
         /// <param name="command">The command to execute on the definition</param>
         /// <returns>A list of data items that match the query</returns>
-        public DataTable ExecuteReader(DataItemDefinition definition, String command)
+        public override DataTable ExecuteReader(DataItemDefinition definition, String command)
         {
             // Create a list of data items to return
             DataTable dataItems = new DataTable();
@@ -122,7 +110,7 @@ namespace TNDStudios.DataPortals.Data
         /// <param name="definition">The definition of the flat file</param>
         /// <param name="command">The command to execute on the definition</param>
         /// <returns>A single item that matched the query</returns>
-        public DataTable ExecuteScalar(DataItemDefinition definition, string command)
+        public override DataTable ExecuteScalar(DataItemDefinition definition, string command)
         {
             throw new NotImplementedException();
         }
