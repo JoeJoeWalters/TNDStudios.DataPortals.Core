@@ -11,7 +11,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFileProvider
         public void Test_Test()
         {
             // Arrange
-            Stream resourceStream = GetResourceStream("CSVTest.txt");
+            Stream resourceStream = GetResourceStream("TestFiles.CSVTest.txt");
 
             // Act
 
@@ -25,9 +25,12 @@ namespace TNDStudios.DataPortals.Tests.FlatFileProvider
         /// <param name="embeddedResourceName">The name of the resource to read</param>
         /// <returns>A memory stream with the data contained within</returns>
         private Stream GetResourceStream(String embeddedResourceName)
-            => Assembly.GetExecutingAssembly().GetManifestResourceStream(
-                FormatResourceName(Assembly.GetExecutingAssembly(), embeddedResourceName)
-                );
+        {
+            String name = FormatResourceName(Assembly.GetExecutingAssembly(), embeddedResourceName);
+            return Assembly.GetExecutingAssembly().GetManifestResourceStream(
+                    name
+                    );
+        }
 
         /// <summary>
         /// Get the resource name by deriving it from the assembly
