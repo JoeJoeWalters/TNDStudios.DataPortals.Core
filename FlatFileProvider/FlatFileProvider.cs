@@ -35,9 +35,17 @@ namespace TNDStudios.DataPortals.Data
         public override Boolean Connect(Stream stream)
         {
             this.connectionString = ""; // Blank out the connection string as we are using a stream instead
-            this.fileData = ""; // Read the data to the memory holding area
+            this.fileData = ""; // Blank file data by default
+
+            // Read the data from the stream provided
+            using (StreamReader textReader = new StreamReader(stream))
+            {
+                this.fileData = textReader.ReadToEnd();
+            }
+
+            // Connected now? I.E. did it get some data?
             connected = ((this.fileData ?? "") != "");
-            return connected; 
+            return connected;
         }
 
         /// <summary>
@@ -45,7 +53,7 @@ namespace TNDStudios.DataPortals.Data
         /// </summary>
         /// <returns>Always true as the file will not actually be disconnected</returns>
         public override Boolean Disconnect()
-        { 
+        {
             connected = false; // Always disconnect
             return connected;
         }
@@ -88,7 +96,7 @@ namespace TNDStudios.DataPortals.Data
 
                         // Match all of the properties in the definitions lists
                         definition.Properties.ForEach(
-                            property => 
+                            property =>
                             {
                                 // Try and get the property from the record line
                                 Object field = null;

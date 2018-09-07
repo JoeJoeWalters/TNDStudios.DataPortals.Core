@@ -2,16 +2,19 @@ using System;
 using Xunit;
 using System.Reflection;
 using System.IO;
+using TNDStudios.DataPortals.Data;
 
-namespace TNDStudios.DataPortals.Tests.FlatFileProvider
+namespace TNDStudios.DataPortals.Tests.Providers
 {
-    public class Tests
+    public class FlatFileProviderTests
     {
         [Fact]
         public void Test_Test()
         {
             // Arrange
             Stream resourceStream = GetResourceStream("TestFiles.CSVTest.txt");
+            IDataProvider provider = new FlatFileProvider();
+            provider.Connect(resourceStream);
 
             // Act
 

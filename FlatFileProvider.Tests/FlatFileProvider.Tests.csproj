@@ -5,9 +5,9 @@
 
     <IsPackable>false</IsPackable>
 
-    <AssemblyName>TNDStudios.DataPortals.Tests.FlatFileProvider</AssemblyName>
+    <AssemblyName>TNDStudios.DataPortals.Tests.Providers</AssemblyName>
 
-    <RootNamespace>TNDStudios.DataPortals.Tests.FlatFileProvider</RootNamespace>
+    <RootNamespace>TNDStudios.DataPortals.Tests.Providers</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
