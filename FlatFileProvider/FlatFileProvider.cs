@@ -67,6 +67,7 @@ namespace TNDStudios.DataPortals.Data
         public override Boolean Disconnect()
         {
             connected = false; // Always disconnect
+            fileData = ""; // No file data held once disconnected
             return connected;
         }
 
@@ -117,6 +118,21 @@ namespace TNDStudios.DataPortals.Data
                                     (property.OridinalPosition != -1) ?
                                         csvReader.TryGetField(property.DataType, property.OridinalPosition, out field) :
                                         csvReader.TryGetField(property.DataType, property.Name, out field);
+
+                                // Still empty? Check and see if certain special cases have not happened
+                                if (!fieldFound)
+                                {
+                                    // Additional things based on the data type
+                                    switch (property.DataType.ToString())
+                                    {
+                                        case "System.Double":
+                                            field = (Double)101;
+                                            break;
+                                    }
+
+                                    // Check again
+                                    fieldFound = (field != null);
+                                }
 
                                 // Found something?
                                 if (fieldFound)

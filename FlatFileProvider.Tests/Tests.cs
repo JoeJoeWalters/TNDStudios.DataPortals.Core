@@ -10,7 +10,7 @@ namespace TNDStudios.DataPortals.Tests.Providers
     public class FlatFileProviderTests
     {
         [Fact]
-        public void Test_Test()
+        public void Read_FlatFile_From_Stream()
         {
             // Arrange: Get the test data from the resource in the manifest
             Stream resourceStream = GetResourceStream("TestFiles.CSVTest.txt");
@@ -22,8 +22,8 @@ namespace TNDStudios.DataPortals.Tests.Providers
             // Arrage: Provide a definition of what wants to be retrieved from the flat file
             DataItemDefinition definition = new DataItemDefinition();
             definition.Properties.Add(new DataItemProperty() { Name = "Position 0", DataType = typeof(String), OridinalPosition = 0 });
-            definition.Properties.Add(new DataItemProperty() { Name = "Position 1", DataType = typeof(String), OridinalPosition = 1 });
-            definition.Properties.Add(new DataItemProperty() { Name = "Position 3", DataType = typeof(String), OridinalPosition = 3 });
+            definition.Properties.Add(new DataItemProperty() { Name = "Position 1", DataType = typeof(DateTime), OridinalPosition = 1 });
+            definition.Properties.Add(new DataItemProperty() { Name = "Position 2", DataType = typeof(Double), OridinalPosition = 2 });
 
             // Act
             DataTable data = provider.ExecuteReader(definition, "");
