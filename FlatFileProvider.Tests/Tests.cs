@@ -3,6 +3,7 @@ using Xunit;
 using System.Reflection;
 using System.IO;
 using TNDStudios.DataPortals.Data;
+using System.Data;
 
 namespace TNDStudios.DataPortals.Tests.Providers
 {
@@ -11,15 +12,24 @@ namespace TNDStudios.DataPortals.Tests.Providers
         [Fact]
         public void Test_Test()
         {
-            // Arrange
+            // Arrange: Get the test data from the resource in the manifest
             Stream resourceStream = GetResourceStream("TestFiles.CSVTest.txt");
+
+            // Arrage: Generate a new flat file provider and then connect it to the stream of the CSV file
             IDataProvider provider = new FlatFileProvider();
             provider.Connect(resourceStream);
 
+            // Arrage: Provide a definition of what wants to be retrieved from the flat file
+            DataItemDefinition definition = new DataItemDefinition();
+            definition.Properties.Add(new DataItemProperty() { Name = "Position 0", DataType = typeof(String), OridinalPosition = 0 });
+            definition.Properties.Add(new DataItemProperty() { Name = "Position 1", DataType = typeof(String), OridinalPosition = 1 });
+            definition.Properties.Add(new DataItemProperty() { Name = "Position 3", DataType = typeof(String), OridinalPosition = 3 });
+
             // Act
+            DataTable data = provider.ExecuteReader(definition, "");
 
             // Assert
-            Assert.True(resourceStream != null);
+            Assert.True(data.Rows.Count != 0);
         }
 
         /// <summary>

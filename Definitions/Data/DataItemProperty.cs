@@ -42,7 +42,7 @@ namespace TNDStudios.DataPortals.Data
             Name = ""; // Empty String by default
             Description = ""; // Empty String by default
             Path = ""; // Empty String by default
-            OridinalPosition = 0; // First item in the array by default
+            OridinalPosition = -1; // First item in the array by default
             DataType = typeof(String); // String by default
         }
     }

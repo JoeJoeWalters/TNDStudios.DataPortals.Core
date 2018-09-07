@@ -23,7 +23,19 @@ namespace TNDStudios.DataPortals.Data
         {
             this.connectionString = connectionString; // Assign the connection string
             this.fileData = ""; // The data if it came from a stream rather than a file on disk
-            connected = (File.Exists(this.connectionString)); // Does the file exist? Therefor it is connected
+
+            // Does the file actually exist?
+            if (File.Exists(this.connectionString))
+            {
+                // Read the data in to the file data storage area so it's common when performing queries
+                using (TextReader reader = File.OpenText(this.connectionString))
+                {
+                    this.fileData = reader.ReadToEnd();
+                }
+            }
+
+            // Indicate that it is connected if it actually got some data
+            connected = (File.Exists(this.connectionString));
             return connected;
         }
 
@@ -81,13 +93,14 @@ namespace TNDStudios.DataPortals.Data
             DataTable dataItems = definition.ToDataTable();
 
             // Open up a text reader to stream the data to the CSV Reader
-            using (TextReader textReader = File.OpenText(this.connectionString))
+            using (TextReader textReader = new StringReader(this.fileData ?? ""))
             {
                 // Create an instance of the CSV Reader
                 using (CsvReader csvReader = new CsvReader(textReader))
                 {
                     // Configure the CSV Reader
                     csvReader.Configuration.HasHeaderRecord = false;
+                    csvReader.Configuration.BadDataFound = null;
 
                     // Loop the records
                     while (csvReader.Read())
@@ -98,13 +111,20 @@ namespace TNDStudios.DataPortals.Data
                         definition.Properties.ForEach(
                             property =>
                             {
-                                // Try and get the property from the record line
+                                // Check to see if it by oridinal reference or by name
                                 Object field = null;
-                                if (csvReader.TryGetField(property.DataType, property.Name, out field))
-                                {
-                                    dataRow[property.Name] = field; // Set the value
-                                }
+                                Boolean fieldFound =
+                                    (property.OridinalPosition != -1) ?
+                                        csvReader.TryGetField(property.DataType, property.OridinalPosition, out field) :
+                                        csvReader.TryGetField(property.DataType, property.Name, out field);
+
+                                // Found something?
+                                if (fieldFound)
+                                    dataRow[property.Name] = field;
                             });
+
+                        // Add the row to the result data table
+                        dataItems.Rows.Add(dataRow);
                     }
                 }
             }
