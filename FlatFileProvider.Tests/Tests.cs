@@ -3,25 +3,20 @@ using Xunit;
 using System.Reflection;
 using System.IO;
 
-namespace TNDStudios.DataPortals.Data.FlatFileProvider
+namespace TNDStudios.DataPortals.Tests.FlatFileProvider
 {
     public class Tests
     {
-        /// <summary>
-        /// Effective constants or read only values
-        /// </summary>
-        public readonly String NamespacePrefix = "FlatFileProvider.Tests.";
-
         [Fact]
         public void Test_Test()
         {
             // Arrange
-            Stream resourceStream = GetResourceStream($"{NamespacePrefix}CSVTest.txt");
+            Stream resourceStream = GetResourceStream("CSVTest.txt");
 
             // Act
 
             // Assert
-
+            Assert.True(resourceStream != null);
         }
 
         /// <summary>
@@ -30,6 +25,19 @@ namespace TNDStudios.DataPortals.Data.FlatFileProvider
         /// <param name="embeddedResourceName">The name of the resource to read</param>
         /// <returns>A memory stream with the data contained within</returns>
         private Stream GetResourceStream(String embeddedResourceName)
-            => Assembly.GetExecutingAssembly().GetManifestResourceStream(embeddedResourceName);
+            => Assembly.GetExecutingAssembly().GetManifestResourceStream(
+                FormatResourceName(Assembly.GetExecutingAssembly(), embeddedResourceName)
+                );
+
+        /// <summary>
+        /// Get the resource name by deriving it from the assembly
+        /// </summary>
+        /// <param name="assembly">The assembly to check</param>
+        /// <param name="resourceName">The name of the resource</param>
+        /// <returns></returns>
+        private String FormatResourceName(Assembly assembly, string resourceName)
+            => assembly.GetName().Name + "." + resourceName.Replace(" ", "_")
+                                                            .Replace("\\", ".")
+                                                            .Replace("/", ".");
     }
 }

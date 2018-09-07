@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 
 namespace TNDStudios.DataPortals.Data
@@ -27,5 +28,26 @@ namespace TNDStudios.DataPortals.Data
         /// <param name="properties">The initial list of properties</param>
         public DataItemDefinition(List<DataItemProperty> properties) =>
             Properties = properties;
+
+        /// <summary>
+        /// Convert this definition to a data table so it can be populated
+        /// </summary>
+        /// <returns></returns>
+        public DataTable ToDataTable()
+        {
+            DataTable result = new DataTable(); // Build a results table to send back
+
+            // Loop the items in the definition and add them to the column definition
+            Properties.ForEach(property => 
+            {
+                result.Columns.Add(
+                    new DataColumn(property.Name, property.DataType)
+                    {                         
+                    });
+            });
+
+            return result; // Return the data table
+        }
+
     }
 }

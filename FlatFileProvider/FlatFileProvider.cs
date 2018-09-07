@@ -70,7 +70,7 @@ namespace TNDStudios.DataPortals.Data
         public override DataTable ExecuteReader(DataItemDefinition definition, String command)
         {
             // Create a list of data items to return
-            DataTable dataItems = new DataTable();
+            DataTable dataItems = definition.ToDataTable();
 
             // Open up a text reader to stream the data to the CSV Reader
             using (TextReader textReader = File.OpenText(this.connectionString))
@@ -84,6 +84,8 @@ namespace TNDStudios.DataPortals.Data
                     // Loop the records
                     while (csvReader.Read())
                     {
+                        DataRow dataRow = dataItems.NewRow(); // Create a new row to populate
+
                         // Match all of the properties in the definitions lists
                         definition.Properties.ForEach(
                             property => 
@@ -92,10 +94,9 @@ namespace TNDStudios.DataPortals.Data
                                 Object field = null;
                                 if (csvReader.TryGetField(property.DataType, property.Name, out field))
                                 {
-                                    //dataItem.Values[property.Name] = field;
+                                    dataRow[property.Name] = field; // Set the value
                                 }
                             });
-
                     }
                 }
             }

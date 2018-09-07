@@ -4,6 +4,10 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <AssemblyName>TNDStudios.DataPortals.Tests.FlatFileProvider</AssemblyName>
+
+    <RootNamespace>TNDStudios.DataPortals.Tests.FlatFileProvider</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

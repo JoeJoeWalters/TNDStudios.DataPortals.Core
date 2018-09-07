@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <AssemblyName>TNDStudios.DataPortals.Data.FlatFileProvider</AssemblyName>
+    <RootNamespace>TNDStudios.DataPortals.Data.FlatFileProvider</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

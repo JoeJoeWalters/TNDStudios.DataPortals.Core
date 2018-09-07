@@ -49,7 +49,5 @@ namespace TNDStudios.DataPortals.Data
         {
             throw new NotImplementedException();
         }
-
-
     }
 }
