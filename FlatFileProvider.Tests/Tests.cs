@@ -24,6 +24,8 @@ namespace TNDStudios.DataPortals.Tests.Providers
             definition.Properties.Add(new DataItemProperty() { Name = "Position 0", DataType = typeof(String), OridinalPosition = 0 });
             definition.Properties.Add(new DataItemProperty() { Name = "Position 1", DataType = typeof(DateTime), OridinalPosition = 1 });
             definition.Properties.Add(new DataItemProperty() { Name = "Position 2", DataType = typeof(Double), OridinalPosition = 2 });
+            definition.Properties.Add(new DataItemProperty() { Name = "Position 3", DataType = typeof(String), OridinalPosition = 3 });
+            definition.Properties.Add(new DataItemProperty() { Name = "Position 4", DataType = typeof(Boolean), OridinalPosition = 4 });
 
             // Act
             DataTable data = provider.ExecuteReader(definition, "");

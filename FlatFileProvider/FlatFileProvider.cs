@@ -112,27 +112,9 @@ namespace TNDStudios.DataPortals.Data
                         definition.Properties.ForEach(
                             property =>
                             {
-                                // Check to see if it by oridinal reference or by name
+                                // Try and get the value
                                 Object field = null;
-                                Boolean fieldFound =
-                                    (property.OridinalPosition != -1) ?
-                                        csvReader.TryGetField(property.DataType, property.OridinalPosition, out field) :
-                                        csvReader.TryGetField(property.DataType, property.Name, out field);
-
-                                // Still empty? Check and see if certain special cases have not happened
-                                if (!fieldFound)
-                                {
-                                    // Additional things based on the data type
-                                    switch (property.DataType.ToString())
-                                    {
-                                        case "System.Double":
-                                            field = (Double)101;
-                                            break;
-                                    }
-
-                                    // Check again
-                                    fieldFound = (field != null);
-                                }
+                                Boolean fieldFound = GetPropertyValue(csvReader, property, ref field);
 
                                 // Found something?
                                 if (fieldFound)
@@ -147,6 +129,73 @@ namespace TNDStudios.DataPortals.Data
 
             // Return the items
             return dataItems;
+        }
+
+        /// <summary>
+        /// Get the data from a field
+        /// </summary>
+        /// <param name="csvReader">The reader to handle the property get</param>
+        /// <param name="property">The property data</param>
+        /// <returns>If it was successful</returns>
+        private Boolean GetPropertyValue(CsvReader csvReader, DataItemProperty property, ref Object value)
+        {
+            // Check to see if it by oridinal reference or by name
+            Boolean fieldFound =
+                (property.OridinalPosition != -1) ?
+                    csvReader.TryGetField(property.DataType, property.OridinalPosition, out value) :
+                    csvReader.TryGetField(property.DataType, property.Name, out value);
+
+            // Still empty? Check and see if certain special cases have not happened
+            if (!fieldFound)
+            {
+                // Get the raw data for the field
+                Object objectData = "";
+                fieldFound = (property.OridinalPosition != -1) ?
+                        csvReader.TryGetField(typeof(String), property.OridinalPosition, out objectData) :
+                        csvReader.TryGetField(typeof(String), property.Name, out objectData);
+                String rawData = fieldFound ? (String)objectData : "";
+
+                // Additional things based on the data type
+                switch (property.DataType.ToString().ToLower().Replace("system.", ""))
+                {
+                    case "double":
+
+                        // Parse the data to a double
+                        Double parsedValue = (Double)0;
+                        if (Double.TryParse(rawData, out parsedValue))
+                            value = parsedValue;
+
+                        break;
+
+                    case "boolean":
+
+                        // Get the first character of the raw data if there is some
+                        Char firstChar =
+                            (rawData.Length > 0) ? rawData.ToCharArray()[0] : ' ';
+
+                        // Check the first character to see if it matches a true state
+                        switch (firstChar)
+                        {
+                            case '1':
+                            case 'y':
+                            case 't':
+                            case 'f':
+                                value = true;
+                                break;
+                            default:
+                                value = false;
+                                break;
+                        }
+
+                        break;
+                }
+            }
+
+            // Check again
+            fieldFound = (value != null);
+
+            // Return the data
+            return fieldFound;
         }
 
         /// <summary>
