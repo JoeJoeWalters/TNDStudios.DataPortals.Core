@@ -229,10 +229,22 @@ namespace TNDStudios.DataPortals.Data
                         // Clean the string up for parsing
                         rawDateValue = CleanString(rawDateValue, csvReader);
 
+                        // How the date is expected to be formatted for reading
+                        String datePattern = ((property.Pattern ?? "") == "") ? 
+                            CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern : 
+                            property.Pattern; 
+
                         // Try and parse the datetime field
-                        DateTime formattedDate = DateTime.ParseExact(rawDateValue, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                        if (formattedDate != null)
-                            value = formattedDate;
+                        try
+                        {
+                            DateTime formattedDate = DateTime.ParseExact(rawDateValue, datePattern, CultureInfo.InvariantCulture);
+                            if (formattedDate != null)
+                                value = formattedDate;
+                        }
+                        catch
+                        {
+                            value = null;
+                        }
                     }
 
                     break;

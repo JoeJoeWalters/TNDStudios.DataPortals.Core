@@ -35,6 +35,11 @@ namespace TNDStudios.DataPortals.Data
         public Type DataType { get; set; }
 
         /// <summary>
+        /// The pattern of the data (such as the date format etc.)
+        /// </summary>
+        public String Pattern { get; set; }
+
+        /// <summary>
         /// The default constructor
         /// </summary>
         public DataItemProperty()
@@ -44,6 +49,7 @@ namespace TNDStudios.DataPortals.Data
             Path = ""; // Empty String by default
             OridinalPosition = -1; // First item in the array by default
             DataType = typeof(String); // String by default
+            Pattern = ""; // The pattern of the data (such as the date format)
         }
     }
 }
