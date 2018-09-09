@@ -9,6 +9,12 @@ namespace TNDStudios.DataPortals.Data
     public class FlatFileProvider : DataProviderBase, IDataProvider
     {
         /// <summary>
+        /// Constants that identify the character of a string as being 
+        /// a positive boolean value
+        /// </summary>
+        private const String booleanChars = "1ytf";
+
+        /// <summary>
         /// The data that was derived from the stream given to connect to
         /// if the connection was not via a connection string (file location)
         /// </summary>
@@ -184,28 +190,34 @@ namespace TNDStudios.DataPortals.Data
                     fieldFound = GetField<String>(csvReader, property, typeof(String), out String rawBooleanValue);
                     if (fieldFound)
                     {
-                        // Get the first character of the raw data if there is some
+                        // Get rid of any parts of the raw string that could throw out any problems
                         rawBooleanValue = rawBooleanValue
                             .Replace(csvReader.Configuration.Delimiter, "")
                             .Replace(csvReader.Configuration.Quote, ' ')
                             .Trim();
+
+                        // Get the first character of the raw data if there is some
                         Char firstChar =
                             (rawBooleanValue.Length > 0) ? rawBooleanValue.ToCharArray()[0] : ' ';
 
                         // Check the first character to see if it matches a true state
-                        switch (firstChar)
-                        {
-                            case '1':
-                            case 'y':
-                            case 't':
-                            case 'f':
-                                value = true;
-                                break;
-                            default:
-                                value = false;
-                                break;
-                        }
+                        value = booleanChars.Contains(firstChar);
+                    }
 
+                    break;
+
+                case "double":
+
+                    break;
+
+                case "datetime":
+
+                    fieldFound = GetField<String>(csvReader, property, typeof(String), out String rawDateValue);
+                    if (fieldFound)
+                    {
+                        fieldFound = DateTime.TryParse(rawDateValue, out DateTime formattedDate);
+                        if (fieldFound)
+                            value = formattedDate;
                     }
 
                     break;
