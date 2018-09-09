@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using CsvHelper;
 
@@ -170,6 +171,18 @@ namespace TNDStudios.DataPortals.Data
         }
 
         /// <summary>
+        /// Clean out a piece of data so it can be handled manually without possible quotes etc.
+        /// </summary>
+        /// <param name="value">The raw value</param>
+        /// <param name="csvReader">The reader that holds the configuration</param>
+        /// <returns></returns>
+        private String CleanString(String value, CsvReader csvReader)
+            => (value ?? "")
+                .Replace(csvReader.Configuration.Delimiter, "")
+                .Replace(csvReader.Configuration.Quote, ' ')
+                .Trim();
+
+        /// <summary>
         /// Get the data from a field
         /// </summary>
         /// <param name="csvReader">The reader to handle the property get</param>
@@ -190,11 +203,8 @@ namespace TNDStudios.DataPortals.Data
                     fieldFound = GetField<String>(csvReader, property, typeof(String), out String rawBooleanValue);
                     if (fieldFound)
                     {
-                        // Get rid of any parts of the raw string that could throw out any problems
-                        rawBooleanValue = rawBooleanValue
-                            .Replace(csvReader.Configuration.Delimiter, "")
-                            .Replace(csvReader.Configuration.Quote, ' ')
-                            .Trim();
+                        // Clean the string up for parsing
+                        rawBooleanValue = CleanString(rawBooleanValue, csvReader);
 
                         // Get the first character of the raw data if there is some
                         Char firstChar =
@@ -212,11 +222,16 @@ namespace TNDStudios.DataPortals.Data
 
                 case "datetime":
 
+                    // Check to see if it by oridinal reference or by name
                     fieldFound = GetField<String>(csvReader, property, typeof(String), out String rawDateValue);
                     if (fieldFound)
                     {
-                        fieldFound = DateTime.TryParse(rawDateValue, out DateTime formattedDate);
-                        if (fieldFound)
+                        // Clean the string up for parsing
+                        rawDateValue = CleanString(rawDateValue, csvReader);
+
+                        // Try and parse the datetime field
+                        DateTime formattedDate = DateTime.ParseExact(rawDateValue, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                        if (formattedDate != null)
                             value = formattedDate;
                     }
 
