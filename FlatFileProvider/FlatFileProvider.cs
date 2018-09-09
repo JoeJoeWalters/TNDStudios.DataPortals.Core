@@ -132,6 +132,38 @@ namespace TNDStudios.DataPortals.Data
         }
 
         /// <summary>
+        /// Get a field of type T from the current csv reader row
+        /// </summary>
+        /// <typeparam name="T">The response type of the data</typeparam>
+        /// <param name="reader">The CSV reader to read the dat from</param>
+        /// <param name="dataType">The </param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private Boolean GetField<T>(CsvReader csvReader, DataItemProperty property, out T value)
+            => GetField<T>(csvReader, property, property.DataType, out value);
+
+        private Boolean GetField<T>(CsvReader csvReader, 
+            DataItemProperty property, 
+            Type overridingDataType,
+            out T value)
+        {
+            Object tempValue = null; // The temporary value before it is cast
+            Boolean response = false; // Successful?
+
+            // Try and get the value from either the oridinal position or by the 
+            // column name
+            response = (property.OridinalPosition != -1) ?
+                csvReader.TryGetField(overridingDataType, property.OridinalPosition, out tempValue) :
+                csvReader.TryGetField(overridingDataType, property.Name, out tempValue);
+
+            // Return the value casted to the required type
+            value = (T)tempValue;
+
+            // Return if it was successful
+            return response;
+        }
+
+        /// <summary>
         /// Get the data from a field
         /// </summary>
         /// <param name="csvReader">The reader to handle the property get</param>
@@ -139,39 +171,26 @@ namespace TNDStudios.DataPortals.Data
         /// <returns>If it was successful</returns>
         private Boolean GetPropertyValue(CsvReader csvReader, DataItemProperty property, ref Object value)
         {
-            // Check to see if it by oridinal reference or by name
-            Boolean fieldFound =
-                (property.OridinalPosition != -1) ?
-                    csvReader.TryGetField(property.DataType, property.OridinalPosition, out value) :
-                    csvReader.TryGetField(property.DataType, property.Name, out value);
+            // Get the proeprty type as some types of data need handling differently straight away
+            String propertyType = property.DataType.ToString().ToLower().Replace("system.", "");
+            Boolean fieldFound = false; // Field not found by default
 
-            // Still empty? Check and see if certain special cases have not happened
-            if (!fieldFound)
+            // Check the property type
+            switch (propertyType)
             {
-                // Get the raw data for the field
-                Object objectData = "";
-                fieldFound = (property.OridinalPosition != -1) ?
-                        csvReader.TryGetField(typeof(String), property.OridinalPosition, out objectData) :
-                        csvReader.TryGetField(typeof(String), property.Name, out objectData);
-                String rawData = fieldFound ? (String)objectData : "";
+                case "boolean":
 
-                // Additional things based on the data type
-                switch (property.DataType.ToString().ToLower().Replace("system.", ""))
-                {
-                    case "double":
-
-                        // Parse the data to a double
-                        Double parsedValue = (Double)0;
-                        if (Double.TryParse(rawData, out parsedValue))
-                            value = parsedValue;
-
-                        break;
-
-                    case "boolean":
-
+                    // Check to see if it by oridinal reference or by name
+                    fieldFound = GetField<String>(csvReader, property, typeof(String), out String rawBooleanValue);
+                    if (fieldFound)
+                    {
                         // Get the first character of the raw data if there is some
+                        rawBooleanValue = rawBooleanValue
+                            .Replace(csvReader.Configuration.Delimiter, "")
+                            .Replace(csvReader.Configuration.Quote, ' ')
+                            .Trim();
                         Char firstChar =
-                            (rawData.Length > 0) ? rawData.ToCharArray()[0] : ' ';
+                            (rawBooleanValue.Length > 0) ? rawBooleanValue.ToCharArray()[0] : ' ';
 
                         // Check the first character to see if it matches a true state
                         switch (firstChar)
@@ -187,13 +206,18 @@ namespace TNDStudios.DataPortals.Data
                                 break;
                         }
 
-                        break;
-                }
+                    }
+
+                    break;
+
+                default:
+
+                    // Get everything else as a string
+                    fieldFound = GetField<Object>(csvReader, property, out value);
+
+                    break;            
             }
-
-            // Check again
-            fieldFound = (value != null);
-
+            
             // Return the data
             return fieldFound;
         }
