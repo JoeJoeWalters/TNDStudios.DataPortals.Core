@@ -149,8 +149,8 @@ namespace TNDStudios.DataPortals.Data
         private Boolean GetField<T>(CsvReader csvReader, DataItemProperty property, out T value)
             => GetField<T>(csvReader, property, property.DataType, out value);
 
-        private Boolean GetField<T>(CsvReader csvReader, 
-            DataItemProperty property, 
+        private Boolean GetField<T>(CsvReader csvReader,
+            DataItemProperty property,
             Type overridingDataType,
             out T value)
         {
@@ -217,6 +217,21 @@ namespace TNDStudios.DataPortals.Data
                     break;
 
                 case "double":
+                case "int":
+                case "int16":
+                case "int32":
+                case "int64":
+                case "float":
+                case "decimal":
+                case "single":
+
+                    // Check to see if it by oridinal reference or by name
+                    fieldFound = GetField<String>(csvReader, property, typeof(String), out String rawNumericValue);
+                    if (fieldFound)
+                    {
+                        // Clean the string up for parsing
+                        rawNumericValue = CleanString(rawNumericValue, csvReader);
+                    }
 
                     break;
 
@@ -230,9 +245,9 @@ namespace TNDStudios.DataPortals.Data
                         rawDateValue = CleanString(rawDateValue, csvReader);
 
                         // How the date is expected to be formatted for reading
-                        String datePattern = ((property.Pattern ?? "") == "") ? 
-                            CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern : 
-                            property.Pattern; 
+                        String datePattern = ((property.Pattern ?? "") == "") ?
+                            CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern :
+                            property.Pattern;
 
                         // Try and parse the datetime field
                         try
@@ -254,9 +269,9 @@ namespace TNDStudios.DataPortals.Data
                     // Get everything else as a string
                     fieldFound = GetField<Object>(csvReader, property, out value);
 
-                    break;            
+                    break;
             }
-            
+
             // Return the data
             return fieldFound;
         }

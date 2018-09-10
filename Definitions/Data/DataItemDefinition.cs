@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Text;
 
 namespace TNDStudios.DataPortals.Data
@@ -17,17 +18,32 @@ namespace TNDStudios.DataPortals.Data
         public List<DataItemProperty> Properties { get; set; }
 
         /// <summary>
+        /// The specific culture information for this definition
+        /// </summary>
+        public CultureInfo Culture { get; set; }
+
+        /// <summary>
         /// The default constructor
         /// </summary>
         public DataItemDefinition() =>
-            Properties = new List<DataItemProperty>();
+            Initialise(new List<DataItemProperty>());
 
         /// <summary>
         /// Constructor with the property list being passed in
         /// </summary>
         /// <param name="properties">The initial list of properties</param>
         public DataItemDefinition(List<DataItemProperty> properties) =>
-            Properties = properties;
+            Initialise(properties);
+
+        /// <summary>
+        /// Initialise the data definition
+        /// </summary>
+        /// <param name="properties"></param>
+        public void Initialise(List<DataItemProperty> properties)
+        {
+            Properties = properties; // Set the data properties of the definition
+            Culture = CultureInfo.CurrentCulture; // Set the culture information to the current by default
+        }
 
         /// <summary>
         /// Convert this definition to a data table so it can be populated
