@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlatFileProvider", "FlatFil
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Providers", "Providers", "{37268162-FC85-4421-8FE2-9B79B801A0EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlatFileProvider.Tests", "FlatFileProvider.Tests\FlatFileProvider.Tests.csproj", "{B63F407F-BD66-435A-A775-E4428871A93C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlatFileProvider.Tests", "FlatFileProvider.Tests\FlatFileProvider.Tests.csproj", "{B63F407F-BD66-435A-A775-E4428871A93C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI", "UI\UI.csproj", "{9EE88884-7255-4780-8362-1699B6DA458F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{B63F407F-BD66-435A-A775-E4428871A93C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B63F407F-BD66-435A-A775-E4428871A93C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B63F407F-BD66-435A-A775-E4428871A93C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EE88884-7255-4780-8362-1699B6DA458F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EE88884-7255-4780-8362-1699B6DA458F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EE88884-7255-4780-8362-1699B6DA458F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EE88884-7255-4780-8362-1699B6DA458F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
