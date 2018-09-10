@@ -124,7 +124,7 @@ namespace TNDStudios.DataPortals.Data
                                 Boolean fieldFound = GetPropertyValue(csvReader, property, ref field);
 
                                 // Found something?
-                                if (fieldFound)
+                                if (fieldFound && field != null)
                                     dataRow[property.Name] = field;
                             });
 
@@ -183,6 +183,15 @@ namespace TNDStudios.DataPortals.Data
                 .Trim();
 
         /// <summary>
+        /// Check to see if a string is numeric (to wrap custom handlers)
+        /// </summary>
+        /// <param name="value">The string to check against</param>
+        /// <returns>If the string is numeric or not</returns>
+        private Boolean IsNumeric(String value) =>
+            int.TryParse(value, out int chuckInt) ||
+            float.TryParse(value, out float chuckFloat);
+
+        /// <summary>
         /// Get the data from a field
         /// </summary>
         /// <param name="csvReader">The reader to handle the property get</param>
@@ -231,6 +240,8 @@ namespace TNDStudios.DataPortals.Data
                     {
                         // Clean the string up for parsing
                         rawNumericValue = CleanString(rawNumericValue, csvReader);
+                        if (IsNumeric(rawNumericValue))
+                            value = rawNumericValue;
                     }
 
                     break;

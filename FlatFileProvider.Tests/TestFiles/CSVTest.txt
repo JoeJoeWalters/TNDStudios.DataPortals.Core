@@ -1,5 +1,5 @@
 ﻿"Test 1", "21/01/2018", "0.123345", "A long description of the data to transform", 1
 "Test 2", "29/01/2018", "1.233232", "A short description", "true"
-"Test 3", "01/12/2018", "34.223323", "A medium description of the data", "yes"
+"Test 3", "01/12/2018", "This is not a valid number", "A medium description of the data", "yes"
 "Test 4", "01/12/2017", "34.223323", "A negative set of data", "no"
-"Test 4", "01/01/2016", "32.111", "A negative set of data No. 2", "0"
+"Test 4", "01/01/2016", "1", "A negative set of data No. 2", "0"
