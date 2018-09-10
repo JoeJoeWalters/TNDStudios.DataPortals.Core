@@ -227,13 +227,20 @@ namespace TNDStudios.DataPortals.Data
 
                 case "double":
                 case "int":
+                case "unint":
                 case "int16":
                 case "int32":
                 case "int64":
                 case "float":
                 case "decimal":
                 case "single":
-
+                case "byte":
+                case "sbyte":
+                case "short":
+                case "ushort":
+                case "long":
+                case "ulong":
+                    
                     // Check to see if it by oridinal reference or by name
                     fieldFound = GetField<String>(csvReader, property, typeof(String), out String rawNumericValue);
                     if (fieldFound)
