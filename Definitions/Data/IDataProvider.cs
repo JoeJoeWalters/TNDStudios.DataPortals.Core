@@ -51,14 +51,6 @@ namespace TNDStudios.DataPortals.Data
         DataTable ExecuteReader(DataItemDefinition definition, String command);
 
         /// <summary>
-        /// Retrieve a single data item based on the query passed to the source
-        /// </summary>
-        /// <param name="definition">The data defintion of the source of the data</param>
-        /// <param name="command">The command to execute to retrieve the data</param>
-        /// <returns>A single data item that was found</returns>
-        DataTable ExecuteScalar(DataItemDefinition definition, String command);
-
-        /// <summary>
         /// Execute a query on the data source without expecting data back
         /// </summary>
         /// <param name="definition">The data defintion of the source of the data</param>

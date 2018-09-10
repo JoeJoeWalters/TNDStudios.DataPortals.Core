@@ -21,33 +21,18 @@ namespace TNDStudios.DataPortals.Data
         public Boolean Connected => connected;
 
         public virtual bool Connect(string connectionString)
-        {
-            throw new NotImplementedException();
-        }
+            => throw new NotImplementedException();
 
         public virtual bool Connect(Stream stream)
-        {
-            throw new NotImplementedException();
-        }
+            => throw new NotImplementedException();
 
         public virtual bool Disconnect()
-        {
-            throw new NotImplementedException();
-        }
+            => throw new NotImplementedException();
 
         public virtual bool ExecuteNonQuery(DataItemDefinition definition, string command)
-        {
-            throw new NotImplementedException();
-        }
+            => throw new NotImplementedException();
 
         public virtual DataTable ExecuteReader(DataItemDefinition definition, string command)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual DataTable ExecuteScalar(DataItemDefinition definition, string command)
-        {
-            throw new NotImplementedException();
-        }
+            => throw new NotImplementedException();
     }
 }

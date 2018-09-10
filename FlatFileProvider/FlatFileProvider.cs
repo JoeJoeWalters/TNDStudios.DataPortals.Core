@@ -207,6 +207,7 @@ namespace TNDStudios.DataPortals.Data
             switch (propertyType)
             {
                 case "boolean":
+                case "bool":
 
                     // Check to see if it by oridinal reference or by name
                     fieldFound = GetField<String>(csvReader, property, typeof(String), out String rawBooleanValue);
@@ -284,7 +285,8 @@ namespace TNDStudios.DataPortals.Data
 
                 default:
 
-                    // Get everything else as a string
+                    // Get everything else as a string and try and fit it using the 
+                    // standard in-built converters
                     fieldFound = GetField<Object>(csvReader, property, out value);
 
                     break;
@@ -292,17 +294,6 @@ namespace TNDStudios.DataPortals.Data
 
             // Return the data
             return fieldFound;
-        }
-
-        /// <summary>
-        /// Query the flat file and return a single record
-        /// </summary>
-        /// <param name="definition">The definition of the flat file</param>
-        /// <param name="command">The command to execute on the definition</param>
-        /// <returns>A single item that matched the query</returns>
-        public override DataTable ExecuteScalar(DataItemDefinition definition, string command)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>
