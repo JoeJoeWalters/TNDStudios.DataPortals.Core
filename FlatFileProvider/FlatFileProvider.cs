@@ -201,10 +201,27 @@ namespace TNDStudios.DataPortals.Data
         /// <param name="csvReader">The reader that holds the configuration</param>
         /// <returns></returns>
         private String CleanString(String value, CsvReader csvReader)
-            => (value ?? "")
-                .Replace(csvReader.Configuration.Delimiter, "")
-                .Replace(csvReader.Configuration.Quote, ' ')
-                .Trim();
+            => RemoveEnds(value, csvReader.Configuration.Quote).Trim();
+
+        /// <summary>
+        /// Remove the character from the start and/or end of the string
+        /// but not in the middle
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="character"></param>
+        /// <returns></returns>
+        private String RemoveEnds(String value, Char character)
+        {
+            // Split up in to an array of characters
+            value = (value ?? ""); // Handle any incoming nulls
+            if (value.Length >= 2)
+            {
+                if (value.StartsWith(character)) { value = value.Remove(0, 1); }
+                if (value.EndsWith(character)) { value = value.Remove(value.Length - 1, 1); }
+            }
+
+            return value; // Return the formatted string
+        }
 
         /// <summary>
         /// Check to see if a string is numeric (to wrap custom handlers)
