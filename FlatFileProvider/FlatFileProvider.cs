@@ -104,38 +104,62 @@ namespace TNDStudios.DataPortals.Data
             using (TextReader textReader = new StringReader(this.fileData ?? ""))
             {
                 // Create an instance of the CSV Reader
-                using (CsvReader csvReader = new CsvReader(textReader))
+                using (CsvReader csvReader = SetupReader(textReader, definition))
                 {
-                    // Configure the CSV Reader
-                    csvReader.Configuration.HasHeaderRecord = false;
-                    csvReader.Configuration.BadDataFound = null;
-
                     // Loop the records
+                    Int32 rowCount = 0;
                     while (csvReader.Read())
                     {
-                        DataRow dataRow = dataItems.NewRow(); // Create a new row to populate
+                        // Skip the first row?
+                        if (!csvReader.Configuration.HasHeaderRecord ||
+                            (csvReader.Configuration.HasHeaderRecord && rowCount != 0))
+                        {
+                            DataRow dataRow = dataItems.NewRow(); // Create a new row to populate
 
-                        // Match all of the properties in the definitions lists
-                        definition.Properties.ForEach(
-                            property =>
-                            {
+                            // Match all of the properties in the definitions lists
+                            definition.Properties.ForEach(
+                                property =>
+                                {
                                 // Try and get the value
                                 Object field = null;
-                                Boolean fieldFound = GetPropertyValue(csvReader, property, ref field);
+                                    Boolean fieldFound = GetPropertyValue(csvReader, property, ref field);
 
                                 // Found something?
                                 if (fieldFound && field != null)
-                                    dataRow[property.Name] = field;
-                            });
+                                        dataRow[property.Name] = field;
+                                });
 
-                        // Add the row to the result data table
-                        dataItems.Rows.Add(dataRow);
+                            // Add the row to the result data table
+                            dataItems.Rows.Add(dataRow);
+                        }
+
+                        rowCount++; // Increment the row check
                     }
                 }
             }
 
             // Return the items
             return dataItems;
+        }
+
+        /// <summary>
+        /// Create and set up a csv reader based on the data item definition given
+        /// </summary>
+        /// <param name="textReader">The text reader to inject in to the CSV reader</param>
+        /// <param name="definition">The definition of the file</param>
+        /// <returns>The newly configured CSV Reader</returns>
+        public CsvReader SetupReader(TextReader textReader, DataItemDefinition definition)
+        {
+            // Produce a new CSV Reader
+            CsvReader result = new CsvReader(textReader);
+
+            // Configure the CSV Reader
+            result.Configuration.HasHeaderRecord = definition.HasHeaderRecord;
+            result.Configuration.BadDataFound = null; // Don't pipe bad data
+            result.Configuration.CultureInfo = definition.Culture;
+
+            // Send the reader back
+            return result;
         }
 
         /// <summary>

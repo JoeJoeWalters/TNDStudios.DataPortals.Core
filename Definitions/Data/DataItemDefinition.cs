@@ -23,6 +23,11 @@ namespace TNDStudios.DataPortals.Data
         public CultureInfo Culture { get; set; }
 
         /// <summary>
+        /// If there are headers to the data source?
+        /// </summary>
+        public Boolean HasHeaderRecord { get; set; }
+
+        /// <summary>
         /// The default constructor
         /// </summary>
         public DataItemDefinition() =>
@@ -43,6 +48,7 @@ namespace TNDStudios.DataPortals.Data
         {
             Properties = properties; // Set the data properties of the definition
             Culture = CultureInfo.CurrentCulture; // Set the culture information to the current by default
+            HasHeaderRecord = false; // By default assume there are no headers (I.e. skip the first line)
         }
 
         /// <summary>

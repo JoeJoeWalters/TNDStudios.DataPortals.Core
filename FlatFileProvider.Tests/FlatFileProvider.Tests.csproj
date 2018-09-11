@@ -12,9 +12,11 @@
 
   <ItemGroup>
     <None Remove="TestFiles\CSVTest.txt" />
+    <None Remove="TestFiles\CSVTestWithHeaders.txt" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="TestFiles\CSVTestWithHeaders.txt" />
     <EmbeddedResource Include="TestFiles\CSVTest.txt" />
   </ItemGroup>
 
