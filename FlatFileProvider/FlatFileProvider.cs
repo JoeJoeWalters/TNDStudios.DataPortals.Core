@@ -4,6 +4,7 @@ using System.Data;
 using System.Globalization;
 using System.IO;
 using CsvHelper;
+using CsvHelper.Configuration;
 
 namespace TNDStudios.DataPortals.Data
 {
@@ -106,34 +107,44 @@ namespace TNDStudios.DataPortals.Data
                 // Create an instance of the CSV Reader
                 using (CsvReader csvReader = SetupReader(textReader, definition))
                 {
+                    // Get the record header if needed
+                    if (csvReader.Configuration.HasHeaderRecord)
+                    {
+                        csvReader.Read(); // Do a read first
+                        csvReader.ReadHeader();
+
+                        // Parse the header records so that they do not include enclosing quotes
+                        Int32 headerId = 0;
+                        while (headerId < csvReader.Context.HeaderRecord.Length)
+                        {
+                            // Clean the header
+                            csvReader.Context.HeaderRecord[headerId] = 
+                                CleanString(csvReader.Context.HeaderRecord[headerId], csvReader);
+
+                            headerId++; // Move to the next header
+                        }
+                    }
+
                     // Loop the records
-                    Int32 rowCount = 0;
                     while (csvReader.Read())
                     {
-                        // Skip the first row?
-                        if (!csvReader.Configuration.HasHeaderRecord ||
-                            (csvReader.Configuration.HasHeaderRecord && rowCount != 0))
-                        {
-                            DataRow dataRow = dataItems.NewRow(); // Create a new row to populate
+                        DataRow dataRow = dataItems.NewRow(); // Create a new row to populate
 
-                            // Match all of the properties in the definitions lists
-                            definition.Properties.ForEach(
-                                property =>
-                                {
-                                // Try and get the value
-                                Object field = null;
-                                    Boolean fieldFound = GetPropertyValue(csvReader, property, ref field);
+                        // Match all of the properties in the definitions lists
+                        definition.Properties.ForEach(
+                            property =>
+                            {
+                            // Try and get the value
+                            Object field = null;
+                                Boolean fieldFound = GetPropertyValue(csvReader, property, ref field);
 
-                                // Found something?
-                                if (fieldFound && field != null)
-                                        dataRow[property.Name] = field;
-                                });
+                            // Found something?
+                            if (fieldFound && field != null)
+                                    dataRow[property.Name] = field;
+                            });
 
-                            // Add the row to the result data table
-                            dataItems.Rows.Add(dataRow);
-                        }
-
-                        rowCount++; // Increment the row check
+                        // Add the row to the result data table
+                        dataItems.Rows.Add(dataRow);
                     }
                 }
             }
@@ -157,6 +168,8 @@ namespace TNDStudios.DataPortals.Data
             result.Configuration.HasHeaderRecord = definition.HasHeaderRecord;
             result.Configuration.BadDataFound = null; // Don't pipe bad data
             result.Configuration.CultureInfo = definition.Culture;
+            result.Configuration.TrimOptions = TrimOptions.Trim;
+            result.Configuration.IgnoreQuotes = true;
 
             // Send the reader back
             return result;
@@ -183,9 +196,12 @@ namespace TNDStudios.DataPortals.Data
 
             // Try and get the value from either the oridinal position or by the 
             // column name
-            response = (property.OridinalPosition != -1) ?
-                csvReader.TryGetField(overridingDataType, property.OridinalPosition, out tempValue) :
-                csvReader.TryGetField(overridingDataType, property.Name, out tempValue);
+            Int32 calculatedPosition =
+                (property.OridinalPosition != -1) ?
+                    property.OridinalPosition :
+                    Array.IndexOf(csvReader.Context.HeaderRecord, property.Name);
+
+            response = csvReader.TryGetField(overridingDataType, calculatedPosition, out tempValue);
 
             // Return the value casted to the required type
             value = (T)tempValue;
