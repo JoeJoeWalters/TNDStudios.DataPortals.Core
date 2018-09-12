@@ -13,14 +13,14 @@ namespace TNDStudios.DataPortals.Tests.Providers
         public void Read_FlatFile_From_Stream()
         {
             // Arrange: Get the test data from the resource in the manifest
-            Stream resourceStream = GetResourceStream("TestFiles.CSVTestWithHeaders.txt");
+            Stream resourceStream = GetResourceStream("TestFiles.CSVTest.txt");
 
             // Arrage: Generate a new flat file provider and then connect it to the stream of the CSV file
             IDataProvider provider = new FlatFileProvider();
             provider.Connect(resourceStream);
 
             // Arrage: Provide a definition of what wants to be retrieved from the flat file
-            DataItemDefinition definition = TestDefinition(true);
+            DataItemDefinition definition = TestDefinition(false);
 
             // Act
             DataTable data = provider.ExecuteReader(definition, "");

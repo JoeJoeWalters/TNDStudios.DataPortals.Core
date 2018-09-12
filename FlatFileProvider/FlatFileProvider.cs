@@ -213,7 +213,7 @@ namespace TNDStudios.DataPortals.Data
         private String RemoveEnds(String value, Char character)
         {
             // Split up in to an array of characters
-            value = (value ?? ""); // Handle any incoming nulls
+            value = (value ?? "").Trim(); // Handle any incoming nulls
             if (value.Length >= 2)
             {
                 if (value.StartsWith(character)) { value = value.Remove(0, 1); }
@@ -329,6 +329,10 @@ namespace TNDStudios.DataPortals.Data
                     // Get everything else as a string and try and fit it using the 
                     // standard in-built converters
                     fieldFound = GetField<Object>(csvReader, property, out value);
+                    if (fieldFound)
+                    {
+                        value = CleanString((String)value, csvReader);
+                    };
 
                     break;
             }
