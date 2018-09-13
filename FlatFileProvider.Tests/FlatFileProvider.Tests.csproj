@@ -11,13 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="TestFiles\CSVTest.txt" />
-    <None Remove="TestFiles\CSVTestWithHeaders.txt" />
+    <None Remove="TestFiles\DataTypesTest.txt" />
+    <None Remove="TestFiles\HeadersTest.txt" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="TestFiles\CSVTestWithHeaders.txt" />
-    <EmbeddedResource Include="TestFiles\CSVTest.txt" />
+    <EmbeddedResource Include="TestFiles\HeadersTest.txt" />
+    <EmbeddedResource Include="TestFiles\DataTypesTest.txt" />
   </ItemGroup>
 
   <ItemGroup>
