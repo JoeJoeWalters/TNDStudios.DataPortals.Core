@@ -34,7 +34,8 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
 
             // Create a new flat file provider
             IDataProvider provider = new FlatFileProvider();
-            provider.Connect(resourceStream);
+            provider.TestMode = true; // The provider should be marked as being in test mode
+            provider.Connect(resourceStream); // Connect to the location of the data
 
             // Get the test definition (The columns, data types etc. for this file)
             DataItemDefinition definition = TestDefinition(testDefinition);

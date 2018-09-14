@@ -9,6 +9,12 @@ namespace TNDStudios.DataPortals.Data
     public class DataProviderBase : IDataProvider
     {
         /// <summary>
+        /// Is the provider in test mode (for example, in test flat files
+        /// we want to write to the internal buffer but not to disk)
+        /// </summary>
+        public virtual Boolean TestMode { get; set; }
+
+        /// <summary>
         /// Provide a read-only view of the connection string
         /// </summary>
         protected internal String connectionString;

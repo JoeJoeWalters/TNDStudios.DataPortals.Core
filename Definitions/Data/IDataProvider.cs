@@ -12,6 +12,11 @@ namespace TNDStudios.DataPortals.Data
     public interface IDataProvider
     {
         /// <summary>
+        /// Is the data provider marked as being in test mode
+        /// </summary>
+        Boolean TestMode { get; set; }
+
+        /// <summary>
         /// The connection string for the data provider
         /// e.g. SQL connection string or path for a file etc.
         /// </summary>
