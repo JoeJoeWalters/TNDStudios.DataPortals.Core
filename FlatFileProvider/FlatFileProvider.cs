@@ -85,7 +85,7 @@ namespace TNDStudios.DataPortals.Data
         /// <param name="definition">The definition of the flat file</param>
         /// <param name="command">The command to execute on the definition</param>
         /// <returns>If the command executed correctly</returns>
-        public override Boolean ExecuteNonQuery(DataItemDefinition definition, string command)
+        public override Boolean Write(DataItemDefinition definition, DataTable data, string command)
         {
             throw new NotImplementedException();
         }
@@ -96,7 +96,7 @@ namespace TNDStudios.DataPortals.Data
         /// <param name="definition">The definition of the flat file</param>
         /// <param name="command">The command to execute on the definition</param>
         /// <returns>A list of data items that match the query</returns>
-        public override DataTable ExecuteReader(DataItemDefinition definition, String command)
+        public override DataTable Read(DataItemDefinition definition, String command)
         {
             // Create a list of data items to return
             DataTable dataItems = definition.ToDataTable();

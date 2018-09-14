@@ -29,10 +29,10 @@ namespace TNDStudios.DataPortals.Data
         public virtual bool Disconnect()
             => throw new NotImplementedException();
 
-        public virtual bool ExecuteNonQuery(DataItemDefinition definition, string command)
+        public virtual bool Write(DataItemDefinition definition, DataTable data, string command)
             => throw new NotImplementedException();
 
-        public virtual DataTable ExecuteReader(DataItemDefinition definition, string command)
+        public virtual DataTable Read(DataItemDefinition definition, string command)
             => throw new NotImplementedException();
     }
 }

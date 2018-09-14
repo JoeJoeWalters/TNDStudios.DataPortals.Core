@@ -48,14 +48,15 @@ namespace TNDStudios.DataPortals.Data
         /// <param name="definition">The data defintion of the source of the data</param>
         /// <param name="command">The command to execute to retrieve the data</param>
         /// <returns>A list of data items that the reader found</returns>
-        DataTable ExecuteReader(DataItemDefinition definition, String command);
+        DataTable Read(DataItemDefinition definition, String command);
 
         /// <summary>
-        /// Execute a query on the data source without expecting data back
+        /// Write data to the provider
         /// </summary>
         /// <param name="definition">The data defintion of the source of the data</param>
+        /// <param name="data">The data to be written to the provider</param>
         /// <param name="command">The command to execute to manipulate the data</param>
         /// <returns>If the command was successful</returns>
-        Boolean ExecuteNonQuery(DataItemDefinition definition, String command);
+        Boolean Write(DataItemDefinition definition, DataTable data, String command);
     }
 }

@@ -39,7 +39,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
             DataItemDefinition definition = TestDefinition(testDefinition);
 
             // Read the data from the provider
-            DataTable data = provider.ExecuteReader(definition, ""); // Get the data
+            DataTable data = provider.Read(definition, ""); // Get the data
 
             // Return the data table
             return data;
