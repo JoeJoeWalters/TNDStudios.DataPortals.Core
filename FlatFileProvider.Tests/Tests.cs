@@ -15,6 +15,7 @@ namespace TNDStudios.DataPortals.Tests.Providers
         private const String testFile_DataTypes = "TestFiles.DataTypesTest.txt";
         private const String testFile_Headers = "TestFiles.HeadersTest.txt";
         private const String testFile_ISODates = "TestFiles.Dates.ISODates.txt";
+        private const String testFile_CustomDates = "TestFiles.Dates.CustomDates.txt";
 
         /// <summary>
         /// Test to make sure that each column correctly identifies a
@@ -123,6 +124,54 @@ namespace TNDStudios.DataPortals.Tests.Providers
                 ((DateTime)row4Date).Year == 2015);
         }
 
+        [Fact]
+        public void Custom_Dates_Can_Be_Read()
+        {
+            // Arrange
+
+            // Act
+            DataTable data = PopulateDataTable(testFile_CustomDates); // Get the data
+
+            // Assert
+            Assert.True(data.Rows.Count != 0); // It actually got some data rows
+            Object row0Date = data.Rows[0]["Date"];
+            Object row1Date = data.Rows[1]["Date"];
+            Object row2Date = data.Rows[2]["Date"];
+            Object row3Date = data.Rows[3]["Date"];
+            Object row4Date = data.Rows[4]["Date"];
+
+            // "13 Sep 2018"
+            Assert.True(
+                (row0Date != DBNull.Value) &&
+                ((DateTime)row0Date).Day == 13 &&
+                ((DateTime)row0Date).Month == 9 &&
+                ((DateTime)row0Date).Year == 2018);
+
+            // "01 Dec 2014"
+            Assert.True(
+                (row1Date != DBNull.Value) &&
+                ((DateTime)row1Date).Day == 1 &&
+                ((DateTime)row1Date).Month == 12 &&
+                ((DateTime)row1Date).Year == 2014);
+
+            // "31 XXX 2001"
+            Assert.True((row2Date == DBNull.Value));
+
+            // "01 Dec 0001"
+            Assert.True(
+                (row3Date != DBNull.Value) &&
+                ((DateTime)row3Date).Day == 1 &&
+                ((DateTime)row3Date).Month == 12 &&
+                ((DateTime)row3Date).Year == 1);
+
+            // "02 Jan 2015"
+            Assert.True(
+                (row4Date != DBNull.Value) &&
+                ((DateTime)row4Date).Day == 2 &&
+                ((DateTime)row4Date).Month == 1 &&
+                ((DateTime)row4Date).Year == 2015);
+        }
+
         /// <summary>
         /// Generate the data set for the testing of different different types
         /// </summary>
@@ -186,6 +235,16 @@ namespace TNDStudios.DataPortals.Tests.Providers
                     definition.Properties.Add(new DataItemProperty() { Name = "Date", DataType = typeof(DateTime), OridinalPosition = 0 });
                     definition.HasHeaderRecord = true;
                     definition.Culture = CultureInfo.InvariantCulture;
+
+                    break;
+
+                case testFile_CustomDates:
+
+                    // Definition for supplying a list of custom (and bad) dates to test
+                    // where the format is defined as dd MMM yyyy
+                    definition.Properties.Add(new DataItemProperty() { Name = "Date", DataType = typeof(DateTime), OridinalPosition = 0, Pattern = "dd MMM yyyy" });
+                    definition.HasHeaderRecord = true;
+                    definition.Culture = CultureInfo.CurrentCulture;
 
                     break;
             }

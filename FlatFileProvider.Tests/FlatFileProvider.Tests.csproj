@@ -12,11 +12,13 @@
 
   <ItemGroup>
     <None Remove="TestFiles\DataTypesTest.txt" />
+    <None Remove="TestFiles\Dates\CustomDates.txt" />
     <None Remove="TestFiles\HeadersTest.txt" />
     <None Remove="TestFiles\ISODates.txt" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="TestFiles\Dates\CustomDates.txt" />
     <EmbeddedResource Include="TestFiles\Dates\ISODates.txt" />
     <EmbeddedResource Include="TestFiles\HeadersTest.txt" />
     <EmbeddedResource Include="TestFiles\DataTypesTest.txt" />
