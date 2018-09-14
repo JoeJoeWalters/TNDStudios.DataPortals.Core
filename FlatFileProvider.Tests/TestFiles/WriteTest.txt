@@ -1,0 +1,5 @@
+﻿"StringValue", "DateValue", "BooleanValue", "NumericValue"
+"String Value 1", "01 Jan 2011", "true", 0.12345
+"String Value 2", "02 Feb 2018", "false", 100.123
+"String Value 3", "03 Mar 2004", "true", 10.12345
+"String Value 4", "04 Dec 2015", "false", -3.12

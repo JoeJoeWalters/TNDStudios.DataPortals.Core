@@ -15,6 +15,7 @@
     <None Remove="TestFiles\Dates\CustomDates.txt" />
     <None Remove="TestFiles\HeadersTest.txt" />
     <None Remove="TestFiles\ISODates.txt" />
+    <None Remove="TestFiles\WriteTest.txt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,6 +23,7 @@
     <EmbeddedResource Include="TestFiles\Dates\ISODates.txt" />
     <EmbeddedResource Include="TestFiles\HeadersTest.txt" />
     <EmbeddedResource Include="TestFiles\DataTypesTest.txt" />
+    <EmbeddedResource Include="TestFiles\WriteTest.txt" />
   </ItemGroup>
 
   <ItemGroup>

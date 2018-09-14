@@ -10,6 +10,11 @@ namespace TNDStudios.DataPortals.Data
     public class DataItemProperty
     {
         /// <summary>
+        /// Is this item the primary key?
+        /// </summary>
+        public Boolean PrimaryKey { get; set; }
+
+        /// <summary>
         /// The "name" of the property (Generally used as the unique key)
         /// </summary>
         public String Name { get; set; }
@@ -44,6 +49,7 @@ namespace TNDStudios.DataPortals.Data
         /// </summary>
         public DataItemProperty()
         {
+            PrimaryKey = false; // By default this is not the primary key
             Name = ""; // Empty String by default
             Description = ""; // Empty String by default
             Path = ""; // Empty String by default

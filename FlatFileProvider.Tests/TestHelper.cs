@@ -20,7 +20,8 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
         public const String TestFile_Headers = "TestFiles.HeadersTest.txt";
         public const String TestFile_ISODates = "TestFiles.Dates.ISODates.txt";
         public const String TestFile_CustomDates = "TestFiles.Dates.CustomDates.txt";
-        
+        public const String TestFile_WriteTests = "TestFiles.WriteTest.txt";
+
         /// <summary>
         /// Generate the data set for the testing of different different types
         /// </summary>
@@ -92,6 +93,18 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
                     // Definition for supplying a list of custom (and bad) dates to test
                     // where the format is defined as dd MMM yyyy
                     definition.Properties.Add(new DataItemProperty() { Name = "Date", DataType = typeof(DateTime), OridinalPosition = 0, Pattern = "dd MMM yyyy" });
+                    definition.HasHeaderRecord = true;
+                    definition.Culture = CultureInfo.CurrentCulture;
+
+                    break;
+
+                case TestFile_WriteTests:
+
+                    // Define lots of different data types to write to a file
+                    definition.Properties.Add(new DataItemProperty() { Name = "StringValue", DataType = typeof(String), OridinalPosition = 0});
+                    definition.Properties.Add(new DataItemProperty() { Name = "DateValue", DataType = typeof(DateTime), OridinalPosition = 1, Pattern = "dd MMM yyyy" });
+                    definition.Properties.Add(new DataItemProperty() { Name = "BooleanValue", DataType = typeof(Boolean), OridinalPosition = 2 });
+                    definition.Properties.Add(new DataItemProperty() { Name = "NumericValue", DataType = typeof(Double), OridinalPosition = 3 });
                     definition.HasHeaderRecord = true;
                     definition.Culture = CultureInfo.CurrentCulture;
 
