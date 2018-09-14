@@ -320,17 +320,25 @@ namespace TNDStudios.DataPortals.Data
                         // Clean the string up for parsing
                         rawDateValue = CleanString(rawDateValue, csvReader);
 
-                        // How the date is expected to be formatted for reading
-                        String datePattern = ((property.Pattern ?? "") == "") ?
-                            CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern :
-                            property.Pattern;
-
                         // Try and parse the datetime field
                         try
                         {
-                            DateTime formattedDate = DateTime.ParseExact(rawDateValue, datePattern, CultureInfo.InvariantCulture);
-                            if (formattedDate != null)
-                                value = formattedDate;
+                            // Make sure there reall is some data
+                            if ((rawDateValue ?? "") != "")
+                            {
+                                // If a specific pattern has been provided then use that, otherwise use the culuture information provided
+                                DateTime formattedDate;
+
+                                // Do we have a manual property pattern or just leave it to the culture?
+                                if ((property.Pattern ?? "") != "")
+                                    formattedDate = DateTime.ParseExact(rawDateValue, (property.Pattern ?? ""), CultureInfo.InvariantCulture);
+                                else
+                                    formattedDate = DateTime.Parse(rawDateValue, csvReader.Configuration.CultureInfo);
+
+                                // Anything found? If so set it
+                                if (formattedDate != null)
+                                    value = formattedDate;
+                            }
                         }
                         catch
                         {
