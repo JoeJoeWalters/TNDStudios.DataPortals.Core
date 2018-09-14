@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.IO;
+using System.Text;
 using CsvHelper;
 using CsvHelper.Configuration;
 
@@ -87,7 +88,34 @@ namespace TNDStudios.DataPortals.Data
         /// <returns>If the command executed correctly</returns>
         public override Boolean Write(DataItemDefinition definition, DataTable data, string command)
         {
-            throw new NotImplementedException();
+            // Get the stream from the file
+            using (MemoryStream textStream = new MemoryStream())
+            {
+                StreamWriter streamWriter = new StreamWriter(textStream);
+
+                var writer = new CsvWriter(streamWriter);
+
+                // Do we need to write a header?
+                if (definition.HasHeaderRecord)
+                {
+                    // Loop the header records and output the header record line manually
+                    foreach (DataItemProperty header in definition.Properties)
+                    {
+                        writer.WriteField(header.Name);
+                    }
+
+                    // Move to the next line and flush the data
+                    writer.NextRecord();
+                    streamWriter.Flush();
+                }
+
+                // Put the data back in the buffer
+                textStream.Position = 0;
+                this.fileData = (new StreamReader(textStream)).ReadToEnd();
+
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -118,7 +146,7 @@ namespace TNDStudios.DataPortals.Data
                         while (headerId < csvReader.Context.HeaderRecord.Length)
                         {
                             // Clean the header
-                            csvReader.Context.HeaderRecord[headerId] = 
+                            csvReader.Context.HeaderRecord[headerId] =
                                 CleanString(csvReader.Context.HeaderRecord[headerId], csvReader);
 
                             headerId++; // Move to the next header
@@ -298,7 +326,7 @@ namespace TNDStudios.DataPortals.Data
                 case "ushort":
                 case "long":
                 case "ulong":
-                    
+
                     // Check to see if it by oridinal reference or by name
                     fieldFound = GetField<String>(csvReader, property, typeof(String), out String rawNumericValue);
                     if (fieldFound)

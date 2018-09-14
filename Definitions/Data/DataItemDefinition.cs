@@ -23,6 +23,11 @@ namespace TNDStudios.DataPortals.Data
         public CultureInfo Culture { get; set; }
 
         /// <summary>
+        /// The encoding format for the definition
+        /// </summary>
+        public Encoding EncodingFormat { get; set; }
+
+        /// <summary>
         /// If there are headers to the data source?
         /// </summary>
         public Boolean HasHeaderRecord { get; set; }
@@ -48,6 +53,7 @@ namespace TNDStudios.DataPortals.Data
         {
             Properties = properties; // Set the data properties of the definition
             Culture = CultureInfo.CurrentCulture; // Set the culture information to the current by default
+            EncodingFormat = Encoding.Default; // Set the encoding to the default until otherwise chosen
             HasHeaderRecord = false; // By default assume there are no headers (I.e. skip the first line)
         }
 
