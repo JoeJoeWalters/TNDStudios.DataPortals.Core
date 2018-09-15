@@ -109,10 +109,23 @@ namespace TNDStudios.DataPortals.Data
                     streamWriter.Flush();
                 }
 
+                // Loop through the actual records and add them to the csv
+                foreach (DataRow row in data.Rows)
+                {
+                    // Loop the header records and output the header record line manually
+                    foreach (DataItemProperty property in definition.Properties)
+                    {
+                        writer.WriteField(row[property.Name]);
+                    }
+
+                    // Move to the next line and flush the data
+                    writer.NextRecord();
+                    streamWriter.Flush();
+                }
+
                 // Put the data back in the buffer
                 textStream.Position = 0;
                 this.fileData = (new StreamReader(textStream)).ReadToEnd();
-
             }
 
             return true;
