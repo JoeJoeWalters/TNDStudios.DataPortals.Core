@@ -96,10 +96,10 @@ namespace TNDStudios.DataPortals.Data
                 using (CsvWriter writer = SetupWriter(definition, streamWriter))
                 {
                     // Do we need to write a header?
-                    if (definition.HasHeaderRecord)
+                    if (definition.GetPropertyBagItem<Boolean>("HasHeaderRecord", false))
                     {
                         // Loop the header records and output the header record line manually
-                        foreach (DataItemProperty header in definition.Properties)
+                        foreach (DataItemProperty header in definition.ItemProperties)
                         {
                             writer.WriteField(FormatWriteHeader(writer, header));
                         }
@@ -113,7 +113,7 @@ namespace TNDStudios.DataPortals.Data
                     foreach (DataRow row in data.Rows)
                     {
                         // Loop the header records and output the header record line manually
-                        definition.Properties.ForEach(property =>
+                        definition.ItemProperties.ForEach(property =>
                             {
                                 writer.WriteField(FormatWriteField(writer, property, row[property.Name]));
                             });
@@ -199,7 +199,7 @@ namespace TNDStudios.DataPortals.Data
                         DataRow dataRow = dataItems.NewRow(); // Create a new row to populate
 
                         // Match all of the properties in the definitions lists
-                        definition.Properties.ForEach(
+                        definition.ItemProperties.ForEach(
                             property =>
                             {
                                 // Try and get the value
@@ -228,7 +228,12 @@ namespace TNDStudios.DataPortals.Data
         /// <returns></returns>
         public CsvWriter SetupWriter(DataItemDefinition definition, TextWriter textWriter)
         {
+            // Create the new writer
             CsvWriter writer = new CsvWriter(textWriter);
+
+            // Force all fields to be quoted or not
+            writer.Configuration.QuoteAllFields = 
+                definition.GetPropertyBagItem<Boolean>("QuoteAllFields", true); 
 
             return writer;
         }
@@ -245,11 +250,13 @@ namespace TNDStudios.DataPortals.Data
             CsvReader result = new CsvReader(textReader);
 
             // Configure the CSV Reader
-            result.Configuration.HasHeaderRecord = definition.HasHeaderRecord;
+            result.Configuration.HasHeaderRecord = 
+                definition.GetPropertyBagItem<Boolean>("HasHeaderRecord", true);
             result.Configuration.BadDataFound = null; // Don't pipe bad data
             result.Configuration.CultureInfo = definition.Culture;
             result.Configuration.TrimOptions = TrimOptions.Trim;
-            result.Configuration.IgnoreQuotes = true;
+            result.Configuration.IgnoreQuotes = 
+                definition.GetPropertyBagItem<Boolean>("IgnoreQuotes", true);
 
             // Send the reader back
             return result;

@@ -61,30 +61,30 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
                 case TestFile_DataTypes:
 
                     // Definition for different data types and the data defined by ordinal position
-                    definition.Properties.Add(new DataItemProperty() { Name = "Title", DataType = typeof(String), OridinalPosition = 0 });
-                    definition.Properties.Add(new DataItemProperty() { Name = "CreatedDate", DataType = typeof(DateTime), OridinalPosition = 1 });
-                    definition.Properties.Add(new DataItemProperty() { Name = "Size", DataType = typeof(Double), OridinalPosition = 2 });
-                    definition.Properties.Add(new DataItemProperty() { Name = "Description", DataType = typeof(String), OridinalPosition = 3 });
-                    definition.Properties.Add(new DataItemProperty() { Name = "Active", DataType = typeof(Boolean), OridinalPosition = 4 });
-                    definition.HasHeaderRecord = false;
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Title", DataType = typeof(String), OridinalPosition = 0 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "CreatedDate", DataType = typeof(DateTime), OridinalPosition = 1 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Size", DataType = typeof(Double), OridinalPosition = 2 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Description", DataType = typeof(String), OridinalPosition = 3 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Active", DataType = typeof(Boolean), OridinalPosition = 4 });
+                    definition.PropertyBag["HasHeaderRecord"] = false;
 
                     break;
 
                 case TestFile_Headers:
 
                     // Definition for getting the data by the name of the header
-                    definition.Properties.Add(new DataItemProperty() { Name = "Title", DataType = typeof(String), OridinalPosition = -1 });
-                    definition.Properties.Add(new DataItemProperty() { Name = "Description Header", DataType = typeof(String), OridinalPosition = -1 });
-                    definition.Properties.Add(new DataItemProperty() { Name = "Value", DataType = typeof(String), OridinalPosition = -1 });
-                    definition.HasHeaderRecord = true;
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Title", DataType = typeof(String), OridinalPosition = -1 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Description Header", DataType = typeof(String), OridinalPosition = -1 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Value", DataType = typeof(String), OridinalPosition = -1 });
+                    definition.PropertyBag["HasHeaderRecord"] = true;
 
                     break;
 
                 case TestFile_ISODates:
 
                     // Definition for supplying a list of ISO (and bad) dates to test
-                    definition.Properties.Add(new DataItemProperty() { Name = "Date", DataType = typeof(DateTime), OridinalPosition = 0 });
-                    definition.HasHeaderRecord = true;
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Date", DataType = typeof(DateTime), OridinalPosition = 0 });
+                    definition.PropertyBag["HasHeaderRecord"] = true;
                     definition.Culture = CultureInfo.InvariantCulture;
 
                     break;
@@ -93,8 +93,8 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
 
                     // Definition for supplying a list of custom (and bad) dates to test
                     // where the format is defined as dd MMM yyyy
-                    definition.Properties.Add(new DataItemProperty() { Name = "Date", DataType = typeof(DateTime), OridinalPosition = 0, Pattern = "dd MMM yyyy" });
-                    definition.HasHeaderRecord = true;
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Date", DataType = typeof(DateTime), OridinalPosition = 0, Pattern = "dd MMM yyyy" });
+                    definition.PropertyBag["HasHeaderRecord"] = true;
                     definition.Culture = CultureInfo.CurrentCulture;
 
                     break;
@@ -102,11 +102,11 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
                 case TestFile_WriteTests:
 
                     // Define lots of different data types to write to a file
-                    definition.Properties.Add(new DataItemProperty() { Name = "StringValue", DataType = typeof(String), OridinalPosition = 0});
-                    definition.Properties.Add(new DataItemProperty() { Name = "DateValue", DataType = typeof(DateTime), OridinalPosition = 1, Pattern = "dd MMM yyyy" });
-                    definition.Properties.Add(new DataItemProperty() { Name = "BooleanValue", DataType = typeof(Boolean), OridinalPosition = 2 });
-                    definition.Properties.Add(new DataItemProperty() { Name = "NumericValue", DataType = typeof(Double), OridinalPosition = 3 });
-                    definition.HasHeaderRecord = true;
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "StringValue", DataType = typeof(String), OridinalPosition = 0});
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "DateValue", DataType = typeof(DateTime), OridinalPosition = 1, Pattern = "dd MMM yyyy" });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "BooleanValue", DataType = typeof(Boolean), OridinalPosition = 2 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "NumericValue", DataType = typeof(Double), OridinalPosition = 3 });
+                    definition.PropertyBag["HasHeaderRecord"] = true;
                     definition.Culture = CultureInfo.CurrentCulture;
 
                     break;

@@ -15,7 +15,12 @@ namespace TNDStudios.DataPortals.Data
         /// <summary>
         /// The list of properties that define the data item
         /// </summary>
-        public List<DataItemProperty> Properties { get; set; }
+        public List<DataItemProperty> ItemProperties { get; set; }
+
+        /// <summary>
+        /// Adhoc configuration items for different providers
+        /// </summary>
+        public Dictionary<String, Object> PropertyBag { get; set; }
 
         /// <summary>
         /// The specific culture information for this definition
@@ -26,11 +31,6 @@ namespace TNDStudios.DataPortals.Data
         /// The encoding format for the definition
         /// </summary>
         public Encoding EncodingFormat { get; set; }
-
-        /// <summary>
-        /// If there are headers to the data source?
-        /// </summary>
-        public Boolean HasHeaderRecord { get; set; }
 
         /// <summary>
         /// The default constructor
@@ -51,10 +51,10 @@ namespace TNDStudios.DataPortals.Data
         /// <param name="properties"></param>
         public void Initialise(List<DataItemProperty> properties)
         {
-            Properties = properties; // Set the data properties of the definition
+            ItemProperties = properties; // Set the data properties of the definition
+            PropertyBag = new Dictionary<string, object>(); // New property bag to load configuration items in to
             Culture = CultureInfo.CurrentCulture; // Set the culture information to the current by default
             EncodingFormat = Encoding.Default; // Set the encoding to the default until otherwise chosen
-            HasHeaderRecord = false; // By default assume there are no headers (I.e. skip the first line)
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace TNDStudios.DataPortals.Data
             DataTable result = new DataTable(); // Build a results table to send back
 
             // Loop the items in the definition and add them to the column definition
-            Properties.ForEach(property => 
+            ItemProperties.ForEach(property => 
             {
                 result.Columns.Add(
                     new DataColumn(property.Name, property.DataType)
@@ -77,5 +77,14 @@ namespace TNDStudios.DataPortals.Data
             return result; // Return the data table
         }
 
+        /// <summary>
+        /// Get a configuration item from the property bag
+        /// and format it as appropriate
+        /// </summary>
+        /// <typeparam name="T">The type of data that is requested</typeparam>
+        /// <param name="key">The key for the data</param>
+        /// <returns>The data formatted as the correct type</returns>
+        public T GetPropertyBagItem<T>(String key, T defaultValue)
+            => PropertyBag.ContainsKey(key) ? (T)PropertyBag[key] : defaultValue;
     }
 }
