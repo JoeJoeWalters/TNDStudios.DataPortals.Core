@@ -91,44 +91,71 @@ namespace TNDStudios.DataPortals.Data
             // Get the stream from the file
             using (MemoryStream textStream = new MemoryStream())
             {
+                // Set up the writer
                 StreamWriter streamWriter = new StreamWriter(textStream);
-
-                var writer = new CsvWriter(streamWriter);
-
-                // Do we need to write a header?
-                if (definition.HasHeaderRecord)
+                using (CsvWriter writer = SetupWriter(definition, streamWriter))
                 {
-                    // Loop the header records and output the header record line manually
-                    foreach (DataItemProperty header in definition.Properties)
+                    // Do we need to write a header?
+                    if (definition.HasHeaderRecord)
                     {
-                        writer.WriteField(header.Name);
+                        // Loop the header records and output the header record line manually
+                        foreach (DataItemProperty header in definition.Properties)
+                        {
+                            writer.WriteField(FormatWriteHeader(writer, header));
+                        }
+
+                        // Move to the next line and flush the data
+                        writer.NextRecord();
+                        streamWriter.Flush();
                     }
 
-                    // Move to the next line and flush the data
-                    writer.NextRecord();
-                    streamWriter.Flush();
-                }
-
-                // Loop through the actual records and add them to the csv
-                foreach (DataRow row in data.Rows)
-                {
-                    // Loop the header records and output the header record line manually
-                    foreach (DataItemProperty property in definition.Properties)
+                    // Loop through the actual records and add them to the csv
+                    foreach (DataRow row in data.Rows)
                     {
-                        writer.WriteField(row[property.Name]);
+                        // Loop the header records and output the header record line manually
+                        definition.Properties.ForEach(property =>
+                            {
+                                writer.WriteField(FormatWriteField(writer, property, row[property.Name]));
+                            });
+
+                        // Move to the next line and flush the data
+                        writer.NextRecord();
+                        streamWriter.Flush();
                     }
 
-                    // Move to the next line and flush the data
-                    writer.NextRecord();
-                    streamWriter.Flush();
-                }
+                    // Put the data back in the buffer
+                    textStream.Position = 0;
+                    this.fileData = (new StreamReader(textStream)).ReadToEnd();
 
-                // Put the data back in the buffer
-                textStream.Position = 0;
-                this.fileData = (new StreamReader(textStream)).ReadToEnd();
+                }
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Format the header field so that it is properly quoted / formatted
+        /// </summary>
+        /// <param name="writer">The Csv Writer used in the write operation</param>
+        /// <param name="property">The definition of how items are to be written to the stream</param>
+        /// <param name="header">The "name" of the header (the text)</param>
+        /// <returns></returns>
+        private String FormatWriteHeader(CsvWriter writer, DataItemProperty property)
+        {
+            // Return the formatted header
+            return (property.Name ?? "");
+        }
+
+        /// <summary>
+        /// Format the field data in to the correct format
+        /// </summary>
+        /// <param name="property">The property definition for the field</param>
+        /// <param name="field">The raw data to be formatted for writing</param>
+        /// <returns>The field in the correct format</returns>
+        private String FormatWriteField(CsvWriter writer, DataItemProperty property, Object field)
+        {
+            // Return the formatted field
+            return field.ToString();
         }
 
         /// <summary>
@@ -175,12 +202,12 @@ namespace TNDStudios.DataPortals.Data
                         definition.Properties.ForEach(
                             property =>
                             {
-                            // Try and get the value
-                            Object field = null;
+                                // Try and get the value
+                                Object field = null;
                                 Boolean fieldFound = GetPropertyValue(csvReader, property, ref field);
 
-                            // Found something?
-                            if (fieldFound && field != null)
+                                // Found something?
+                                if (fieldFound && field != null)
                                     dataRow[property.Name] = field;
                             });
 
@@ -192,6 +219,18 @@ namespace TNDStudios.DataPortals.Data
 
             // Return the items
             return dataItems;
+        }
+
+        /// <summary>
+        /// Set up a new csv writer based on the definition given
+        /// </summary>
+        /// <param name="definition">The data item definition</param>
+        /// <returns></returns>
+        public CsvWriter SetupWriter(DataItemDefinition definition, TextWriter textWriter)
+        {
+            CsvWriter writer = new CsvWriter(textWriter);
+
+            return writer;
         }
 
         /// <summary>
