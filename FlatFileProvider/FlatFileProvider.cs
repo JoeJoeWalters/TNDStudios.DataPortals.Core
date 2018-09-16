@@ -96,7 +96,7 @@ namespace TNDStudios.DataPortals.Data
                 using (CsvWriter writer = SetupWriter(definition, streamWriter))
                 {
                     // Do we need to write a header?
-                    if (definition.GetPropertyBagItem<Boolean>("HasHeaderRecord", false))
+                    if (definition.GetPropertyBagItem<Boolean>(DataItemPropertyBagItem.HasHeaderRecord, false))
                     {
                         // Loop the header records and output the header record line manually
                         foreach (DataItemProperty header in definition.ItemProperties)
@@ -233,7 +233,7 @@ namespace TNDStudios.DataPortals.Data
 
             // Force all fields to be quoted or not
             writer.Configuration.QuoteAllFields = 
-                definition.GetPropertyBagItem<Boolean>("QuoteAllFields", true); 
+                definition.GetPropertyBagItem<Boolean>(DataItemPropertyBagItem.QuoteAllFields, true); 
 
             return writer;
         }
@@ -251,12 +251,12 @@ namespace TNDStudios.DataPortals.Data
 
             // Configure the CSV Reader
             result.Configuration.HasHeaderRecord = 
-                definition.GetPropertyBagItem<Boolean>("HasHeaderRecord", true);
+                definition.GetPropertyBagItem<Boolean>(DataItemPropertyBagItem.HasHeaderRecord, true);
             result.Configuration.BadDataFound = null; // Don't pipe bad data
             result.Configuration.CultureInfo = definition.Culture;
             result.Configuration.TrimOptions = TrimOptions.Trim;
             result.Configuration.IgnoreQuotes = 
-                definition.GetPropertyBagItem<Boolean>("IgnoreQuotes", true);
+                definition.GetPropertyBagItem<Boolean>(DataItemPropertyBagItem.IgnoreQuotes, true);
 
             // Send the reader back
             return result;

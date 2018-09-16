@@ -1,11 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Globalization;
 using System.Text;
 
 namespace TNDStudios.DataPortals.Data
 {
+    /// <summary>
+    /// Enumeration to make the property bag values 
+    /// standard across all providers
+    /// </summary>
+    public enum DataItemPropertyBagItem
+    {
+        HasHeaderRecord,
+        QuoteAllFields,
+        IgnoreQuotes
+    }
+
     /// <summary>
     /// The definition of a data item (How the properties of
     /// the data item are mapped etc.)
@@ -84,6 +96,9 @@ namespace TNDStudios.DataPortals.Data
         /// <typeparam name="T">The type of data that is requested</typeparam>
         /// <param name="key">The key for the data</param>
         /// <returns>The data formatted as the correct type</returns>
+        public T GetPropertyBagItem<T>(DataItemPropertyBagItem key, T defaultValue)
+            => GetPropertyBagItem<T>(key.ToString(), defaultValue);
+
         public T GetPropertyBagItem<T>(String key, T defaultValue)
             => PropertyBag.ContainsKey(key) ? (T)PropertyBag[key] : defaultValue;
     }

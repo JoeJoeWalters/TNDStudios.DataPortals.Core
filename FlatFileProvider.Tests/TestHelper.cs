@@ -66,7 +66,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Size", DataType = typeof(Double), OridinalPosition = 2 });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Description", DataType = typeof(String), OridinalPosition = 3 });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Active", DataType = typeof(Boolean), OridinalPosition = 4 });
-                    definition.PropertyBag["HasHeaderRecord"] = false;
+                    definition.PropertyBag[DataItemPropertyBagItem.HasHeaderRecord.ToString()] = false;
 
                     break;
 
@@ -76,7 +76,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Title", DataType = typeof(String), OridinalPosition = -1 });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Description Header", DataType = typeof(String), OridinalPosition = -1 });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Value", DataType = typeof(String), OridinalPosition = -1 });
-                    definition.PropertyBag["HasHeaderRecord"] = true;
+                    definition.PropertyBag[DataItemPropertyBagItem.HasHeaderRecord.ToString()] = true;
 
                     break;
 
@@ -84,7 +84,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
 
                     // Definition for supplying a list of ISO (and bad) dates to test
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Date", DataType = typeof(DateTime), OridinalPosition = 0 });
-                    definition.PropertyBag["HasHeaderRecord"] = true;
+                    definition.PropertyBag[DataItemPropertyBagItem.HasHeaderRecord.ToString()] = true;
                     definition.Culture = CultureInfo.InvariantCulture;
 
                     break;
@@ -94,7 +94,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
                     // Definition for supplying a list of custom (and bad) dates to test
                     // where the format is defined as dd MMM yyyy
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Date", DataType = typeof(DateTime), OridinalPosition = 0, Pattern = "dd MMM yyyy" });
-                    definition.PropertyBag["HasHeaderRecord"] = true;
+                    definition.PropertyBag[DataItemPropertyBagItem.HasHeaderRecord.ToString()] = true;
                     definition.Culture = CultureInfo.CurrentCulture;
 
                     break;
@@ -106,7 +106,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "DateValue", DataType = typeof(DateTime), OridinalPosition = 1, Pattern = "dd MMM yyyy" });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "BooleanValue", DataType = typeof(Boolean), OridinalPosition = 2 });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "NumericValue", DataType = typeof(Double), OridinalPosition = 3 });
-                    definition.PropertyBag["HasHeaderRecord"] = true;
+                    definition.PropertyBag[DataItemPropertyBagItem.HasHeaderRecord.ToString()] = true;
                     definition.Culture = CultureInfo.CurrentCulture;
 
                     break;
