@@ -6,6 +6,7 @@ using System.IO;
 using System.Text;
 using CsvHelper;
 using CsvHelper.Configuration;
+using TNDStudios.DataPortals.Helpers;
 
 namespace TNDStudios.DataPortals.Data
 {
@@ -101,7 +102,7 @@ namespace TNDStudios.DataPortals.Data
                         // Loop the header records and output the header record line manually
                         foreach (DataItemProperty header in definition.ItemProperties)
                         {
-                            writer.WriteField(FormatWriteHeader(writer, header));
+                            writer.WriteField(header.Name);
                         }
 
                         // Move to the next line and flush the data
@@ -115,7 +116,7 @@ namespace TNDStudios.DataPortals.Data
                         // Loop the header records and output the header record line manually
                         definition.ItemProperties.ForEach(property =>
                             {
-                                writer.WriteField(FormatWriteField(writer, property, row[property.Name]));
+                                writer.WriteField(DataFormatHelper.FormatData(row[property.Name], property, definition));
                             });
 
                         // Move to the next line and flush the data
@@ -131,31 +132,6 @@ namespace TNDStudios.DataPortals.Data
             }
 
             return true;
-        }
-
-        /// <summary>
-        /// Format the header field so that it is properly quoted / formatted
-        /// </summary>
-        /// <param name="writer">The Csv Writer used in the write operation</param>
-        /// <param name="property">The definition of how items are to be written to the stream</param>
-        /// <param name="header">The "name" of the header (the text)</param>
-        /// <returns></returns>
-        private String FormatWriteHeader(CsvWriter writer, DataItemProperty property)
-        {
-            // Return the formatted header
-            return (property.Name ?? "");
-        }
-
-        /// <summary>
-        /// Format the field data in to the correct format
-        /// </summary>
-        /// <param name="property">The property definition for the field</param>
-        /// <param name="field">The raw data to be formatted for writing</param>
-        /// <returns>The field in the correct format</returns>
-        private String FormatWriteField(CsvWriter writer, DataItemProperty property, Object field)
-        {
-            // Return the formatted field
-            return field.ToString();
         }
 
         /// <summary>
