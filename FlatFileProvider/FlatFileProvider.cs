@@ -227,6 +227,10 @@ namespace TNDStudios.DataPortals.Data
             result.Configuration.BadDataFound = null; // Don't pipe bad data
             result.Configuration.CultureInfo = definition.Culture;
             result.Configuration.TrimOptions = TrimOptions.Trim;
+            result.Configuration.Delimiter =
+                definition.GetPropertyBagItem<String>(DataItemPropertyBagItem.DelimiterCharacter, ",");
+            result.Configuration.Quote =
+                definition.GetPropertyBagItem<Char>(DataItemPropertyBagItem.QuoteCharacter, '"');
             result.Configuration.IgnoreQuotes = 
                 definition.GetPropertyBagItem<Boolean>(DataItemPropertyBagItem.IgnoreQuotes, true);
 

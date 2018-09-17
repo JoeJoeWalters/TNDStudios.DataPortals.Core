@@ -15,7 +15,9 @@ namespace TNDStudios.DataPortals.Data
     {
         HasHeaderRecord,
         QuoteAllFields,
-        IgnoreQuotes
+        IgnoreQuotes,
+        QuoteCharacter,
+        DelimiterCharacter
     }
 
     /// <summary>

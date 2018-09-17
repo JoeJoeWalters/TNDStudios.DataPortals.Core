@@ -8,7 +8,7 @@ using System.Globalization;
 
 namespace TNDStudios.DataPortals.Tests.FlatFile
 {
-    public class LoadingTests
+    public class ReadTests
     {
         /// <summary>
         /// Test to make sure that each column correctly identifies a
