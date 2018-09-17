@@ -13,12 +13,6 @@ namespace TNDStudios.DataPortals.Data
     public class FlatFileProvider : DataProviderBase, IDataProvider
     {
         /// <summary>
-        /// Constants that identify the character of a string as being 
-        /// a positive boolean value
-        /// </summary>
-        private const String booleanChars = "1ytf";
-
-        /// <summary>
         /// The data that was derived from the stream given to connect to
         /// if the connection was not via a connection string (file location)
         /// </summary>
@@ -116,7 +110,7 @@ namespace TNDStudios.DataPortals.Data
                         // Loop the header records and output the header record line manually
                         definition.ItemProperties.ForEach(property =>
                             {
-                                writer.WriteField(DataFormatHelper.FormatData(row[property.Name], property, definition));
+                                writer.WriteField(DataFormatHelper.WriteData(row[property.Name], property, definition));
                             });
 
                         // Move to the next line and flush the data
@@ -163,7 +157,9 @@ namespace TNDStudios.DataPortals.Data
                         {
                             // Clean the header
                             csvReader.Context.HeaderRecord[headerId] =
-                                CleanString(csvReader.Context.HeaderRecord[headerId], csvReader);
+                                DataFormatHelper.CleanString(
+                                    csvReader.Context.HeaderRecord[headerId], 
+                                    csvReader.Configuration.Quote);
 
                             headerId++; // Move to the next header
                         }
@@ -180,7 +176,7 @@ namespace TNDStudios.DataPortals.Data
                             {
                                 // Try and get the value
                                 Object field = null;
-                                Boolean fieldFound = GetPropertyValue(csvReader, property, ref field);
+                                Boolean fieldFound = GetPropertyValue(csvReader, property, definition, ref field);
 
                                 // Found something?
                                 if (fieldFound && field != null)
@@ -274,155 +270,20 @@ namespace TNDStudios.DataPortals.Data
         }
 
         /// <summary>
-        /// Clean out a piece of data so it can be handled manually without possible quotes etc.
-        /// </summary>
-        /// <param name="value">The raw value</param>
-        /// <param name="csvReader">The reader that holds the configuration</param>
-        /// <returns></returns>
-        private String CleanString(String value, CsvReader csvReader)
-            => RemoveEnds(value, csvReader.Configuration.Quote).Trim();
-
-        /// <summary>
-        /// Remove the character from the start and/or end of the string
-        /// but not in the middle
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="character"></param>
-        /// <returns></returns>
-        private String RemoveEnds(String value, Char character)
-        {
-            // Split up in to an array of characters
-            value = (value ?? "").Trim(); // Handle any incoming nulls
-            if (value.Length >= 2)
-            {
-                if (value.StartsWith(character)) { value = value.Remove(0, 1); }
-                if (value.EndsWith(character)) { value = value.Remove(value.Length - 1, 1); }
-            }
-
-            return value; // Return the formatted string
-        }
-
-        /// <summary>
-        /// Check to see if a string is numeric (to wrap custom handlers)
-        /// </summary>
-        /// <param name="value">The string to check against</param>
-        /// <returns>If the string is numeric or not</returns>
-        private Boolean IsNumeric(String value) =>
-            int.TryParse(value, out int chuckInt) ||
-            float.TryParse(value, out float chuckFloat);
-
-        /// <summary>
         /// Get the data from a field
         /// </summary>
         /// <param name="csvReader">The reader to handle the property get</param>
         /// <param name="property">The property data</param>
         /// <returns>If it was successful</returns>
-        private Boolean GetPropertyValue(CsvReader csvReader, DataItemProperty property, ref Object value)
+        private Boolean GetPropertyValue(CsvReader csvReader, DataItemProperty property, DataItemDefinition definition, ref Object value)
         {
             // Get the proeprty type as some types of data need handling differently straight away
             String propertyType = property.DataType.ToString().ToLower().Replace("system.", "");
-            Boolean fieldFound = false; // Field not found by default
 
-            // Check the property type
-            switch (propertyType)
-            {
-                case "boolean":
-                case "bool":
-
-                    // Check to see if it by oridinal reference or by name
-                    fieldFound = GetField<String>(csvReader, property, typeof(String), out String rawBooleanValue);
-                    if (fieldFound)
-                    {
-                        // Clean the string up for parsing
-                        rawBooleanValue = CleanString(rawBooleanValue, csvReader);
-
-                        // Get the first character of the raw data if there is some
-                        Char firstChar =
-                            (rawBooleanValue.Length > 0) ? rawBooleanValue.ToCharArray()[0] : ' ';
-
-                        // Check the first character to see if it matches a true state
-                        value = booleanChars.Contains(firstChar);
-                    }
-
-                    break;
-
-                case "double":
-                case "int":
-                case "unint":
-                case "int16":
-                case "int32":
-                case "int64":
-                case "float":
-                case "decimal":
-                case "single":
-                case "byte":
-                case "sbyte":
-                case "short":
-                case "ushort":
-                case "long":
-                case "ulong":
-
-                    // Check to see if it by oridinal reference or by name
-                    fieldFound = GetField<String>(csvReader, property, typeof(String), out String rawNumericValue);
-                    if (fieldFound)
-                    {
-                        // Clean the string up for parsing
-                        rawNumericValue = CleanString(rawNumericValue, csvReader);
-                        if (IsNumeric(rawNumericValue))
-                            value = rawNumericValue;
-                    }
-
-                    break;
-
-                case "datetime":
-
-                    // Check to see if it by oridinal reference or by name
-                    fieldFound = GetField<String>(csvReader, property, typeof(String), out String rawDateValue);
-                    if (fieldFound)
-                    {
-                        // Clean the string up for parsing
-                        rawDateValue = CleanString(rawDateValue, csvReader);
-
-                        // Try and parse the datetime field
-                        try
-                        {
-                            // Make sure there reall is some data
-                            if ((rawDateValue ?? "") != "")
-                            {
-                                // If a specific pattern has been provided then use that, otherwise use the culuture information provided
-                                DateTime formattedDate;
-
-                                // Do we have a manual property pattern or just leave it to the culture?
-                                if ((property.Pattern ?? "") != "")
-                                    formattedDate = DateTime.ParseExact(rawDateValue, (property.Pattern ?? ""), CultureInfo.InvariantCulture);
-                                else
-                                    formattedDate = DateTime.Parse(rawDateValue, csvReader.Configuration.CultureInfo);
-
-                                // Anything found? If so set it
-                                if (formattedDate != null)
-                                    value = formattedDate;
-                            }
-                        }
-                        catch
-                        {
-                            value = null;
-                        }
-                    }
-
-                    break;
-
-                default:
-
-                    // Get everything else as a string and try and fit it using the 
-                    // standard in-built converters
-                    fieldFound = GetField<Object>(csvReader, property, out value);
-                    if (fieldFound)
-                    {
-                        value = CleanString((String)value, csvReader);
-                    };
-
-                    break;
-            }
+            // Get the raw data
+            Boolean fieldFound = GetField<String>(csvReader, property, typeof(String), out String rawValue);
+            if (fieldFound)
+                value = DataFormatHelper.ReadData(DataFormatHelper.CleanString(rawValue, csvReader.Configuration.Quote), property, definition);
 
             // Return the data
             return fieldFound;
