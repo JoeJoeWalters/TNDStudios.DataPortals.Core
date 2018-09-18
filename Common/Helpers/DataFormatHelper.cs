@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+using System.Text.RegularExpressions;
 using TNDStudios.DataPortals.Data;
 
 namespace TNDStudios.DataPortals.Helpers
@@ -120,7 +121,7 @@ namespace TNDStudios.DataPortals.Helpers
         /// <param name="csvReader">The reader that holds the configuration</param>
         /// <returns></returns>
         public static String CleanString(String value, Char quoteChar)
-            => RemoveEnds(value, quoteChar).Trim();
+            => RemoveEnds(value, quoteChar).Trim().Replace("\"\"", "\"");
 
         /// <summary>
         /// Remove the character from the start and/or end of the string
@@ -135,8 +136,11 @@ namespace TNDStudios.DataPortals.Helpers
             value = (value ?? "").Trim(); // Handle any incoming nulls
             if (value.Length >= 2)
             {
-                if (value.StartsWith(character)) { value = value.Remove(0, 1); }
-                if (value.EndsWith(character)) { value = value.Remove(value.Length - 1, 1); }
+                if (value.StartsWith(character) && value.EndsWith(character))
+                {
+                    value = value.Remove(0, 1);
+                    value = value.Remove(value.Length - 1, 1);
+                }
             }
 
             return value; // Return the formatted string
@@ -180,6 +184,8 @@ namespace TNDStudios.DataPortals.Helpers
                     case "long":
                     case "ulong":
 
+                        result = value.ToString();
+
                         break;
 
                     case "datetime":
@@ -195,6 +201,8 @@ namespace TNDStudios.DataPortals.Helpers
                         break;
 
                     default:
+
+                        result = (String)value ?? "";
 
                         break;
                 }

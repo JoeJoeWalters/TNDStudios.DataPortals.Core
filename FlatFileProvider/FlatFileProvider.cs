@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Globalization;
 using System.IO;
-using System.Text;
 using CsvHelper;
 using CsvHelper.Configuration;
 using TNDStudios.DataPortals.Helpers;
@@ -110,7 +107,7 @@ namespace TNDStudios.DataPortals.Data
                         // Loop the header records and output the header record line manually
                         definition.ItemProperties.ForEach(property =>
                             {
-                                writer.WriteField(DataFormatHelper.WriteData(row[property.Name], property, definition));
+                                writer.WriteField(DataFormatHelper.WriteData(row[property.Name], property, definition), property.Quoted);
                             });
 
                         // Move to the next line and flush the data
@@ -205,7 +202,7 @@ namespace TNDStudios.DataPortals.Data
 
             // Force all fields to be quoted or not
             writer.Configuration.QuoteAllFields = 
-                definition.GetPropertyBagItem<Boolean>(DataItemPropertyBagItem.QuoteAllFields, true); 
+                definition.GetPropertyBagItem<Boolean>(DataItemPropertyBagItem.QuoteAllFields, false); 
 
             return writer;
         }

@@ -45,6 +45,11 @@ namespace TNDStudios.DataPortals.Data
         public String Pattern { get; set; }
 
         /// <summary>
+        /// Is the field quoted (mainly when it comes from a flat file)
+        /// </summary>
+        public Boolean Quoted { get; set; }
+
+        /// <summary>
         /// The default constructor
         /// </summary>
         public DataItemProperty()
@@ -56,6 +61,7 @@ namespace TNDStudios.DataPortals.Data
             OridinalPosition = -1; // First item in the array by default
             DataType = typeof(String); // String by default
             Pattern = ""; // The pattern of the data (such as the date format)
+            Quoted = false; // Is the field quoted?
         }
     }
 }
