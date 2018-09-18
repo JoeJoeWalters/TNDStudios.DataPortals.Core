@@ -45,10 +45,21 @@ namespace TNDStudios.DataPortals.Tests.Common
         public void StringRead()
         {
             // Arrange
+            DataItemProperty property = new DataItemProperty()
+            {
+                DataType = typeof(String),
+                Name = "StringTest",
+                OridinalPosition = -1
+            };
+
+            DataItemDefinition definition = new DataItemDefinition() { };
 
             // Act
+            Object value = DataFormatHelper.ReadData("This Is A String", property, definition);
 
             // Assert
+            Assert.True(value != DBNull.Value &&
+                        (String)value == "This Is A String");
         }
 
         /// <summary>
