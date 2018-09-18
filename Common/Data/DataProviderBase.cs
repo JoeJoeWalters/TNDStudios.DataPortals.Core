@@ -26,19 +26,22 @@ namespace TNDStudios.DataPortals.Data
         protected internal Boolean connected;
         public Boolean Connected => connected;
 
-        public virtual bool Connect(string connectionString)
+        public virtual bool Connect(DataItemDefinition definition, String connectionString)
             => throw new NotImplementedException();
 
-        public virtual bool Connect(Stream stream)
+        public virtual bool Connect(DataItemDefinition definition, Stream stream)
             => throw new NotImplementedException();
 
         public virtual bool Disconnect()
             => throw new NotImplementedException();
 
-        public virtual bool Write(DataItemDefinition definition, DataTable data, string command)
+        public virtual bool Write(DataTable data, string command)
             => throw new NotImplementedException();
 
-        public virtual DataTable Read(DataItemDefinition definition, string command)
+        public virtual DataTable Read(string command)
+            => throw new NotImplementedException();
+
+        public virtual Boolean Commit()
             => throw new NotImplementedException();
     }
 }

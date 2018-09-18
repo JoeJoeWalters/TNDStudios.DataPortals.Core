@@ -34,16 +34,16 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
             // Get the test data from the resource in the manifest
             Stream resourceStream = GetResourceStream(testDefinition);
 
-            // Create a new flat file provider
-            IDataProvider provider = new FlatFileProvider();
-            provider.TestMode = true; // The provider should be marked as being in test mode
-            provider.Connect(resourceStream); // Connect to the location of the data
-
             // Get the test definition (The columns, data types etc. for this file)
             DataItemDefinition definition = TestDefinition(testDefinition);
 
+            // Create a new flat file provider
+            IDataProvider provider = new FlatFileProvider();
+            provider.TestMode = true; // The provider should be marked as being in test mode
+            provider.Connect(definition, resourceStream); // Connect to the location of the data
+
             // Read the data from the provider
-            DataTable data = provider.Read(definition, ""); // Get the data
+            DataTable data = provider.Read(""); // Get the data
 
             // Return the data table
             return data;

@@ -21,20 +21,22 @@ namespace TNDStudios.DataPortals.Data
         /// e.g. SQL connection string or path for a file etc.
         /// </summary>
         String ConnectionString { get; }
-        
+
         /// <summary>
         /// Connect to the location of the data (Database connection, flat file, xml, etc.)
         /// </summary>
+        /// <param name="definition">The data defintion of the source of the data</param>
         /// <param name="connectionString">The connection string</param>
         /// <returns></returns>
-        Boolean Connect(String connectionString);
+        Boolean Connect(DataItemDefinition definition, String connectionString);
 
         /// <summary>
         /// Connect to a given stream of data (could be a flat file, xml etc.)
         /// </summary>
+        /// <param name="definition">The data defintion of the source of the data</param>
         /// <param name="stream">The stream of data to process</param>
         /// <returns></returns>
-        Boolean Connect(Stream stream);
+        Boolean Connect(DataItemDefinition definition, Stream stream);
 
         /// <summary>
         /// If the provider is connected
@@ -50,18 +52,22 @@ namespace TNDStudios.DataPortals.Data
         /// <summary>
         /// Retrieve a set of data based on the query passed to the source
         /// </summary>
-        /// <param name="definition">The data defintion of the source of the data</param>
         /// <param name="command">The command to execute to retrieve the data</param>
         /// <returns>A list of data items that the reader found</returns>
-        DataTable Read(DataItemDefinition definition, String command);
+        DataTable Read(String command);
 
         /// <summary>
         /// Write data to the provider
         /// </summary>
-        /// <param name="definition">The data defintion of the source of the data</param>
         /// <param name="data">The data to be written to the provider</param>
         /// <param name="command">The command to execute to manipulate the data</param>
         /// <returns>If the command was successful</returns>
-        Boolean Write(DataItemDefinition definition, DataTable data, String command);
+        Boolean Write(DataTable data, String command);
+
+        /// <summary>
+        /// Commit the data to the destination (mainly used for file types, not connected types)
+        /// </summary>
+        /// <returns></returns>
+        Boolean Commit();
     }
 }

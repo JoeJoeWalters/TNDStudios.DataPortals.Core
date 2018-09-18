@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Data;
 using System.IO;
-using CsvHelper;
-using CsvHelper.Configuration;
 using TNDStudios.DataPortals.Helpers;
 
 namespace TNDStudios.DataPortals.Data
@@ -10,34 +8,39 @@ namespace TNDStudios.DataPortals.Data
     public class FlatFileProvider : DataProviderBase, IDataProvider
     {
         /// <summary>
-        /// The data that was derived from the stream given to connect to
-        /// if the connection was not via a connection string (file location)
+        /// The data that is loaded from the file when the refresh of the
+        /// file is made to avoid needing to lock a file (Commiting the data
+        /// will overwrite the file with the new data)
         /// </summary>
-        private String fileData;
+        private DataTable memoryData;
+
+        /// <summary>
+        /// The definition of how the data should be structured
+        /// </summary>
+        private DataItemDefinition definition;
 
         /// <summary>
         /// Connect to the flat file source
         /// </summary>
         /// <param name="connectionString">The connection string to use</param>
         /// <returns>If the file exists when it is connected</returns>
-        public override Boolean Connect(String connectionString)
+        public override Boolean Connect(DataItemDefinition definition, String connectionString)
         {
-            this.connectionString = connectionString; // Assign the connection string
-            this.fileData = ""; // The data if it came from a stream rather than a file on disk
+            Boolean result = false; // Failed by default
 
-            // Does the file actually exist?
-            if (File.Exists(this.connectionString))
+            // Does the file that we are trying to connet to exist?
+            if (File.Exists(connectionString))
             {
-                // Read the data in to the file data storage area so it's common when performing queries
-                using (TextReader reader = File.OpenText(this.connectionString))
+                // Connect to the file and read the data from it
+                using (Stream fileStream = File.OpenRead(connectionString))
                 {
-                    this.fileData = reader.ReadToEnd();
+                    result = Connect(definition, fileStream); // Do a standard stream connect to reuse that code
+                    if (result)
+                        this.connectionString = connectionString; // Remember the connection string
                 }
             }
 
-            // Indicate that it is connected if it actually got some data
-            connected = (File.Exists(this.connectionString));
-            return connected;
+            return result; // Return the result of the read
         }
 
         /// <summary>
@@ -45,20 +48,22 @@ namespace TNDStudios.DataPortals.Data
         /// </summary>
         /// <param name="stream">The stream of data to connect to</param>
         /// <returns>If the data was valid and is a stream</returns>
-        public override Boolean Connect(Stream stream)
+        public override Boolean Connect(DataItemDefinition definition, Stream stream)
         {
             this.connectionString = ""; // Blank out the connection string as we are using a stream instead
-            this.fileData = ""; // Blank file data by default
+            this.definition = definition; // Assign the definition to use
+            this.memoryData = new DataTable(); // Blank data by default
 
-            // Read the data from the stream provided
-            using (StreamReader textReader = new StreamReader(stream))
+            if (stream != null)
             {
-                this.fileData = textReader.ReadToEnd();
+                // Read the data from the stream provided
+                using (StreamReader textReader = new StreamReader(stream))
+                {
+                    this.memoryData = FlatFileHelper.TextToDataTable(definition, textReader.ReadToEnd());
+                }
             }
 
-            // Connected now? I.E. did it get some data?
-            connected = ((this.fileData ?? "") != "");
-            return connected;
+            return false; // Failed if we get to here
         }
 
         /// <summary>
@@ -68,226 +73,66 @@ namespace TNDStudios.DataPortals.Data
         public override Boolean Disconnect()
         {
             connected = false; // Always disconnect
-            fileData = ""; // No file data held once disconnected
+            memoryData = new DataTable(); // No data held once disconnected
             return connected;
         }
 
         /// <summary>
-        /// Execute a non-query command on the flat file
+        /// Execute a write on the in-memory data-table
         /// </summary>
         /// <param name="definition">The definition of the flat file</param>
         /// <param name="command">The command to execute on the definition</param>
         /// <returns>If the command executed correctly</returns>
-        public override Boolean Write(DataItemDefinition definition, DataTable data, string command)
+        public override Boolean Write(DataTable data, string command)
         {
-            // Get the stream from the file
-            using (MemoryStream textStream = new MemoryStream())
+            Boolean result = false;
+            try
             {
-                // Set up the writer
-                StreamWriter streamWriter = new StreamWriter(textStream);
-                using (CsvWriter writer = SetupWriter(definition, streamWriter))
-                {
-                    // Do we need to write a header?
-                    if (definition.GetPropertyBagItem<Boolean>(DataItemPropertyBagItem.HasHeaderRecord, false))
-                    {
-                        // Loop the header records and output the header record line manually
-                        foreach (DataItemProperty header in definition.ItemProperties)
-                        {
-                            writer.WriteField(header.Name);
-                        }
-
-                        // Move to the next line and flush the data
-                        writer.NextRecord();
-                        streamWriter.Flush();
-                    }
-
-                    // Loop through the actual records and add them to the csv
-                    foreach (DataRow row in data.Rows)
-                    {
-                        // Loop the header records and output the header record line manually
-                        definition.ItemProperties.ForEach(property =>
-                            {
-                                writer.WriteField(DataFormatHelper.WriteData(row[property.Name], property, definition), property.Quoted);
-                            });
-
-                        // Move to the next line and flush the data
-                        writer.NextRecord();
-                        streamWriter.Flush();
-                    }
-
-                    // Put the data back in the buffer
-                    textStream.Position = 0;
-                    this.fileData = (new StreamReader(textStream)).ReadToEnd();
-
-                }
+                memoryData.Merge(data);
+                result = true;
+            }
+            catch
+            {
             }
 
-            return true;
+            return result;
+        }
+
+        /// <summary>
+        /// Commit the data back to the file
+        /// </summary>
+        /// <returns>If the write was successful</returns>
+        public override Boolean Commit()
+        {
+            Boolean result = false; // Failed by default
+
+            // Generate the flat file content based on the definition when connecting
+            String flatFileContent = FlatFileHelper.DataTableToString(this.definition, this.memoryData);
+
+            // Try and write the file to disk
+            try
+            {
+                // Write the file
+                File.WriteAllText(this.connectionString, flatFileContent, definition.EncodingFormat);
+
+                // Does the file now exist (and there were no errors writing)
+                result = File.Exists(this.connectionString);
+            }
+            catch
+            {
+            }
+
+            return result;
         }
 
         /// <summary>
         /// Query the flat file and return multiple records
         /// </summary>
-        /// <param name="definition">The definition of the flat file</param>
         /// <param name="command">The command to execute on the definition</param>
         /// <returns>A list of data items that match the query</returns>
-        public override DataTable Read(DataItemDefinition definition, String command)
+        public override DataTable Read(String command)
         {
-            // Create a list of data items to return
-            DataTable dataItems = definition.ToDataTable();
-
-            // Open up a text reader to stream the data to the CSV Reader
-            using (TextReader textReader = new StringReader(this.fileData ?? ""))
-            {
-                // Create an instance of the CSV Reader
-                using (CsvReader csvReader = SetupReader(textReader, definition))
-                {
-                    // Get the record header if needed
-                    if (csvReader.Configuration.HasHeaderRecord)
-                    {
-                        csvReader.Read(); // Do a read first
-                        csvReader.ReadHeader();
-
-                        // Parse the header records so that they do not include enclosing quotes
-                        Int32 headerId = 0;
-                        while (headerId < csvReader.Context.HeaderRecord.Length)
-                        {
-                            // Clean the header
-                            csvReader.Context.HeaderRecord[headerId] =
-                                DataFormatHelper.CleanString(
-                                    csvReader.Context.HeaderRecord[headerId], 
-                                    csvReader.Configuration.Quote);
-
-                            headerId++; // Move to the next header
-                        }
-                    }
-
-                    // Loop the records
-                    while (csvReader.Read())
-                    {
-                        DataRow dataRow = dataItems.NewRow(); // Create a new row to populate
-
-                        // Match all of the properties in the definitions lists
-                        definition.ItemProperties.ForEach(
-                            property =>
-                            {
-                                // Try and get the value
-                                Object field = null;
-                                Boolean fieldFound = GetPropertyValue(csvReader, property, definition, ref field);
-
-                                // Found something?
-                                if (fieldFound && field != null)
-                                    dataRow[property.Name] = field;
-                            });
-
-                        // Add the row to the result data table
-                        dataItems.Rows.Add(dataRow);
-                    }
-                }
-            }
-
-            // Return the items
-            return dataItems;
-        }
-
-        /// <summary>
-        /// Set up a new csv writer based on the definition given
-        /// </summary>
-        /// <param name="definition">The data item definition</param>
-        /// <returns></returns>
-        public CsvWriter SetupWriter(DataItemDefinition definition, TextWriter textWriter)
-        {
-            // Create the new writer
-            CsvWriter writer = new CsvWriter(textWriter);
-
-            // Force all fields to be quoted or not
-            writer.Configuration.QuoteAllFields = 
-                definition.GetPropertyBagItem<Boolean>(DataItemPropertyBagItem.QuoteAllFields, false); 
-
-            return writer;
-        }
-
-        /// <summary>
-        /// Create and set up a csv reader based on the data item definition given
-        /// </summary>
-        /// <param name="textReader">The text reader to inject in to the CSV reader</param>
-        /// <param name="definition">The definition of the file</param>
-        /// <returns>The newly configured CSV Reader</returns>
-        public CsvReader SetupReader(TextReader textReader, DataItemDefinition definition)
-        {
-            // Produce a new CSV Reader
-            CsvReader result = new CsvReader(textReader);
-
-            // Configure the CSV Reader
-            result.Configuration.HasHeaderRecord = 
-                definition.GetPropertyBagItem<Boolean>(DataItemPropertyBagItem.HasHeaderRecord, true);
-            result.Configuration.BadDataFound = null; // Don't pipe bad data
-            result.Configuration.CultureInfo = definition.Culture;
-            result.Configuration.TrimOptions = TrimOptions.Trim;
-            result.Configuration.Delimiter =
-                definition.GetPropertyBagItem<String>(DataItemPropertyBagItem.DelimiterCharacter, ",");
-            result.Configuration.Quote =
-                definition.GetPropertyBagItem<Char>(DataItemPropertyBagItem.QuoteCharacter, '"');
-            result.Configuration.IgnoreQuotes = 
-                definition.GetPropertyBagItem<Boolean>(DataItemPropertyBagItem.IgnoreQuotes, true);
-
-            // Send the reader back
-            return result;
-        }
-
-        /// <summary>
-        /// Get a field of type T from the current csv reader row
-        /// </summary>
-        /// <typeparam name="T">The response type of the data</typeparam>
-        /// <param name="reader">The CSV reader to read the dat from</param>
-        /// <param name="dataType">The </param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        private Boolean GetField<T>(CsvReader csvReader, DataItemProperty property, out T value)
-            => GetField<T>(csvReader, property, property.DataType, out value);
-
-        private Boolean GetField<T>(CsvReader csvReader,
-            DataItemProperty property,
-            Type overridingDataType,
-            out T value)
-        {
-            Object tempValue = null; // The temporary value before it is cast
-            Boolean response = false; // Successful?
-
-            // Try and get the value from either the oridinal position or by the 
-            // column name
-            Int32 calculatedPosition =
-                (property.OridinalPosition != -1) ?
-                    property.OridinalPosition :
-                    Array.IndexOf(csvReader.Context.HeaderRecord, property.Name);
-
-            response = csvReader.TryGetField(overridingDataType, calculatedPosition, out tempValue);
-
-            // Return the value casted to the required type
-            value = (T)tempValue;
-
-            // Return if it was successful
-            return response;
-        }
-
-        /// <summary>
-        /// Get the data from a field
-        /// </summary>
-        /// <param name="csvReader">The reader to handle the property get</param>
-        /// <param name="property">The property data</param>
-        /// <returns>If it was successful</returns>
-        private Boolean GetPropertyValue(CsvReader csvReader, DataItemProperty property, DataItemDefinition definition, ref Object value)
-        {
-            // Get the proeprty type as some types of data need handling differently straight away
-            String propertyType = property.DataType.ToString().ToLower().Replace("system.", "");
-
-            // Get the raw data
-            Boolean fieldFound = GetField<String>(csvReader, property, typeof(String), out String rawValue);
-            if (fieldFound)
-                value = DataFormatHelper.ReadData(DataFormatHelper.CleanString(rawValue, csvReader.Configuration.Quote), property, definition);
-
-            // Return the data
-            return fieldFound;
+            return memoryData; // Simply supply the in-memory datatable back to the user
         }
 
         /// <summary>

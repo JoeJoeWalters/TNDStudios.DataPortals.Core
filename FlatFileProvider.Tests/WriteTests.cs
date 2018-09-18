@@ -27,9 +27,9 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
             IDataProvider provider = new FlatFileProvider(); // A flat file provider to use to write the data
 
             // Act
-            provider.Connect(testStream); // Connect to the blank stream
-            provider.Write(definition, dataToWrite, ""); // Write the data to the empty stream
-            dataToRead = provider.Read(definition, ""); // Get the data back
+            provider.Connect(definition, testStream); // Connect to the blank stream
+            provider.Write(dataToWrite, ""); // Write the data to the empty stream
+            dataToRead = provider.Read(""); // Get the data back
 
             // Assert
             Assert.True(dataToRead.Rows.Count != 0);
