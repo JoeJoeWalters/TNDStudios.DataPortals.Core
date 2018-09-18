@@ -21,6 +21,8 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
         public const String TestFile_ISODates = "TestFiles.Dates.ISODates.txt";
         public const String TestFile_CustomDates = "TestFiles.Dates.CustomDates.txt";
         public const String TestFile_WriteTests = "TestFiles.WriteTest.txt";
+        public const String TestFile_PKMergeFrom = "TestFiles.PrimaryKey.MergeFrom.txt";
+        public const String TestFile_PKMergeTo = "TestFiles.PrimaryKey.MergeTo.txt";
 
         /// <summary>
         /// Generate the data set for the testing of different different types
@@ -106,6 +108,18 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "DateValue", DataType = typeof(DateTime), OridinalPosition = 1, Pattern = "dd MMM yyyy" });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "BooleanValue", DataType = typeof(Boolean), OridinalPosition = 2 });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "NumericValue", DataType = typeof(Double), OridinalPosition = 3 });
+                    definition.PropertyBag[DataItemPropertyBagItem.HasHeaderRecord.ToString()] = true;
+                    definition.Culture = CultureInfo.CurrentCulture;
+
+                    break;
+
+                case TestFile_PKMergeFrom:
+                case TestFile_PKMergeTo:
+
+                    // Define lots of different data types to write to a file
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Primary Key Part 1", DataType = typeof(String), OridinalPosition = 0 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Primary Key Part 2", DataType = typeof(String), OridinalPosition = 1, Pattern = "dd MMM yyyy" });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Data", DataType = typeof(String), OridinalPosition = 2 });
                     definition.PropertyBag[DataItemPropertyBagItem.HasHeaderRecord.ToString()] = true;
                     definition.Culture = CultureInfo.CurrentCulture;
 
