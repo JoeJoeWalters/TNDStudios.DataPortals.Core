@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
 using TNDStudios.DataPortals.Helpers;
 
 namespace TNDStudios.DataPortals.Data
@@ -86,14 +88,66 @@ namespace TNDStudios.DataPortals.Data
         public override Boolean Write(DataTable data, string command)
         {
             Boolean result = false;
+
             try
             {
-                memoryData.Merge(data);
+
+                // Get a list of "primary key" (can be multiple columns that
+                // identify the unique records)
+                List<String> keys =
+                    definition.ItemProperties
+                        .Where(prop => prop.PrimaryKey)
+                        .Select(prop => prop.Name)
+                        .ToList();
+
+                // Items that did not find a match and need to be added instead
+                DataTable rowsToAdd = memoryData.Clone();
+
+                // Find any records that match the primary key values
+                // and attempt to update the records, DataTables don't 
+                // currently implement IEnumerable so can't use Linq directly
+                foreach (DataRow writeRow in data.Rows)
+                {
+                    Boolean match = false; // Not a match by default
+                    Int32 rowNumber = 0; // The row number currently
+                    while (!match && rowNumber < memoryData.Rows.Count)
+                    {
+                        DataRow row = memoryData.Rows[rowNumber]; // Get the current row
+
+                        // Set the match to true, unless proven otherwise
+                        match = true;
+                        keys.ForEach(key =>
+                        {
+                            if (!row[key].Equals(writeRow[key])) { match = false; }
+                        });
+
+                        // Is this a matching field? If so then update the field
+                        if (match)
+                            row.ItemArray = writeRow.ItemArray;
+
+                        // Move to the next row
+                        rowNumber++;
+                    }
+
+                    // Not a match so this will become a row to add
+                    if (!match)
+                        rowsToAdd.Rows.Add(writeRow.ItemArray);
+                }
+
+                // Add the remaining records to the table
+                foreach (DataRow row in rowsToAdd.Rows)
+                {
+                    memoryData.Rows.Add(row.ItemArray); // Add the row
+                }
+
+                // Destroy the temporary table
+                rowsToAdd.Clear();
+                rowsToAdd = null;
+
+                // This worked
                 result = true;
             }
-            catch
-            {
-            }
+            catch { }
 
             return result;
         }
