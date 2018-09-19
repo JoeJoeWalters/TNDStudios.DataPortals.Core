@@ -186,7 +186,15 @@ namespace TNDStudios.DataPortals.Data
         /// <returns>A list of data items that match the query</returns>
         public override DataTable Read(String command)
         {
-            return memoryData; // Simply supply the in-memory datatable back to the user
+            // Do we have a filter?
+            if ((command ?? "") != "")
+            {
+                DataView view = new DataView(memoryData); // Create a new view to filter
+                view.RowFilter = command; // Set the filter from the command
+                return view.ToTable(); // Return the filtered table
+            }
+            else
+                return memoryData; // Simply supply the in-memory datatable back to the user
         }
 
         /// <summary>
