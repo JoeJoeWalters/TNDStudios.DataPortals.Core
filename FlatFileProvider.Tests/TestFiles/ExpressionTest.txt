@@ -1,0 +1,6 @@
+﻿"Title", "Value", "Multiplier"
+"Title 1", 1, 1.1
+"Title 2", 2, -1.1
+"Title 3", 3, .2
+"Title 4", 4, -2.201
+"Title 5", 5, 10

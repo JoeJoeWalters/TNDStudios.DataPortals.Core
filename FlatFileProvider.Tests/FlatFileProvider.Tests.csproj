@@ -13,6 +13,7 @@
   <ItemGroup>
     <None Remove="TestFiles\DataTypesTest.txt" />
     <None Remove="TestFiles\Dates\CustomDates.txt" />
+    <None Remove="TestFiles\ExpressionTest.txt" />
     <None Remove="TestFiles\HeadersTest.txt" />
     <None Remove="TestFiles\ISODates.txt" />
     <None Remove="TestFiles\PrimaryKey\MergeFrom.txt" />
@@ -23,6 +24,9 @@
   <ItemGroup>
     <EmbeddedResource Include="TestFiles\Dates\CustomDates.txt" />
     <EmbeddedResource Include="TestFiles\Dates\ISODates.txt" />
+    <EmbeddedResource Include="TestFiles\ExpressionTest.txt">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestFiles\HeadersTest.txt" />
     <EmbeddedResource Include="TestFiles\DataTypesTest.txt" />
     <EmbeddedResource Include="TestFiles\PrimaryKey\MergeFrom.txt" />

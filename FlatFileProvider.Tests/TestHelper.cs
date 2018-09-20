@@ -23,6 +23,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
         public const String TestFile_WriteTests = "TestFiles.WriteTest.txt";
         public const String TestFile_PKMergeFrom = "TestFiles.PrimaryKey.MergeFrom.txt";
         public const String TestFile_PKMergeTo = "TestFiles.PrimaryKey.MergeTo.txt";
+        public const String TestFile_ExpressionTests = "TestFiles.ExpressionTest.txt";
 
         /// <summary>
         /// Generate the data set for the testing of different different types
@@ -120,6 +121,18 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Primary Key Part 1", DataType = typeof(String), OridinalPosition = 0, Key = true });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Primary Key Part 2", DataType = typeof(String), OridinalPosition = 1, Key = true});
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Data", DataType = typeof(String), OridinalPosition = 2 });
+                    definition.PropertyBag[DataItemPropertyBagItem.HasHeaderRecord.ToString()] = true;
+                    definition.Culture = CultureInfo.CurrentCulture;
+
+                    break;
+
+                case TestFile_ExpressionTests:
+
+                    // Define lots of different data types to write to a file
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Title", DataType = typeof(String), OridinalPosition = 0, Key = true });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Value", DataType = typeof(int), OridinalPosition = 1});
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Multiplier", DataType = typeof(Double), OridinalPosition = 2 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Result", DataType = typeof(Double), OridinalPosition = 3, Calculation = "(Value * Multiplier)", PropertyType = DataItemPropertyType.Calculated });
                     definition.PropertyBag[DataItemPropertyBagItem.HasHeaderRecord.ToString()] = true;
                     definition.Culture = CultureInfo.CurrentCulture;
 
