@@ -82,10 +82,26 @@ namespace TNDStudios.DataPortals.Data
             // Loop the items in the definition and add them to the column definition
             ItemProperties.ForEach(property => 
             {
-                result.Columns.Add(
-                    new DataColumn(property.Name, property.DataType)
-                    {                         
-                    });
+                switch (property.PropertyType)
+                {
+                    case DataItemPropertyType.Property:
+
+                        result.Columns.Add(
+                            new DataColumn(property.Name, property.DataType)
+                            {
+                            });
+
+                        break;
+
+                    case DataItemPropertyType.Calculated:
+
+                        result.Columns.Add(
+                            new DataColumn(property.Name, property.DataType, property.Calculation)
+                            {
+                            });
+
+                        break;
+                }
             });
 
             return result; // Return the data table

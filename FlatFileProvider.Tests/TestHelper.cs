@@ -117,8 +117,8 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
                 case TestFile_PKMergeTo:
 
                     // Define lots of different data types to write to a file
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Primary Key Part 1", DataType = typeof(String), OridinalPosition = 0, PrimaryKey = true });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Primary Key Part 2", DataType = typeof(String), OridinalPosition = 1, PrimaryKey = true});
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Primary Key Part 1", DataType = typeof(String), OridinalPosition = 0, Key = true });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Primary Key Part 2", DataType = typeof(String), OridinalPosition = 1, Key = true});
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Data", DataType = typeof(String), OridinalPosition = 2 });
                     definition.PropertyBag[DataItemPropertyBagItem.HasHeaderRecord.ToString()] = true;
                     definition.Culture = CultureInfo.CurrentCulture;

@@ -2,6 +2,7 @@
 using System;
 using System.Data;
 using System.IO;
+using System.Linq;
 using TNDStudios.DataPortals.Data;
 
 namespace TNDStudios.DataPortals.Helpers
@@ -28,10 +29,14 @@ namespace TNDStudios.DataPortals.Helpers
                     if (definition.GetPropertyBagItem<Boolean>(DataItemPropertyBagItem.HasHeaderRecord, false))
                     {
                         // Loop the header records and output the header record line manually
-                        foreach (DataItemProperty header in definition.ItemProperties)
-                        {
-                            writer.WriteField(header.Name);
-                        }
+                        definition.ItemProperties
+                            .Where(prop => prop.PropertyType == DataItemPropertyType.Property)
+                            .ToList()
+                            .ForEach(
+                                header =>
+                                {
+                                    writer.WriteField(header.Name);
+                                });
 
                         // Move to the next line and flush the data
                         writer.NextRecord();
@@ -42,10 +47,14 @@ namespace TNDStudios.DataPortals.Helpers
                     foreach (DataRow row in dataTable.Rows)
                     {
                         // Loop the header records and output the header record line manually
-                        definition.ItemProperties.ForEach(property =>
-                        {
-                            writer.WriteField(DataFormatHelper.WriteData(row[property.Name], property, definition), property.Quoted);
-                        });
+                        definition.ItemProperties
+                            .Where(prop => prop.PropertyType == DataItemPropertyType.Property)
+                            .ToList()
+                            .ForEach(
+                                property =>
+                                {
+                                    writer.WriteField(DataFormatHelper.WriteData(row[property.Name], property, definition), property.Quoted);
+                                });
 
                         // Move to the next line and flush the data
                         writer.NextRecord();

@@ -3,6 +3,7 @@ using CsvHelper.Configuration;
 using System;
 using System.Data;
 using System.IO;
+using System.Linq;
 using TNDStudios.DataPortals.Data;
 
 namespace TNDStudios.DataPortals.Helpers
@@ -54,17 +55,20 @@ namespace TNDStudios.DataPortals.Helpers
                             DataRow dataRow = dataItems.NewRow(); // Create a new row to populate
 
                             // Match all of the properties in the definitions lists
-                            definition.ItemProperties.ForEach(
-                                property =>
-                                {
-                                    // Try and get the value
-                                    Object field = null;
-                                    Boolean fieldFound = GetPropertyValue(csvReader, property, definition, ref field);
+                            definition.ItemProperties
+                                .Where(prop => prop.PropertyType == DataItemPropertyType.Property)
+                                .ToList()
+                                .ForEach(
+                                    property =>
+                                    {
+                                        // Try and get the value
+                                        Object field = null;
+                                        Boolean fieldFound = GetPropertyValue(csvReader, property, definition, ref field);
 
-                                    // Found something?
-                                    if (fieldFound && field != null)
-                                        dataRow[property.Name] = field;
-                                });
+                                        // Found something?
+                                        if (fieldFound && field != null)
+                                            dataRow[property.Name] = field;
+                                    });
 
                             // Add the row to the result data table
                             dataItems.Rows.Add(dataRow);
