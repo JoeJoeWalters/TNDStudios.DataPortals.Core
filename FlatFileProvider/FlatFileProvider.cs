@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using CsvHelper;
 using TNDStudios.DataPortals.Helpers;
 
 namespace TNDStudios.DataPortals.Data
@@ -56,7 +57,8 @@ namespace TNDStudios.DataPortals.Data
             this.definition = definition; // Assign the definition to use
             this.memoryData = new DataTable(); // Blank data by default
 
-            if (stream != null)
+            // Do we have a stream and a definition
+            if (stream != null && definition != null)
             {
                 // Read the data from the stream provided
                 using (StreamReader textReader = new StreamReader(stream))
@@ -195,6 +197,22 @@ namespace TNDStudios.DataPortals.Data
             }
             else
                 return memoryData; // Simply supply the in-memory datatable back to the user
+        }
+        
+        /// <summary>
+        /// Look at the file and try and represent the file as a dataset without a definition
+        /// </summary>
+        /// <returns>A representation of the data</returns>
+        public override DataTable Analyse(AnalysisProperties properties)
+        {
+            // Create a blank result data table
+            DataTable result = new DataTable();
+            
+            String rawData = "";
+            result = FlatFileHelper.AnalyseText(rawData, properties);
+
+            // Send the analysis data table back
+            return result;
         }
 
         /// <summary>

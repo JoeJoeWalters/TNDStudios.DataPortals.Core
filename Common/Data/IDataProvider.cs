@@ -69,5 +69,11 @@ namespace TNDStudios.DataPortals.Data
         /// </summary>
         /// <returns></returns>
         Boolean Commit();
+
+        /// <summary>
+        /// Look at the data source and try and represent the source as a dataset without a definition
+        /// </summary>
+        /// <returns>A representation of the data</returns>
+        DataTable Analyse(AnalysisProperties properties);
     }
 }

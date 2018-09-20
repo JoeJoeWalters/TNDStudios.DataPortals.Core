@@ -11,6 +11,16 @@ namespace TNDStudios.DataPortals.Helpers
     public partial class FlatFileHelper
     {
         /// <summary>
+        /// Analyse some raw data and work out how 
+        /// </summary>
+        /// <param name="rawData"></param>
+        /// <returns></returns>
+        public static DataTable AnalyseText(String rawData, AnalysisProperties properties)
+        {
+            return new DataTable();
+        }
+
+        /// <summary>
         /// Read the raw data file and populate the in-memory data table with it
         /// </summary>
         /// <param name="rawData">The raw flat file data from wherever it came from</param>
