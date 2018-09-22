@@ -13,7 +13,7 @@ namespace TNDStudios.DataPortals.Tests.Common
         /// the DateTime format
         /// </summary>
         [Fact]
-        public void DateRead()
+        public void Date_Read()
         {
             // Arrange
             DataItemProperty property = new DataItemProperty()
@@ -42,7 +42,7 @@ namespace TNDStudios.DataPortals.Tests.Common
         /// the string format
         /// </summary>
         [Fact]
-        public void StringRead()
+        public void String_Read()
         {
             // Arrange
             DataItemProperty property = new DataItemProperty()
@@ -67,7 +67,7 @@ namespace TNDStudios.DataPortals.Tests.Common
         /// to the boolean format
         /// </summary>
         [Fact]
-        public void BooleanRead()
+        public void Boolean_Read()
         {
             // Arrange
             DataItemProperty property = new DataItemProperty()

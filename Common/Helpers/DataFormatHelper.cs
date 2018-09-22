@@ -17,6 +17,11 @@ namespace TNDStudios.DataPortals.Helpers
         /// a positive boolean value
         /// </summary>
         private const String booleanChars = "1ytf";
+        private static readonly List<String> booleanDetectStrings = 
+            new List<String>()
+            {
+                "true", "yes", "1", "false", "no", "0"
+            };
 
         /// <summary>
         /// Calculate the data type from a raw string value
@@ -25,7 +30,8 @@ namespace TNDStudios.DataPortals.Helpers
         /// <returns>The type that was derived from the raw string</returns>
         public static Type CalculateType(String rawValue)
         {
-            if (bool.TryParse(rawValue, out Boolean boolValue))
+            if (booleanDetectStrings.Contains(rawValue.ToLower().Trim()) 
+                || bool.TryParse(rawValue, out Boolean boolValue))
                 return typeof(Boolean);
             else if (Int32.TryParse(rawValue, out Int32 intValue))
                 return typeof(Int32);
