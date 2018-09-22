@@ -157,6 +157,19 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
         }
 
         /// <summary>
+        /// Cast the stream of a given resource to a string to be passed to other methods
+        /// </summary>
+        /// <param name="embeddedResourceName">The name of the resource to read</param>
+        /// <returns>A string representing the resource data</returns>
+        public static String GetResourceString(String embeddedResourceName)
+        {
+            using (StreamReader reader = new StreamReader(GetResourceStream(embeddedResourceName)))
+            {
+                return reader.ReadToEnd();
+            }
+        }
+
+        /// <summary>
         /// Get the resource name by deriving it from the assembly
         /// </summary>
         /// <param name="assembly">The assembly to check</param>

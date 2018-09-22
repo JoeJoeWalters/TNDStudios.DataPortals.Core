@@ -1,10 +1,8 @@
 using System;
 using Xunit;
-using System.Reflection;
-using System.IO;
-using TNDStudios.DataPortals.Data;
 using System.Data;
-using System.Globalization;
+using TNDStudios.DataPortals.Helpers;
+using TNDStudios.DataPortals.Data;
 
 namespace TNDStudios.DataPortals.Tests.FlatFile
 {
@@ -47,5 +45,22 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
             Assert.True(data.Columns.Contains("Description Header")); // Should be a column that was found even though it had no quotes
             Assert.True(dataRow != null && (String)dataRow["Description Header"] == "Description 3"); // The third row should have some data for the unquoted header
         }
+
+        /// <summary>
+        /// Analyse a test string to determine the columns using the analysis code
+        /// </summary>
+        [Fact]
+        public void Analyse_Columns_From_String()
+        {
+            // Arrange
+            String testData = TestHelper.GetResourceString(TestHelper.TestFile_Headers);
+
+            // Act
+            DataItemDefinition definition = FlatFileHelper.AnalyseText(testData);
+
+            // Assert
+            Assert.Equal(definition.ItemProperties.Count, (int)3);
+        }
+
     }
 }
