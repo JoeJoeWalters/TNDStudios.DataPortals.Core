@@ -31,6 +31,7 @@ namespace TNDStudios.DataPortals.Helpers
                     using (CsvReader csvReader = SetupReader(textReader, null))
                     {
                         // Can we read from the stream?
+                        Int32 headerId = 0;
                         if (csvReader.Read())
                         {
                             // Read in the "headers", this may not actually be the headers
@@ -38,11 +39,12 @@ namespace TNDStudios.DataPortals.Helpers
                             csvReader.ReadHeader();
 
                             // Parse the header records so that they do not include enclosing quotes
-                            Int32 headerId = 0;
+                            headerId = 0;
                             while (headerId < csvReader.Context.HeaderRecord.Length)
                             {
                                 // Clean the header
-                                String cleanedHeader = DataFormatHelper.CleanString(
+                                csvReader.Context.HeaderRecord[headerId] =
+                                    DataFormatHelper.CleanString(
                                         csvReader.Context.HeaderRecord[headerId],
                                         csvReader.Configuration.Quote);
 
@@ -52,16 +54,38 @@ namespace TNDStudios.DataPortals.Helpers
                                     Calculation = "",
                                     DataType = typeof(String),
                                     Description = $"Column {headerId.ToString()}",
-                                    Name = cleanedHeader,
+                                    Name = csvReader.Context.HeaderRecord[headerId],
                                     Key = false,
                                     OridinalPosition = headerId,
-                                    Path = cleanedHeader,
+                                    Path = csvReader.Context.HeaderRecord[headerId],
                                     Pattern = "",
                                     PropertyType = DataItemPropertyType.Property
                                 });
 
                                 headerId++; // Move to the next header
                             }
+                        }
+
+                        // Is there an additional line to calculate the data types
+                        // and correct the types to what is found in these columns
+                        if (csvReader.Read())
+                        {
+                            // For each of the properties that we found
+                            result.ItemProperties.ForEach(property =>
+                            {
+                                // Try and get the raw value for this column
+                                if (GetField<String>(csvReader,
+                                    property,
+                                    out String rawValue))
+                                {
+                                    // Deriver the data type
+                                    property.DataType =
+                                        DataFormatHelper.CalculateType(
+                                            DataFormatHelper.CleanString(
+                                                rawValue,
+                                                csvReader.Configuration.Quote));
+                                };
+                            });
                         }
                     }
                 }
@@ -152,17 +176,17 @@ namespace TNDStudios.DataPortals.Helpers
             CsvReader result = new CsvReader(textReader);
 
             // Configure the CSV Reader
-            result.Configuration.HasHeaderRecord = (definition == null) ? true : 
+            result.Configuration.HasHeaderRecord = (definition == null) ? true :
                 definition.GetPropertyBagItem<Boolean>(DataItemPropertyBagItem.HasHeaderRecord, true);
             result.Configuration.BadDataFound = null; // Don't pipe bad data
-            result.Configuration.CultureInfo = (definition == null) ? 
+            result.Configuration.CultureInfo = (definition == null) ?
                 System.Globalization.CultureInfo.CurrentCulture : definition.Culture;
             result.Configuration.TrimOptions = TrimOptions.Trim;
-            result.Configuration.Delimiter = (definition == null) ? "," : 
+            result.Configuration.Delimiter = (definition == null) ? "," :
                 definition.GetPropertyBagItem<String>(DataItemPropertyBagItem.DelimiterCharacter, ",");
-            result.Configuration.Quote = (definition == null) ? '"' : 
+            result.Configuration.Quote = (definition == null) ? '"' :
                 definition.GetPropertyBagItem<Char>(DataItemPropertyBagItem.QuoteCharacter, '"');
-            result.Configuration.IgnoreQuotes = (definition == null) ? true : 
+            result.Configuration.IgnoreQuotes = (definition == null) ? true :
                 definition.GetPropertyBagItem<Boolean>(DataItemPropertyBagItem.IgnoreQuotes, true);
 
             // Send the reader back

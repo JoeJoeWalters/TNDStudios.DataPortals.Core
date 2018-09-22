@@ -47,10 +47,10 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
         }
 
         /// <summary>
-        /// Analyse a test string to determine the columns using the analysis code
+        /// Analyse a test string to determine the number of columns using the analysis code
         /// </summary>
         [Fact]
-        public void Analyse_Columns_From_String()
+        public void Analyse_Column_Numbers_From_String()
         {
             // Arrange
             String testData = TestHelper.GetResourceString(TestHelper.TestFile_Headers);
@@ -60,6 +60,24 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
 
             // Assert
             Assert.Equal(definition.ItemProperties.Count, (int)3);
+        }
+
+        [Fact]
+        public void Analyse_Column_DataType_From_String()
+        {
+            // Arrange
+            String testData = TestHelper.GetResourceString(TestHelper.TestFile_DataTypes);
+
+            // Act
+            DataItemDefinition definition = FlatFileHelper.AnalyseText(testData);
+
+            // Assert
+            Assert.Equal(definition.ItemProperties.Count, (int)5);
+            Assert.Equal(typeof(String), definition.ItemProperties[0].DataType);
+            Assert.Equal(typeof(DateTime), definition.ItemProperties[1].DataType);
+            Assert.Equal(typeof(Double), definition.ItemProperties[2].DataType);
+            Assert.Equal(typeof(String), definition.ItemProperties[3].DataType);
+            Assert.Equal(typeof(Boolean), definition.ItemProperties[4].DataType);
         }
 
     }

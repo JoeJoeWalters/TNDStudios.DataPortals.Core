@@ -19,6 +19,27 @@ namespace TNDStudios.DataPortals.Helpers
         private const String booleanChars = "1ytf";
 
         /// <summary>
+        /// Calculate the data type from a raw string value
+        /// </summary>
+        /// <param name="rawValue">A raw string value with some unknown data in it</param>
+        /// <returns>The type that was derived from the raw string</returns>
+        public static Type CalculateType(String rawValue)
+        {
+            if (bool.TryParse(rawValue, out Boolean boolValue))
+                return typeof(Boolean);
+            else if (Int32.TryParse(rawValue, out Int32 intValue))
+                return typeof(Int32);
+            else if (Int64.TryParse(rawValue, out Int64 bigintValue))
+                return typeof(Int64);
+            else if (double.TryParse(rawValue, out Double doubleValue))
+                return typeof(Double);
+            else if (DateTime.TryParse(rawValue, out DateTime dateValue))
+                return typeof(DateTime);
+            else
+                return typeof(String);
+        }
+
+        /// <summary>
         /// Read some data from a specific pattern
         /// </summary>
         /// <param name="value">The value to read the data from</param>
@@ -90,7 +111,7 @@ namespace TNDStudios.DataPortals.Helpers
                             result = formattedDate;
                         else
                             result = DBNull.Value;
-                             
+
 
                         break;
 
