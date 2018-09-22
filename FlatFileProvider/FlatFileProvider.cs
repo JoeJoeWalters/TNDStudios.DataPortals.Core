@@ -203,13 +203,13 @@ namespace TNDStudios.DataPortals.Data
         /// Look at the file and try and represent the file as a dataset without a definition
         /// </summary>
         /// <returns>A representation of the data</returns>
-        public override DataTable Analyse(AnalysisProperties properties)
+        public override DataItemDefinition Analyse(Object source)
         {
             // Create a blank result data table
-            DataTable result = new DataTable();
-            
-            String rawData = "";
-            result = FlatFileHelper.AnalyseText(rawData, properties);
+            DataItemDefinition result = new DataItemDefinition() { };
+
+            String rawData = (String)source;
+            result = FlatFileHelper.AnalyseText(rawData);
 
             // Send the analysis data table back
             return result;

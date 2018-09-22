@@ -44,7 +44,7 @@ namespace TNDStudios.DataPortals.Data
         public virtual Boolean Commit()
             => throw new NotImplementedException();
 
-        public virtual DataTable Analyse(AnalysisProperties properties)
+        public virtual DataItemDefinition Analyse(Object source)
             => throw new NotImplementedException();
     }
 }

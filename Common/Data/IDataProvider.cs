@@ -74,6 +74,6 @@ namespace TNDStudios.DataPortals.Data
         /// Look at the data source and try and represent the source as a dataset without a definition
         /// </summary>
         /// <returns>A representation of the data</returns>
-        DataTable Analyse(AnalysisProperties properties);
+        DataItemDefinition Analyse(Object source);
     }
 }

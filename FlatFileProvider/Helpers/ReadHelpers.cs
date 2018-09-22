@@ -1,6 +1,7 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -15,9 +16,58 @@ namespace TNDStudios.DataPortals.Helpers
         /// </summary>
         /// <param name="rawData"></param>
         /// <returns></returns>
-        public static DataTable AnalyseText(String rawData, AnalysisProperties properties)
+        public static DataItemDefinition AnalyseText(String rawData)
         {
-            return new DataTable();
+            // Start with a blank definition
+            DataItemDefinition result = new DataItemDefinition() { };
+
+            // Raw data has something to convert?
+            if ((rawData ?? "") != "")
+            {
+                // Open up a text reader to stream the data to the CSV Reader
+                using (TextReader textReader = new StringReader(rawData))
+                {
+                    // Create an instance of the CSV Reader
+                    using (CsvReader csvReader = SetupReader(textReader, null))
+                    {
+                        // Can we read from the stream?
+                        if (csvReader.Read())
+                        {
+                            // Read in the "headers", this may not actually be the headers
+                            // but is a quick way for us to seperate the amount of columns
+                            csvReader.ReadHeader();
+
+                            // Parse the header records so that they do not include enclosing quotes
+                            Int32 headerId = 0;
+                            while (headerId < csvReader.Context.HeaderRecord.Length)
+                            {
+                                // Clean the header
+                                String cleanedHeader = DataFormatHelper.CleanString(
+                                        csvReader.Context.HeaderRecord[headerId],
+                                        csvReader.Configuration.Quote);
+
+                                // Add a new property to the definition
+                                result.ItemProperties.Add(new DataItemProperty()
+                                {
+                                    Calculation = "",
+                                    DataType = typeof(String),
+                                    Description = $"Column {headerId.ToString()}",
+                                    Name = cleanedHeader,
+                                    Key = false,
+                                    OridinalPosition = headerId,
+                                    Path = cleanedHeader,
+                                    Pattern = "",
+                                    PropertyType = DataItemPropertyType.Property
+                                });
+
+                                headerId++; // Move to the next header
+                            }
+                        }
+                    }
+                }
+            }
+
+            return result; // Send the definition back
         }
 
         /// <summary>
@@ -102,16 +152,17 @@ namespace TNDStudios.DataPortals.Helpers
             CsvReader result = new CsvReader(textReader);
 
             // Configure the CSV Reader
-            result.Configuration.HasHeaderRecord =
+            result.Configuration.HasHeaderRecord = (definition == null) ? true : 
                 definition.GetPropertyBagItem<Boolean>(DataItemPropertyBagItem.HasHeaderRecord, true);
             result.Configuration.BadDataFound = null; // Don't pipe bad data
-            result.Configuration.CultureInfo = definition.Culture;
+            result.Configuration.CultureInfo = (definition == null) ? 
+                System.Globalization.CultureInfo.CurrentCulture : definition.Culture;
             result.Configuration.TrimOptions = TrimOptions.Trim;
-            result.Configuration.Delimiter =
+            result.Configuration.Delimiter = (definition == null) ? "," : 
                 definition.GetPropertyBagItem<String>(DataItemPropertyBagItem.DelimiterCharacter, ",");
-            result.Configuration.Quote =
+            result.Configuration.Quote = (definition == null) ? '"' : 
                 definition.GetPropertyBagItem<Char>(DataItemPropertyBagItem.QuoteCharacter, '"');
-            result.Configuration.IgnoreQuotes =
+            result.Configuration.IgnoreQuotes = (definition == null) ? true : 
                 definition.GetPropertyBagItem<Boolean>(DataItemPropertyBagItem.IgnoreQuotes, true);
 
             // Send the reader back
