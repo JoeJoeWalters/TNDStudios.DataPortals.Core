@@ -20,7 +20,7 @@ namespace TNDStudios.DataPortals.Helpers
         private static readonly List<String> booleanDetectStrings = 
             new List<String>()
             {
-                "true", "yes", "1", "false", "no", "0"
+                "true", "yes", "1", "y", "false", "no", "0", "n"
             };
 
         /// <summary>
@@ -30,15 +30,15 @@ namespace TNDStudios.DataPortals.Helpers
         /// <returns>The type that was derived from the raw string</returns>
         public static Type CalculateType(String rawValue)
         {
-            if (booleanDetectStrings.Contains(rawValue.ToLower().Trim()) 
-                || bool.TryParse(rawValue, out Boolean boolValue))
-                return typeof(Boolean);
-            else if (Int32.TryParse(rawValue, out Int32 intValue))
+            if (Int32.TryParse(rawValue, out Int32 intValue))
                 return typeof(Int32);
             else if (Int64.TryParse(rawValue, out Int64 bigintValue))
                 return typeof(Int64);
             else if (double.TryParse(rawValue, out Double doubleValue))
                 return typeof(Double);
+            else if (booleanDetectStrings.Contains(rawValue.ToLower().Trim())
+                || bool.TryParse(rawValue, out Boolean boolValue))
+                return typeof(Boolean);
             else if (DateTime.TryParse(rawValue, out DateTime dateValue))
                 return typeof(DateTime);
             else

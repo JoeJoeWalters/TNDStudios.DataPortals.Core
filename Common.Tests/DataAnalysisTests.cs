@@ -47,7 +47,7 @@ namespace TNDStudios.DataPortals.Tests.Common
         {
             // Arrange
             List<String> testItems = 
-                new List<String>() { "true", "1", "yes" };
+                new List<String>() { "true", "yes", "y" };
             List<Type> testResults = new List<Type>();
 
             // Act
@@ -73,7 +73,7 @@ namespace TNDStudios.DataPortals.Tests.Common
         {
             // Arrange
             List<String> testItems =
-                new List<String>() { "false", "0", "no" };
+                new List<String>() { "false", "no", "n" };
             List<Type> testResults = new List<Type>();
 
             // Act
