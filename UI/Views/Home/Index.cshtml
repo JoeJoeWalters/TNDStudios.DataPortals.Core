@@ -9,8 +9,20 @@
         var app = new Vue({
             el: '#test',
             data: {
-                test: 'Hello Vue!',
-                message: "This is something"
+                arrayOfData: [{ title: 'Title' }, { title: 'Title 2' }, { title: 'Title 3' }],
+                message: 'stuff'
+            },
+            computed: {
+                computedExample: function () {
+                    return "";
+                }
+            }, 
+            methods: {
+                methodExample: function () {
+                    $.get('/api/testdata', function( data ){
+                        app.message = JSON.stringify(data);
+                    });
+                }
             }
         })
 
@@ -21,11 +33,13 @@
     <div class="col-md-12">
 
         <div id="test">
-            <span v-bind:title="message">
-                Hover your mouse over me for a few seconds
-                to see my dynamically bound title!
+            <span v-for="item in arrayOfData">
+                {{ item.title }}
             </span>
-            {{ test }}
+            <input type="button" v-on:click="methodExample" />
+            <span>
+                {{ message }}
+            </span>
         </div>
 
     </div>
