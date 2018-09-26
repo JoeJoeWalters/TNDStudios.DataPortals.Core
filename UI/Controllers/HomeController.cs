@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using UI.Models;
+using TNDStudios.DataPortals.UI.Models;
 
-namespace UI.Controllers
+namespace TNDStudios.DataPortals.UI.Controllers
 {
     public class HomeController : Controller
     {

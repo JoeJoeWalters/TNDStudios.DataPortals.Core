@@ -6,13 +6,32 @@
     {
     <script language="javascript">
 
+        var tndStudios = tndStudios || {};
+        tndStudios.utils = tndStudios.utils || {};
+        tndStudios.utils.rest =
+            {
+                callAPI: function (url, method, request, successCallBack, failureCallBack) {
+                    $.ajax({
+                        type: method,
+                        url: url,
+                        data:
+                        {
+                            data: JSON.stringify(request)
+                        },
+                        crossDomain: false,
+                        dataType: 'json',
+                        success: function (data, status, jqXHR) {
+                            successCallBack(data);
+                        },
+                        error: function (jgXHR, status) {
+                            failureCallBack();
+                        }
+                    });
+                }
+            };
+
         Vue.component('item-property',
             {
-                /*data: function () {
-                    return {
-                        wibble: 'this'
-                    }
-                },*/
                 methods:
                 {
                     remove: function () {
@@ -50,26 +69,21 @@
                     );
                 },
                 load: function () {
-                    app.definition.itemProperties.push
-                        (
-                            {
-                                key: 'name',
-                                name: 'Name 1',
-                                description: 'Description',
-                                path: '',
-                                ordinalPosition: '',
-                                dataType: '',
-                                pattern: '',
-                                quoted: '',
-                                calculation: ''
-                            }
-                        )
-                    /*$.get('/api/testdata', function( data ){
-                        app.message = data.value;
-                    });*/
+                    tndStudios.utils.rest.callAPI(
+                        'api/test/definition',
+                        'GET',
+                        {},
+                        app.loadSuccess,
+                        app.loadFailure);
+                },
+                loadSuccess: function (data) {
+                    alert(JSON.stringify(data));
+                },
+                loadFailure: function () {
+                    alert('Failure')
                 }
             }
-        })
+        });
 
     </script>
 }
@@ -79,10 +93,9 @@
 
         <div id="test">
             <button v-on:click="load">Load Data</button>
-            <item-property 
-                v-for="item in definition.itemProperties"   
-                v-bind:clickevent="remove"
-                v-bind:data="item"></item-property>
+            <item-property v-for="item in definition.itemProperties"
+                           v-bind:clickevent="remove"
+                           v-bind:data="item"></item-property>
         </div>
 
     </div>

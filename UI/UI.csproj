@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <AssemblyName>TNDStudios.DataPortals.UI</AssemblyName>
+    <RootNamespace>TNDStudios.DataPortals.UI</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

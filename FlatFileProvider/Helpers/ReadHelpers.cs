@@ -229,7 +229,7 @@ namespace TNDStudios.DataPortals.Helpers
             Type overridingDataType,
             out T value)
         {
-            Object tempValue = null; // The temporary value before it is cast
+            Object tempValue = DBNull.Value; // The temporary value before it is cast
             Boolean response = false; // Successful?
 
             // Try and get the value from either the oridinal position or by the 

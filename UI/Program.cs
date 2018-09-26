@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace UI
+namespace TNDStudios.DataPortals.UI
 {
     public class Program
     {

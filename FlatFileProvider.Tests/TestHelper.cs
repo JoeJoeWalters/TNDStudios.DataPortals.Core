@@ -39,8 +39,10 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
             DataItemDefinition definition = TestDefinition(testDefinition);
 
             // Create a new flat file provider
-            IDataProvider provider = new FlatFileProvider();
-            provider.TestMode = true; // The provider should be marked as being in test mode
+            IDataProvider provider = new FlatFileProvider()
+            {
+                TestMode = true // The provider should be marked as being in test mode
+            };
             provider.Connect(definition, resourceStream); // Connect to the location of the data
 
             // Read the data from the provider
@@ -105,7 +107,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
                 case TestFile_WriteTests:
 
                     // Define lots of different data types to write to a file
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "StringValue", DataType = typeof(String), OridinalPosition = 0});
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "StringValue", DataType = typeof(String), OridinalPosition = 0 });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "DateValue", DataType = typeof(DateTime), OridinalPosition = 1, Pattern = "dd MMM yyyy" });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "BooleanValue", DataType = typeof(Boolean), OridinalPosition = 2 });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "NumericValue", DataType = typeof(Double), OridinalPosition = 3 });
@@ -119,7 +121,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
 
                     // Define lots of different data types to write to a file
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Primary Key Part 1", DataType = typeof(String), OridinalPosition = 0, Key = true });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Primary Key Part 2", DataType = typeof(String), OridinalPosition = 1, Key = true});
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Primary Key Part 2", DataType = typeof(String), OridinalPosition = 1, Key = true });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Data", DataType = typeof(String), OridinalPosition = 2 });
                     definition.PropertyBag[DataItemPropertyBagItem.HasHeaderRecord.ToString()] = true;
                     definition.Culture = CultureInfo.CurrentCulture;
@@ -130,7 +132,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
 
                     // Define lots of different data types to write to a file
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Title", DataType = typeof(String), OridinalPosition = 0, Key = true });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Value", DataType = typeof(int), OridinalPosition = 1});
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Value", DataType = typeof(int), OridinalPosition = 1 });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Multiplier", DataType = typeof(Double), OridinalPosition = 2 });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Result", DataType = typeof(Double), OridinalPosition = 3, Calculation = "(Value * Multiplier)", PropertyType = DataItemPropertyType.Calculated });
                     definition.PropertyBag[DataItemPropertyBagItem.HasHeaderRecord.ToString()] = true;

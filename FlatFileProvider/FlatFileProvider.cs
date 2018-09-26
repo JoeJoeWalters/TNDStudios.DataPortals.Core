@@ -191,8 +191,12 @@ namespace TNDStudios.DataPortals.Data
             // Do we have a filter?
             if ((command ?? "") != "")
             {
-                DataView view = new DataView(memoryData); // Create a new view to filter
-                view.RowFilter = command; // Set the filter from the command
+                // Create a new view to filter
+                DataView view = new DataView(memoryData)
+                {
+                    RowFilter = command // Set the filter from the command
+                }; 
+
                 return view.ToTable(); // Return the filtered table
             }
             else

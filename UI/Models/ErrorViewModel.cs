@@ -1,6 +1,6 @@
 using System;
 
-namespace UI.Models
+namespace TNDStudios.DataPortals.UI.Models
 {
     public class ErrorViewModel
     {

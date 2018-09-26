@@ -1,24 +1,34 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using TNDStudios.DataPortals.Data;
+using TNDStudios.DataPortals.UI.Controllers.RequestResponse;
+using TNDStudios.DataPortals.UI.Models.Api;
 
-namespace UI.Controllers.Api
+namespace TNDStudios.DataPortals.UI.Controllers.Api
 {
     public class TestData
     {
-        public String value { get; set; }
+        public String Value { get; set; }
     }
 
     [ApiController]
     public class TestApiController : ControllerBase
     {
+        /// <summary>
+        /// Test harness to get a test definition back so we can test
+        /// the MVVM pattern
+        /// </summary>
+        /// <param name="request">A void request</param>
+        /// <returns>A set of test data</returns>
         [HttpGet]
-        [Route("/Api/TestData")]
-        public TestData TestData()
+        [Route("/api/test/definition")]
+        public ApiResponse<DataItemDefinitionModel> TestDefinition([FromQuery] ApiRequest<Object> request)
         {
-            return new TestData() { value = "Test Data" };
+            // Send some test data back
+            return new ApiResponse<DataItemDefinitionModel>(
+                new DataItemDefinitionModel()
+                {
+                });
         }
     }
 }
