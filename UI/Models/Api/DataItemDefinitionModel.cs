@@ -47,7 +47,7 @@ namespace TNDStudios.DataPortals.UI.Models.Api
             ItemProperties = new List<DataItemPropertyModel>();
             PropertyBag = new Dictionary<String, Object>();
             EncodingFormat = Encoding.Default.EncodingName;
-            Culture = CultureInfo.CurrentCulture.DisplayName;
+            Culture = CultureInfo.CurrentCulture.Name;
         }
     }
 }

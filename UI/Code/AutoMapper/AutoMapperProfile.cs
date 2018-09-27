@@ -24,13 +24,13 @@ namespace TNDStudios.DataPortals.UI
                 .ForMember(
                     item => item.Culture,
                     opt => opt.MapFrom(
-                        src => src.Culture.DisplayName
+                        src => src.Culture.Name
                        )
                     )
                 .ForMember(
                     item => item.EncodingFormat,
                     opt => opt.MapFrom(
-                        src => src.EncodingFormat.EncodingName
+                        src => src.EncodingFormat.WebName
                         )
                     );
 
