@@ -7,7 +7,7 @@
             }
         },
         props: ['data', 'removeclick'],
-        template: '<div v-on:click="remove" v-bind:title="data.description">{{ data.name }}</div>'
+        template: '<div v-on:click="remove" v-bind:title="data.description">{{ data.name }}{{ data.removed }}</div>'
     });
 
 var app = new Vue({
@@ -23,11 +23,13 @@ var app = new Vue({
         }
     },
     methods: {
+
+        // Remove the definition item from the list
         remove: function (toRemove) {
-            app.definition.itemProperties.splice(
-                app.definition.itemProperties.indexOf(toRemove)
-            );
+            toRemove.data.removed = true; // Mark the item as removed
         },
+
+        // Load the definition data from the end point
         load: function () {
             tndStudios.utils.api.call(
                 'api/test/definition',
@@ -36,11 +38,22 @@ var app = new Vue({
                 app.loadSuccess,
                 app.loadFailure);
         },
+
+        // Load was successful, assign the data
         loadSuccess: function (data) {
-            alert(JSON.stringify(data));
+            if (data.data) {
+                app.$data.definition = data.data; // Assign the Json package to the data definition
+
+                // Add additional functional items needed for the operation of the model
+                $.each(app.$data.definition.itemProperties, function (i, prop) {
+                    Vue.set(prop, "removed", false);
+                });
+            };
         },
+
+        // Load was unsuccessful, inform the user
         loadFailure: function () {
-            alert('Failure')
+            alert('Failed to retrieve definition of the data')
         }
     }
 });

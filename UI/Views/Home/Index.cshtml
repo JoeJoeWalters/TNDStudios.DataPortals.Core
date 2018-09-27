@@ -13,7 +13,7 @@
         <div id="test">
             <button v-on:click="load">Load Data</button>
             <item-header v-for="item in definition.itemProperties"
-                           v-bind:clickevent="remove"
+                           v-bind:removeclick="remove"
                            v-bind:data="item"></item-header>
         </div>
 
