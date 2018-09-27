@@ -1,21 +1,7 @@
-﻿Vue.component('item-header',
-    {
-        methods:
-        {
-            remove: function () {
-                this.$props["removeclick"](this);
-            }
-        },
-        props: ['data', 'removeclick'],
-        template: '<th scope="col" v-on:click="remove" v-bind:title="data.description">{{ data.name }}{{ data.removed }}</th>'
-    });
-
-var app = new Vue({
+﻿var app = new Vue({
     el: '#test',
     data: {
-        definition:
-        {
-        }
+        definition: new tndStudios.models.dataItems.dataItemDefinition()
     },
     computed: {
         computedExample: function () {
@@ -23,15 +9,17 @@ var app = new Vue({
         }
     },
     methods: {
-
-        itemHeader: function (item)
-        {
-            debugger;
-        },
-
+        
         // Remove the definition item from the list
         remove: function (toRemove) {
             toRemove.data.removed = true; // Mark the item as removed
+        },
+
+        // Add a new item to the definition list
+        add: function () {
+
+            // Push the new item
+            app.definition.itemProperties.push(new tndStudios.models.dataItems.dataItemProperty());
         },
 
         // Load the definition data from the end point
@@ -47,11 +35,12 @@ var app = new Vue({
         // Load was successful, assign the data
         loadSuccess: function (data) {
             if (data.data) {
-                app.$data.definition = data.data; // Assign the Json package to the data definition
+                app.definition = data.data; // Assign the Json package to the data definition
 
                 // Add additional functional items needed for the operation of the model
-                $.each(app.$data.definition.itemProperties, function (i, prop) {
-                    Vue.set(prop, "removed", false);
+                $.each(app.definition.itemProperties, function (i, prop) {
+                    Vue.set(prop, "removed", false); // Flag to indicate if the item has been marked as removed
+                    Vue.set(prop, "dirty", false); // Flag to indicate that there is a change to the definition
                 });
             };
         },

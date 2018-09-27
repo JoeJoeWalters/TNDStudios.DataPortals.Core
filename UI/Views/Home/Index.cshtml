@@ -4,6 +4,10 @@
 
 @section Scripts
     {
+    <!-- Models required for this page -->
+    <script src="~/js/models/dataitems.js"></script>
+
+    <!-- Vue script for this page-->
     <script src="~/js/pages/test.js"></script>
 }
 
@@ -11,6 +15,7 @@
     <div class="col-md-12">
         <div id="test">
             <button class="btn" v-on:click="load" style="margin-top: 50px">Load Data</button>
+            <button class="btn" v-on:click="add" style="margin-top: 50px">Add Property</button>
             <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
