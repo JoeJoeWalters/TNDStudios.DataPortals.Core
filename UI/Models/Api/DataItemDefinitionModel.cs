@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TNDStudios.DataPortals.Data;
+using System.Text;
+using System.Globalization;
 
 namespace TNDStudios.DataPortals.UI.Models.Api
 {
@@ -44,6 +46,8 @@ namespace TNDStudios.DataPortals.UI.Models.Api
         {
             ItemProperties = new List<DataItemPropertyModel>();
             PropertyBag = new Dictionary<String, Object>();
+            EncodingFormat = Encoding.Default.EncodingName;
+            Culture = CultureInfo.CurrentCulture.DisplayName;
         }
     }
 }

@@ -53,6 +53,8 @@ namespace TNDStudios.DataPortals.Data
         {
             ItemProperties = new List<DataItemProperty>();
             PropertyBag = new Dictionary<String, Object>();
+            EncodingFormat = Encoding.Default;
+            Culture = CultureInfo.CurrentCulture;
         }
 
         /// <summary>
