@@ -7,7 +7,7 @@
             }
         },
         props: ['data', 'removeclick'],
-        template: '<div v-on:click="remove" v-bind:title="data.description">{{ data.name }}{{ data.removed }}</div>'
+        template: '<th scope="col" v-on:click="remove" v-bind:title="data.description">{{ data.name }}{{ data.removed }}</th>'
     });
 
 var app = new Vue({
@@ -23,6 +23,11 @@ var app = new Vue({
         }
     },
     methods: {
+
+        itemHeader: function (item)
+        {
+            debugger;
+        },
 
         // Remove the definition item from the list
         remove: function (toRemove) {
