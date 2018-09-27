@@ -4,88 +4,7 @@
 
 @section Scripts
     {
-    <script language="javascript">
-
-        var tndStudios = tndStudios || {};
-        tndStudios.utils = tndStudios.utils || {};
-        tndStudios.utils.rest =
-            {
-                callAPI: function (url, method, request, successCallBack, failureCallBack) {
-                    $.ajax({
-                        type: method,
-                        url: url,
-                        data:
-                        {
-                            data: JSON.stringify(request)
-                        },
-                        crossDomain: false,
-                        dataType: 'json',
-                        success: function (data, status, jqXHR) {
-                            successCallBack(data);
-                        },
-                        error: function (jgXHR, status) {
-                            failureCallBack();
-                        }
-                    });
-                }
-            };
-
-        Vue.component('item-property',
-            {
-                methods:
-                {
-                    remove: function () {
-                        this.$props["clickevent"](this);
-                    }
-                },
-                props: ['data', 'clickevent'],
-                template: '<div v-on:click="remove" v-bind:title="data.description">{{ data.name }}</div>'
-            });
-
-        var app = new Vue({
-            el: '#test',
-            data: {
-                definition:
-                {
-                    itemProperties:
-                        [
-                        ],
-                    propertyBag:
-                        [
-                        ],
-                    culture: 'EN-GB',
-                    encodingFormat: 'UTF-8'
-                }
-            },
-            computed: {
-                computedExample: function () {
-                    return "";
-                }
-            },
-            methods: {
-                remove: function (toRemove) {
-                    app.definition.itemProperties.splice(
-                        app.definition.itemProperties.indexOf(toRemove)
-                    );
-                },
-                load: function () {
-                    tndStudios.utils.rest.callAPI(
-                        'api/test/definition',
-                        'GET',
-                        {},
-                        app.loadSuccess,
-                        app.loadFailure);
-                },
-                loadSuccess: function (data) {
-                    alert(JSON.stringify(data));
-                },
-                loadFailure: function () {
-                    alert('Failure')
-                }
-            }
-        });
-
-    </script>
+    <script src="~/js/pages/test.js"></script>
 }
 
 <div class="row">
@@ -93,9 +12,9 @@
 
         <div id="test">
             <button v-on:click="load">Load Data</button>
-            <item-property v-for="item in definition.itemProperties"
+            <item-header v-for="item in definition.itemProperties"
                            v-bind:clickevent="remove"
-                           v-bind:data="item"></item-property>
+                           v-bind:data="item"></item-header>
         </div>
 
     </div>
