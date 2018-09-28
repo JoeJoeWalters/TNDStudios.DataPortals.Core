@@ -1,7 +1,8 @@
 ﻿var app = new Vue({
     el: '#test',
     data: {
-        definition: new tndStudios.models.dataItems.dataItemDefinition()
+        definition: new tndStudios.models.dataItems.dataItemDefinition(),
+        values: new tndStudios.models.dataItems.dataItemValues()
     },
     computed: {
         computedExample: function () {
@@ -23,17 +24,17 @@
         },
 
         // Load the definition data from the end point
-        load: function () {
+        loadDefinition: function () {
             tndStudios.utils.api.call(
                 'api/test/definition',
                 'GET',
-                {},
-                app.loadSuccess,
-                app.loadFailure);
+                "String Value",
+                app.loadDefinitionSuccess,
+                app.loadDefinitionFailure);
         },
 
         // Load was successful, assign the data
-        loadSuccess: function (data) {
+        loadDefinitionSuccess: function (data) {
             if (data.data) {
                 app.definition = data.data; // Assign the Json package to the data definition
 
@@ -46,8 +47,29 @@
         },
 
         // Load was unsuccessful, inform the user
-        loadFailure: function () {
+        loadDefinitionFailure: function () {
             alert('Failed to retrieve definition of the data')
-        }
+        },
+
+        loadData: function () {
+            tndStudios.utils.api.call(
+                'api/test/data',
+                'POST',
+                app.definition,
+                app.loadDataSuccess,
+                app.loadDataFailure);
+        },
+
+        // Load was successful, assign the data
+        loadDataSuccess: function (data) {
+            if (data.data) {
+                app.values = data.data; // Assign the Json package to the data definition
+            };
+        },
+
+        // Load was unsuccessful, inform the user
+        loadDataFailure: function () {
+            alert('Failed to retrieve value for the data')
+        },
     }
 });

@@ -32,6 +32,12 @@ tndStudios.models.dataItems =
             this.ordinalPosition = -1;
             this.pattern = '';
             this.quoted = false;
-            this.calculation = ''
+            this.calculation = '';
+        },
+
+        dataItemValues: function () {
+
+            // Model Properties
+            this.lines = [];
         }
     };

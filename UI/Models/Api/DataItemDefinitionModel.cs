@@ -20,11 +20,13 @@ namespace TNDStudios.DataPortals.UI.Models.Api
         /// <summary>
         /// The list of properties that define the data item
         /// </summary>
-        public List<DataItemPropertyModel> ItemProperties { get; set; }
+        [JsonProperty]
+        public DataItemPropertyModel[] ItemProperties { get; set; }
 
         /// <summary>
         /// Adhoc configuration items for different providers
         /// </summary>
+        [JsonProperty]
         public Dictionary<String, Object> PropertyBag { get; set; }
 
         /// <summary>
@@ -44,9 +46,9 @@ namespace TNDStudios.DataPortals.UI.Models.Api
         /// </summary>
         public DataItemDefinitionModel()
         {
-            ItemProperties = new List<DataItemPropertyModel>();
+            //ItemProperties = DataItemPropertyModel[];
             PropertyBag = new Dictionary<String, Object>();
-            EncodingFormat = Encoding.Default.EncodingName;
+            EncodingFormat = Encoding.Default.WebName;
             Culture = CultureInfo.CurrentCulture.Name;
         }
     }

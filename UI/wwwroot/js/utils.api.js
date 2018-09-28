@@ -3,13 +3,11 @@ tndStudios.utils = tndStudios.utils || {};
 tndStudios.utils.api =
     {
         call: function (url, method, request, successCallBack, failureCallBack) {
+
             $.ajax({
                 type: method,
                 url: url,
-                data:
-                {
-                    data: JSON.stringify(request)
-                },
+                data: request,
                 crossDomain: false,
                 dataType: 'json',
                 success: function (data, status, jqXHR) {
