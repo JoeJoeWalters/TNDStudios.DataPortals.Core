@@ -21,7 +21,7 @@ namespace TNDStudios.DataPortals.UI.Models.Api
         /// The list of properties that define the data item
         /// </summary>
         [JsonProperty]
-        public DataItemPropertyModel[] ItemProperties { get; set; }
+        public List<DataItemPropertyModel> ItemProperties { get; set; }
 
         /// <summary>
         /// Adhoc configuration items for different providers
@@ -46,7 +46,7 @@ namespace TNDStudios.DataPortals.UI.Models.Api
         /// </summary>
         public DataItemDefinitionModel()
         {
-            //ItemProperties = DataItemPropertyModel[];
+            ItemProperties = new List<DataItemPropertyModel>();
             PropertyBag = new Dictionary<String, Object>();
             EncodingFormat = Encoding.Default.WebName;
             Culture = CultureInfo.CurrentCulture.Name;
