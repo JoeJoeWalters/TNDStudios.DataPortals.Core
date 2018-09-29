@@ -60,10 +60,14 @@ namespace TNDStudios.DataPortals.Data
             // Do we have a stream and a definition
             if (stream != null && definition != null)
             {
+                stream.Position = 0; // Reset back to the start again in case someone else has read it
+
                 // Read the data from the stream provided
                 using (StreamReader textReader = new StreamReader(stream))
                 {
                     this.memoryData = FlatFileHelper.TextToDataTable(definition, textReader.ReadToEnd());
+
+                    return true; // Connected without any errors
                 }
             }
 

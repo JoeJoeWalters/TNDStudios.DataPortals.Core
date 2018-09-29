@@ -14,9 +14,14 @@
 <div class="row">
     <div class="col-md-12">
         <div id="test">
-            <button class="btn" v-on:click="loadDefinition" style="margin-top: 50px">Load Definition</button>
-            <button class="btn" v-on:click="loadData" style="margin-top: 50px">Load Data</button>
-            <button class="btn" v-on:click="add" style="margin-top: 50px">Add Property</button>
+            <form style="margin-top: 50px" method="post" enctype="multipart/form-data" action="/api/data/analyse/file">
+                <input type="file" name="upload" id="upload" />
+                <input type="submit" class="btn" id="action" name="action" value="Analyse File" />
+            </form>
+
+            <button class="btn" v-on:click="loadDefinition">Load Definition</button>
+            <button class="btn" v-on:click="loadData">Load Data</button>
+            <button class="btn" v-on:click="add">Add Property</button>
             <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
