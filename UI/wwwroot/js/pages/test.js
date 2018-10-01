@@ -71,5 +71,43 @@
         loadDataFailure: function () {
             alert('Failed to retrieve value for the data')
         },
+
+        loadAnalysis: function () {
+
+            // Create some new form data
+            var formData = new FormData();
+            formData.append('upload', $('#upload')[0].files[0]); // myFile is the input type="file" control
+
+            var _url = '/api/data/analyse/file';
+
+            $.ajax({
+                url: _url,
+                type: 'POST',
+                data: formData,
+                processData: false,  // tell jQuery not to process the data
+                contentType: false,  // tell jQuery not to set contentType
+                success: function (result) {
+                },
+                error: function (jqXHR) {
+                    alert('Shit went sideways ..');
+                },
+                complete: function (jqXHR, status) {
+                    app.loadAnalysisSuccess(jqXHR.responseJSON.data);
+                }
+            });
+        },
+
+        // Load was successful, assign the data
+        loadAnalysisSuccess: function (data) {
+            if (data) {
+                app.definition = data.definition; // Assign the Json package to the data definition
+                app.values = data.values; // Assign the Json package to the data definition
+            };
+        },
+
+        // Load was unsuccessful, inform the user
+        loadAnalysisFailure: function () {
+            alert('Failed to retrieve value for the data');
+        },
     }
 });

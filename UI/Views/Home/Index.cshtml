@@ -9,14 +9,15 @@
 
     <!-- Vue script for this page-->
     <script src="~/js/pages/test.js"></script>
+        
 }
 
 <div class="row">
     <div class="col-md-12">
         <div id="test">
-            <form style="margin-top: 50px" method="post" enctype="multipart/form-data" action="/api/data/analyse/file">
+            <form style="margin-top: 50px" method="post" id="analyseForm" name="analyseForm" enctype="multipart/form-data" action="/api/data/analyse/file">
                 <input type="file" name="upload" id="upload" />
-                <input type="submit" class="btn" id="action" name="action" value="Analyse File" />
+                <input type="button" class="btn" id="action" v-on:click="loadAnalysis" name="action" value="Analyse File" />
             </form>
 
             <button class="btn" v-on:click="loadDefinition">Load Definition</button>
