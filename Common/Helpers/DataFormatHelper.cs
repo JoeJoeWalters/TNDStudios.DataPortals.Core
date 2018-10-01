@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -92,9 +93,16 @@ namespace TNDStudios.DataPortals.Helpers
                     case "ulong":
 
                         // Clean the string up for parsing
-                        if (IsNumeric(value))
-                            result = value;
-
+                        try
+                        {
+                            if (IsNumeric(value))
+                                result = value;
+                        }
+                        catch
+                        {
+                            result = (Int32)0;
+                        }
+                        
                         break;
 
                     case "datetime":
@@ -105,19 +113,21 @@ namespace TNDStudios.DataPortals.Helpers
                         // Do we have a manual property pattern or just leave it to the culture?
                         try
                         {
+                            #warning [In Debug mode this takes a long time to run due to the debugger trapping the data format errors when dates are in the incorrect format]
                             if ((property.Pattern ?? "") != "")
                                 formattedDate = DateTime.ParseExact(value, (property.Pattern ?? ""), CultureInfo.InvariantCulture);
                             else
                                 formattedDate = DateTime.Parse(value, definition.Culture);
+                            
+                            // Anything found? If so set it
+                            if (formattedDate != DateTime.MinValue)
+                                result = formattedDate;
+                            else
+                                result = DBNull.Value;
                         }
-                        catch { }
-
-                        // Anything found? If so set it
-                        if (formattedDate != DateTime.MinValue)
-                            result = formattedDate;
-                        else
-                            result = DBNull.Value;
-
+                        catch
+                        {
+                        }
 
                         break;
 

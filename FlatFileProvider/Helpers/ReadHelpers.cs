@@ -3,6 +3,8 @@ using CsvHelper.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using TNDStudios.DataPortals.Data;
@@ -20,6 +22,9 @@ namespace TNDStudios.DataPortals.Helpers
         {
             // Start with a blank definition
             DataItemDefinition result = new DataItemDefinition() { };
+            CultureInfo determinedCulture = result.Culture; // Used to determine culture if we encounter dates etc.
+
+#warning Add in code to check the date columns for the date format to determine the culture format as this slows down debugging if it is wrong
 
             // Raw data has something to convert?
             if ((rawData ?? "") != "")
@@ -91,6 +96,7 @@ namespace TNDStudios.DataPortals.Helpers
                 }
             }
 
+            result.Culture = determinedCulture; // If the culture has changed based on a sample of the data
             return result; // Send the definition back
         }
 
@@ -134,24 +140,33 @@ namespace TNDStudios.DataPortals.Helpers
                         }
 
                         // Loop the records
+                        List<DataItemProperty> propertyValues = definition.ItemProperties
+                                .Where(prop => prop.PropertyType == DataItemPropertyType.Property)
+                                .ToList();
+
                         while (csvReader.Read())
                         {
                             DataRow dataRow = dataItems.NewRow(); // Create a new row to populate
 
                             // Match all of the properties in the definitions lists
-                            definition.ItemProperties
-                                .Where(prop => prop.PropertyType == DataItemPropertyType.Property)
-                                .ToList()
-                                .ForEach(
+                            Console.WriteLine(DateTime.Now.Second);
+                            propertyValues.ForEach(
                                     property =>
                                     {
-                                        // Try and get the value
-                                        Object field = null;
-                                        Boolean fieldFound = GetPropertyValue(csvReader, property, definition, ref field);
+                                        try
+                                        {                                         
+                                            // Try and get the value
+                                            Object field = null;
+                                            Boolean fieldFound = GetPropertyValue(csvReader, property, definition, ref field);
 
-                                        // Found something?
-                                        if (fieldFound && field != null)
-                                            dataRow[property.Name] = field;
+                                            // Found something?
+                                            if (fieldFound && field != null)
+                                                dataRow[property.Name] = field;
+                                        }
+                                        catch
+                                        {
+
+                                        }
                                     });
 
                             // Add the row to the result data table
@@ -188,6 +203,8 @@ namespace TNDStudios.DataPortals.Helpers
                 definition.GetPropertyBagItem<Char>(DataItemPropertyBagItem.QuoteCharacter, '"');
             result.Configuration.IgnoreQuotes = (definition == null) ? true :
                 definition.GetPropertyBagItem<Boolean>(DataItemPropertyBagItem.IgnoreQuotes, true);
+            result.Configuration.MissingFieldFound = null;
+            result.Configuration.ReadingExceptionOccurred = null;
 
             // Send the reader back
             return result;
@@ -239,7 +256,15 @@ namespace TNDStudios.DataPortals.Helpers
                     property.OridinalPosition :
                     Array.IndexOf(csvReader.Context.HeaderRecord, property.Name);
 
-            response = csvReader.TryGetField(overridingDataType, calculatedPosition, out tempValue);
+            //response = csvReader.TryGetField(overridingDataType, calculatedPosition, out tempValue);
+            try
+            {
+                tempValue = csvReader.GetField(calculatedPosition);
+                response = true;
+            }
+            catch (Exception ex)
+            {
+            }
 
             // Return the value casted to the required type
             value = (T)tempValue;

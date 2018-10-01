@@ -216,7 +216,30 @@ namespace TNDStudios.DataPortals.Data
             // Create a blank result data table
             DataItemDefinition result = new DataItemDefinition() { };
 
-            String rawData = (String)source;
+            String rawData = "";
+            switch (source.GetType().ToString().Replace("System.", ""))
+            {
+                case "String":
+
+                    rawData = (String)source;
+
+                    break;
+
+                default:
+
+                    ((Stream)source).Position = 0; // Reset the stream position
+
+                    // Read the data from the stream
+                    StreamReader reader = new StreamReader((Stream)source);
+                    rawData = reader.ReadToEnd();
+                    
+                    // Reset the position again so that it can be re-used
+                    ((Stream)source).Position = 0;
+
+                    break;
+            }
+
+            // Pass down to the analyse text core function
             result = FlatFileHelper.AnalyseText(rawData);
 
             // Send the analysis data table back

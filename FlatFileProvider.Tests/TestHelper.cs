@@ -24,6 +24,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
         public const String TestFile_PKMergeFrom = "TestFiles.PrimaryKey.MergeFrom.txt";
         public const String TestFile_PKMergeTo = "TestFiles.PrimaryKey.MergeTo.txt";
         public const String TestFile_ExpressionTests = "TestFiles.ExpressionTest.txt";
+        public const String TestFile_BigFileSalesRecords = "TestFiles.BigFiles.SalesRecords5000.csv";
 
         /// <summary>
         /// Generate the data set for the testing of different different types
@@ -137,6 +138,10 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Result", DataType = typeof(Double), OridinalPosition = 3, Calculation = "(Value * Multiplier)", PropertyType = DataItemPropertyType.Calculated });
                     definition.PropertyBag[DataItemPropertyBagItem.HasHeaderRecord.ToString()] = true;
                     definition.Culture = CultureInfo.CurrentCulture;
+
+                    break;
+
+                case TestFile_BigFileSalesRecords:
 
                     break;
             }
