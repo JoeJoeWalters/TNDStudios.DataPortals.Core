@@ -32,10 +32,10 @@ namespace TNDStudios.DataPortals.Helpers
         {
             if (Int32.TryParse(rawValue, out Int32 intValue))
                 return typeof(Int32);
-            else if (Int64.TryParse(rawValue, out Int64 bigintValue))
-                return typeof(Int64);
             else if (double.TryParse(rawValue, out Double doubleValue))
                 return typeof(Double);
+            else if (Int64.TryParse(rawValue, out Int64 bigintValue))
+                return typeof(Int64);
             else if (booleanDetectStrings.Contains(rawValue.ToLower().Trim())
                 || bool.TryParse(rawValue, out Boolean boolValue))
                 return typeof(Boolean);
@@ -193,6 +193,15 @@ namespace TNDStudios.DataPortals.Helpers
                     case "boolean":
                     case "bool":
 
+                        try
+                        {
+                            result = Boolean.Parse(value.ToString()).ToString();
+                        }
+                        catch
+                        {
+                            result = "0";
+                        }
+
                         break;
 
                     case "double":
@@ -211,25 +220,52 @@ namespace TNDStudios.DataPortals.Helpers
                     case "long":
                     case "ulong":
 
-                        result = value.ToString();
+                        try
+                        {
+                            result = value.ToString();
+                        }
+                        catch
+                        {
+                            result = "0";
+                        }
 
                         break;
 
                     case "datetime":
 
-                        DateTime dateTime = (DateTime)value; // Cast the date so we don't have to do it each time
+                        // Not a null value
+                        try
+                        {
+                            if (value != DBNull.Value)
+                            {
+                                DateTime dateTime = (DateTime)value; // Cast the date so we don't have to do it each time
 
-                        // Do we have a manual property pattern or just leave it to the culture?
-                        if ((property.Pattern ?? "") != "")
-                            result = dateTime.ToString(property.Pattern);
-                        else
-                            result = dateTime.ToString(definition.Culture);
+                                // Do we have a manual property pattern or just leave it to the culture?
+                                if ((property.Pattern ?? "") != "")
+                                    result = dateTime.ToString(property.Pattern);
+                                else
+                                    result = dateTime.ToString(definition.Culture);
+                            }
+                            else
+                                result = "";
+                        }
+                        catch
+                        {
+                            result = "";
+                        }
 
                         break;
 
                     default:
 
-                        result = (String)value ?? "";
+                        try
+                        {
+                            result = (String)value ?? "";
+                        }
+                        catch
+                        {
+                            result = "";
+                        }
 
                         break;
                 }
