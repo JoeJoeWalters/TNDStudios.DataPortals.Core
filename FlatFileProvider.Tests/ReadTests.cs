@@ -56,7 +56,12 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
             String testData = TestHelper.GetResourceString(TestHelper.TestFile_Headers);
 
             // Act
-            DataItemDefinition definition = FlatFileHelper.AnalyseText(testData);
+            DataItemDefinition definition = FlatFileHelper.AnalyseText(
+                new AnalyseRequest<String>()
+                {
+                    Data = testData
+                }
+                );
 
             // Assert
             Assert.Equal(definition.ItemProperties.Count, (int)3);
@@ -69,7 +74,11 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
             String testData = TestHelper.GetResourceString(TestHelper.TestFile_DataTypes);
 
             // Act
-            DataItemDefinition definition = FlatFileHelper.AnalyseText(testData);
+            DataItemDefinition definition = FlatFileHelper.AnalyseText(
+                new AnalyseRequest<string>()
+                {
+                    Data = testData
+                });
 
             // Assert
             Assert.Equal(definition.ItemProperties.Count, (int)5);

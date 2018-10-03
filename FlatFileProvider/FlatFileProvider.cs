@@ -240,7 +240,11 @@ namespace TNDStudios.DataPortals.Data
             }
 
             // Pass down to the analyse text core function
-            AnalyseRequest<String> analyseTextRequest = new AnalyseRequest<String>() { };
+            AnalyseRequest<String> analyseTextRequest = 
+                new AnalyseRequest<String>()
+                {
+                    Data = rawData
+                };
             result = FlatFileHelper.AnalyseText(analyseTextRequest);
 
             // Send the analysis data table back

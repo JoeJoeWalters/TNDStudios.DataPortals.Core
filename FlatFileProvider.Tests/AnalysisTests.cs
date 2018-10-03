@@ -22,7 +22,12 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
             FlatFileProvider provider = new FlatFileProvider();
 
             // Act
-            DataItemDefinition definition = provider.Analyse(file);
+            DataItemDefinition definition = provider.Analyse(
+                new AnalyseRequest<object>
+                {
+                    Data = file
+                }
+                );
 
             // Assert
             Assert.Equal(14, definition.ItemProperties.Count);
@@ -37,7 +42,11 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
             FlatFileProvider provider = new FlatFileProvider();
 
             // Act
-            DataItemDefinition definition = provider.Analyse(file);
+            DataItemDefinition definition = provider.Analyse(
+                new AnalyseRequest<Object>()
+                {
+                    Data = file
+                });
             provider.Connect(definition, file);
             DataTable data = provider.Read("");
 

@@ -13,11 +13,16 @@ namespace TNDStudios.DataPortals.Helpers
         // The raw data of a given type to be analysed
         public T Data { get; set; }
 
+        // How many (max) items to sample to gather the information about
+        // the data set
+        public Int32 SampleSize { get; set; }
+
         /// <summary>
         /// Default constructor for the analysis request
         /// </summary>
         public AnalyseRequest()
         {
+            SampleSize = 10; // By default, Sample the first X items 
         }
     }
 }

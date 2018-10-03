@@ -71,9 +71,10 @@ namespace TNDStudios.DataPortals.Helpers
                             }
                         }
 
-                        // Is there an additional line to calculate the data types
-                        // and correct the types to what is found in these columns
-                        if (csvReader.Read())
+                        // Now we have the base columns, let's find out what their actual data type
+                        // is and what culture the data is in (if we have dates etc.)
+                        Int32 sampleCount = 0;
+                        while (csvReader.Read() && sampleCount < request.SampleSize)
                         {
                             // For each of the properties that we found
                             result.ItemProperties.ForEach(property =>
@@ -91,6 +92,9 @@ namespace TNDStudios.DataPortals.Helpers
                                                 csvReader.Configuration.Quote));
                                 };
                             });
+
+                            // Move to the next sample item (if possible)
+                            sampleCount++;
                         }
                     }
                 }
