@@ -51,7 +51,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                     if (content.Length != 0)
                     {
                         IDataProvider provider = new FlatFileProvider();
-                        DataItemDefinition definition = provider.Analyse(content);
+                        DataItemDefinition definition = provider.Analyse(new AnalyseRequest<object>() { Data = content });
                         if (definition.ItemProperties.Count != 0)
                         {
                             // Assign the definition to the result

@@ -84,9 +84,9 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
             Assert.Equal(definition.ItemProperties.Count, (int)5);
             Assert.Equal(typeof(String), definition.ItemProperties[0].DataType);
             Assert.Equal(typeof(DateTime), definition.ItemProperties[1].DataType);
-            Assert.Equal(typeof(Double), definition.ItemProperties[2].DataType);
+            Assert.Equal(typeof(int), definition.ItemProperties[2].DataType);
             Assert.Equal(typeof(String), definition.ItemProperties[3].DataType);
-            Assert.Equal(typeof(Boolean), definition.ItemProperties[4].DataType);
+            Assert.Equal(typeof(int), definition.ItemProperties[4].DataType);
         }
 
     }
