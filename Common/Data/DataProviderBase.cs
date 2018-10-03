@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Text;
+using TNDStudios.DataPortals.Helpers;
 
 namespace TNDStudios.DataPortals.Data
 {
@@ -44,7 +45,7 @@ namespace TNDStudios.DataPortals.Data
         public virtual Boolean Commit()
             => throw new NotImplementedException();
 
-        public virtual DataItemDefinition Analyse(Object source)
+        public virtual DataItemDefinition Analyse(AnalyseRequest<Object> request)
             => throw new NotImplementedException();
     }
 }

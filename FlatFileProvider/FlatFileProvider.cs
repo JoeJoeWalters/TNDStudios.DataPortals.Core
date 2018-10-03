@@ -211,36 +211,37 @@ namespace TNDStudios.DataPortals.Data
         /// Look at the file and try and represent the file as a dataset without a definition
         /// </summary>
         /// <returns>A representation of the data</returns>
-        public override DataItemDefinition Analyse(Object source)
+        public override DataItemDefinition Analyse(AnalyseRequest<Object> request)
         {
             // Create a blank result data table
             DataItemDefinition result = new DataItemDefinition() { };
 
             String rawData = "";
-            switch (source.GetType().ToString().Replace("System.", ""))
+            switch (request.Data.GetType().ToString().Replace("System.", ""))
             {
                 case "String":
 
-                    rawData = (String)source;
+                    rawData = (String)request.Data;
 
                     break;
 
                 default:
 
-                    ((Stream)source).Position = 0; // Reset the stream position
+                    ((Stream)request.Data).Position = 0; // Reset the stream position
 
                     // Read the data from the stream
-                    StreamReader reader = new StreamReader((Stream)source);
+                    StreamReader reader = new StreamReader((Stream)request.Data);
                     rawData = reader.ReadToEnd();
                     
                     // Reset the position again so that it can be re-used
-                    ((Stream)source).Position = 0;
+                    ((Stream)request.Data).Position = 0;
 
                     break;
             }
 
             // Pass down to the analyse text core function
-            result = FlatFileHelper.AnalyseText(rawData);
+            AnalyseRequest<String> analyseTextRequest = new AnalyseRequest<String>() { };
+            result = FlatFileHelper.AnalyseText(analyseTextRequest);
 
             // Send the analysis data table back
             return result;

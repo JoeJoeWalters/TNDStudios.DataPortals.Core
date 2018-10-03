@@ -25,6 +25,42 @@ namespace TNDStudios.DataPortals.Helpers
             };
 
         /// <summary>
+        /// Handle getting the most appropriate culture of a given data type
+        /// </summary>
+        /// <typeparam name="T">The type of data expected to be passed in (but passed in as a string representation)</typeparam>
+        /// <param name="data">The data we need to detect the culture info for</param>
+        /// <returns>The culture information recognised or null if none could be determined (or none required)</returns>
+        public static CultureInfo FieldCulture<T>(String data, CultureInfo defaultCulture)
+        {
+            CultureInfo response = defaultCulture;
+
+            // What type of data is this?
+            switch (typeof(T).ToString().ToLower().Replace("system.", ""))
+            {
+                // Date Time Data Type
+                case "datetime":
+
+                    DateTime castDate = DateTime.MinValue;
+
+                    try
+                    {
+                        castDate = DateTime.Parse(data, defaultCulture);
+                    }
+                    catch {}
+
+                    if (castDate != DateTime.MinValue)
+                    {
+
+                    }
+
+                    break;
+            }
+
+            // Return the culture
+            return response;
+        }
+
+        /// <summary>
         /// Calculate the data type from a raw string value
         /// </summary>
         /// <param name="rawValue">A raw string value with some unknown data in it</param>

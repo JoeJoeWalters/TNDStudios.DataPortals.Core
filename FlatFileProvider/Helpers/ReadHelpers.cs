@@ -18,7 +18,7 @@ namespace TNDStudios.DataPortals.Helpers
         /// </summary>
         /// <param name="rawData"></param>
         /// <returns></returns>
-        public static DataItemDefinition AnalyseText(String rawData)
+        public static DataItemDefinition AnalyseText(AnalyseRequest<String> request)
         {
             // Start with a blank definition
             DataItemDefinition result = new DataItemDefinition() { };
@@ -27,10 +27,10 @@ namespace TNDStudios.DataPortals.Helpers
 #warning Add in code to check the date columns for the date format to determine the culture format as this slows down debugging if it is wrong
 
             // Raw data has something to convert?
-            if ((rawData ?? "") != "")
+            if ((request.Data ?? "") != "")
             {
                 // Open up a text reader to stream the data to the CSV Reader
-                using (TextReader textReader = new StringReader(rawData))
+                using (TextReader textReader = new StringReader(request.Data))
                 {
                     // Create an instance of the CSV Reader
                     using (CsvReader csvReader = SetupReader(textReader, null))

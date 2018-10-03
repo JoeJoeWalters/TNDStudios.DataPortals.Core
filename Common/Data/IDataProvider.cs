@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Text;
+using TNDStudios.DataPortals.Helpers;
 
 namespace TNDStudios.DataPortals.Data
 {
@@ -74,6 +75,6 @@ namespace TNDStudios.DataPortals.Data
         /// Look at the data source and try and represent the source as a dataset without a definition
         /// </summary>
         /// <returns>A representation of the data</returns>
-        DataItemDefinition Analyse(Object source);
+        DataItemDefinition Analyse(AnalyseRequest<Object> request);
     }
 }
