@@ -13,6 +13,34 @@ namespace TNDStudios.DataPortals.Helpers
     /// </summary>
     public class DataFormatHelper
     {
+        // List of cultures to test in by commonality
+        // https://stackoverflow.com/questions/9711066/most-common-locales-for-worldwide-compatibility
+        /*
+        C# code  URL pos   Windows region format       Short date   Long time    xyz
+        en-US    1,1,1     English (United States)     M/D/yyyy     h:mm:ss tt   .,,
+        zh-CN    2,2,20    Chinese (simplified, PRC)   yyyy/M/d     H:mm:ss      .,,
+        ru-RU    4,10,5    Russian (Russia)            dd.MM.yyyy   H:mm:ss      , ;
+        fr-FR    8,5,7     French (France)             dd/MM/yyyy   HH:mm:ss     , ;
+        es-ES    5,9,10    Spanish (Spain)             dd/MM/yyyy   H:mm:ss      ,.;
+        en-GB    11,7,2    English (United Kingdom)    dd/MM/yyyy   HH:mm:ss     .,,
+        de-DE    12,3,3    German (Germany)            dd.MM.yyyy   HH:mm:ss     ,.;
+        pt-BR    10,6,10   Portuguese (Brazil)         dd/MM/yyyy   HH:mm:ss     ,.;
+        en-CA    14,8,12   English (Canada)            dd/MM/yyyy   h:mm:ss tt   .,,
+        es-MX    13,13,13  Spanish (Mexico)            dd/MM/yyyy   hh:mm:ss tt  .,,
+        it-IT    16,6,-    Italian (Italy)             dd/MM/yyyy   HH:mm:ss     ,.;
+        ja-JP    15,8,30   Japanese (Japan)            yyyy/MM/dd   H:mm:ss      .,,
+        */
+        public static readonly List<CultureInfo> CultureList = new List<CultureInfo>()
+            {
+                CultureInfo.CurrentCulture,
+                CultureInfo.GetCultureInfo("en-US"),
+                CultureInfo.GetCultureInfo("en-GB"),
+                CultureInfo.InvariantCulture,
+                CultureInfo.GetCultureInfo("zh-XN"),
+                CultureInfo.GetCultureInfo("ru-RU"),
+                CultureInfo.GetCultureInfo("ja-JP")
+            };
+
         /// <summary>
         /// Constants that identify the character of a string as being 
         /// a positive boolean value
@@ -90,17 +118,8 @@ namespace TNDStudios.DataPortals.Helpers
         /// <returns></returns>
         public static Boolean IsGlobalDate(String value)
         {
-            // List of cultures to test in by commonality
-            List<CultureInfo> testCultures = new List<CultureInfo>()
-            {
-                CultureInfo.CurrentCulture,
-                CultureInfo.GetCultureInfo("en-US"),
-                CultureInfo.GetCultureInfo("en-GB"),
-                CultureInfo.InvariantCulture
-            };
-
             Boolean result = false;
-            foreach (CultureInfo culture in testCultures)
+            foreach (CultureInfo culture in CultureList)
             {
                 try
                 {
