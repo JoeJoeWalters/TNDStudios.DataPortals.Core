@@ -35,7 +35,7 @@ namespace TNDStudios.DataPortals.Helpers
             CultureInfo response = defaultCulture;
 
             // What type of data is this?
-            switch (typeof(T).ToString().ToLower().Replace("system.", ""))
+            switch (typeof(T).ToShortName())
             {
                 // Date Time Data Type
                 case "datetime":
@@ -96,8 +96,7 @@ namespace TNDStudios.DataPortals.Helpers
             // Get the property type as some types of data need handling differently straight away
             if (value != null)
             {
-                String propertyType = property.DataType.ToString().ToLower().Replace("system.", "");
-
+                String propertyType = property.DataType.ToShortName();
                 switch (propertyType)
                 {
                     case "boolean":
@@ -233,7 +232,7 @@ namespace TNDStudios.DataPortals.Helpers
             // Get the property type as some types of data need handling differently straight away
             if (value != null)
             {
-                String propertyType = property.DataType.ToString().ToLower().Replace("system.", "");
+                String propertyType = property.DataType.ToShortName();
                 switch (propertyType)
                 {
                     case "boolean":

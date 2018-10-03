@@ -101,7 +101,7 @@ namespace TNDStudios.DataPortals.Helpers
 
 #warning [TODO: Decide on data type override (always make more lax, not more tight)] 
                                         property.DataType = gatheredType;
-                                        switch(property.DataType.ToString().ToLower().Replace("System.", ""))
+                                        switch(property.DataType.ToShortName())
                                         {
                                             case "datetime":
 
@@ -246,7 +246,7 @@ namespace TNDStudios.DataPortals.Helpers
         private static Boolean GetPropertyValue(CsvReader csvReader, DataItemProperty property, DataItemDefinition definition, ref Object value)
         {
             // Get the proeprty type as some types of data need handling differently straight away
-            String propertyType = property.DataType.ToString().ToLower().Replace("system.", "");
+            String propertyType = property.DataType.ToShortName();
 
             // Get the raw data
             Boolean fieldFound = GetField<String>(csvReader, property, typeof(String), out String rawValue);
