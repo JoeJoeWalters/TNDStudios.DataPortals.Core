@@ -20,7 +20,8 @@ namespace TNDStudios.DataPortals.Tests.Common
                 {
                     "21/01/1987",
                     "21 Jan 1987",
-                    "21-01-1987"
+                    "21-01-1987",
+                    "01/21/1987"
                 };
             List<Type> testResults = new List<Type>();
 

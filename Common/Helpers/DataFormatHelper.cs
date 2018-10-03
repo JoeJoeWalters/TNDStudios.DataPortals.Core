@@ -76,10 +76,42 @@ namespace TNDStudios.DataPortals.Helpers
             else if (booleanDetectStrings.Contains(rawValue.ToLower().Trim())
                 || bool.TryParse(rawValue, out Boolean boolValue))
                 return typeof(Boolean);
-            else if (DateTime.TryParse(rawValue, out DateTime dateValue))
+            else if (IsGlobalDate(rawValue))
                 return typeof(DateTime);
             else
                 return typeof(String);
+        }
+
+        /// <summary>
+        /// Determines whether a string is a date formatted string
+        /// by comparing various cultures (with the current one first)
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static Boolean IsGlobalDate(String value)
+        {
+            // List of cultures to test in by commonality
+            List<CultureInfo> testCultures = new List<CultureInfo>()
+            {
+                CultureInfo.CurrentCulture,
+                CultureInfo.GetCultureInfo("en-US"),
+                CultureInfo.GetCultureInfo("en-GB"),
+                CultureInfo.InvariantCulture
+            };
+
+            Boolean result = false;
+            foreach (CultureInfo culture in testCultures)
+            {
+                try
+                {
+                    DateTime casted = DateTime.Parse(value, culture);
+                    result = true;
+                    break;
+                }
+                catch { }
+            }
+
+            return result;
         }
 
         /// <summary>

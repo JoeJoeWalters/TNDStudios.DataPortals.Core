@@ -14,7 +14,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
         /// is done in a timely manner
         /// </summary>
         [Fact]
-        public void Analyse_Speed_Test()
+        public void Analyse_BigData_ColumnCount()
         {
             // Arrange
             String file = TestHelper.GetResourceString(
@@ -34,7 +34,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
         }
 
         [Fact]
-        public void Read_Speed_Test()
+        public void Analyse_BigData_RowCount()
         {
             // Arrange
             Stream file = TestHelper.GetResourceStream(
