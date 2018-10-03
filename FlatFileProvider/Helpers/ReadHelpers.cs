@@ -85,11 +85,34 @@ namespace TNDStudios.DataPortals.Helpers
                                     out String rawValue))
                                 {
                                     // Deriver the data type
-                                    property.DataType =
+                                    Type gatheredType = 
                                         DataFormatHelper.CalculateType(
                                             DataFormatHelper.CleanString(
                                                 rawValue,
                                                 csvReader.Configuration.Quote));
+
+                                    // If the type that we just gathered from the 
+                                    // data source different to one that we have currently
+                                    // found (headers will default to text anyway)
+                                    if (gatheredType != property.DataType)
+                                    {
+                                        CultureInfo defaultCulture = CultureInfo.CurrentCulture;
+                                        CultureInfo gatheredCulture = CultureInfo.CurrentCulture;
+
+#warning [TODO: Decide on data type override (always make more lax, not more tight)] 
+                                        property.DataType = gatheredType;
+                                        switch(property.DataType.ToString().ToLower().Replace("System.", ""))
+                                        {
+                                            case "datetime":
+
+                                                // Attempt to get the culture of the date field
+                                                gatheredCulture = DataFormatHelper.FieldCulture<DateTime>(rawValue, gatheredCulture);
+                                                if (gatheredCulture != defaultCulture)
+                                                    defaultCulture = gatheredCulture;
+
+                                                break;
+                                        }
+                                    }
                                 };
                             });
 
