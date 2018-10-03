@@ -58,9 +58,9 @@ namespace TNDStudios.DataPortals.Helpers
         /// <typeparam name="T">The type of data expected to be passed in (but passed in as a string representation)</typeparam>
         /// <param name="data">The data we need to detect the culture info for</param>
         /// <returns>The culture information recognised or null if none could be determined (or none required)</returns>
-        public static CultureInfo FieldCulture<T>(String data, CultureInfo defaultCulture)
+        public static CultureCheck FieldCulture<T>(String data)
         {
-            CultureInfo response = defaultCulture;
+            CultureCheck response = new CultureCheck() { };
 
             // What type of data is this?
             switch (typeof(T).ToShortName())
@@ -68,19 +68,26 @@ namespace TNDStudios.DataPortals.Helpers
                 // Date Time Data Type
                 case "datetime":
 
-                    DateTime castDate = DateTime.MinValue;
-
-                    try
+                    // Loop the cultures in terms of likelihood
+                    foreach (CultureInfo culture in CultureList)
                     {
-                        castDate = DateTime.Parse(data, defaultCulture);
+                        try
+                        {
+                            // Try and cast the date using the culture to see if it 
+                            // is of the right type
+                            DateTime casted = DateTime.Parse(data, culture);
+
+                            // Ok, it didn't die, this must be the right culture so use this one
+                            response.Culture = culture;
+
+                            // Now just check to see if the result could be ambiguous
+                            response.AmbigiousResult = (casted.Day <= 12 && casted.Month <= 12) ;
+
+                            break; // All done, exit .. 
+                        }
+                        catch { }
                     }
-                    catch {}
-
-                    if (castDate != DateTime.MinValue)
-                    {
-
-                    }
-
+                    
                     break;
             }
 

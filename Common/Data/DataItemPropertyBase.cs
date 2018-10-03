@@ -73,7 +73,7 @@ namespace TNDStudios.DataPortals.Data
         /// </summary>
         [JsonProperty]
         public String Calculation { get; set; }
-
+        
         /// <summary>
         /// The default constructor
         /// </summary>

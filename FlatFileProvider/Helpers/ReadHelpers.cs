@@ -21,10 +21,11 @@ namespace TNDStudios.DataPortals.Helpers
         public static DataItemDefinition AnalyseText(AnalyseRequest<String> request)
         {
             // Start with a blank definition
-            DataItemDefinition result = new DataItemDefinition() { };
-            CultureInfo determinedCulture = result.Culture; // Used to determine culture if we encounter dates etc.
-
-#warning Add in code to check the date columns for the date format to determine the culture format as this slows down debugging if it is wrong
+            DataItemDefinition result = new DataItemDefinition()
+            {
+                Culture = CultureInfo.InvariantCulture
+            };
+            Boolean ambigiousCulture = true;
 
             // Raw data has something to convert?
             if ((request.Data ?? "") != "")
@@ -85,7 +86,7 @@ namespace TNDStudios.DataPortals.Helpers
                                     out String rawValue))
                                 {
                                     // Deriver the data type
-                                    Type gatheredType = 
+                                    Type gatheredType =
                                         DataFormatHelper.CalculateType(
                                             DataFormatHelper.CleanString(
                                                 rawValue,
@@ -94,23 +95,33 @@ namespace TNDStudios.DataPortals.Helpers
                                     // If the type that we just gathered from the 
                                     // data source different to one that we have currently
                                     // found (headers will default to text anyway)
-                                    if (gatheredType != property.DataType)
+                                    if (gatheredType != property.DataType &&
+                                        gatheredType != typeof(String))
                                     {
-                                        CultureInfo defaultCulture = CultureInfo.CurrentCulture;
-                                        CultureInfo gatheredCulture = CultureInfo.CurrentCulture;
-
-#warning [TODO: Decide on data type override (always make more lax, not more tight)] 
+                                        // Set the new property type
                                         property.DataType = gatheredType;
-                                        switch(property.DataType.ToShortName())
+
+                                        // Is the culture still ambigious? Keep checking specific data points
+                                        // to determine the culture
+                                        if (ambigiousCulture)
                                         {
-                                            case "datetime":
+                                            switch (property.DataType.ToShortName())
+                                            {
+                                                case "datetime":
 
-                                                // Attempt to get the culture of the date field
-                                                gatheredCulture = DataFormatHelper.FieldCulture<DateTime>(rawValue, gatheredCulture);
-                                                if (gatheredCulture != defaultCulture)
-                                                    defaultCulture = gatheredCulture;
+                                                    // Attempt to get the culture of the date field
+                                                    CultureCheck gatheredCulture = DataFormatHelper.FieldCulture<DateTime>(rawValue);
+                                                    if (gatheredCulture.Culture != CultureInfo.InvariantCulture &&
+                                                        !gatheredCulture.AmbigiousResult &&
+                                                        gatheredCulture.Culture != result.Culture)
+                                                    {
+                                                        result.Culture = gatheredCulture.Culture;
+                                                        if (ambigiousCulture)
+                                                            ambigiousCulture = false;
+                                                    }
 
-                                                break;
+                                                    break;
+                                            }
                                         }
                                     }
                                 };
@@ -123,7 +134,6 @@ namespace TNDStudios.DataPortals.Helpers
                 }
             }
 
-            result.Culture = determinedCulture; // If the culture has changed based on a sample of the data
             return result; // Send the definition back
         }
 
@@ -181,7 +191,7 @@ namespace TNDStudios.DataPortals.Helpers
                                     property =>
                                     {
                                         try
-                                        {                                         
+                                        {
                                             // Try and get the value
                                             Object field = null;
                                             Boolean fieldFound = GetPropertyValue(csvReader, property, definition, ref field);

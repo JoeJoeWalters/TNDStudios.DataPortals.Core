@@ -217,9 +217,9 @@ namespace TNDStudios.DataPortals.Data
             DataItemDefinition result = new DataItemDefinition() { };
 
             String rawData = "";
-            switch (request.Data.GetType().ToString().Replace("System.", ""))
+            switch (request.Data.GetType().ToShortName())
             {
-                case "String":
+                case "string":
 
                     rawData = (String)request.Data;
 
