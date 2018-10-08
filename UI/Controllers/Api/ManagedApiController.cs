@@ -17,7 +17,8 @@ namespace TNDStudios.DataPortals.UI.Controllers
     {
         private static Boolean initialised = false;
         private static Dictionary<String, ProviderSetup> connectorSetup; // What to connect to
-                                                                         
+        private static ProviderFactory providerFactory; // Holding all of the connections once provisioned
+
         /// <summary>
         /// Convert a data table to the correct format for returning to the user
         /// </summary>
@@ -30,15 +31,21 @@ namespace TNDStudios.DataPortals.UI.Controllers
         /// </summary>
         public ManagedApiController()
         {
+            // Is the API system initialised?
             if (!initialised)
             {
-                initialised = true;
+                // Create a provider factory so that connections can be pooled
+                providerFactory = new ProviderFactory();
+
+                // Create a list of the available connectors (but are not yet
+                // provisioned)
                 connectorSetup = new Dictionary<String, ProviderSetup>()
                 {
                     {
                         "flatfile" ,
                         new ProviderSetup()
                         {
+                            Id = "flatfile",
                             ConnectionString = @"C:\Users\Joe\Documents\Git\TNDStudios.DataPortals.Core\FlatFileProvider.Tests\TestFiles\BigFiles\SalesRecords5000.csv",
                             Definition = new DataItemDefinition()
                             {
@@ -79,6 +86,9 @@ namespace TNDStudios.DataPortals.UI.Controllers
                         }
                     }
                 };
+
+                // Mark the system as initialised
+                initialised = true;
             }
         }
 
@@ -87,7 +97,7 @@ namespace TNDStudios.DataPortals.UI.Controllers
         public ActionResult<Boolean> Get(String objectType)
         {
             // Get the connector for this action
-            IDataProvider provider = (new ProviderFactory()).Get(connectorSetup[objectType]);
+            IDataProvider provider = providerFactory.Get(connectorSetup[objectType]);
             if (provider.Connected)
             {
                 return DataTableToJsonFormat(provider.Read("Country = 'Oman'"));

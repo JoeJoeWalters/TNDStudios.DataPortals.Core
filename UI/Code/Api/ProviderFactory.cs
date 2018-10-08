@@ -1,13 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using TNDStudios.DataPortals.Data;
 
 namespace TNDStudios.DataPortals.UI
 {
     /// <summary>
     /// Factory class to get the appropriate data provider
+    /// Is static so that the providers can be stored to m
     /// </summary>
     public class ProviderFactory
     {
+        private Boolean initialised; // If the provider factory is initialised
+        private Dictionary<String, IDataProvider> providers; // Data providers that have been set up 
+
         /// <summary>
         /// Get the provider type base on the string value provided
         /// </summary>
@@ -17,15 +22,36 @@ namespace TNDStudios.DataPortals.UI
         {
             IDataProvider result = null; // Create a fail state by default
 
-            // Try and create an instance of the provider based on the type
-            result = (IDataProvider)Activator.CreateInstance(setup.ProviderType);
+            // Do we already have a provider set up for this data connection
+            Boolean existingProvider = providers.ContainsKey(setup.Id);
+            if (!existingProvider)
+                result = (IDataProvider)Activator.CreateInstance(setup.ProviderType);
+            else
+                result = providers[setup.Id];
 
-            // Set the provider to be connected
+            // Did we get a provider?
             if (result != null)
-                result.Connect(setup.Definition, setup.ConnectionString);
+            {
+                // Set the provider to be connected if it is not already connected
+                if (!result.Connected)
+                    result.Connect(setup.Definition, setup.ConnectionString);
 
+                // If the provider was not in the pooled collection of providers then add it
+                if (!existingProvider)
+                    providers[setup.Id] = result;
+            }
+            
             // Return the provider
             return result;
         }
+
+        /// <summary>
+        /// Initialise the provider factory
+        /// </summary>
+        public ProviderFactory()
+        {
+            providers = new Dictionary<String, IDataProvider>() { };
+        }
+
     }
 }

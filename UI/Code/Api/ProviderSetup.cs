@@ -12,6 +12,12 @@ namespace TNDStudios.DataPortals.Data
     public class ProviderSetup
     {
         /// <summary>
+        /// The identifier for the setup (which is also identified
+        /// in the parent dictionary)
+        /// </summary>
+        public String Id { get; set; }
+
+        /// <summary>
         /// The data definition needed for the provider
         /// </summary>
         public DataItemDefinition Definition { get; set; }
@@ -31,7 +37,6 @@ namespace TNDStudios.DataPortals.Data
         /// </summary>
         public ProviderSetup()
         {
-
         }
     }
 }
