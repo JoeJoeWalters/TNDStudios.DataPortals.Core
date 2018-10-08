@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.Reflection;
 using System.Text;
@@ -16,7 +17,13 @@ namespace TNDStudios.DataPortals.UI.Controllers
     {
         private static Boolean initialised = false;
         private static Dictionary<String, ProviderSetup> connectorSetup; // What to connect to
-        //private static Dictionary<String, IDataProvider> providers; // When connected, the connection
+                                                                         
+        /// <summary>
+        /// Convert a data table to the correct format for returning to the user
+        /// </summary>
+        /// <returns></returns>
+        private JsonResult DataTableToJsonFormat(DataTable data)
+            => new JsonResult(data.Rows);
 
         /// <summary>
         /// Default Constructor
@@ -83,7 +90,7 @@ namespace TNDStudios.DataPortals.UI.Controllers
             IDataProvider provider = (new ProviderFactory()).Get(connectorSetup[objectType]);
             if (provider.Connected)
             {
-                return true;
+                return DataTableToJsonFormat(provider.Read("Country = 'Oman'"));
             }
             else
                 return false;
