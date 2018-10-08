@@ -8,7 +8,7 @@ using TNDStudios.DataPortals.UI.Models;
 
 namespace TNDStudios.DataPortals.UI.Controllers
 {
-    public class HomeController : Controller
+    public class ConnectorsController : Controller
     {
         public IActionResult Index()
         {

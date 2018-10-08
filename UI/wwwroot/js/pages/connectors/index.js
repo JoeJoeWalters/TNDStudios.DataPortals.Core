@@ -1,5 +1,5 @@
 ﻿var app = new Vue({
-    el: '#test',
+    el: '#contentcontainer',
     data: {
         definition: new tndStudios.models.dataItems.dataItemDefinition(),
         values: new tndStudios.models.dataItems.dataItemValues()
