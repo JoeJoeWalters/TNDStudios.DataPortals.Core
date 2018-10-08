@@ -298,7 +298,7 @@ namespace TNDStudios.DataPortals.Helpers
                 tempValue = csvReader.GetField(calculatedPosition);
                 response = true;
             }
-            catch (Exception ex)
+            catch
             {
             }
 

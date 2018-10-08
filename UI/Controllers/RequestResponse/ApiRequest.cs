@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TNDStudios.DataPortals.UI.Controllers.RequestResponse
+namespace TNDStudios.DataPortals.UI.Controllers
 {
     /// <summary>
     /// The holder for requests from the web / system

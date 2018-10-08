@@ -3,10 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using TNDStudios.DataPortals.Data;
-using TNDStudios.DataPortals.UI.Controllers.RequestResponse;
 using TNDStudios.DataPortals.UI.Models.Api;
 
-namespace TNDStudios.DataPortals.UI.Controllers.Api
+namespace TNDStudios.DataPortals.UI.Controllers
 {
     public class TestData
     {

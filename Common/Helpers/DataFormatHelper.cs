@@ -206,7 +206,6 @@ namespace TNDStudios.DataPortals.Helpers
                         // Do we have a manual property pattern or just leave it to the culture?
                         try
                         {
-                            #warning [In Debug mode this takes a long time to run due to the debugger trapping the data format errors when dates are in the incorrect format]
                             if ((property.Pattern ?? "") != "")
                                 formattedDate = DateTime.ParseExact(value, (property.Pattern ?? ""), CultureInfo.InvariantCulture);
                             else

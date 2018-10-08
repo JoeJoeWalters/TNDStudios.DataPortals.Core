@@ -25,7 +25,11 @@ namespace TNDStudios.DataPortals.Data
         /// Is the flat file provider connected to it's source?
         /// </summary>
         protected internal Boolean connected;
-        public Boolean Connected => connected;
+        public Boolean Connected
+        {
+            get { return connected; }
+            set { connected = value; }
+        }
 
         public virtual bool Connect(DataItemDefinition definition, String connectionString)
             => throw new NotImplementedException();

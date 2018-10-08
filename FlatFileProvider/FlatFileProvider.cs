@@ -66,7 +66,7 @@ namespace TNDStudios.DataPortals.Data
                 using (StreamReader textReader = new StreamReader(stream))
                 {
                     this.memoryData = FlatFileHelper.TextToDataTable(definition, textReader.ReadToEnd());
-
+                    base.Connected = true; // Mark the provider as connected
                     return true; // Connected without any errors
                 }
             }

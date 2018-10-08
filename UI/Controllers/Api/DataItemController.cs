@@ -8,10 +8,9 @@ using System.IO;
 using System.Text;
 using TNDStudios.DataPortals.Data;
 using TNDStudios.DataPortals.Helpers;
-using TNDStudios.DataPortals.UI.Controllers.RequestResponse;
 using TNDStudios.DataPortals.UI.Models.Api;
 
-namespace TNDStudios.DataPortals.UI.Controllers.Api
+namespace TNDStudios.DataPortals.UI.Controllers
 {
     [ApiController]
     public class DataItemController : ControllerBase
