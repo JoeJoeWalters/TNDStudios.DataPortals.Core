@@ -32,6 +32,12 @@ namespace TNDStudios.DataPortals.UI
                     opt => opt.MapFrom(
                         src => src.EncodingFormat.WebName
                         )
+                    )
+                .ForMember(
+                    item => item.Id,
+                    opt => opt.MapFrom(
+                        src => src.Id.ToString()
+                        )
                     );
 
             CreateMap<DataItemProperty, DataItemPropertyModel>()
@@ -53,6 +59,12 @@ namespace TNDStudios.DataPortals.UI
                     item => item.EncodingFormat,
                     opt => opt.MapFrom(
                         src => Encoding.GetEncoding(src.EncodingFormat)
+                        )
+                    )
+                .ForMember(
+                    item => item.Id,
+                    opt => opt.MapFrom(
+                        src => new Guid(src.Id)
                         )
                     );
 

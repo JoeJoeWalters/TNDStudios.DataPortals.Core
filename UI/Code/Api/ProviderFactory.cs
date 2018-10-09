@@ -10,7 +10,6 @@ namespace TNDStudios.DataPortals.UI
     /// </summary>
     public class ProviderFactory
     {
-        private Boolean initialised; // If the provider factory is initialised
         private Dictionary<String, IDataProvider> providers; // Data providers that have been set up 
 
         /// <summary>

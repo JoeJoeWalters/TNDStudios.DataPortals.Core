@@ -27,6 +27,21 @@ namespace TNDStudios.DataPortals.Data
     public class DataItemDefinition
     {
         /// <summary>
+        /// Id for this object
+        /// </summary>
+        public Guid Id { get; set; }
+
+        /// <summary>
+        /// Name for this object
+        /// </summary>
+        public String Name { get; set; }
+
+        /// <summary>
+        /// Description for this object
+        /// </summary>
+        public String Description { get; set; }
+
+        /// <summary>
         /// The list of properties that define the data item
         /// </summary>
         public List<DataItemProperty> ItemProperties { get; set; }
@@ -51,6 +66,9 @@ namespace TNDStudios.DataPortals.Data
         /// </summary>
         public DataItemDefinition()
         {
+            Id = Guid.NewGuid();
+            Name = $"Item Definition {Id.ToString()}";
+            Description = "";
             ItemProperties = new List<DataItemProperty>();
             PropertyBag = new Dictionary<String, Object>();
             EncodingFormat = Encoding.Default;

@@ -18,6 +18,22 @@ namespace TNDStudios.DataPortals.UI.Models.Api
     public class DataItemDefinitionModel
     {
         /// <summary>
+        /// The Id for this object
+        /// </summary>
+        [JsonProperty]
+        public String Id { get; set; }
+
+        /// <summary>
+        /// The name of the definition
+        /// </summary>
+        public String Name { get; set; }
+
+        /// <summary>
+        /// The description of the definition
+        /// </summary>
+        public String Description { get; set; }
+
+        /// <summary>
         /// The list of properties that define the data item
         /// </summary>
         [JsonProperty]
@@ -46,6 +62,9 @@ namespace TNDStudios.DataPortals.UI.Models.Api
         /// </summary>
         public DataItemDefinitionModel()
         {
+            Id = Guid.NewGuid().ToString();
+            Name = "";
+            Description = "";
             ItemProperties = new List<DataItemPropertyModel>();
             PropertyBag = new Dictionary<String, Object>();
             EncodingFormat = Encoding.Default.WebName;

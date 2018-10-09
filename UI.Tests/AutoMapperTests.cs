@@ -64,6 +64,7 @@ namespace TNDStudios.DataPortals.Tests.UI
             String encoding = "utf-8";
             DataItemDefinition definition = new DataItemDefinition()
             {
+                Id = Guid.NewGuid(),
                 Culture = CultureInfo.GetCultureInfo(culture),
                 EncodingFormat = Encoding.GetEncoding(encoding)
             };
@@ -76,6 +77,7 @@ namespace TNDStudios.DataPortals.Tests.UI
             Assert.Equal(definition.ItemProperties.Count, model.ItemProperties.Count);
             Assert.Equal(culture, model.Culture);
             Assert.Equal(encoding, model.EncodingFormat);
+            Assert.Equal(definition.Id.ToString(), model.Id);
         }
 
         /// <summary>
@@ -126,6 +128,7 @@ namespace TNDStudios.DataPortals.Tests.UI
             String encoding = "utf-8";
             DataItemDefinitionModel model = new DataItemDefinitionModel()
             {
+                Id = Guid.NewGuid().ToString(),
                 Culture = culture,
                 EncodingFormat = encoding
             };
@@ -138,6 +141,7 @@ namespace TNDStudios.DataPortals.Tests.UI
             Assert.Equal(definition.ItemProperties.Count, model.ItemProperties.Count);
             Assert.Equal(culture, model.Culture);
             Assert.Equal(encoding, model.EncodingFormat);
+            Assert.Equal(definition.Id.ToString(), model.Id);
         }
 
         /// <summary>
