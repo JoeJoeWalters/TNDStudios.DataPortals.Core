@@ -10,10 +10,10 @@ using TNDStudios.DataPortals.Data;
 using TNDStudios.DataPortals.Helpers;
 using TNDStudios.DataPortals.UI.Models.Api;
 
-namespace TNDStudios.DataPortals.UI.Controllers
+namespace TNDStudios.DataPortals.UI.Controllers.Api
 {
     [ApiController]
-    public class DataItemController : ControllerBase
+    public class DataItemController : ApiControllerBase
     {
         /// <summary>
         /// Automapper set by the dependency injection to the constructor
@@ -23,7 +23,7 @@ namespace TNDStudios.DataPortals.UI.Controllers
         /// <summary>
         /// Default constructor with DI items
         /// </summary>
-        public DataItemController(IMapper mapper)
+        public DataItemController(IMapper mapper) : base()
         {
             this.mapper = mapper; // Assign the mapper from the dependency injection
         }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using TNDStudios.DataPortals.Data;
 using TNDStudios.DataPortals.UI.Models.Api;
 
-namespace TNDStudios.DataPortals.UI.Controllers
+namespace TNDStudios.DataPortals.UI.Controllers.Api
 {
     public class TestData
     {
@@ -13,7 +13,7 @@ namespace TNDStudios.DataPortals.UI.Controllers
     }
 
     [ApiController]
-    public class TestApiController : ControllerBase
+    public class TestApiController : ApiControllerBase
     {
         /// <summary>
         /// Automapper set by the dependency injection to the constructor
@@ -23,7 +23,7 @@ namespace TNDStudios.DataPortals.UI.Controllers
         /// <summary>
         /// Default constructor with DI items
         /// </summary>
-        public TestApiController(IMapper mapper)
+        public TestApiController(IMapper mapper) : base()
         {
             this.mapper = mapper; // Assign the mapper from the dependency injection
         }

@@ -7,7 +7,14 @@ using System.Threading.Tasks;
 namespace TNDStudios.DataPortals.UI.Controllers.Api
 {
     [ApiController]
-    public class DataDefinitionApiController : ControllerBase
+    public class DataDefinitionApiController : ApiControllerBase
     {
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
+        public DataDefinitionApiController() : base()
+        {
+
+        }
     }
 }

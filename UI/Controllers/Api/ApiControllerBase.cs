@@ -7,14 +7,15 @@ using System.Threading.Tasks;
 namespace TNDStudios.DataPortals.UI.Controllers.Api
 {
     [ApiController]
-    public class ConnectorApiController : ApiControllerBase
+    public class ApiControllerBase : ControllerBase
     {
         /// <summary>
         /// Default Constructor
         /// </summary>
-        public ConnectorApiController() : base()
+        public ApiControllerBase()
         {
-
+            // Make sure that the session handler is initialised
+            SessionHandler.Initialise(); 
         }
     }
 }

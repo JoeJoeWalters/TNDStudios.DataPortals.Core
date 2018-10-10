@@ -8,17 +8,15 @@ using System.Text;
 using TNDStudios.DataPortals.Api;
 using TNDStudios.DataPortals.Data;
 
-namespace TNDStudios.DataPortals.UI.Controllers
+namespace TNDStudios.DataPortals.UI.Controllers.Api
 {
     /// <summary>
     /// Api Controller that managed API's are written to
     /// </summary>
     [ApiController]
-    public class ManagedApiController : ControllerBase
+    public class ManagedApiController : ApiControllerBase
     {
         private static Boolean initialised = false;
-#warning [Move package to central location that will be shared by all API's etc. probably the core namespace]
-        private static CollectionPackage package; // The definitions 
         private static DataProviderFactory providerFactory; // Holding all of the connections once provisioned
 
         /// <summary>
@@ -31,7 +29,7 @@ namespace TNDStudios.DataPortals.UI.Controllers
         /// <summary>
         /// Default Constructor
         /// </summary>
-        public ManagedApiController()
+        public ManagedApiController() : base()
         {
             // Is the API system initialised?
             if (!initialised)
@@ -98,20 +96,24 @@ namespace TNDStudios.DataPortals.UI.Controllers
         [Route("/api/{objectType}")]
         public ActionResult<Boolean> Get(String objectType)
         {
-            // Get the definition for this object type
-            ApiDefinition apiDefinition = package.Api(objectType);
-            if (apiDefinition != null)
+            // Make sure we actually have a current package in the session
+            if (SessionHandler.CurrentPackage != null)
             {
-                // Use the api definition to get the data connection and 
-                // definition from the package and then try to connect
-                IDataProvider provider = providerFactory.Get(
-                    package.DataConnection(apiDefinition.DataConnection), 
-                    package.DataDefinition(apiDefinition.DataDefinition));
-
-                // Are we connected?
-                if (provider.Connected)
+                // Get the definition for this object type
+                ApiDefinition apiDefinition = SessionHandler.CurrentPackage.Api(objectType);
+                if (apiDefinition != null)
                 {
-                    return DataTableToJsonFormat(provider.Read("Country = 'Oman'"));
+                    // Use the api definition to get the data connection and 
+                    // definition from the package and then try to connect
+                    IDataProvider provider = providerFactory.Get(
+                        SessionHandler.CurrentPackage.DataConnection(apiDefinition.DataConnection),
+                        SessionHandler.CurrentPackage.DataDefinition(apiDefinition.DataDefinition));
+
+                    // Are we connected?
+                    if (provider.Connected)
+                    {
+                        return DataTableToJsonFormat(provider.Read("Country = 'Oman'"));
+                    }
                 }
             }
 
