@@ -5,6 +5,7 @@ using System.Data;
 using System.Globalization;
 using System.Reflection;
 using System.Text;
+using TNDStudios.DataPortals.Api;
 using TNDStudios.DataPortals.Data;
 
 namespace TNDStudios.DataPortals.UI.Controllers
@@ -16,8 +17,9 @@ namespace TNDStudios.DataPortals.UI.Controllers
     public class ManagedApiController : ControllerBase
     {
         private static Boolean initialised = false;
-        private static Dictionary<String, ProviderSetup> connectorSetup; // What to connect to
-        private static ProviderFactory providerFactory; // Holding all of the connections once provisioned
+#warning [Move package to central location that will be shared by all API's etc. probably the core namespace]
+        private static CollectionPackage package; // The definitions 
+        private static DataProviderFactory providerFactory; // Holding all of the connections once provisioned
 
         /// <summary>
         /// Convert a data table to the correct format for returning to the user
@@ -35,11 +37,11 @@ namespace TNDStudios.DataPortals.UI.Controllers
             if (!initialised)
             {
                 // Create a provider factory so that connections can be pooled
-                providerFactory = new ProviderFactory();
+                providerFactory = new DataProviderFactory();
 
                 // Create a list of the available connectors (but are not yet
                 // provisioned)
-                connectorSetup = new Dictionary<String, ProviderSetup>()
+                /*connectorSetup = new Dictionary<Guid, ProviderSetup>()
                 {
                     {
                         "flatfile" ,
@@ -85,7 +87,7 @@ namespace TNDStudios.DataPortals.UI.Controllers
                             ProviderType = typeof(FlatFileProvider)
                         }
                     }
-                };
+                };*/
 
                 // Mark the system as initialised
                 initialised = true;
@@ -96,14 +98,24 @@ namespace TNDStudios.DataPortals.UI.Controllers
         [Route("/api/{objectType}")]
         public ActionResult<Boolean> Get(String objectType)
         {
-            // Get the connector for this action
-            IDataProvider provider = providerFactory.Get(connectorSetup[objectType]);
-            if (provider.Connected)
+            // Get the definition for this object type
+            ApiDefinition apiDefinition = package.Api(objectType);
+            if (apiDefinition != null)
             {
-                return DataTableToJsonFormat(provider.Read("Country = 'Oman'"));
+                // Use the api definition to get the data connection and 
+                // definition from the package and then try to connect
+                IDataProvider provider = providerFactory.Get(
+                    package.DataConnection(apiDefinition.DataConnection), 
+                    package.DataDefinition(apiDefinition.DataDefinition));
+
+                // Are we connected?
+                if (provider.Connected)
+                {
+                    return DataTableToJsonFormat(provider.Read("Country = 'Oman'"));
+                }
             }
-            else
-                return false;
+
+            return false;
         }
 
         [HttpPost]

@@ -18,7 +18,7 @@ namespace TNDStudios.DataPortals.Data
     /// Definition of a property member of a data item
     /// </summary>
     [JsonObject]
-    public class DataItemPropertyBase
+    public class DataItemPropertyBase : CommonObject
     {
         /// <summary>
         /// What type of property is this?
@@ -31,18 +31,6 @@ namespace TNDStudios.DataPortals.Data
         /// </summary>
         [JsonProperty]
         public Boolean Key { get; set; }
-
-        /// <summary>
-        /// The "name" of the property (Generally used as the unique key)
-        /// </summary>
-        [JsonProperty]
-        public String Name { get; set; }
-
-        /// <summary>
-        /// A description of the property
-        /// </summary>
-        [JsonProperty]
-        public String Description { get; set; }
 
         /// <summary>
         /// The path for the property (E.g. when using XML/Json etc.)
@@ -77,7 +65,7 @@ namespace TNDStudios.DataPortals.Data
         /// <summary>
         /// The default constructor
         /// </summary>
-        public DataItemPropertyBase() => Initialise();
+        public DataItemPropertyBase() : base() => Initialise();
 
         /// <summary>
         /// Common initialiser to be shared with derived objects
@@ -86,8 +74,6 @@ namespace TNDStudios.DataPortals.Data
         {
             PropertyType = DataItemPropertyType.Property; // Standard type by default
             Key = false; // By default this is not the primary key
-            Name = ""; // Empty String by default
-            Description = ""; // Empty String by default
             Path = ""; // Empty String by default
             OridinalPosition = -1; // First item in the array by default
             Pattern = ""; // The pattern of the data (such as the date format)

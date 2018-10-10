@@ -15,6 +15,7 @@ namespace TNDStudios.DataPortals.UI.Models.Api
         /// <summary>
         /// List of line containing the key value pairs
         /// </summary>
+        [JsonProperty]
         public List<Dictionary<String, String>> Lines { get; set; }
 
         /// <summary>

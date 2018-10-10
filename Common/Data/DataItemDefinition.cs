@@ -11,36 +11,21 @@ namespace TNDStudios.DataPortals.Data
     /// Enumeration to make the property bag values 
     /// standard across all providers
     /// </summary>
-    public enum DataItemPropertyBagItem
+    public enum DataItemPropertyBagItem : Int32
     {
-        HasHeaderRecord,
-        QuoteAllFields,
-        IgnoreQuotes,
-        QuoteCharacter,
-        DelimiterCharacter
+        HasHeaderRecord = 0,
+        QuoteAllFields = 1,
+        IgnoreQuotes = 2,
+        QuoteCharacter = 3,
+        DelimiterCharacter = 4
     }
 
     /// <summary>
     /// The definition of a data item (How the properties of
     /// the data item are mapped etc.)
     /// </summary>
-    public class DataItemDefinition
+    public class DataItemDefinition : CommonObject
     {
-        /// <summary>
-        /// Id for this object
-        /// </summary>
-        public Guid Id { get; set; }
-
-        /// <summary>
-        /// Name for this object
-        /// </summary>
-        public String Name { get; set; }
-
-        /// <summary>
-        /// Description for this object
-        /// </summary>
-        public String Description { get; set; }
-
         /// <summary>
         /// The list of properties that define the data item
         /// </summary>
@@ -62,17 +47,21 @@ namespace TNDStudios.DataPortals.Data
         public Encoding EncodingFormat { get; set; }
 
         /// <summary>
+        /// The connections that this definition is assigned to
+        /// </summary>
+        public List<Guid> Connections { get; set; }
+
+        /// <summary>
         /// The default constructor
         /// </summary>
-        public DataItemDefinition()
+        public DataItemDefinition() : base()
         {
-            Id = Guid.NewGuid();
             Name = $"Item Definition {Id.ToString()}";
-            Description = "";
             ItemProperties = new List<DataItemProperty>();
             PropertyBag = new Dictionary<String, Object>();
             EncodingFormat = Encoding.Default;
             Culture = CultureInfo.CurrentCulture;
+            Connections = new List<Guid>(); // The connections that this definition is assigned to
         }
 
         /// <summary>

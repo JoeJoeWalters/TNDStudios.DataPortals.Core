@@ -8,6 +8,17 @@ using TNDStudios.DataPortals.Helpers;
 namespace TNDStudios.DataPortals.Data
 {
     /// <summary>
+    /// Enumeration of all the different registered data providers
+    /// that can be used instead of just "typeof"
+    /// </summary>
+    public enum DataProviderType : Int32
+    {
+        Unknown = 0,
+        FlatFileProvider = 1,
+        MSSQLProvider = 2
+    }
+
+    /// <summary>
     /// Interface to define how a data provider should behave
     /// </summary>
     public interface IDataProvider

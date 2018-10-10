@@ -15,14 +15,14 @@ namespace TNDStudios.DataPortals.Tests.UI
     /// </summary>
     public class APIProviderTestsFixture : IDisposable
     {
-        public ProviderFactory Factory; // The provider factory to test
+        public DataProviderFactory Factory; // The provider factory to test
 
         /// <summary>
         /// Configure the test fixture
         /// </summary>
         public APIProviderTestsFixture()
         {
-            Factory = new ProviderFactory();
+            Factory = new DataProviderFactory();
         }
 
         /// <summary>

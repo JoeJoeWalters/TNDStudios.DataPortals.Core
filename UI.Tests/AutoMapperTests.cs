@@ -65,6 +65,8 @@ namespace TNDStudios.DataPortals.Tests.UI
             DataItemDefinition definition = new DataItemDefinition()
             {
                 Id = Guid.NewGuid(),
+                Name = "Name",
+                Description = "Description",
                 Culture = CultureInfo.GetCultureInfo(culture),
                 EncodingFormat = Encoding.GetEncoding(encoding)
             };
@@ -78,6 +80,8 @@ namespace TNDStudios.DataPortals.Tests.UI
             Assert.Equal(culture, model.Culture);
             Assert.Equal(encoding, model.EncodingFormat);
             Assert.Equal(definition.Id.ToString(), model.Id);
+            Assert.Equal(definition.Name, model.Name);
+            Assert.Equal(definition.Description, model.Description);
         }
 
         /// <summary>
@@ -129,6 +133,8 @@ namespace TNDStudios.DataPortals.Tests.UI
             DataItemDefinitionModel model = new DataItemDefinitionModel()
             {
                 Id = Guid.NewGuid().ToString(),
+                Name = "Name",
+                Description = "Description",
                 Culture = culture,
                 EncodingFormat = encoding
             };
@@ -142,6 +148,8 @@ namespace TNDStudios.DataPortals.Tests.UI
             Assert.Equal(culture, model.Culture);
             Assert.Equal(encoding, model.EncodingFormat);
             Assert.Equal(definition.Id.ToString(), model.Id);
+            Assert.Equal(definition.Name, model.Name);
+            Assert.Equal(definition.Description, model.Description);
         }
 
         /// <summary>

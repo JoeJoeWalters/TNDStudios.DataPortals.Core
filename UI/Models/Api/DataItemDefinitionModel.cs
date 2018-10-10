@@ -15,24 +15,8 @@ namespace TNDStudios.DataPortals.UI.Models.Api
     /// for sending back over the API calls
     /// </summary>
     [JsonObject(MemberSerialization.OptOut)]
-    public class DataItemDefinitionModel
+    public class DataItemDefinitionModel : CommonObjectModel
     {
-        /// <summary>
-        /// The Id for this object
-        /// </summary>
-        [JsonProperty]
-        public String Id { get; set; }
-
-        /// <summary>
-        /// The name of the definition
-        /// </summary>
-        public String Name { get; set; }
-
-        /// <summary>
-        /// The description of the definition
-        /// </summary>
-        public String Description { get; set; }
-
         /// <summary>
         /// The list of properties that define the data item
         /// </summary>
