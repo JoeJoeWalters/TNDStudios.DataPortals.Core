@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Text;
 using TNDStudios.DataPortals.Api;
 using TNDStudios.DataPortals.Data;
 
@@ -44,6 +46,11 @@ namespace TNDStudios.DataPortals.UI
 #warning [By default for now just create one collection package until we think about multiple orgs / environments etc.]
                 CurrentPackageId = Guid.NewGuid(); // Create a default Id
 
+                // Initialisation Id's
+                Guid dataConnectionId = Guid.NewGuid();
+                Guid dataDefinitionId = Guid.NewGuid();
+                Guid apiId = Guid.NewGuid();
+
                 // Set up a blank list of packages
                 Packages = new List<CollectionPackage>()
                 {
@@ -52,9 +59,75 @@ namespace TNDStudios.DataPortals.UI
                         Id = CurrentPackageId,
                         Name = "Test Package",
                         Description = "Test Package Description",
-                        ApiDefinitions = new List<ApiDefinition>() { },
-                        DataConnections = new List<DataConnection>() { },
-                        DataDefinitions = new List<DataItemDefinition>() { }
+                        ApiDefinitions = new List<ApiDefinition>()
+                        {
+                            new ApiDefinition()
+                            {
+                                DataConnection = dataConnectionId,
+                                DataDefinition = dataDefinitionId,
+                                Description = "Flat File Api Definition",
+                                Id = apiId,
+                                Name = "flatfile"
+                            }
+                        },
+                        DataConnections = new List<DataConnection>()
+                        {
+                            new DataConnection()
+                            {
+                                Id = dataConnectionId,
+                                ConnectionString = @"C:\Users\Joe\Documents\Git\TNDStudios.DataPortals.Core\FlatFileProvider.Tests\TestFiles\BigFiles\SalesRecords5000.csv",
+                                Definitions = new List<Guid>() { dataDefinitionId },
+                                Description = "Data Connection Description",
+                                Name = "Data Connection",
+                                ProviderType = DataProviderType.FlatFileProvider
+                            }
+                        },
+                        DataDefinitions = new List<DataItemDefinition>()
+                        {
+                            new DataItemDefinition()
+                            {
+                                Id = dataDefinitionId,
+                                Connections = new List<Guid>(){ dataConnectionId },
+                                Culture = CultureInfo.GetCultureInfo("en-US"),
+                                Description = "Data Item Definition Description",
+                                EncodingFormat = Encoding.UTF8,
+                                ItemProperties = new List<DataItemProperty>()
+                                {
+                                    new DataItemProperty()
+                                    {
+                                        DataType = typeof(String),
+                                        Name = "Country",
+                                        Description = "Country",
+                                        Path = "Country",
+                                        PropertyType = DataItemPropertyType.Property,
+                                        OridinalPosition = 0,
+                                        Quoted = false
+                                    },
+                                    new DataItemProperty()
+                                    {
+                                        DataType = typeof(String),
+                                        Name = "Item Type",
+                                        Description = "Item Type",
+                                        Path = "Item Type",
+                                        PropertyType = DataItemPropertyType.Property,
+                                        OridinalPosition = 1,
+                                        Quoted = false
+                                    },
+                                    new DataItemProperty()
+                                    {
+                                        DataType = typeof(String),
+                                        Name = "Region",
+                                        Description = "Region",
+                                        Path = "Region",
+                                        PropertyType = DataItemPropertyType.Property,
+                                        OridinalPosition = 2,
+                                        Quoted = false
+                                    }
+                                },
+                                Name = "Data Item Definition",
+                                PropertyBag = new Dictionary<String, Object>()
+                            }
+                        }
                     }
                 };
             }

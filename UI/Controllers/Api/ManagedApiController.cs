@@ -37,56 +37,6 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                 // Create a provider factory so that connections can be pooled
                 providerFactory = new DataProviderFactory();
 
-                // Create a list of the available connectors (but are not yet
-                // provisioned)
-                /*connectorSetup = new Dictionary<Guid, ProviderSetup>()
-                {
-                    {
-                        "flatfile" ,
-                        new ProviderSetup()
-                        {
-                            Id = "flatfile",
-                            ConnectionString = @"C:\Users\Joe\Documents\Git\TNDStudios.DataPortals.Core\FlatFileProvider.Tests\TestFiles\BigFiles\SalesRecords5000.csv",
-                            Definition = new DataItemDefinition()
-                            {
-                                Culture = new CultureInfo("en-US"),
-                                EncodingFormat = Encoding.UTF8,
-                                ItemProperties = new List<DataItemProperty>()
-                                {
-                                    new DataItemProperty()
-                                    {
-                                        DataType = typeof(String),
-                                        Description = "Region",
-                                        Name = "Region",
-                                        OridinalPosition = 0,
-                                        Path = "Region",
-                                        PropertyType = DataItemPropertyType.Property                                                
-                                    },
-                                    new DataItemProperty()
-                                    {
-                                        DataType = typeof(String),
-                                        Description = "Country",
-                                        Name = "Country",
-                                        OridinalPosition = 1,
-                                        Path = "Country",
-                                        PropertyType = DataItemPropertyType.Property
-                                    },
-                                    new DataItemProperty()
-                                    {
-                                        DataType = typeof(String),
-                                        Description = "Item Type",
-                                        Name = "Item Type",
-                                        OridinalPosition = 2,
-                                        Path = "Item Type",
-                                        PropertyType = DataItemPropertyType.Property
-                                    }         
-                                }
-                            },
-                            ProviderType = typeof(FlatFileProvider)
-                        }
-                    }
-                };*/
-
                 // Mark the system as initialised
                 initialised = true;
             }
@@ -112,7 +62,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                     // Are we connected?
                     if (provider.Connected)
                     {
-                        return DataTableToJsonFormat(provider.Read("Country = 'Oman'"));
+                        return DataTableToJsonFormat(provider.Read("Country = 'Central America and the Caribbean'"));
                     }
                 }
             }
