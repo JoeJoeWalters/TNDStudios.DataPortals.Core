@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using TNDStudios.DataPortals.Api;
@@ -46,28 +47,47 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         [Route("/api/{objectType}")]
         public ActionResult<Boolean> Get(String objectType)
         {
-            // Make sure we actually have a current package in the session
-            if (SessionHandler.CurrentPackage != null)
+            try
             {
-                // Get the definition for this object type
-                ApiDefinition apiDefinition = SessionHandler.CurrentPackage.Api(objectType);
-                if (apiDefinition != null)
+                // Make sure we actually have a current package in the session
+                if (SessionHandler.CurrentPackage != null)
                 {
-                    // Use the api definition to get the data connection and 
-                    // definition from the package and then try to connect
-                    IDataProvider provider = providerFactory.Get(
-                        SessionHandler.CurrentPackage.DataConnection(apiDefinition.DataConnection),
-                        SessionHandler.CurrentPackage.DataDefinition(apiDefinition.DataDefinition));
-
-                    // Are we connected?
-                    if (provider.Connected)
+                    // Get the definition for this object type
+                    ApiDefinition apiDefinition = SessionHandler.CurrentPackage.Api(objectType);
+                    if (apiDefinition != null)
                     {
-                        return DataTableToJsonFormat(provider.Read("Country = 'Central America and the Caribbean'"));
+                        // Use the api definition to get the data connection and 
+                        // definition from the package and then try to connect
+                        IDataProvider provider = providerFactory.Get(
+                            SessionHandler.CurrentPackage.DataConnection(apiDefinition.DataConnection),
+                            SessionHandler.CurrentPackage.DataDefinition(apiDefinition.DataDefinition));
+
+                        // Are we connected?
+                        if (provider.Connected)
+                        {
+                            // Return the data with the appropriate filter
+                            return DataTableToJsonFormat(provider.Read("Country = 'Central America and the Caribbean'"));
+                        }
+                        else
+                        {
+                            // Could not connect to the data source, return the appropriate error code
+                            return StatusCode((Int32)HttpStatusCode.InternalServerError, "Could not connect to the data source");
+                        }
                     }
-                }
+                    else
+                    {
+                        // Return a failure to find the object if we get to here
+                        return StatusCode((Int32)HttpStatusCode.NotFound, $"Endpoint of type '{objectType}' was not found");
+                    }
+                }                
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((Int32)HttpStatusCode.InternalServerError, $"Could not perform operation due to '{ex.Message}'");
             }
 
-            return false;
+            // Something was very wrong that there could be no service available
+            return StatusCode((Int32)HttpStatusCode.ServiceUnavailable, $"There was not package loaded to search for an endpoint of type '{objectType}'");
         }
 
         [HttpPost]
