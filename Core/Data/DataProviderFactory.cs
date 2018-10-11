@@ -10,22 +10,39 @@ namespace TNDStudios.DataPortals.Data
     /// </summary>
     public class DataProviderFactory
     {
-        private Dictionary<Guid, IDataProvider> providers; // Data providers that have been set up 
+        private Dictionary<String, IDataProvider> providers; // Data providers that have been set up 
 
+        /// <summary>
+        /// Generate a unique key for holding the provider
+        /// (which could also include the definition)
+        /// </summary>
+        /// <returns></returns>
+#warning [This isn't the best approach but for small amounts of connections it's fine for now, use MD5 or other crytography has to get a larger Id later]
+        public String GenerateConnectionKey(List<Guid> keys)
+            => String.Join("-", keys.ToArray()).GetHashCode().ToString();
+            
         /// <summary>
         /// Get the provider type base on the string value provided
         /// </summary>
         /// <param name="provider">The provider to be resolved</param>
         /// <returns>The resolved data provider</returns>
-        public IDataProvider Get(DataConnection connection) => Get(connection, null);
+        public IDataProvider Get(DataConnection connection, Boolean addToCache) => Get(connection, null, addToCache);
         public IDataProvider Get(
             DataConnection connection, 
-            DataItemDefinition definition)
+            DataItemDefinition definition,
+            Boolean addToCache)
         {
             IDataProvider result = null; // Create a fail state by default
 
             // Do we already have a provider set up for this data connection
-            Boolean existingProvider = providers.ContainsKey(connection.Id);
+            String uniqueKey = GenerateConnectionKey(
+                new List<Guid>()
+                {
+                    connection.Id,
+                    definition.Id
+                });
+
+            Boolean existingProvider = providers.ContainsKey(uniqueKey);
             if (!existingProvider)
             {
                 // Decide on the type of object to create based on the enumeration
@@ -47,7 +64,7 @@ namespace TNDStudios.DataPortals.Data
                 result = (IDataProvider)Activator.CreateInstance(type);
             }
             else
-                result = providers[connection.Id];
+                result = providers[uniqueKey];
 
             // Did we get a provider?
             if (result != null)
@@ -57,8 +74,8 @@ namespace TNDStudios.DataPortals.Data
                     result.Connect(definition, connection.ConnectionString);
 
                 // If the provider was not in the pooled collection of providers then add it
-                if (!existingProvider)
-                    providers[connection.Id] = result;
+                if (!existingProvider && addToCache)
+                    providers[uniqueKey] = result;
             }
             
             // Return the provider
@@ -70,7 +87,7 @@ namespace TNDStudios.DataPortals.Data
         /// </summary>
         public DataProviderFactory()
         {
-            providers = new Dictionary<Guid, IDataProvider>() { };
+            providers = new Dictionary<String, IDataProvider>() { };
         }
 
     }

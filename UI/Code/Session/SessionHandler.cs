@@ -130,6 +130,9 @@ namespace TNDStudios.DataPortals.UI
                         }
                     }
                 };
+
+                // Now intialised
+                Initialised = true;
             }
         }
     }

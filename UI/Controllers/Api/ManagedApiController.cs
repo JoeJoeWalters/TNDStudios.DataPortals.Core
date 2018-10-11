@@ -60,7 +60,8 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                         // definition from the package and then try to connect
                         IDataProvider provider = providerFactory.Get(
                             SessionHandler.CurrentPackage.DataConnection(apiDefinition.DataConnection),
-                            SessionHandler.CurrentPackage.DataDefinition(apiDefinition.DataDefinition));
+                            SessionHandler.CurrentPackage.DataDefinition(apiDefinition.DataDefinition),
+                            true);
 
                         // Are we connected?
                         if (provider.Connected)
