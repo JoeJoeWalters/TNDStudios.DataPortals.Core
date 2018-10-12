@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
 using TNDStudios.DataPortals.Api;
 using TNDStudios.DataPortals.Data;
+using TNDStudios.DataPortals.UI.Models.Api;
 
 namespace TNDStudios.DataPortals.UI.Controllers.Api
 {
@@ -17,8 +20,20 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
     [ApiController]
     public class ManagedApiController : ApiControllerBase
     {
+        /// <summary>
+        /// Automapper set by the dependency injection to the constructor
+        /// </summary>
+        private readonly IMapper mapper;
+
+        /// <summary>
+        /// Has the managed api controller been initialised?
+        /// </summary>
         private static Boolean initialised = false;
-        private static DataProviderFactory providerFactory; // Holding all of the connections once provisioned
+
+        /// <summary>
+        /// Holding all of the connections once provisioned
+        /// </summary>
+        private static DataProviderFactory providerFactory;
 
         /// <summary>
         /// Convert a data table to the correct format for returning to the user
@@ -30,8 +45,10 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// <summary>
         /// Default Constructor
         /// </summary>
-        public ManagedApiController() : base()
+        public ManagedApiController(IMapper mapper) : base()
         {
+            this.mapper = mapper; // Assign the mapper from the dependency injection
+        
             // Is the API system initialised?
             if (!initialised)
             {
@@ -41,6 +58,34 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                 // Mark the system as initialised
                 initialised = true;
             }
+        }
+
+        /// <summary>
+        /// Get a list (or singular) data definition model 
+        /// based on a set of criteria
+        /// </summary>
+        /// <returns>An API response with a list of data definition models</returns>
+        [HttpGet]
+        [Route("/api/managedapi/definition")]
+        public ApiResponse<List<ApiDefinitionModel>> Get()
+            => Get(Guid.Empty);
+
+        [HttpGet]
+        [Route("/api/managedapi/definition/{id}")]
+        public ApiResponse<List<ApiDefinitionModel>> Get(Guid id)
+        {
+            // Create the response object
+            ApiResponse<List<ApiDefinitionModel>> response =
+                new ApiResponse<List<ApiDefinitionModel>>();
+
+            // Was an id passed in? If not just return everything
+            response.Data = mapper.Map<List<ApiDefinitionModel>>(
+                SessionHandler.CurrentPackage.DataDefinitions.Where
+                (def => (id == Guid.Empty || def.Id == id))
+                );
+
+            // Return the response object
+            return response;
         }
 
         [HttpGet]

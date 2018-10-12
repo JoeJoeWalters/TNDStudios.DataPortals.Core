@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +12,16 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
     public class DataDefinitionApiController : ApiControllerBase
     {
         /// <summary>
+        /// Automapper set by the dependency injection to the constructor
+        /// </summary>
+        private readonly IMapper mapper;
+
+        /// <summary>
         /// Default Constructor
         /// </summary>
-        public DataDefinitionApiController() : base()
+        public DataDefinitionApiController(IMapper mapper) : base()
         {
-
+            this.mapper = mapper; // Assign the mapper from the dependency injection
         }
 
         /// <summary>
@@ -25,14 +31,23 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// <returns>An API response with a list of data definition models</returns>
         [HttpGet]
         [Route("/api/data/definition")]
-        public ApiResponse<List<DataItemDefinitionModel>> Get(ApiRequest<Guid> request)
+        public ApiResponse<List<DataItemDefinitionModel>> Get()
+            => Get(Guid.Empty);
+
+        [HttpGet]
+        [Route("/api/data/definition/{id}")]
+        public ApiResponse<List<DataItemDefinitionModel>> Get(Guid id)
         {
             // Create the response object
             ApiResponse<List<DataItemDefinitionModel>> response =
                 new ApiResponse<List<DataItemDefinitionModel>>();
 
-
-
+            // Was an id passed in? If not just return everything
+            response.Data = mapper.Map<List<DataItemDefinitionModel>>(
+                SessionHandler.CurrentPackage.DataDefinitions.Where
+                (def => (id == Guid.Empty || def.Id == id))
+                );
+            
             // Return the response object
             return response;
         }
