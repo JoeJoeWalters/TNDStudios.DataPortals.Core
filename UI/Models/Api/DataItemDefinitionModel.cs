@@ -46,7 +46,7 @@ namespace TNDStudios.DataPortals.UI.Models.Api
         /// </summary>
         public DataItemDefinitionModel()
         {
-            Id = Guid.NewGuid().ToString();
+            Id = Guid.NewGuid();
             Name = "";
             Description = "";
             ItemProperties = new List<DataItemPropertyModel>();

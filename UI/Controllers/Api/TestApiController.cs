@@ -28,6 +28,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             this.mapper = mapper; // Assign the mapper from the dependency injection
         }
 
+        /*
         [HttpPost]
         [Route("/api/test/data")]
         public ApiResponse<DataItemValuesModel> TestData([FromForm] DataItemDefinitionModel request)
@@ -121,5 +122,6 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                 Success = true
             };
         }
+        */
     }
 }

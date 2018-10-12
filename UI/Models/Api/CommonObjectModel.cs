@@ -16,7 +16,7 @@ namespace TNDStudios.DataPortals.UI.Models.Api
         /// The Id for this object
         /// </summary>
         [JsonProperty]
-        public String Id { get; set; }
+        public Guid Id { get; set; }
 
         /// <summary>
         /// The name of the definition

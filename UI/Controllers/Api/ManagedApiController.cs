@@ -80,16 +80,30 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
 
             // Was an id passed in? If not just return everything
             response.Data = mapper.Map<List<ApiDefinitionModel>>(
-                SessionHandler.CurrentPackage.DataDefinitions.Where
+                SessionHandler.CurrentPackage.ApiDefinitions.Where
                 (def => (id == Guid.Empty || def.Id == id))
                 );
+
+            // Post processing to fill in the missing titles
+            // as this doesn't really fit well in Automapper due 
+            // to the source column type
+            response.Data.ForEach(item =>
+                {
+                    // Lookup the objects from the package
+                    DataConnection connection = SessionHandler.CurrentPackage.DataConnection(item.DataConnection.Key);
+                    DataItemDefinition definition = SessionHandler.CurrentPackage.DataDefinition(item.DataDefinition.Key);
+
+                    // Assign the correct values to the model
+                    item.DataConnection = new KeyValuePair<Guid, String>(connection.Id, connection.Name);
+                    item.DataDefinition = new KeyValuePair<Guid, String>(definition.Id, definition.Name);
+                });
 
             // Return the response object
             return response;
         }
 
         [HttpGet]
-        [Route("/api/{objectType}")]
+        [Route("/api/objects/{objectType}")]
         public ActionResult<Boolean> Get(String objectType)
         {
             try
@@ -137,28 +151,28 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         }
 
         [HttpPost]
-        [Route("/api/{objectType}")]
+        [Route("/api/objects/{objectType}")]
         public ActionResult<Boolean> Post(String objectType)
         {
             return true;
         }
 
         [HttpDelete]
-        [Route("/api/{objectType}")]
+        [Route("/api/objects/{objectType}")]
         public ActionResult<Boolean> Delete(String objectType)
         {
             return true;
         }
 
         [HttpPatch]
-        [Route("/api/{objectType}")]
+        [Route("/api/objects/{objectType}")]
         public ActionResult<Boolean> Patch(String objectType)
         {
             return true;
         }
 
         [HttpPut]
-        [Route("/api/{objectType}")]
+        [Route("/api/objects/{objectType}")]
         public ActionResult<Boolean> Put(String objectType)
         {
             return true;
