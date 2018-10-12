@@ -56,6 +56,11 @@ namespace TNDStudios.DataPortals.Data
         Boolean Connected { get; }
 
         /// <summary>
+        /// When the last time the provider was used or actioned upon
+        /// </summary>
+        DateTime LastAction { get; }
+
+        /// <summary>
         /// Disconnect from the data source
         /// </summary>
         /// <returns>Confirmation of if it has disconnected</returns>

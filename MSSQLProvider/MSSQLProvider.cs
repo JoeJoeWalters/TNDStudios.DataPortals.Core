@@ -7,7 +7,7 @@ namespace TNDStudios.DataPortals.Data
 {
     public class MSSQLProvider : DataProviderBase, IDataProvider
     {
-        public MSSQLProvider()
+        public MSSQLProvider() : base()
         {
         }
     }

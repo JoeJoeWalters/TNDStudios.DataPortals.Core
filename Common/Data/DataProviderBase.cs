@@ -10,6 +10,14 @@ namespace TNDStudios.DataPortals.Data
     public class DataProviderBase : IDataProvider
     {
         /// <summary>
+        /// Default Constructor
+        /// </summary>
+        public DataProviderBase()
+        {
+            this.MarkLastAction(); // Tell the provider that it did something
+        }
+
+        /// <summary>
         /// Is the provider in test mode (for example, in test flat files
         /// we want to write to the internal buffer but not to disk)
         /// </summary>
@@ -28,8 +36,21 @@ namespace TNDStudios.DataPortals.Data
         public Boolean Connected
         {
             get { return connected; }
-            set { connected = value; }
         }
+
+        /// <summary>
+        /// When the last time the provider was used or actioned upon
+        /// </summary>
+        protected internal DateTime lastAction;
+        public DateTime LastAction
+        {
+            get { return lastAction; }
+        }
+
+        /// <summary>
+        /// Mark the last time something happened on a provider
+        /// </summary>
+        public virtual void MarkLastAction() { this.lastAction = DateTime.Now; }
 
         public virtual bool Connect(DataItemDefinition definition, String connectionString)
             => throw new NotImplementedException();

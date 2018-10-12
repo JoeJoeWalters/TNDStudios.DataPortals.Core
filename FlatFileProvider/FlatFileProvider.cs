@@ -43,6 +43,7 @@ namespace TNDStudios.DataPortals.Data
                 }
             }
 
+            this.MarkLastAction(); // Tell the provider base class that it did something
             return result; // Return the result of the read
         }
 
@@ -61,12 +62,13 @@ namespace TNDStudios.DataPortals.Data
             if (stream != null && definition != null)
             {
                 stream.Position = 0; // Reset back to the start again in case someone else has read it
+                base.MarkLastAction(); // Tell the provider base class that it did something
 
                 // Read the data from the stream provided
                 using (StreamReader textReader = new StreamReader(stream))
                 {
                     this.memoryData = FlatFileHelper.TextToDataTable(definition, textReader.ReadToEnd());
-                    base.Connected = true; // Mark the provider as connected
+                    base.connected = true; // Mark the provider as connected
                     return true; // Connected without any errors
                 }
             }
@@ -81,6 +83,7 @@ namespace TNDStudios.DataPortals.Data
         public override Boolean Disconnect()
         {
             connected = false; // Always disconnect
+            base.MarkLastAction(); // Tell the provider base class that it did something
             memoryData = new DataTable(); // No data held once disconnected
             return connected;
         }
@@ -97,6 +100,7 @@ namespace TNDStudios.DataPortals.Data
 
             try
             {
+                base.MarkLastAction(); // Tell the provider base class that it did something
 
                 // Get a list of "primary key" (can be multiple columns that
                 // identify the unique records)
@@ -182,6 +186,9 @@ namespace TNDStudios.DataPortals.Data
             {
             }
 
+            base.MarkLastAction(); // Tell the provider base class that it did something
+
+            // Return the result
             return result;
         }
 
@@ -192,6 +199,8 @@ namespace TNDStudios.DataPortals.Data
         /// <returns>A list of data items that match the query</returns>
         public override DataTable Read(String command)
         {
+            base.MarkLastAction(); // Tell the provider base class that it did something
+
             // Do we have a filter?
             if ((command ?? "") != "")
             {
@@ -247,6 +256,8 @@ namespace TNDStudios.DataPortals.Data
                 };
             result = FlatFileHelper.AnalyseText(analyseTextRequest);
 
+            base.MarkLastAction(); // Tell the provider base class that it did something
+
             // Send the analysis data table back
             return result;
         }
@@ -254,10 +265,11 @@ namespace TNDStudios.DataPortals.Data
         /// <summary>
         /// Default Constructor
         /// </summary>
-        public FlatFileProvider()
+        public FlatFileProvider() : base()
         {
             connectionString = ""; // No connection string by default
             connected = false; // Not connected until the file can be proven as existing
+
         }
     }
 }
