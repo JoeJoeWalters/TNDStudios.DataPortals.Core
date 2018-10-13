@@ -89,13 +89,14 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             // to the source column type
             response.Data.ForEach(item =>
                 {
-                    // Lookup the objects from the package
-                    DataConnection connection = SessionHandler.CurrentPackage.DataConnection(item.DataConnection.Key);
-                    DataItemDefinition definition = SessionHandler.CurrentPackage.DataDefinition(item.DataDefinition.Key);
-
                     // Assign the correct values to the model
-                    item.DataConnection = new KeyValuePair<Guid, String>(connection.Id, connection.Name);
-                    item.DataDefinition = new KeyValuePair<Guid, String>(definition.Id, definition.Name);
+                    item.DataConnection = 
+                        mapper.Map<KeyValuePair<Guid, String>>
+                            (SessionHandler.CurrentPackage.DataConnection(item.DataConnection.Key));
+
+                    item.DataDefinition = 
+                        mapper.Map<KeyValuePair<Guid, String>>
+                            (SessionHandler.CurrentPackage.DataDefinition(item.DataDefinition.Key));
                 });
 
             // Return the response object

@@ -59,11 +59,9 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
 
                 item.Definitions.ForEach(def =>
                 {
-                    // Lookup the objects from the package
-                    DataItemDefinition definition = SessionHandler.CurrentPackage.DataDefinition(def.Key);
-
-                    // Assign the correct values to the model
-                    mappedPairs.Add(new KeyValuePair<Guid, string>(definition.Id, definition.Name));
+                    mappedPairs.Add(
+                        mapper.Map<KeyValuePair<Guid, String>>(SessionHandler.CurrentPackage.DataDefinition(def.Key))
+                        );
                 });
 
                 // Assign the new list (KeyValue Pairs are readonly and the list
