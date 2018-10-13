@@ -1,27 +1,21 @@
-﻿using System;
+using System;
 using Xunit;
-using AutoMapper;
-using TNDStudios.DataPortals.UI;
-using TNDStudios.DataPortals.UI.Models;
 using TNDStudios.DataPortals.Data;
-using TNDStudios.DataPortals.UI.Models.Api;
-using System.Globalization;
-using System.Text;
 using System.Collections.Generic;
 
-namespace TNDStudios.DataPortals.Tests.UI
+namespace TNDStudios.DataPortals.Tests.Core
 {
     /// <summary>
     /// Setup fixture for the tests
     /// </summary>
-    public class APIProviderTestsFixture : IDisposable
+    public class ProviderFactoryTestsFixture : IDisposable
     {
         public DataProviderFactory Factory; // The provider factory to test
 
         /// <summary>
         /// Configure the test fixture
         /// </summary>
-        public APIProviderTestsFixture()
+        public ProviderFactoryTestsFixture()
         {
             Factory = new DataProviderFactory();
         }
@@ -35,15 +29,15 @@ namespace TNDStudios.DataPortals.Tests.UI
         }
     }
 
-    public class APIProviderTests : IClassFixture<APIProviderTestsFixture>
+    public class ProviderFactoryTests : IClassFixture<ProviderFactoryTestsFixture>
     {
-        private APIProviderTestsFixture fixture; // Reference for the test fixture
+        private ProviderFactoryTestsFixture fixture; // Reference for the test fixture
 
         /// <summary>
         /// Constructor to inject the fixture
         /// </summary>
         /// <param name="data"></param>
-        public APIProviderTests(APIProviderTestsFixture data)
+        public ProviderFactoryTests(ProviderFactoryTestsFixture data)
             => fixture = data;
 
         [Fact]
@@ -60,7 +54,7 @@ namespace TNDStudios.DataPortals.Tests.UI
             DataProviderFactory factory = new DataProviderFactory();
 
             // Assert & Act
-            expectedOutcomes.ForEach(outcome => 
+            expectedOutcomes.ForEach(outcome =>
             {
                 // Get the provider based on the provider type
                 IDataProvider provider = factory.Get(
