@@ -39,7 +39,7 @@ namespace TNDStudios.DataPortals.Data
                 new List<Guid>()
                 {
                     connection.Id,
-                    definition.Id
+                    ((definition == null || definition.Id == null) ? Guid.Empty : definition.Id)
                 });
 
             Boolean existingProvider = providers.ContainsKey(uniqueKey);
@@ -61,7 +61,12 @@ namespace TNDStudios.DataPortals.Data
                         type = null;
                         break;
                 }
-                result = (IDataProvider)Activator.CreateInstance(type);
+
+                // Did we actually get a type?
+                if (type != null)
+                    result = (IDataProvider)Activator.CreateInstance(type);
+                else
+                    result = null;
             }
             else
                 result = providers[uniqueKey];
