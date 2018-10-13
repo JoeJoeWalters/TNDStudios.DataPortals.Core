@@ -28,7 +28,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\ApiDefinitions\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Connectors\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\DataDefinitions\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
   </ItemGroup>

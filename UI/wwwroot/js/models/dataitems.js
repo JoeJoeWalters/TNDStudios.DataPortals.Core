@@ -13,6 +13,7 @@ tndStudios.models.dataItems =
             this.propertyBag = [];
             this.culture = '';
             this.encodingFormat = '';
+            this.connections = [];
         },
 
         // Data Item Property Model
