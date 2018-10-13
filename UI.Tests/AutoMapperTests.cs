@@ -7,6 +7,7 @@ using TNDStudios.DataPortals.Data;
 using TNDStudios.DataPortals.UI.Models.Api;
 using System.Globalization;
 using System.Text;
+using System.Collections.Generic;
 
 namespace TNDStudios.DataPortals.Tests.UI
 {
@@ -68,7 +69,13 @@ namespace TNDStudios.DataPortals.Tests.UI
                 Name = "Name",
                 Description = "Description",
                 Culture = CultureInfo.GetCultureInfo(culture),
-                EncodingFormat = Encoding.GetEncoding(encoding)
+                EncodingFormat = Encoding.GetEncoding(encoding),
+                Connections = new List<Guid>()
+                {
+                    Guid.NewGuid(),
+                    Guid.NewGuid(),
+                    Guid.NewGuid()
+                }
             };
 
             // Act
@@ -79,9 +86,11 @@ namespace TNDStudios.DataPortals.Tests.UI
             Assert.Equal(definition.ItemProperties.Count, model.ItemProperties.Count);
             Assert.Equal(culture, model.Culture);
             Assert.Equal(encoding, model.EncodingFormat);
-            Assert.Equal(definition.Id.ToString(), model.Id);
+            Assert.Equal(definition.Id, model.Id);
             Assert.Equal(definition.Name, model.Name);
             Assert.Equal(definition.Description, model.Description);
+            Assert.Equal(definition.Connections.Count, model.Connections.Count);
+            Assert.Equal(definition.Connections[0], model.Connections[0].Key);
         }
 
         /// <summary>
@@ -93,6 +102,7 @@ namespace TNDStudios.DataPortals.Tests.UI
             String dataType = "System.Int64";
             DataItemProperty property = new DataItemProperty()
             {
+                Id = Guid.NewGuid(),
                 Calculation = "calculated value",
                 DataType = Type.GetType(dataType),
                 Description = "description value",
@@ -110,6 +120,7 @@ namespace TNDStudios.DataPortals.Tests.UI
                 fixture.TestMapper.Map<DataItemPropertyModel>(property);
 
             // Assert
+            Assert.Equal(property.Id, model.Id);
             Assert.Equal(property.Calculation, model.Calculation);
             Assert.Equal(dataType, model.DataType);
             Assert.Equal(property.Description, model.Description);
@@ -132,11 +143,17 @@ namespace TNDStudios.DataPortals.Tests.UI
             String encoding = "utf-8";
             DataItemDefinitionModel model = new DataItemDefinitionModel()
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = Guid.NewGuid(),
                 Name = "Name",
                 Description = "Description",
                 Culture = culture,
-                EncodingFormat = encoding
+                EncodingFormat = encoding,
+                Connections = new List<KeyValuePair<Guid, String>>()
+                {
+                    new KeyValuePair<Guid, string>(Guid.NewGuid(), "Item 1"),
+                    new KeyValuePair<Guid, string>(Guid.NewGuid(), "Item 2"),
+                    new KeyValuePair<Guid, string>(Guid.NewGuid(), "Item 3")
+                }
             };
 
             // Act
@@ -147,9 +164,11 @@ namespace TNDStudios.DataPortals.Tests.UI
             Assert.Equal(definition.ItemProperties.Count, model.ItemProperties.Count);
             Assert.Equal(culture, model.Culture);
             Assert.Equal(encoding, model.EncodingFormat);
-            Assert.Equal(definition.Id.ToString(), model.Id);
+            Assert.Equal(definition.Id, model.Id);
             Assert.Equal(definition.Name, model.Name);
             Assert.Equal(definition.Description, model.Description);
+            Assert.Equal(definition.Connections.Count, model.Connections.Count);
+            Assert.Equal(definition.Connections[0], model.Connections[0].Key);
         }
 
         /// <summary>

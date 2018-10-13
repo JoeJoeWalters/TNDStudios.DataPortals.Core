@@ -79,19 +79,7 @@ namespace TNDStudios.DataPortals.UI
                 .ConstructUsing(api => new KeyValuePair<Guid, string>(api.Id, api.Name));
 
             // Map from the api definition domain object to web view model
-            CreateMap<ApiDefinition, ApiDefinitionModel>()
-                .ForMember(
-                    item => item.DataConnection,
-                    opt => opt.MapFrom(
-                        src => new KeyValuePair<Guid, String>(src.DataConnection, "")
-                        )
-                    )
-                .ForMember(
-                    item => item.DataDefinition,
-                    opt => opt.MapFrom(
-                        src => new KeyValuePair<Guid, String>(src.DataDefinition, "")
-                        )
-                    );
+            CreateMap<ApiDefinition, ApiDefinitionModel>();
 
             // Map from the web view model of the api definition to the domain object
             CreateMap<ApiDefinitionModel, ApiDefinition>()
@@ -113,15 +101,7 @@ namespace TNDStudios.DataPortals.UI
                 .ConstructUsing(api => new KeyValuePair<Guid, string>(api.Id, api.Name));
 
             // Map from the data connection domain object to the web view model
-            CreateMap<DataConnection, DataConnectionModel>()
-                .ForMember(
-                    item => item.Definitions,
-                    opt => opt.MapFrom(
-                        src => src.Definitions.Select(
-                            item => new KeyValuePair<Guid, String>(item, "")
-                            ).ToList()
-                        )
-                    );
+            CreateMap<DataConnection, DataConnectionModel>();
 
             // Map from the web view model of the data connection to the domain object
             CreateMap<DataConnectionModel, DataConnection>()
@@ -133,6 +113,15 @@ namespace TNDStudios.DataPortals.UI
                             ).ToList()
                         )
                     );
+
+            // Create a generic key pair to id mapping
+            CreateMap<KeyValuePair<Guid, String>, Guid>()
+                .ConstructUsing(key => key.Key);
+
+            // Create a generic id to key pair mapping
+            CreateMap<Guid, KeyValuePair<Guid, String>>()
+                .ConstructUsing(key => new KeyValuePair<Guid, String>(key, ""));
+
         }
     }
 }
