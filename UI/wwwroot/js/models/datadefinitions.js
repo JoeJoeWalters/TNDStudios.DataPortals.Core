@@ -1,6 +1,6 @@
 ﻿var tndStudios = tndStudios || {};
 tndStudios.models = tndStudios.models || {};
-tndStudios.models.dataItems =
+tndStudios.models.dataDefinitions =
     {
         // Data Item Definition Model
         dataItemDefinition: function () {

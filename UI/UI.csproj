@@ -31,7 +31,7 @@
     <Content Update="Views\ApiDefinitions\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Connectors\Index.cshtml">
+    <Content Update="Views\Connections\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\DataDefinitions\Index.cshtml">

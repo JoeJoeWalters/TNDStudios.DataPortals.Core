@@ -6,23 +6,41 @@
 
     <!-- Models required for this page -->
     <script src="~/js/models/common.js"></script>
-    <script src="~/js/models/dataitems.js"></script>
+    <script src="~/js/models/dataconnections.js"></script>
 
     <!-- Vue script for this page-->
-    <script src="~/js/pages/connectors/index.js"></script>
+    <script src="~/js/pages/connections/index.js"></script>
 }
 
 <!-- Breadcrumbs-->
 <ol class="breadcrumb">
-    <li class="breadcrumb-item active">Components</li>
+    <li class="breadcrumb-item">Components</li>
     <li class="breadcrumb-item active">Connectors</li>
 </ol>
 
 <div class="row">
     <div class="col-md-4">
-
+        <div class="card">
+            <div class="card-header">
+                Existing Connectors
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li v-for="item in connections">
+                        <a v-bind:href="'/connections/' + item.id">{{item.name}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
     <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                Connection Editor
+            </div>
+            <div class="card-body">
+            </div>
+        </div>
 
     </div>
 </div>

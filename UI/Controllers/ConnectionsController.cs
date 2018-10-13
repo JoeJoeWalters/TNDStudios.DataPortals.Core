@@ -8,11 +8,17 @@ using TNDStudios.DataPortals.UI.Models;
 
 namespace TNDStudios.DataPortals.UI.Controllers
 {
-    public class ConnectorsController : Controller
+    public class ConnectionsController : Controller
     {
         public IActionResult Index()
         {
             return View();
+        }
+
+        [Route("/connections/{id}")]
+        public IActionResult Connection([FromRoute]Guid id)
+        {
+            return View("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
