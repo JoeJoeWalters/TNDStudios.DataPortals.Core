@@ -79,7 +79,8 @@ namespace TNDStudios.DataPortals.Tests.UI
 
             // Assert
             Assert.Equal(keys.Count, keyValuePairs.Count);
-            Assert.Equal(keys[0], keyValuePairs[0].Key);
+            for (Int32 itemId = 0; itemId < keys.Count; itemId++)
+                Assert.Equal(keys[itemId], keyValuePairs[itemId].Key);
         }
 
         /// <summary>
@@ -105,7 +106,8 @@ namespace TNDStudios.DataPortals.Tests.UI
 
             // Assert
             Assert.Equal(keys.Count, keyValuePairs.Count);
-            Assert.Equal(keys[0], keyValuePairs[0].Key);
+            for (Int32 itemId = 0; itemId < keys.Count; itemId ++)
+                Assert.Equal(keys[itemId], keyValuePairs[itemId].Key);
         }
 
         /// <summary>
@@ -140,7 +142,8 @@ namespace TNDStudios.DataPortals.Tests.UI
             Assert.Equal(connection.Description, model.Description);
             Assert.Equal(connection.ConnectionString, model.ConnectionString);
             Assert.Equal(connection.Definitions.Count, model.Definitions.Count);
-            Assert.Equal(connection.Definitions[0], model.Definitions[0].Key);
+            for (Int32 itemId = 0; itemId < connection.Definitions.Count; itemId++)
+                Assert.Equal(connection.Definitions[itemId], model.Definitions[itemId].Key);
             Assert.Equal(connection.ProviderType, (DataProviderType)model.ProviderType);
         }
 
@@ -176,7 +179,8 @@ namespace TNDStudios.DataPortals.Tests.UI
             Assert.Equal(connection.Description, model.Description);
             Assert.Equal(connection.ConnectionString, model.ConnectionString);
             Assert.Equal(connection.Definitions.Count, model.Definitions.Count);
-            Assert.Equal(connection.Definitions[0], model.Definitions[0].Key);
+            for (Int32 itemId = 0; itemId < connection.Definitions.Count; itemId++)
+                Assert.Equal(connection.Definitions[itemId], model.Definitions[itemId].Key);
             Assert.Equal(connection.ProviderType, (DataProviderType)model.ProviderType);
         }
 
@@ -272,7 +276,8 @@ namespace TNDStudios.DataPortals.Tests.UI
             Assert.Equal(definition.Name, model.Name);
             Assert.Equal(definition.Description, model.Description);
             Assert.Equal(definition.Connections.Count, model.Connections.Count);
-            Assert.Equal(definition.Connections[0], model.Connections[0].Key);
+            for (Int32 itemId = 0; itemId < definition.Connections.Count; itemId++)
+                Assert.Equal(model.Connections[itemId].Key, definition.Connections[itemId]);
         }
 
         /// <summary>
@@ -350,7 +355,8 @@ namespace TNDStudios.DataPortals.Tests.UI
             Assert.Equal(definition.Name, model.Name);
             Assert.Equal(definition.Description, model.Description);
             Assert.Equal(definition.Connections.Count, model.Connections.Count);
-            Assert.Equal(definition.Connections[0], model.Connections[0].Key);
+            for (Int32 itemId = 0; itemId < definition.Connections.Count; itemId++)
+                Assert.Equal(model.Connections[itemId].Key, definition.Connections[itemId]);
         }
 
         /// <summary>
