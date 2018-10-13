@@ -8,6 +8,7 @@ using TNDStudios.DataPortals.UI.Models.Api;
 using System.Globalization;
 using System.Text;
 using System.Collections.Generic;
+using TNDStudios.DataPortals.Api;
 
 namespace TNDStudios.DataPortals.Tests.UI
 {
@@ -54,6 +55,187 @@ namespace TNDStudios.DataPortals.Tests.UI
         /// <param name="data"></param>
         public AutoMapperTests(AutoMapperTestsFixture data)
             => fixture = data;
+
+        /// <summary>
+        /// Test the linking of Guid key's from one object to the other 
+        /// with a name value being brought along for population
+        /// (Used when foreign keys to other objects are needed without
+        /// problems caused by infinite loops with embedded byref objects)
+        /// </summary>
+        [Fact]
+        public void Guid_To_GuidKeyValuePair()
+        {
+            // Arrange
+            List<Guid> keys = new List<Guid>()
+            {
+                Guid.NewGuid(),
+                Guid.NewGuid(),
+                Guid.NewGuid()
+            };
+
+            // Act
+            List<KeyValuePair<Guid, String>> keyValuePairs =
+                fixture.TestMapper.Map<List<KeyValuePair<Guid, String>>>(keys);
+
+            // Assert
+            Assert.Equal(keys.Count, keyValuePairs.Count);
+            Assert.Equal(keys[0], keyValuePairs[0].Key);
+        }
+
+        /// <summary>
+        /// Test the linking of Guid key's from one object to the other 
+        /// with a name value being brought along for population
+        /// (Used when foreign keys to other objects are needed without
+        /// problems caused by infinite loops with embedded byref objects)
+        /// </summary>
+        [Fact]
+        public void GuidKeyValuePair_To_Guid()
+        {
+            // Arrange
+            List<KeyValuePair<Guid, String>> keyValuePairs = new List<KeyValuePair<Guid, String>>()
+            {
+                new KeyValuePair<Guid, String>(Guid.NewGuid(), ""),
+                new KeyValuePair<Guid, String>(Guid.NewGuid(), ""),
+                new KeyValuePair<Guid, String>(Guid.NewGuid(), "")
+            };
+
+            // Act
+            List<Guid> keys =
+                fixture.TestMapper.Map<List<Guid>>(keyValuePairs);
+
+            // Assert
+            Assert.Equal(keys.Count, keyValuePairs.Count);
+            Assert.Equal(keys[0], keyValuePairs[0].Key);
+        }
+
+        /// <summary>
+        /// Test the Data Connection class transformed to the API Model
+        /// </summary>
+        [Fact]
+        public void DataConnection_To_Model()
+        {
+            // Arrange
+            DataConnection connection = new DataConnection()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Name",
+                Description = "Description",
+                ConnectionString = "Connection String Content",
+                Definitions = new List<Guid>()
+                {
+                    Guid.NewGuid(),
+                    Guid.NewGuid(),
+                    Guid.NewGuid()
+                },
+                ProviderType = DataProviderType.MSSQLProvider
+            };
+
+            // Act
+            DataConnectionModel model =
+                fixture.TestMapper.Map<DataConnectionModel>(connection);
+
+            // Assert
+            Assert.Equal(connection.Id, model.Id);
+            Assert.Equal(connection.Name, model.Name);
+            Assert.Equal(connection.Description, model.Description);
+            Assert.Equal(connection.ConnectionString, model.ConnectionString);
+            Assert.Equal(connection.Definitions.Count, model.Definitions.Count);
+            Assert.Equal(connection.Definitions[0], model.Definitions[0].Key);
+            Assert.Equal(connection.ProviderType, (DataProviderType)model.ProviderType);
+        }
+
+        /// <summary>
+        /// Test the Data Connection Model transformed to the Domain object
+        /// </summary>
+        [Fact]
+        public void DataConnectionModel_To_Domain()
+        {
+            // Arrange
+            DataConnectionModel model = new DataConnectionModel()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Name",
+                Description = "Description",
+                ConnectionString = "Connection String Content",
+                Definitions = new List<KeyValuePair<Guid, String>>()
+                {
+                    new KeyValuePair<Guid, String>(Guid.NewGuid(), "Item 1"),
+                    new KeyValuePair<Guid, String>(Guid.NewGuid(), "Item 2"),
+                    new KeyValuePair<Guid, String>(Guid.NewGuid(), "Item 3")
+                },
+                ProviderType = (Int32)DataProviderType.MSSQLProvider
+            };
+
+            // Act
+            DataConnection connection =
+                fixture.TestMapper.Map<DataConnection>(model);
+
+            // Assert
+            Assert.Equal(connection.Id, model.Id);
+            Assert.Equal(connection.Name, model.Name);
+            Assert.Equal(connection.Description, model.Description);
+            Assert.Equal(connection.ConnectionString, model.ConnectionString);
+            Assert.Equal(connection.Definitions.Count, model.Definitions.Count);
+            Assert.Equal(connection.Definitions[0], model.Definitions[0].Key);
+            Assert.Equal(connection.ProviderType, (DataProviderType)model.ProviderType);
+        }
+
+        /// <summary>
+        /// Test the API Definition class transformed to the API Model
+        /// </summary>
+        [Fact]
+        public void ApiDefinition_To_Model()
+        {
+            // Arrange
+            ApiDefinition definition = new ApiDefinition()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Name",
+                Description = "Description",
+                DataConnection = Guid.NewGuid(),
+                DataDefinition = Guid.NewGuid()
+            };
+
+            // Act
+            ApiDefinitionModel model =
+                fixture.TestMapper.Map<ApiDefinitionModel>(definition);
+
+            // Assert
+            Assert.Equal(definition.Id, model.Id);
+            Assert.Equal(definition.Name, model.Name);
+            Assert.Equal(definition.Description, model.Description);
+            Assert.Equal(definition.DataConnection, model.DataConnection.Key);
+            Assert.Equal(definition.DataDefinition, model.DataDefinition.Key);
+
+        }
+
+        /// <summary>
+        /// Test the API Definition Model transformed to the Domain object
+        /// </summary>
+        [Fact]
+        public void ApiDefinitionModel_To_Domain()
+        {
+            // Arrange
+            ApiDefinitionModel model = new ApiDefinitionModel()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Name",
+                Description = "Description",
+                DataConnection = new KeyValuePair<Guid, String>(Guid.NewGuid(), "Connection"),
+                DataDefinition = new KeyValuePair<Guid, String>(Guid.NewGuid(), "Definition")
+            };
+
+            // Act
+            ApiDefinition definition =
+                fixture.TestMapper.Map<ApiDefinition>(model);
+
+            // Assert
+            Assert.Equal(definition.Id, model.Id);
+            Assert.Equal(definition.Name, model.Name);
+            Assert.Equal(definition.Description, model.Description);
+            Assert.Equal(definition.DataConnection, model.DataConnection.Key);
+            Assert.Equal(definition.DataDefinition, model.DataDefinition.Key);
+        }
 
         /// <summary>
         /// Test the Data Item Definition class transformed to the API Model
