@@ -15,6 +15,12 @@ namespace TNDStudios.DataPortals.UI.Controllers
             return View();
         }
 
+        [Route("/apidefinitions/{id}")]
+        public IActionResult APIDefinition([FromRoute]Guid id)
+        {
+            return View("Index");
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

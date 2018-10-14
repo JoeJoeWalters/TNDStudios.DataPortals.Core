@@ -6,7 +6,7 @@
 
     <!-- Models required for this page -->
     <script src="~/js/models/common.js"></script>
-    <script src="~/js/models/dataitems.js"></script>
+    <script src="~/js/models/datadefinitions.js"></script>
 
     <!-- Vue script for this page-->
     <script src="~/js/pages/datadefinitions/index.js"></script>
@@ -20,9 +20,27 @@
 
 <div class="row">
     <div class="col-md-4">
-
+        <div class="card">
+            <div class="card-header">
+                Existing Data Definitions
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li v-for="item in dataDefinitions">
+                        <a v-bind:href="'/datadefinitions/' + item.id">{{item.name}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
     <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                Data Definition Editor
+            </div>
+            <div class="card-body">
+            </div>
+        </div>
 
     </div>
 </div>

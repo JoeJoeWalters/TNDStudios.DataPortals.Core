@@ -48,12 +48,42 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             ApiResponse<List<DataItemDefinitionModel>> response =
                 new ApiResponse<List<DataItemDefinitionModel>>();
 
-            // Was an id passed in? If not just return everything
-            response.Data = mapper.Map<List<DataItemDefinitionModel>>(
-                SessionHandler.CurrentPackage.DataDefinitions.Where
-                (def => (id == Guid.Empty || def.Id == id))
-                );
-            
+            try
+            {
+                // Was an id passed in? If not just return everything
+                response.Data = mapper.Map<List<DataItemDefinitionModel>>(
+                    SessionHandler.CurrentPackage.DataDefinitions.Where
+                        (def => (id == Guid.Empty || def.Id == id))
+                    );
+
+                // Post processing to fill in the missing titles
+                // as this doesn't really fit well in Automapper due 
+                // to the source column type
+                response.Data.ForEach(item =>
+                {
+                    List<KeyValuePair<Guid, String>> mappedPairs =
+                        new List<KeyValuePair<Guid, String>>();
+
+                    item.Connections.ForEach(con =>
+                    {
+                        mappedPairs.Add(
+                            mapper.Map<KeyValuePair<Guid, String>>(SessionHandler.CurrentPackage.DataConnection(con.Key))
+                            );
+                    });
+
+                    // Assign the new list (KeyValue Pairs are readonly and the list
+                    // cannot be modified in the loop to remove items so assigned here)
+                    item.Connections.Clear();
+                    item.Connections = mappedPairs;
+                });
+
+                response.Success = true;
+            }
+            catch(Exception ex)
+            {
+                response.Data.Clear(); // Clear the data as we don't want to send back partial data
+                response.Success = false; // Failed due to hard failure
+            }
             // Return the response object
             return response;
         }

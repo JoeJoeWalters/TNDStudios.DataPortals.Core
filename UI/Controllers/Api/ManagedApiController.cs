@@ -48,7 +48,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         public ManagedApiController(IMapper mapper) : base()
         {
             this.mapper = mapper; // Assign the mapper from the dependency injection
-        
+
             // Is the API system initialised?
             if (!initialised)
             {
@@ -78,26 +78,37 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             ApiResponse<List<ApiDefinitionModel>> response =
                 new ApiResponse<List<ApiDefinitionModel>>();
 
-            // Was an id passed in? If not just return everything
-            response.Data = mapper.Map<List<ApiDefinitionModel>>(
-                SessionHandler.CurrentPackage.ApiDefinitions.Where
-                (def => (id == Guid.Empty || def.Id == id))
-                );
+            try
+            {
+                // Was an id passed in? If not just return everything
+                response.Data = mapper.Map<List<ApiDefinitionModel>>(
+                    SessionHandler.CurrentPackage.ApiDefinitions.Where
+                    (def => (id == Guid.Empty || def.Id == id))
+                    );
 
-            // Post processing to fill in the missing titles
-            // as this doesn't really fit well in Automapper due 
-            // to the source column type
-            response.Data.ForEach(item =>
-                {
-                    // Assign the correct values to the model
-                    item.DataConnection = 
-                        mapper.Map<KeyValuePair<Guid, String>>
-                            (SessionHandler.CurrentPackage.DataConnection(item.DataConnection.Key));
+                // Post processing to fill in the missing titles
+                // as this doesn't really fit well in Automapper due 
+                // to the source column type
+                response.Data.ForEach(item =>
+                    {
+                        // Assign the correct values to the model
+                        item.DataConnection =
+                            mapper.Map<KeyValuePair<Guid, String>>
+                                (SessionHandler.CurrentPackage.DataConnection(item.DataConnection.Key));
 
-                    item.DataDefinition = 
-                        mapper.Map<KeyValuePair<Guid, String>>
-                            (SessionHandler.CurrentPackage.DataDefinition(item.DataDefinition.Key));
-                });
+                        item.DataDefinition =
+                            mapper.Map<KeyValuePair<Guid, String>>
+                                (SessionHandler.CurrentPackage.DataDefinition(item.DataDefinition.Key));
+                    });
+
+                // Got to here so must be successful
+                response.Success = true;
+            }
+            catch (Exception ex)
+            {
+                response.Data.Clear(); // Clear the data as we don't want to send back partial data
+                response.Success = false; // Failed due to hard failure
+            }
 
             // Return the response object
             return response;
@@ -140,7 +151,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                         // Return a failure to find the object if we get to here
                         return StatusCode((Int32)HttpStatusCode.NotFound, $"Endpoint of type '{objectType}' was not found");
                     }
-                }                
+                }
             }
             catch (Exception ex)
             {

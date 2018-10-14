@@ -6,7 +6,7 @@
 
     <!-- Models required for this page -->
     <script src="~/js/models/common.js"></script>
-    <script src="~/js/models/apiitems.js"></script>
+    <script src="~/js/models/apidefinitions.js"></script>
 
     <!-- Vue script for this page-->
     <script src="~/js/pages/apidefinitions/index.js"></script>
@@ -15,15 +15,32 @@
 <!-- Breadcrumbs-->
 <ol class="breadcrumb">
     <li class="breadcrumb-item">Components</li>
-    <li class="breadcrumb-item active">API Definitions</li>
+    <li class="breadcrumb-item active">APIs</li>
 </ol>
 
 <div class="row">
     <div class="col-md-4">
-
+        <div class="card">
+            <div class="card-header">
+                Existing APIs
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li v-for="item in apiDefinitions">
+                        <a v-bind:href="'/apidefinitions/' + item.id">{{item.name}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
     <div class="col-md-8">
-
+        <div class="card">
+            <div class="card-header">
+                API Editor
+            </div>
+            <div class="card-body">
+            </div>
+        </div>
     </div>
 </div>
 
