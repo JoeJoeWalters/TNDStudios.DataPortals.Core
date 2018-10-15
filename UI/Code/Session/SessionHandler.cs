@@ -75,7 +75,7 @@ namespace TNDStudios.DataPortals.UI
                             new DataConnection()
                             {
                                 Id = dataConnectionId,
-                                ConnectionString = @"C:\Users\Joe\Documents\Git\TNDStudios.DataPortals.Core\FlatFileProvider.Tests\TestFiles\BigFiles\SalesRecords5000.csv",
+                                ConnectionString = @"C:\Users\Joe\Documents\Git\TNDStudios.DataPortals.Core\Tests\Providers\FlatFileProvider.Tests\TestFiles\BigFiles\SalesRecords5000.csv",
                                 Definitions = new List<Guid>() { dataDefinitionId },
                                 Description = "Data Connection Description",
                                 Name = "Data Connection",
