@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using TNDStudios.DataPortals.Api;
 using TNDStudios.DataPortals.Data;
+using TNDStudios.DataPortals.Repositories;
 
 namespace TNDStudios.DataPortals.UI
 {
@@ -26,14 +27,13 @@ namespace TNDStudios.DataPortals.UI
         /// <summary>
         /// Static package to hold the activity for the website
         /// </summary>
-        public static List<CollectionPackage> Packages { get; set; }
+        public static IPackageRepository PackageRepository { get; set; }
 
         /// <summary>
         /// Get the current package object
         /// </summary>
-        public static CollectionPackage CurrentPackage =>
-            Packages.Where(Package => Package.Id == CurrentPackageId)
-                .FirstOrDefault();
+        public static Package CurrentPackage =>
+            PackageRepository.Get(CurrentPackageId);
 
         /// <summary>
         /// Initialise the session handler
@@ -43,6 +43,10 @@ namespace TNDStudios.DataPortals.UI
             // Initialised?
             if (!Initialised)
             {
+                // For testing / development for now just use a memory implementation
+                // of the package repository
+                PackageRepository = new MemoryPackageRepository();
+
 #warning [By default for now just create one collection package until we think about multiple orgs / environments etc.]
                 CurrentPackageId = Guid.NewGuid(); // Create a default Id
 
@@ -51,10 +55,9 @@ namespace TNDStudios.DataPortals.UI
                 Guid dataDefinitionId = Guid.NewGuid();
                 Guid apiId = Guid.NewGuid();
 
-                // Set up a blank list of packages
-                Packages = new List<CollectionPackage>()
-                {
-                    new CollectionPackage()
+                // Set up a new test package in the repository
+                PackageRepository.Save(
+                    new Package()
                     {
                         Id = CurrentPackageId,
                         Name = "Test Package",
@@ -128,8 +131,7 @@ namespace TNDStudios.DataPortals.UI
                                 PropertyBag = new Dictionary<String, Object>()
                             }
                         }
-                    }
-                };
+                    });
 
                 // Now intialised
                 Initialised = true;
