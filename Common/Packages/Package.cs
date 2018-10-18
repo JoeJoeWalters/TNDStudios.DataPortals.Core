@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using TNDStudios.DataPortals.Api;
 using TNDStudios.DataPortals.Data;
+using TNDStudios.DataPortals.Helpers;
 
 namespace TNDStudios.DataPortals.Repositories
 {
@@ -70,5 +71,65 @@ namespace TNDStudios.DataPortals.Repositories
         /// <returns>The data connection</returns>
         public DataConnection DataConnection(Guid id)
             => DataConnections.Where(item => item.Id == id).FirstOrDefault();
+
+        /// <summary>
+        /// Save a piece of information to the appropriate package element
+        /// </summary>
+        /// <typeparam name="T">The type of data to be saved</typeparam>
+        /// <param name="dataToSave">The data to be saved</param>
+        /// <returns>The saved data</returns>
+        public T Save<T>(T dataToSave) where T: CommonObject
+        {
+            // Get the type of data to be saved
+            String typeOfData = typeof(T).ToShortName();
+            
+            // Based on the type of data, save it to the correct repository element
+            switch (typeOfData)
+            {
+                case "dataconnection":
+
+                    // Get the actual value from the object wrapper
+                    DataConnection connection = (DataConnection)Convert.ChangeType(dataToSave, typeof(DataConnection));
+
+                    // If the type is not null
+                    if (connection != null)
+                    {
+                        // Does this connection already exist?
+                        DataConnection existingConnection = 
+                            (connection.Id == Guid.Empty) ? null : DataConnection(connection.Id);
+
+                        // No connection found?
+                        if (existingConnection == null)
+                        {
+                            // Doesn't exist currently so create a new Id
+                            // and assign the object as the "existing" connection
+                            existingConnection = connection;
+                            existingConnection.Id = Guid.NewGuid();
+
+                            // Add this new connection to the repository
+                            DataConnections.Add(existingConnection);
+                        }
+                        else
+                        {
+                            // Assign the values from the item to save
+                            existingConnection.ConnectionString = connection.ConnectionString;
+                            existingConnection.Description = connection.Description;
+                            existingConnection.Name = connection.Name;
+                            existingConnection.ProviderType = connection.ProviderType;
+
+                            // Assign the definitions
+                            existingConnection.Definitions = connection.Definitions;
+                        }
+
+                        // Convert the data back to the return data type (which is actually the same)
+                        dataToSave = (T)Convert.ChangeType(existingConnection, typeof(T));
+                    }
+
+                    break;
+            }
+
+            // Return the data that was saved
+            return dataToSave;
+        }
     }
 }

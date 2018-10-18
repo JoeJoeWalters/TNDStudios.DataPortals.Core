@@ -15,6 +15,8 @@ namespace TNDStudios.DataPortals.Helpers
         /// <param name="value">The type value we want to convert to a short form</param>
         /// <returns>The string value representing the short form</returns>
         public static String ToShortName(this Type value)
-            => value.ToString().ToLower().Replace("system.", "");
+            => value.ToString().ToLower()
+            .Replace("system.", "")
+            .Replace("tndstudios.dataportals.data.", "");
     }
 }

@@ -19,21 +19,21 @@
 </ol>
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="card">
             <div class="card-header">
-                Existing Connectors
+                Existing Connections
             </div>
             <div class="card-body">
-                <ul>
-                    <li v-for="item in connections">
+                <ul class="list-inline">
+                    <li class="list-inline-item" v-for="item in connections">
                         <a v-bind:href="'/connections/' + item.id">{{item.name}}</a>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-9">
         <div class="card">
             <div class="card-header">
                 Connection Editor

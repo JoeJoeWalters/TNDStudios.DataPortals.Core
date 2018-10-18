@@ -84,5 +84,37 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             // Return the response object
             return response;
         }
+
+        [HttpPost]
+        [Route("/api/data/connection/{id}")]
+        public ApiResponse<DataConnectionModel> Post([FromBody] ApiRequest<DataConnectionModel> request)
+        {
+            // Create the response object
+            ApiResponse<DataConnectionModel> response = new ApiResponse<DataConnectionModel>();
+
+            // Map the model to a domain object type
+            DataConnection savedConnection = mapper.Map<DataConnection>(request.Data);
+
+            // Did the mapping work ok?
+            if (savedConnection != null)
+            {
+                // Get the repository to save the package for us
+                savedConnection = SessionHandler.CurrentPackage
+                        .Save<DataConnection>(savedConnection);
+
+                // Saved ok?
+                if (savedConnection != null)
+                {
+                    // Map the connection back to a model type and send it back to the user
+                    response.Data = mapper.Map<DataConnectionModel>(savedConnection);
+                }
+
+                // Nothing died .. Success
+                response.Success = true;
+            }
+
+            // Send the response back
+            return response;
+        }
     }
 }

@@ -19,21 +19,21 @@
 </ol>
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="card">
             <div class="card-header">
                 Existing Data Definitions
             </div>
             <div class="card-body">
-                <ul>
-                    <li v-for="item in dataDefinitions">
+                <ul class="list-inline">
+                    <li class="list-inline-item" v-for="item in dataDefinitions">
                         <a v-bind:href="'/datadefinitions/' + item.id">{{item.name}}</a>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-9">
         <div class="card">
             <div class="card-header">
                 Data Definition Editor
