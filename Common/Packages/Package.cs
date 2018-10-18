@@ -78,14 +78,97 @@ namespace TNDStudios.DataPortals.Repositories
         /// <typeparam name="T">The type of data to be saved</typeparam>
         /// <param name="dataToSave">The data to be saved</param>
         /// <returns>The saved data</returns>
-        public T Save<T>(T dataToSave) where T: CommonObject
+        public T Save<T>(T dataToSave) where T : CommonObject
         {
             // Get the type of data to be saved
             String typeOfData = typeof(T).ToShortName();
-            
+
             // Based on the type of data, save it to the correct repository element
             switch (typeOfData)
             {
+                case "apidefinition":
+
+                    // Get the actual value from the object wrapper
+                    ApiDefinition apiDefinition = (ApiDefinition)Convert.ChangeType(dataToSave, typeof(ApiDefinition));
+
+                    // If the type is not null
+                    if (apiDefinition != null)
+                    {
+                        // Does this api definition already exist?
+                        ApiDefinition existingApiDefinition =
+                            (apiDefinition.Id == Guid.Empty) ? null : this.Api(apiDefinition.Id);
+
+                        // No API Definition found?
+                        if (existingApiDefinition == null)
+                        {
+                            // Doesn't exist currently so create a new Id
+                            // and assign the object as the "existing" api definition
+                            existingApiDefinition = apiDefinition;
+                            existingApiDefinition.Id = Guid.NewGuid();
+
+                            // Add this new api definition to the repository
+                            ApiDefinitions.Add(existingApiDefinition);
+                        }
+                        else
+                        {
+                            // Assign the values from the item to save
+                            existingApiDefinition.Description = apiDefinition.Description;
+                            existingApiDefinition.Name = apiDefinition.Name;
+
+                            // Assign the foreign keys
+                            existingApiDefinition.DataConnection = apiDefinition.DataConnection;
+                            existingApiDefinition.DataDefinition = apiDefinition.DataDefinition;
+                        }
+
+                        // Convert the data back to the return data type (which is actually the same)
+                        dataToSave = (T)Convert.ChangeType(existingApiDefinition, typeof(T));
+                    }
+
+                    break;
+
+                case "dataitemdefinition":
+                    
+                    // Get the actual value from the object wrapper
+                    DataItemDefinition dataItemDefinition = (DataItemDefinition)Convert.ChangeType(dataToSave, typeof(DataItemDefinition));
+
+                    // If the type is not null
+                    if (dataItemDefinition != null)
+                    {
+                        // Does this data definition already exist?
+                        DataItemDefinition existingDataItemDefinition =
+                            (dataItemDefinition.Id == Guid.Empty) ? null : this.DataDefinition(dataItemDefinition.Id);
+
+                        // No data definition found?
+                        if (existingDataItemDefinition == null)
+                        {
+                            // Doesn't exist currently so create a new Id
+                            // and assign the object as the "existing" data definition
+                            existingDataItemDefinition = dataItemDefinition;
+                            existingDataItemDefinition.Id = Guid.NewGuid();
+
+                            // Add this new data definition to the repository
+                            DataDefinitions.Add(existingDataItemDefinition);
+                        }
+                        else
+                        {
+                            // Assign the values from the item to save
+                            existingDataItemDefinition.Description = dataItemDefinition.Description;
+                            existingDataItemDefinition.Name = dataItemDefinition.Name;
+                            existingDataItemDefinition.Culture = dataItemDefinition.Culture;
+                            existingDataItemDefinition.EncodingFormat = dataItemDefinition.EncodingFormat;
+
+                            // Assign the lists
+                            existingDataItemDefinition.Connections = dataItemDefinition.Connections;
+                            existingDataItemDefinition.ItemProperties = dataItemDefinition.ItemProperties;
+                            existingDataItemDefinition.PropertyBag = dataItemDefinition.PropertyBag;
+                        }
+
+                        // Convert the data back to the return data type (which is actually the same)
+                        dataToSave = (T)Convert.ChangeType(existingDataItemDefinition, typeof(T));
+                    }
+
+                    break;
+
                 case "dataconnection":
 
                     // Get the actual value from the object wrapper
@@ -95,7 +178,7 @@ namespace TNDStudios.DataPortals.Repositories
                     if (connection != null)
                     {
                         // Does this connection already exist?
-                        DataConnection existingConnection = 
+                        DataConnection existingConnection =
                             (connection.Id == Guid.Empty) ? null : DataConnection(connection.Id);
 
                         // No connection found?
