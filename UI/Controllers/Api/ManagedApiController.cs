@@ -114,6 +114,38 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             return response;
         }
 
+        [HttpPost]
+        [Route("/api/managedapi/definition/{id}")]
+        public ApiResponse<ApiDefinitionModel> Post([FromBody] ApiRequest<ApiDefinitionModel> request)
+        {
+            // Create the response object
+            ApiResponse<ApiDefinitionModel> response = new ApiResponse<ApiDefinitionModel>();
+
+            // Map the model to a domain object type
+            ApiDefinition savedApiDefinition = mapper.Map<ApiDefinition>(request.Data);
+
+            // Did the mapping work ok?
+            if (savedApiDefinition != null)
+            {
+                // Get the repository to save the package for us
+                savedApiDefinition = SessionHandler.CurrentPackage
+                        .Save<ApiDefinition>(savedApiDefinition);
+
+                // Saved ok?
+                if (savedApiDefinition != null)
+                {
+                    // Map the api definition back to a model type and send it back to the user
+                    response.Data = mapper.Map<ApiDefinitionModel>(savedApiDefinition);
+                }
+
+                // Nothing died .. Success
+                response.Success = true;
+            }
+
+            // Send the response back
+            return response;
+        }
+
         [HttpGet]
         [Route("/api/objects/{objectType}")]
         public ActionResult<Boolean> Get(String objectType)

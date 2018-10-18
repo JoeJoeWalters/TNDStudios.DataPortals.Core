@@ -87,6 +87,38 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             // Return the response object
             return response;
         }
+        
+        [HttpPost]
+        [Route("/api/data/definition/{id}")]
+        public ApiResponse<DataItemDefinitionModel> Post([FromBody] ApiRequest<DataItemDefinitionModel> request)
+        {
+            // Create the response object
+            ApiResponse<DataItemDefinitionModel> response = new ApiResponse<DataItemDefinitionModel>();
+
+            // Map the model to a domain object type
+            DataItemDefinition savedDataItemDefinition = mapper.Map<DataItemDefinition>(request.Data);
+
+            // Did the mapping work ok?
+            if (savedDataItemDefinition != null)
+            {
+                // Get the repository to save the package for us
+                savedDataItemDefinition = SessionHandler.CurrentPackage
+                        .Save<DataItemDefinition>(savedDataItemDefinition);
+
+                // Saved ok?
+                if (savedDataItemDefinition != null)
+                {
+                    // Map the data definition back to a model type and send it back to the user
+                    response.Data = mapper.Map<DataItemDefinitionModel>(savedDataItemDefinition);
+                }
+
+                // Nothing died .. Success
+                response.Success = true;
+            }
+
+            // Send the response back
+            return response;
+        }
 
         [HttpPost]
         [Route("/api/data/definition/analyse/file")]
