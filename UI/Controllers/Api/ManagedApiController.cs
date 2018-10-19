@@ -115,7 +115,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         }
 
         [HttpPost]
-        [Route("/api/managedapi/definition/{id}")]
+        [Route("/api/managedapi/definition")]
         public ApiResponse<ApiDefinitionModel> Post([FromBody] ApiRequest<ApiDefinitionModel> request)
         {
             // Create the response object

@@ -86,7 +86,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         }
 
         [HttpPost]
-        [Route("/api/data/connection/{id}")]
+        [Route("/api/data/connection")]
         public ApiResponse<DataConnectionModel> Post([FromBody] ApiRequest<DataConnectionModel> request)
         {
             // Create the response object

@@ -89,7 +89,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         }
         
         [HttpPost]
-        [Route("/api/data/definition/{id}")]
+        [Route("/api/data/definition")]
         public ApiResponse<DataItemDefinitionModel> Post([FromBody] ApiRequest<DataItemDefinitionModel> request)
         {
             // Create the response object
