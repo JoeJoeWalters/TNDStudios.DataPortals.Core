@@ -14,6 +14,42 @@
             app.page.connections.push(new tndStudios.models.dataConnections.dataConnection());
         },
 
+        // Edit an existing item by assigning it to the editor object
+        edit: function (editItem) {
+            app.page.connection.copyFrom(editItem);
+        },
+
+        // Save the contents of the editor object 
+        save: function () {
+
+            // The the api call to save the connection
+            tndStudios.utils.api.call(
+                '/api/data/connection',
+                'POST',
+                app.page.connection.paramObject(),
+                app.saveSuccess,
+                app.saveFailure
+            );
+        },
+
+        // Save was successful, assign the appropriate items
+        saveSuccess: function (data) {
+            if (data.data) {
+                alert('Saved successfully');
+            };
+        },
+
+        // Save was unsuccessful, inform the user
+        saveFailure: function () {
+            alert('Failed save the connection');
+        },
+
+
+        // Test the connection of a given connection
+        test: function (testItem) {
+            alert('Testing Object');
+        },
+
         // Start the load process
         load: function () {
 

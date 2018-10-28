@@ -101,13 +101,13 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
 
         [HttpPost]
         [Route("/api/data/connection")]
-        public ApiResponse<DataConnectionModel> Post([FromBody] ApiRequest<DataConnectionModel> request)
+        public ApiResponse<DataConnectionModel> Post([FromBody] DataConnectionModel request)
         {
             // Create the response object
             ApiResponse<DataConnectionModel> response = new ApiResponse<DataConnectionModel>();
 
             // Map the model to a domain object type
-            DataConnection savedConnection = mapper.Map<DataConnection>(request.Data);
+            DataConnection savedConnection = mapper.Map<DataConnection>(request);
 
             // Did the mapping work ok?
             if (savedConnection != null)

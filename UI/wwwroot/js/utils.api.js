@@ -7,9 +7,10 @@ tndStudios.utils.api =
             $.ajax({
                 type: method,
                 url: url,
-                data: request,
+                data: JSON.stringify(request),
                 crossDomain: false,
                 dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
                 success: function (data, status, jqXHR) {
                     if (data.success)
                         successCallBack(data);
