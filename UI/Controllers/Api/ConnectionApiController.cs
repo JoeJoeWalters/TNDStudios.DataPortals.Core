@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TNDStudios.DataPortals.Helpers;
 using System.Threading.Tasks;
 using TNDStudios.DataPortals.Data;
 using TNDStudios.DataPortals.UI.Models.Api;
@@ -24,6 +25,19 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         {
             this.mapper = mapper; // Assign the mapper from the dependency injection
         }
+
+        /// <summary>
+        /// Get a list of the provider types available
+        /// </summary>
+        /// <returns>The list of available provider types</returns>
+        [HttpGet]
+        [Route("/api/data/providers")]
+        public ApiResponse<List<KeyValuePair<Int32, String>>> GetProviderTypes()
+            => new ApiResponse<List<KeyValuePair<Int32, String>>>()
+            {
+                Data = typeof(DataProviderType).ToList(),
+                Success = true
+            };
 
         /// <summary>
         /// Get a list (or singular) data connection model 

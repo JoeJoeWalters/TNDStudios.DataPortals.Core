@@ -26,7 +26,7 @@
             </div>
             <div class="card-body">
                 <ul class="list-inline">
-                    <li class="list-inline-item" v-for="item in connections">
+                    <li class="list-inline-item" v-for="item in page.connections">
                         <a v-bind:href="'/connections/' + item.id">{{item.name}}</a>
                     </li>
                 </ul>
@@ -39,6 +39,49 @@
                 Connection Editor
             </div>
             <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="id">Id</label>
+                            <!-- The Id of the connection -->
+                            <input type="text" class="form-control" readonly="readonly" id="id" name="id" v-bind:value="page.connection.id" />
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <!-- The name of the connection -->
+                            <input type="text" class="form-control" id="name" name="name" v-bind:value="page.connection.name" />
+                        </div>
+                        <div class="form-group">
+                            <label for="providerType">Type</label>
+                            <!-- The type of connection -->
+                            <select class="form-control" id="providerType" name="providerType" v-bind:selected="page.connection.dataProvider">
+                                <option v-for="item in page.providerTypes">
+                                    {{ item.value }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <!-- Description of the connection -->
+                            <textarea class="form-control" id="description" name="description">{{ page.connection.description }}</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="connectionString">Connection String</label>
+                            <!-- Connection String -->
+                            <input type="text" class="form-control" id="connectionString" name="connectionString" v-bind:value="page.connection.connectionString">
+                        </div>
+                        <div class="form-group">
+                            <label>Data Definitions</label>
+                            <!-- Attached Definitions -->
+                            <ul class="list-inline">
+                                <li class="list-inline-item" v-for="item in page.connection.definitions">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

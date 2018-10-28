@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Text;
@@ -13,8 +14,13 @@ namespace TNDStudios.DataPortals.Data
     /// </summary>
     public enum DataProviderType : Int32
     {
+        [Description("")]
         Unknown = 0,
+
+        [Description("Flat File Provider")]
         FlatFileProvider = 1,
+
+        [Description("SQL Server")]
         MSSQLProvider = 2
     }
 
