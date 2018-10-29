@@ -65,7 +65,6 @@ tndStudios.models.dataConnections =
                         Definitions: this.definitions
                 };
 
-                alert(result);
                 return result;
             }
         },
