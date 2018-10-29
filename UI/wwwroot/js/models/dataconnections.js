@@ -7,15 +7,16 @@ tndStudios.models.dataConnections =
 
             // The properties of the object
             this.connections = []; // The list of connections for this package
-            this.connection = new tndStudios.models.dataConnections.dataConnection(); // The editor object
+            this.editor = new tndStudios.models.dataConnections.dataConnection(null); // The editor object
+            this.editItem = null; // Reference to the item that is being edited for saving changes back to it
             this.providerTypes = []; // The list of available provider types
         },
 
         // Data Connection Model
-        dataConnection: function () {
+        dataConnection: function (data) {
 
             // The properties of the object
-            this.id = '';
+            this.id = null;
             this.name = '';
             this.description = '';
             this.providerType = 0;
@@ -24,7 +25,8 @@ tndStudios.models.dataConnections =
 
             // Copy the content of this connection from another connection
             // e.g. when editing in a secondary editor object
-            this.copyFrom = function (fromObject) {
+            this.fromObject = function (fromObject) {
+
                 // Clear the object first (just in case)
                 this.clear();
 
@@ -38,34 +40,39 @@ tndStudios.models.dataConnections =
                 this.definitions = [];
             }
 
+            // Create a formatted object that can be passed to the server
+            this.toObject = function () {
+
+                var result =
+                {
+                    Id: this.id,
+                    Name: this.name,
+                    Description: this.description,
+                    ProviderType: this.providerType,
+                    ConnectionString: this.connectionString,
+                    Definitions: this.definitions
+                };
+
+                return result;
+            }
+
             // Clear this connection object (i.e. make it ready for editing)
             this.clear = function () {
 
                 // Clear the properties
-                this.id = "";
-                this.name = "";
-                this.description = "";
+                this.id = null;
+                this.name = '';
+                this.description = '';
                 this.providerType = 0;
-                this.connectionString = "";
+                this.connectionString = '';
 
                 // Clear the lists
                 this.definitions = [];
             }
 
-            // Create a formatted object that can be passed to the server
-            this.paramObject = function () {
-                
-                var result = 
-                    {
-                        Id: this.id,
-                        Name: this.name,
-                        Description: this.description,
-                        ProviderType: this.providerType,
-                        ConnectionString: this.connectionString,
-                        Definitions: this.definitions
-                };
-
-                return result;
+            // Any data passed in?
+            if (data) {
+                this.fromObject(data); // Assign the data to this object
             }
         },
     };

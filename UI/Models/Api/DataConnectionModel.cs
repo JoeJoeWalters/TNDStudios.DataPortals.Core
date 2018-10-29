@@ -33,7 +33,7 @@ namespace TNDStudios.DataPortals.UI.Models.Api
         /// <summary>
         /// Default Constructor
         /// </summary>
-        public DataConnectionModel()
+        public DataConnectionModel() : base()
         {
             Definitions = new List<KeyValuePair<Guid, String>>(); // The definitions that are assigned to this connection
         }

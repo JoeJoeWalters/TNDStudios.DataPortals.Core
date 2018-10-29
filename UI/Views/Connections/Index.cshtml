@@ -25,9 +25,9 @@
                 Existing Connections
             </div>
             <div class="card-body">
-                <ul class="list-inline">
+                <ul class="list-group list-group-flush">
                     <!-- List of connections -->
-                    <li class="list-inline-item" v-for="item in page.connections">
+                    <li class="list-group-item" v-for="item in page.connections">
                         <!-- Edit the connection in the list -->
                         <a v-on:click="edit(item)" href="#">{{item.name}}</a>
                     </li>
@@ -46,17 +46,17 @@
                         <div class="form-group">
                             <label for="id">Id</label>
                             <!-- The Id of the connection -->
-                            <input type="text" class="form-control" readonly="readonly" id="id" name="id" v-model="page.connection.id" />
+                            <input type="text" class="form-control" readonly="readonly" id="id" name="id" v-model="page.editor.id" />
                         </div>
                         <div class="form-group">
                             <label for="name">Name</label>
                             <!-- The name of the connection -->
-                            <input type="text" class="form-control" id="name" name="name" v-model="page.connection.name" />
+                            <input type="text" class="form-control" id="name" name="name" v-model="page.editor.name" />
                         </div>
                         <div class="form-group">
                             <label for="providerType">Type</label>
                             <!-- The type of connection -->
-                            <select class="form-control" id="providerType" name="providerType" v-model="page.connection.providerType">
+                            <select class="form-control" id="providerType" name="providerType" v-model="page.editor.providerType">
                                 <option v-bind:value="item.key" v-for="item in page.providerTypes">
                                     {{ item.value }}
                                 </option>
@@ -67,18 +67,18 @@
                         <div class="form-group">
                             <label for="description">Description</label>
                             <!-- Description of the connection -->
-                            <textarea class="form-control" id="description" name="description" v-model="page.connection.description">{{ page.connection.description }}</textarea>
+                            <textarea class="form-control" id="description" name="description" v-model="page.editor.description">{{ page.editor.description }}</textarea>
                         </div>
                         <div class="form-group">
                             <label for="connectionString">Connection String</label>
                             <!-- Connection String -->
-                            <textarea class="form-control" id="connectionString" name="connectionString" v-model="page.connection.connectionString">{{ page.connection.connectionString }}</textarea>
+                            <textarea class="form-control" id="connectionString" name="connectionString" v-model="page.editor.connectionString">{{ page.editor.connectionString }}</textarea>
                         </div>
                         <div class="form-group">
                             <label>Data Definitions</label>
                             <!-- Attached Definitions -->
                             <ul class="list-inline">
-                                <li class="list-inline-item" v-for="item in page.connection.definitions">
+                                <li class="list-inline-item" v-for="item in page.editor.definitions">
                             </ul>
                         </div>
                     </div>

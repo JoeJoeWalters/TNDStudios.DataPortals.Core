@@ -8,15 +8,18 @@
     methods: {
 
         // Add a new item to the definition list
-        add: function () {
+        new: function () {
 
-            // Push the new item
-            app.page.connections.push(new tndStudios.models.dataConnections.dataConnection());
+            // Clear the editor
+            app.page.editor.clear();
         },
 
         // Edit an existing item by assigning it to the editor object
         edit: function (editItem) {
-            app.page.connection.copyFrom(editItem);
+
+            // Copy the data to the connection editor from the selected object
+            app.page.editor.fromObject(editItem);
+            app.page.editItem = editItem; // Reference to the origional item being edited
         },
 
         // Save the contents of the editor object 
@@ -26,7 +29,7 @@
             tndStudios.utils.api.call(
                 '/api/data/connection',
                 'POST',
-                app.page.connection.paramObject(),
+                app.page.editor.toObject(),
                 app.saveSuccess,
                 app.saveFailure
             );
@@ -34,14 +37,30 @@
 
         // Save was successful, assign the appropriate items
         saveSuccess: function (data) {
+
+            // Some data came back?
             if (data.data) {
-                alert('Saved successfully');
+
+                // Update the editor itself (possibily with new links or id if a new item)
+                app.page.editor.fromObject(data.data);
+
+                // Were we editing an existing item?
+                if (app.page.editItem != null) {
+
+                    // Update the existing item
+                    app.page.editItem.fromObject(data.data);
+                }
+                else {
+
+                    // Add the new item to the list
+                    app.page.connections.push(new tndStudios.models.dataConnections.dataConnection(data.data));
+                }
             };
         },
 
         // Save was unsuccessful, inform the user
         saveFailure: function () {
-            alert('Failed save the connection');
+            //alert('Failed save the connection');
         },
 
 
@@ -57,7 +76,7 @@
             app.loadProviderTypes();
 
             // Start loading the connections list
-            app.loadConnections(); 
+            app.loadConnections();
         },
 
         // Load the available provider types
@@ -82,7 +101,7 @@
 
         // Load was unsuccessful, inform the user
         loadProviderTypesFailure: function () {
-            alert('Failed to retrieve the list of provider types')
+            //alert('Failed to retrieve the list of provider types')
         },
 
         // load connections from the server
@@ -100,13 +119,20 @@
         // Load was successful, assign the data
         loadConnectionsSuccess: function (data) {
             if (data.data) {
-                app.page.connections = data.data; // Assign the Json package to the data definition
+
+                app.page.connections = []; // clear the connections array
+
+                // Add the connection objects back in with wrapper for additional functions
+                data.data.forEach(function (connection)
+                {
+                    app.page.connections.push(new tndStudios.models.dataConnections.dataConnection(connection)); // Assign the Json package to the data definition
+                });
             };
         },
 
         // Load was unsuccessful, inform the user
         loadConnectionsFailure: function () {
-            alert('Failed to retrieve existing connections list')
+            //alert('Failed to retrieve existing connections list')
         },
     }
 });

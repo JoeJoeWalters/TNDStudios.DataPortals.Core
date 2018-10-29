@@ -50,9 +50,8 @@ namespace TNDStudios.DataPortals.UI.Models.Api
         /// <summary>
         /// Default Constructor
         /// </summary>
-        public DataItemDefinitionModel()
+        public DataItemDefinitionModel() : base()
         {
-            Id = Guid.NewGuid();
             Name = "";
             Description = "";
             ItemProperties = new List<DataItemPropertyModel>();

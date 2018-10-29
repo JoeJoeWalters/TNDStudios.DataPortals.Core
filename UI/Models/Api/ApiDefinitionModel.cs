@@ -27,7 +27,6 @@ namespace TNDStudios.DataPortals.UI.Models.Api
         /// </summary>
         public ApiDefinitionModel() : base()
         {
-
         }
     }
 }

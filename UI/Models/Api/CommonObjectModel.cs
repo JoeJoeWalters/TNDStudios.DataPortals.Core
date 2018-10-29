@@ -15,8 +15,8 @@ namespace TNDStudios.DataPortals.UI.Models.Api
         /// <summary>
         /// The Id for this object
         /// </summary>
-        [JsonProperty]
-        public Guid Id { get; set; }
+        [JsonProperty(Required = Required.AllowNull)]
+        public Nullable<Guid> Id { get; set; }
 
         /// <summary>
         /// The name of the definition
@@ -29,5 +29,14 @@ namespace TNDStudios.DataPortals.UI.Models.Api
         /// </summary>
         [JsonProperty]
         public String Description { get; set; }
+
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
+        public CommonObjectModel()
+        {
+            Id = Guid.Empty; // No Id by default but not null too
+        }
+
     }
 }
