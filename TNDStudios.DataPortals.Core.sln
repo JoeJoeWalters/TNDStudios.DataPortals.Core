@@ -5,9 +5,9 @@ VisualStudioVersion = 15.0.27703.2047
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{EF9B1E41-5AC2-42A8-8EC2-0B0EDA09257D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MSSQLProvider", "MSSQLProvider\MSSQLProvider.csproj", "{ABC36FCA-6CC4-4218-A98D-4C29B7DA267F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MSSQLProvider", "Providers\MSSQLProvider\MSSQLProvider.csproj", "{ABC36FCA-6CC4-4218-A98D-4C29B7DA267F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlatFileProvider", "FlatFileProvider\FlatFileProvider.csproj", "{D036DF1E-976C-47BC-995F-E88C86D45856}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlatFileProvider", "Providers\FlatFileProvider\FlatFileProvider.csproj", "{D036DF1E-976C-47BC-995F-E88C86D45856}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Providers", "Providers", "{37268162-FC85-4421-8FE2-9B79B801A0EA}"
 EndProject
