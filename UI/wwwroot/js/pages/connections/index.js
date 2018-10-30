@@ -62,6 +62,9 @@
                     app.page.editItem = new tndStudios.models.dataConnections.dataConnection(data.data);
                     app.page.connections.push(app.page.editItem);
                 }
+
+                // Notify the user
+                tndStudios.utils.ui.notify(0, "Connection Saved ('" + data.data.name + "')");
             };
         },
 
