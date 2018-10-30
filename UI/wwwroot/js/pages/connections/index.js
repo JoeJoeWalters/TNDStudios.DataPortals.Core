@@ -4,14 +4,20 @@
         page: new tndStudios.models.dataConnections.page()
     },
     computed: {
+        filteredConnections() {
+            return this.page.connections.filter(function (item) {
+                return item.name.toLowerCase().indexOf(app.page.searchCriteria.toLowerCase()) > -1
+            });
+        }
     },
     methods: {
 
         // Add a new item to the definition list
-        new: function () {
+        newConnection: function () {
 
             // Clear the editor
             app.page.editor.clear();
+            app.page.editItem = null; // No longer attached to an editing object
         },
 
         // Edit an existing item by assigning it to the editor object
@@ -53,7 +59,8 @@
                 else {
 
                     // Add the new item to the list
-                    app.page.connections.push(new tndStudios.models.dataConnections.dataConnection(data.data));
+                    app.page.editItem = new tndStudios.models.dataConnections.dataConnection(data.data);
+                    app.page.connections.push(app.page.editItem);
                 }
             };
         },

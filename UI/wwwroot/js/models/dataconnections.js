@@ -7,6 +7,8 @@ tndStudios.models.dataConnections =
 
             // The properties of the object
             this.connections = []; // The list of connections for this package
+            this.searchCriteria = ""; // The filter for the connections list
+
             this.editor = new tndStudios.models.dataConnections.dataConnection(null); // The editor object
             this.editItem = null; // Reference to the item that is being edited for saving changes back to it
             this.providerTypes = []; // The list of available provider types
