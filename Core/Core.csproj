@@ -6,8 +6,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
-    <ProjectReference Include="..\FlatFileProvider\FlatFileProvider.csproj" />
-    <ProjectReference Include="..\MSSQLProvider\MSSQLProvider.csproj" />
+    <ProjectReference Include="..\Providers\FlatFileProvider\FlatFileProvider.csproj" />
+    <ProjectReference Include="..\Providers\MSSQLProvider\MSSQLProvider.csproj" />
   </ItemGroup>
 
 </Project>

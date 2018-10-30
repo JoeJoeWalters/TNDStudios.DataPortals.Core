@@ -50,7 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\FlatFileProvider\FlatFileProvider.csproj" />
+    <ProjectReference Include="..\..\..\Providers\FlatFileProvider\FlatFileProvider.csproj" />
   </ItemGroup>
 
 </Project>

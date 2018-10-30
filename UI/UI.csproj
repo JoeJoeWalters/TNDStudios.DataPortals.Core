@@ -24,7 +24,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
-    <ProjectReference Include="..\FlatFileProvider\FlatFileProvider.csproj" />
   </ItemGroup>
 
   <ItemGroup>
