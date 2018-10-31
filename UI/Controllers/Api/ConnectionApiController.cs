@@ -49,6 +49,34 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         public ApiResponse<List<DataConnectionModel>> Get()
             => Get(Guid.Empty);
 
+        /// <summary>
+        /// Test the connection to a data source
+        /// </summary>
+        /// <param name="request">The data connection model to test</param>
+        /// <returns>A success or failure state for the connection</returns>
+        [HttpPost]
+        [Route("/api/data/connection/test")]
+        public ApiResponse<Boolean> Test([FromBody] DataConnectionModel request)
+        {
+            // Create a default response object
+            ApiResponse<Boolean> response = new ApiResponse<Boolean>();
+
+            // Map the connection to something we can use
+            DataConnection connection = mapper.Map<DataConnection>(request);
+
+            // Create a new factory class and get the provider from the connection given
+            IDataProvider provider = (new DataProviderFactory()).Get(connection, false);
+            if (provider != null)
+            {
+                // Can we connect?
+                response.Success = response.Success = provider.Test(connection.ConnectionString);
+                provider = null; // Kill the provider now
+            }
+
+            // Send the response back
+            return response;
+        }
+
         [HttpGet]
         [Route("/api/data/connection/{id}")]
         public ApiResponse<List<DataConnectionModel>> Get(Guid id)

@@ -98,5 +98,11 @@ namespace TNDStudios.DataPortals.Data
         /// </summary>
         /// <returns>A representation of the data</returns>
         DataItemDefinition Analyse(AnalyseRequest<Object> request);
+
+        /// <summary>
+        /// Test a connection string for this provider type
+        /// </summary>
+        /// <returns>Success or failure of the connection string test</returns>
+        Boolean Test(String connectionString);
     }
 }

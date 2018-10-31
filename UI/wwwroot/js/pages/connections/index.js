@@ -64,19 +64,42 @@
                 }
 
                 // Notify the user
-                tndStudios.utils.ui.notify(0, "Connection Saved ('" + data.data.name + "')");
+                tndStudios.utils.ui.notify(1, "Connection Saved ('" + data.data.name + "')");
             };
         },
 
         // Save was unsuccessful, inform the user
         saveFailure: function () {
-            //alert('Failed save the connection');
+
+            // Notify the user
+            tndStudios.utils.ui.notify(0, "Connection Could Not Be Saved");
         },
-
-
+        
         // Test the connection of a given connection
         test: function (testItem) {
-            alert('Testing Object');
+
+            // The the api call to test the connection
+            tndStudios.utils.api.call(
+                '/api/data/connection/test',
+                'POST',
+                app.page.editor.toObject(),
+                app.testSuccess,
+                app.testFailure
+            );
+        },
+
+        // Test was successful
+        testSuccess: function (data) {
+
+            // Notify the user
+            tndStudios.utils.ui.notify(1, "Connection Tested Successfully");
+        },
+
+        // Test failed
+        testFailure: function () {
+            
+            // Notify the user
+            tndStudios.utils.ui.notify(0, "Connection Test Failed");
         },
 
         // Start the load process

@@ -59,7 +59,12 @@ namespace TNDStudios.DataPortals.Data
             this.memoryData = new DataTable(); // Blank data by default
 
             // Do we have a stream and a definition
-            if (stream != null && definition != null)
+            if (stream != null && definition == null)
+            {
+                base.connected = true;
+                return true;
+            }
+            else if (stream != null && definition != null)
             {
                 stream.Position = 0; // Reset back to the start again in case someone else has read it
                 base.MarkLastAction(); // Tell the provider base class that it did something
