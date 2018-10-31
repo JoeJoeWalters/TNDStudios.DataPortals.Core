@@ -40,3 +40,12 @@ label.error {
     color: #ff0000;
     font-size: 0.75em
 }
+
+select.error, textarea.error, input.error {
+    background-color: #ffefef
+}
+
+span.required {
+    color: #ff0000;
+    font-weight: bold
+}
