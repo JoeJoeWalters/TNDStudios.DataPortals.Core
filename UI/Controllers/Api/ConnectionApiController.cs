@@ -35,7 +35,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         public ApiResponse<List<KeyValuePair<Int32, String>>> GetProviderTypes()
             => new ApiResponse<List<KeyValuePair<Int32, String>>>()
             {
-                Data = typeof(DataProviderType).ToList(),
+                Data = typeof(DataProviderType).ToList().Where(item => (item.Key != 0)).ToList(),
                 Success = true
             };
 

@@ -31,14 +31,18 @@
         // Save the contents of the editor object 
         save: function () {
 
-            // The the api call to save the connection
-            tndStudios.utils.api.call(
-                '/api/data/connection',
-                'POST',
-                app.page.editor.toObject(),
-                app.saveSuccess,
-                app.saveFailure
-            );
+            // Is the form valid?
+            if ($("#editorForm").valid()) {
+                // The the api call to save the connection
+                tndStudios.utils.api.call(
+                    '/api/data/connection',
+                    'POST',
+                    app.page.editor.toObject(),
+                    app.saveSuccess,
+                    app.saveFailure
+                );
+            }
+
         },
 
         // Save was successful, assign the appropriate items
@@ -74,7 +78,7 @@
             // Notify the user
             tndStudios.utils.ui.notify(0, "Connection Could Not Be Saved");
         },
-        
+
         // Test the connection of a given connection
         test: function (testItem) {
 
@@ -97,7 +101,7 @@
 
         // Test failed
         testFailure: function () {
-            
+
             // Notify the user
             tndStudios.utils.ui.notify(0, "Connection Test Failed");
         },
@@ -156,8 +160,7 @@
                 app.page.connections = []; // clear the connections array
 
                 // Add the connection objects back in with wrapper for additional functions
-                data.data.forEach(function (connection)
-                {
+                data.data.forEach(function (connection) {
                     app.page.connections.push(new tndStudios.models.dataConnections.dataConnection(connection)); // Assign the Json package to the data definition
                 });
             };
@@ -170,4 +173,28 @@
     }
 });
 
+// Create the validation rules for the main editor form
+$("#editorForm").validate(
+    {
+        rules:
+        {
+            name: { required: true },
+            connectionString: { required: true },
+            providerType: {
+                required: {
+                    depends: function (element) {
+                        return (element.value != '0');
+                    }
+                }
+            }
+        },
+        messages:
+        {
+            name: "Name Of Connection Required",
+            connectionString: "Connection String Required",
+            providerType: "Please Select A Provider Type"
+        }
+    });
+
+// Start the load process to initialise the form
 app.load();
