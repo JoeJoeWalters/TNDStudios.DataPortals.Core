@@ -77,6 +77,23 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             return response;
         }
 
+        [HttpDelete]
+        [Route("/api/data/connection/{id}")]
+        public ApiResponse<Boolean> Delete(Guid id)
+        {
+            // Create the response object
+            ApiResponse<Boolean> response = new ApiResponse<Boolean>();
+
+            // Get the item from the repository to make sure that it is 
+            // not attached to other things
+            DataConnection connection = SessionHandler.CurrentPackage.DataConnection(id);
+            response.Success = response.Data = 
+                SessionHandler.CurrentPackage.Delete<DataConnection>(id);
+            
+            // Return the response
+            return response;
+        }
+
         [HttpGet]
         [Route("/api/data/connection/{id}")]
         public ApiResponse<List<DataConnectionModel>> Get(Guid id)

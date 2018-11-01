@@ -73,6 +73,52 @@ namespace TNDStudios.DataPortals.Repositories
             => DataConnections.Where(item => item.Id == id).FirstOrDefault();
 
         /// <summary>
+        /// Delete an object from the package
+        /// </summary>
+        /// <typeparam name="T">The type of data to delete</typeparam>
+        /// <param name="id">The id of the data to delete</param>
+        /// <returns>If the deletion was successful</returns>
+        public Boolean Delete<T>(Guid id)
+        {
+            // What will the result be?
+            Boolean result = false;
+
+            // Get the type of data to be saved
+            String typeOfData = typeof(T).ToShortName();
+
+            // Based on the type of data, save it to the correct repository element
+            switch (typeOfData)
+            {
+                case "apidefinition":
+
+                    break;
+
+                case "dataitemdefinition":
+
+                    break;
+
+                case "dataconnection":
+
+                    // Get the actual value from the object wrapper
+                    DataConnection connection = this.DataConnection(id);
+
+                    // If the type is not null
+                    if (connection != null)
+                    {
+                        // Can't delete if the connection has attached 
+                        // definitions
+                        if (connection.Definitions.Count == 0)
+                            result = this.DataConnections.Remove(connection);
+                    }
+
+                    break;
+            }
+
+            // Send the result back
+            return result;
+        }
+
+        /// <summary>
         /// Save a piece of information to the appropriate package element
         /// </summary>
         /// <typeparam name="T">The type of data to be saved</typeparam>
@@ -127,7 +173,7 @@ namespace TNDStudios.DataPortals.Repositories
                     break;
 
                 case "dataitemdefinition":
-                    
+
                     // Get the actual value from the object wrapper
                     DataItemDefinition dataItemDefinition = (DataItemDefinition)Convert.ChangeType(dataToSave, typeof(DataItemDefinition));
 

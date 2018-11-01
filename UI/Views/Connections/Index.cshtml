@@ -110,8 +110,11 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
-                            <input v-on:click="save()" type="button" style="margin-left: 0.1em; margin-right: 0.1em" class="btn btn-primary float-right" id="save" name="save" value="Save" />
-                            <input v-on:click="test(page.connection)" type="button" style="margin-left: 0.1em; margin-right: 0.1em" class="btn btn-info float-right" id="test" name="test" value="Test" />
+                            <span v-bind:style="{visibility: canDelete}">
+                                <input v-on:click="deleteConnection()" type="button" class="btn btn-danger" value="Delete" />
+                            </span>
+                            <input v-on:click="saveConnection()" type="button" style="margin-left: 0.1em; margin-right: 0.1em" class="btn btn-primary float-right" id="save" name="save" value="Save" />
+                            <input v-on:click="testConnection(page.connection)" type="button" style="margin-left: 0.1em; margin-right: 0.1em" class="btn btn-info float-right" id="test" name="test" value="Test" />
                         </div>
                     </div>
                 </form>

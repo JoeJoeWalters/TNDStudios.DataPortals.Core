@@ -4,10 +4,22 @@
         page: new tndStudios.models.dataConnections.page()
     },
     computed: {
+
+        // Searchable list of the connections
         filteredConnections() {
             return this.page.connections.filter(function (item) {
                 return item.name.toLowerCase().indexOf(app.page.searchCriteria.toLowerCase()) > -1
             });
+        },
+
+        // Can the editor item be deleted
+        canDelete() {
+
+            if (this.page.editor.id != null &&
+                this.page.editor.id != "")
+                return "visible";
+            else
+                return "hidden";
         }
     },
     methods: {
@@ -28,11 +40,65 @@
             app.page.editItem = editItem; // Reference to the origional item being edited
         },
 
+        // Delete the current connection
+        deleteConnection: function () {
+
+            // Get the editor id field
+            var idString = "";
+            if (app.page.editor && app.page.editor.id) {
+                idString = app.page.editor.id;
+            }
+
+            // Make sure this is a real connection just in case
+            // someone clicked the delete before it was saved
+            if (idString != "") {
+
+                tndStudios.utils.api.call(
+                    '/api/data/connection/' + idString,
+                    'DELETE',
+                    null,
+                    app.deleteSuccess,
+                    app.deleteFailure
+                );
+            }
+            else
+                tndStudios.utils.ui.notify(0, 'Cannot Delete An Item That Is Not Saved Yet');
+
+        },
+
+        // Test was successful
+        deleteSuccess: function (data) {
+
+            // Clear the editor (as it was showing the connection when it was deleted)
+            app.page.editor.clear();
+
+            // Remove the item from the connections list
+            app.page.connections = app.page.connections.filter(
+                function (connection)
+                {
+                    return connection.id !== app.page.editItem.id;
+                });
+
+            app.page.editItem = null; // No longer attached to an editing object
+
+            // Notify the user
+            tndStudios.utils.ui.notify(1, "Connection Deleted Successfully");
+        },
+
+        // Test failed
+        deleteFailure: function () {
+
+            // Notify the user
+            tndStudios.utils.ui.notify(0, "Connection Deletion Failed");
+        },
+
+
         // Save the contents of the editor object 
-        save: function () {
+        saveConnection: function () {
 
             // Is the form valid?
             if ($("#editorForm").valid()) {
+
                 // The the api call to save the connection
                 tndStudios.utils.api.call(
                     '/api/data/connection',
@@ -80,7 +146,7 @@
         },
 
         // Test the connection of a given connection
-        test: function (testItem) {
+        testConnection: function (testItem) {
 
             // The the api call to test the connection
             tndStudios.utils.api.call(
