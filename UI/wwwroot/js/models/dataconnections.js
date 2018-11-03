@@ -39,7 +39,8 @@ tndStudios.models.dataConnections =
                 this.providerType = fromObject.providerType;
                 this.connectionString = fromObject.connectionString;
 
-                this.definitions = [];
+                // Copy each definition in
+                this.definitions = fromObject.definitions;
             }
 
             // Create a formatted object that can be passed to the server

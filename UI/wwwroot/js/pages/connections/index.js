@@ -12,8 +12,8 @@
             });
         },
 
-        // Can the editor item be deleted
-        canDelete() {
+        // Is the editor item saved?
+        isSavedVisible() {
 
             if (this.page.editor.id != null &&
                 this.page.editor.id != "")

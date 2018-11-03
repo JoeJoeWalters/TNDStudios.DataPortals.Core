@@ -246,8 +246,8 @@ namespace TNDStudios.DataPortals.Repositories
                             existingConnection.Name = connection.Name;
                             existingConnection.ProviderType = connection.ProviderType;
 
-                            // Assign the definitions
-                            existingConnection.Definitions = connection.Definitions;
+                            // Note: For now don't re-assign the definitions
+                            //existingConnection.Definitions = connection.Definitions;
                         }
 
                         // Convert the data back to the return data type (which is actually the same)
