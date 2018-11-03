@@ -22,13 +22,6 @@
     <div class="col-md-3">
         <div class="card">
             <div class="card-header">
-                <!--
-                <div class="row">
-                    <div class="col-lg-12">
-                        Existing Connections
-                    </div>
-                </div>
-                    -->
                 <div class="row">
                     <div class="col-lg-10">
                         <div class="form-group">
@@ -61,7 +54,7 @@
                 <a class="nav-link active" data-toggle="tab" href="#connectionEditor">Connection Editor</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#linkedDefinitions" v-bind:style="{visibility: isSavedVisible}">Linked Definitions</a>
+                <a class="nav-link" data-toggle="tab" href="#linkedComponents" v-bind:style="{visibility: isSavedVisible}">Linked Components</a>
             </li>
         </ul>
         <div class="tab-content">
@@ -114,13 +107,13 @@
                     </div>
                 </form>
             </div>
-            <div class="tab-pane container" id="linkedDefinitions" v-bind:style="{visibility: isSavedVisible}">
+            <div class="tab-pane container" id="linkedComponents" v-bind:style="{visibility: isSavedVisible}">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
                             <ul class="list-inline">
                                 <li class="list-inline-item" v-for="item in page.editor.definitions">
-                                    <a href="~/DataDefinitions/Index">{{item.value}}</a>
+                                    <a v-bind:href="'/datadefinitions/' + item.key">{{item.value}}</a>
                                 </li>
                             </ul>
                         </div>
@@ -130,29 +123,3 @@
         </div>
     </div>
 </div>
-<!--
-<form style="margin-top: 50px" method="post" id="analyseForm" name="analyseForm" enctype="multipart/form-data" action="/api/data/analyse/file">
-    <input type="file" name="upload" id="upload" />
-    <input type="button" class="btn btn-info" id="action" v-on:click="loadAnalysis" name="action" value="Analyse File" />
-</form>
-
-<button class="btn" v-on:click="loadDefinition">Load Definition</button>
-<button class="btn" v-on:click="loadData">Load Data</button>
-<button class="btn" v-on:click="add">Add Property</button>
-<table class="table table-striped table-bordered">
-    <thead>
-        <tr>
-            <th v-for="item in definition.itemProperties">
-                {{ item.name }}
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr v-for="line in values.lines">
-            <td v-for="item in definition.itemProperties">
-                {{ line[item.name] }}
-            </td>
-        </tr>
-    </tbody>
-</table>
--->
