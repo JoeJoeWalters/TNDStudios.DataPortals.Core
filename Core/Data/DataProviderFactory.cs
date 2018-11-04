@@ -54,7 +54,10 @@ namespace TNDStudios.DataPortals.Data
                     case DataProviderType.DelimitedFileProvider:
                         type = typeof(DelimitedFileProvider);
                         break;
-                    case DataProviderType.MSSQLProvider:
+                    case DataProviderType.FixedWidthFileProvider:
+                        type = typeof(FixedWidthFileProvider);
+                        break;
+                    case DataProviderType.SQLProvider:
                         type = typeof(SQLProvider);
                         break;
                     default:

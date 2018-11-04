@@ -23,8 +23,8 @@ namespace TNDStudios.DataPortals.Data
         [Description("Fixed Width File Provider")]
         FixedWidthFileProvider = 2,
 
-        [Description("SQL Server")]
-        MSSQLProvider = 3
+        [Description("SQL Data Source")]
+        SQLProvider = 3
     }
 
     /// <summary>

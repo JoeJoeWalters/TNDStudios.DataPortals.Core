@@ -123,7 +123,7 @@ namespace TNDStudios.DataPortals.Tests.UI
                 Name = "Name",
                 Description = "Description",
                 ConnectionString = "Connection String Content",
-                ProviderType = DataProviderType.MSSQLProvider
+                ProviderType = DataProviderType.SQLProvider
             };
 
             // Act
@@ -151,7 +151,7 @@ namespace TNDStudios.DataPortals.Tests.UI
                 Name = "Name",
                 Description = "Description",
                 ConnectionString = "Connection String Content",
-                ProviderType = (Int32)DataProviderType.MSSQLProvider
+                ProviderType = (Int32)DataProviderType.SQLProvider
             };
 
             // Act

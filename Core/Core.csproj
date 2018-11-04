@@ -7,6 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\Providers\DelimitedFileProvider\DelimitedFileProvider.csproj" />
+    <ProjectReference Include="..\Providers\FixedWidthFileProvider\FixedWidthFileProvider.csproj" />
     <ProjectReference Include="..\Providers\SQLProvider\SQLProvider.csproj" />
   </ItemGroup>
 
