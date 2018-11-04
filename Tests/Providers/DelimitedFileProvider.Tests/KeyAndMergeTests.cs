@@ -20,7 +20,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
             DataTable mergeData = TestHelper.PopulateDataTable(TestHelper.TestFile_PKMergeFrom); // Get the data
 
             Stream testStream = new MemoryStream(); // A blank stream to write data to
-            IDataProvider provider = new FlatFileProvider(); // A flat file provider to use to write the data
+            IDataProvider provider = new DelimitedFileProvider(); // A flat file provider to use to write the data
 
             // Act
             provider.Connect(definition, testStream); // Connect to the blank stream
@@ -40,7 +40,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
             DataTable unfilteredData = TestHelper.PopulateDataTable(TestHelper.TestFile_Headers); // Get the data
             
             Stream testStream = new MemoryStream(); // A blank stream to write data to
-            IDataProvider provider = new FlatFileProvider(); // A flat file provider to use to write the data
+            IDataProvider provider = new DelimitedFileProvider(); // A flat file provider to use to write the data
 
             String command = "Title = 'Title 1'"; // The command to do the filter
 

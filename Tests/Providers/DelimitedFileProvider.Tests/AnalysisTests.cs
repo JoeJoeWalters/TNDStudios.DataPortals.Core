@@ -19,7 +19,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
             // Arrange
             String file = TestHelper.GetResourceString(
                 TestHelper.TestFile_BigFileSalesRecords);
-            FlatFileProvider provider = new FlatFileProvider();
+            DelimitedFileProvider provider = new DelimitedFileProvider();
 
             // Act
             DataItemDefinition definition = provider.Analyse(
@@ -39,7 +39,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
             // Arrange
             Stream file = TestHelper.GetResourceStream(
                 TestHelper.TestFile_BigFileSalesRecords);
-            FlatFileProvider provider = new FlatFileProvider();
+            DelimitedFileProvider provider = new DelimitedFileProvider();
 
             // Act
             DataItemDefinition definition = provider.Analyse(

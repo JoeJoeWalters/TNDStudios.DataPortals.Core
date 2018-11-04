@@ -48,6 +48,12 @@ namespace TNDStudios.DataPortals.Data
         }
 
         /// <summary>
+        /// The default or actual object name that the provider is pointing to
+        /// such as a table or spreadsheet tab
+        /// </summary>
+        public virtual string ObjectName { get; set; }
+
+        /// <summary>
         /// Mark the last time something happened on a provider
         /// </summary>
         public virtual void MarkLastAction() { this.lastAction = DateTime.Now; }

@@ -40,7 +40,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
             DataItemDefinition definition = TestDefinition(testDefinition);
 
             // Create a new flat file provider
-            IDataProvider provider = new FlatFileProvider()
+            IDataProvider provider = new DelimitedFileProvider()
             {
                 TestMode = true // The provider should be marked as being in test mode
             };

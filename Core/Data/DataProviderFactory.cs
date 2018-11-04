@@ -51,11 +51,11 @@ namespace TNDStudios.DataPortals.Data
                 Type type;
                 switch (connection.ProviderType)
                 {
-                    case DataProviderType.FlatFileProvider:
-                        type = typeof(FlatFileProvider);
+                    case DataProviderType.DelimitedFileProvider:
+                        type = typeof(DelimitedFileProvider);
                         break;
                     case DataProviderType.MSSQLProvider:
-                        type = typeof(MSSQLProvider);
+                        type = typeof(SQLProvider);
                         break;
                     default:
                         type = null;

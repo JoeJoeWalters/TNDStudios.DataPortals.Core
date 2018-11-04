@@ -24,7 +24,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
             DataTable dataToWrite = TestHelper.PopulateDataTable(TestHelper.TestFile_WriteTests); // Get the data
             DataTable dataToRead = null; // Table to read the data back in to (to verify it was created)
             Stream testStream = new MemoryStream(); // A blank stream to write data to
-            IDataProvider provider = new FlatFileProvider(); // A flat file provider to use to write the data
+            IDataProvider provider = new DelimitedFileProvider(); // A flat file provider to use to write the data
 
             // Act
             provider.Connect(definition, testStream); // Connect to the blank stream

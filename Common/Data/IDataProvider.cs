@@ -17,11 +17,14 @@ namespace TNDStudios.DataPortals.Data
         [Description("")]
         Unknown = 0,
 
-        [Description("Flat File Provider")]
-        FlatFileProvider = 1,
+        [Description("Delimited File Provider")]
+        DelimitedFileProvider = 1,
+
+        [Description("Fixed Width File Provider")]
+        FixedWidthFileProvider = 2,
 
         [Description("SQL Server")]
-        MSSQLProvider = 2
+        MSSQLProvider = 3
     }
 
     /// <summary>
@@ -65,6 +68,12 @@ namespace TNDStudios.DataPortals.Data
         /// When the last time the provider was used or actioned upon
         /// </summary>
         DateTime LastAction { get; }
+
+        /// <summary>
+        /// If the provider is pointing to a specific object within the 
+        /// connection (e.g. a table name or a spreadsheet tab etc.)
+        /// </summary>
+        String ObjectName { get; set; }
 
         /// <summary>
         /// Disconnect from the data source

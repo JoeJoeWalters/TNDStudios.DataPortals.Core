@@ -5,9 +5,9 @@
 
     <IsPackable>false</IsPackable>
 
-    <AssemblyName>TNDStudios.DataPortals.Tests.FlatFile</AssemblyName>
+    <AssemblyName>TNDStudios.DataPortals.Tests.DelimitedFile</AssemblyName>
 
-    <RootNamespace>TNDStudios.DataPortals.Tests.FlatFile</RootNamespace>
+    <RootNamespace>TNDStudios.DataPortals.Tests.DelimitedFile</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -50,7 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Providers\FlatFileProvider\FlatFileProvider.csproj" />
+    <ProjectReference Include="..\..\..\Providers\DelimitedFileProvider\DelimitedFileProvider.csproj" />
   </ItemGroup>
 
 </Project>

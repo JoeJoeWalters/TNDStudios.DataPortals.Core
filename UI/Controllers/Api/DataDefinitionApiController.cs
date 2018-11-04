@@ -142,7 +142,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                     // Do we have any content to work with
                     if (content.Length != 0)
                     {
-                        IDataProvider provider = new FlatFileProvider();
+                        IDataProvider provider = new DelimitedFileProvider();
                         DataItemDefinition definition = provider.Analyse(new AnalyseRequest<object>() { Data = content });
                         if (definition.ItemProperties.Count != 0)
                         {

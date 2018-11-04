@@ -47,8 +47,8 @@ namespace TNDStudios.DataPortals.Tests.Core
             List<KeyValuePair<DataProviderType, Type>>
                 expectedOutcomes = new List<KeyValuePair<DataProviderType, Type>>()
                 {
-                    new KeyValuePair<DataProviderType, Type>(DataProviderType.FlatFileProvider, typeof(FlatFileProvider)),
-                    new KeyValuePair<DataProviderType, Type>(DataProviderType.MSSQLProvider, typeof(MSSQLProvider)),
+                    new KeyValuePair<DataProviderType, Type>(DataProviderType.DelimitedFileProvider, typeof(DelimitedFileProvider)),
+                    new KeyValuePair<DataProviderType, Type>(DataProviderType.MSSQLProvider, typeof(SQLProvider)),
                     new KeyValuePair<DataProviderType, Type>(DataProviderType.Unknown, null)
                 };
             DataProviderFactory factory = new DataProviderFactory();

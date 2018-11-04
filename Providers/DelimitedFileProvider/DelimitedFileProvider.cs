@@ -8,7 +8,7 @@ using TNDStudios.DataPortals.Helpers;
 
 namespace TNDStudios.DataPortals.Data
 {
-    public class FlatFileProvider : DataProviderBase, IDataProvider
+    public class DelimitedFileProvider : DataProviderBase, IDataProvider
     {
         /// <summary>
         /// The data that is loaded from the file when the refresh of the
@@ -270,7 +270,7 @@ namespace TNDStudios.DataPortals.Data
         /// <summary>
         /// Default Constructor
         /// </summary>
-        public FlatFileProvider() : base()
+        public DelimitedFileProvider() : base()
         {
             connectionString = ""; // No connection string by default
             connected = false; // Not connected until the file can be proven as existing

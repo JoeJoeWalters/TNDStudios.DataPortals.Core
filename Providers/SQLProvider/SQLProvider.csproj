@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <RootNamespace>TNDStudios.DataPortals.Data.MSSQLProvider</RootNamespace>
-    <AssemblyName>TNDStudios.DataPortals.Data.MSSQLProvider</AssemblyName>
+    <RootNamespace>TNDStudios.DataPortals.Data.SQLProvider</RootNamespace>
+    <AssemblyName>TNDStudios.DataPortals.Data.SQLProvider</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

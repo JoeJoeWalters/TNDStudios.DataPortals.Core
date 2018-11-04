@@ -78,10 +78,10 @@ namespace TNDStudios.DataPortals.UI
                             new DataConnection()
                             {
                                 Id = dataConnectionId,
-                                ConnectionString = @"C:\Users\Joe\Documents\Git\TNDStudios.DataPortals.Core\Tests\Providers\FlatFileProvider.Tests\TestFiles\BigFiles\SalesRecords5000.csv",
+                                ConnectionString = @"C:\Users\Joe\Documents\Git\TNDStudios.DataPortals.Core\Tests\Providers\DelimitedFileProvider.Tests\TestFiles\BigFiles\SalesRecords5000.csv",
                                 Description = "Data Connection Description",
                                 Name = "Data Connection",
-                                ProviderType = DataProviderType.FlatFileProvider
+                                ProviderType = DataProviderType.DelimitedFileProvider
                             }
                         },
                         DataDefinitions = new List<DataItemDefinition>()
