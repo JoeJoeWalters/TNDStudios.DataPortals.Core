@@ -131,14 +131,14 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             ApiResponse<DataConnectionModel> response = new ApiResponse<DataConnectionModel>();
 
             // Map the model to a domain object type
-            Transformation savedConnection = mapper.Map<Transformation>(request);
+            DataConnection savedConnection = mapper.Map<DataConnection>(request);
 
             // Did the mapping work ok?
             if (savedConnection != null)
             {
                 // Get the repository to save the package for us
                 savedConnection = SessionHandler.CurrentPackage
-                        .Save<Transformation>(savedConnection);
+                        .Save<DataConnection>(savedConnection);
 
                 // Saved ok?
                 if (savedConnection != null)

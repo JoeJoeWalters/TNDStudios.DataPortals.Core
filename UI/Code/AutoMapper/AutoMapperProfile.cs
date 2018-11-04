@@ -101,10 +101,10 @@ namespace TNDStudios.DataPortals.UI
                 .ConstructUsing(api => new KeyValuePair<Guid, string>(api.Id, api.Name));
 
             // Map from the data connection domain object to the web view model
-            CreateMap<Transformation, DataConnectionModel>();
+            CreateMap<DataConnection, DataConnectionModel>();
 
             // Map from the web view model of the data connection to the domain object
-            CreateMap<DataConnectionModel, Transformation>();
+            CreateMap<DataConnectionModel, DataConnection>();
             /*
             .ForMember(
                 item => item.Definitions,

@@ -246,7 +246,7 @@ namespace TNDStudios.DataPortals.Repositories
                 case "dataconnection":
 
                     // Get the actual value from the object wrapper
-                    DataConnection connection = (DataConnection)Convert.ChangeType(dataToSave, typeof(Transformation));
+                    DataConnection connection = (DataConnection)Convert.ChangeType(dataToSave, typeof(DataConnection));
 
                     // If the type is not null
                     if (connection != null)
@@ -280,6 +280,42 @@ namespace TNDStudios.DataPortals.Repositories
 
                         // Convert the data back to the return data type (which is actually the same)
                         dataToSave = (T)Convert.ChangeType(existingConnection, typeof(T));
+                    }
+
+                    break;
+
+                case "transformation":
+
+                    // Get the actual value from the object wrapper
+                    Transformation transformation = (Transformation)Convert.ChangeType(dataToSave, typeof(Transformation));
+
+                    // If the type is not null
+                    if (transformation != null)
+                    {
+                        // Does this transformation already exist?
+                        Transformation existingTransformation =
+                            (transformation.Id == Guid.Empty) ? null : Transformation(transformation.Id);
+
+                        // No transformation found?
+                        if (existingTransformation == null)
+                        {
+                            // Doesn't exist currently so create a new Id
+                            // and assign the object as the "existing" transformation
+                            existingTransformation = transformation;
+                            existingTransformation.Id = Guid.NewGuid();
+
+                            // Add this new transformation to the repository
+                            Transformations.Add(existingTransformation);
+                        }
+                        else
+                        {
+                            // Assign the values from the item to save
+                            existingTransformation.Description = transformation.Description;
+                            existingTransformation.Name = transformation.Name;                           
+                        }
+
+                        // Convert the data back to the return data type (which is actually the same)
+                        dataToSave = (T)Convert.ChangeType(existingTransformation, typeof(T));
                     }
 
                     break;

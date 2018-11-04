@@ -1,8 +1,10 @@
-﻿var tndStudios = tndStudios || {};
+﻿// https://modeling-languages.com/javascript-drawing-libraries-diagrams/
+// http://bootstrap-notify.remabledesigns.com/
+
+var tndStudios = tndStudios || {};
 tndStudios.utils = tndStudios.utils || {};
 tndStudios.utils.ui =
     {
-        // http://bootstrap-notify.remabledesigns.com/
         notify: function (alertType, value) {
 
             var alertTranslated = 'success'; // Default alert type
