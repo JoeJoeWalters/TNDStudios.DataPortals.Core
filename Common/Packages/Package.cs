@@ -31,6 +31,11 @@ namespace TNDStudios.DataPortals.Repositories
         public List<DataConnection> DataConnections { get; set; }
 
         /// <summary>
+        /// List of transformations for this package
+        /// </summary>
+        public List<Transformation> Transformations { get; set; }
+
+        /// <summary>
         /// Default Constructor
         /// </summary>
         public Package() : base()
@@ -38,6 +43,7 @@ namespace TNDStudios.DataPortals.Repositories
             ApiDefinitions = new List<ApiDefinition>();
             DataDefinitions = new List<DataItemDefinition>();
             DataConnections = new List<DataConnection>();
+            Transformations = new List<Transformation>();
         }
 
         /// <summary>
@@ -71,6 +77,14 @@ namespace TNDStudios.DataPortals.Repositories
         /// <returns>The data connection</returns>
         public DataConnection DataConnection(Guid id)
             => DataConnections.Where(item => item.Id == id).FirstOrDefault();
+
+        /// <summary>
+        /// Get the transformation based on the id given
+        /// </summary>
+        /// <param name="id">The id of the transformation</param>
+        /// <returns>The transformation</returns>
+        public Transformation Transformation(Guid id)
+            => Transformations.Where(item => item.Id == id).FirstOrDefault();
 
         /// <summary>
         /// Delete an object from the package
@@ -232,7 +246,7 @@ namespace TNDStudios.DataPortals.Repositories
                 case "dataconnection":
 
                     // Get the actual value from the object wrapper
-                    DataConnection connection = (DataConnection)Convert.ChangeType(dataToSave, typeof(DataConnection));
+                    DataConnection connection = (DataConnection)Convert.ChangeType(dataToSave, typeof(Transformation));
 
                     // If the type is not null
                     if (connection != null)

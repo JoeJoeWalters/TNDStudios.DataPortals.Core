@@ -11,7 +11,7 @@ using TNDStudios.DataPortals.UI.Models.Api;
 namespace TNDStudios.DataPortals.UI.Controllers.Api
 {
     [ApiController]
-    public class ConnectionApiController : ApiControllerBase
+    public class TransformationApiController : ApiControllerBase
     {
         /// <summary>
         /// Automapper set by the dependency injection to the constructor
@@ -21,64 +21,23 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// <summary>
         /// Default Constructor
         /// </summary>
-        public ConnectionApiController(IMapper mapper) : base()
+        public TransformationApiController(IMapper mapper) : base()
         {
             this.mapper = mapper; // Assign the mapper from the dependency injection
         }
 
         /// <summary>
-        /// Get a list of the provider types available
-        /// </summary>
-        /// <returns>The list of available provider types</returns>
-        [HttpGet]
-        [Route("/api/data/providers")]
-        public ApiResponse<List<KeyValuePair<Int32, String>>> GetProviderTypes()
-            => new ApiResponse<List<KeyValuePair<Int32, String>>>()
-            {
-                Data = typeof(DataProviderType).ToList().Where(item => (item.Key != 0)).ToList(),
-                Success = true
-            };
-
-        /// <summary>
-        /// Get a list (or singular) data connection model 
+        /// Get a list (or singular) transformation model 
         /// based on a set of criteria
         /// </summary>
-        /// <returns>An API response with a list of data connection models</returns>
+        /// <returns>An API response with a list of transformation models</returns>
         [HttpGet]
-        [Route("/api/data/connection")]
-        public ApiResponse<List<DataConnectionModel>> Get()
+        [Route("/api/data/transformation")]
+        public ApiResponse<List<TransformationModel>> Get()
             => Get(Guid.Empty);
-
-        /// <summary>
-        /// Test the connection to a data source
-        /// </summary>
-        /// <param name="request">The data connection model to test</param>
-        /// <returns>A success or failure state for the connection</returns>
-        [HttpPost]
-        [Route("/api/data/connection/test")]
-        public ApiResponse<Boolean> Test([FromBody] DataConnectionModel request)
-        {
-            // Create a default response object
-            ApiResponse<Boolean> response = new ApiResponse<Boolean>();
-
-            // Map the connection to something we can use
-            DataConnection connection = mapper.Map<DataConnection>(request);
-
-            // Create a new factory class and get the provider from the connection given
-            IDataProvider provider = (new DataProviderFactory()).Get(connection, false);
-            if (provider != null)
-            {
-                // Can we connect?
-                response.Success = response.Success = provider.Test(connection.ConnectionString);
-                provider = null; // Kill the provider now
-            }
-
-            // Send the response back
-            return response;
-        }
-
+        
         [HttpDelete]
-        [Route("/api/data/connection/{id}")]
+        [Route("/api/data/transformation/{id}")]
         public ApiResponse<Boolean> Delete(Guid id)
         {
             // Create the response object
@@ -86,7 +45,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
 
             // Get the item from the repository to make sure that it is 
             // not attached to other things
-            DataConnection connection = SessionHandler.CurrentPackage.DataConnection(id);
+            Transformation connection = SessionHandler.CurrentPackage.Transformation(id);
             response.Success = response.Data = 
                 SessionHandler.CurrentPackage.Delete<Transformation>(id);
             
@@ -95,18 +54,18 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         }
 
         [HttpGet]
-        [Route("/api/data/connection/{id}")]
-        public ApiResponse<List<DataConnectionModel>> Get(Guid id)
+        [Route("/api/data/transformation/{id}")]
+        public ApiResponse<List<TransformationModel>> Get(Guid id)
         {
             // Create the response object
-            ApiResponse<List<DataConnectionModel>> response =
-                new ApiResponse<List<DataConnectionModel>>();
+            ApiResponse<List<TransformationModel>> response =
+                new ApiResponse<List<TransformationModel>>();
 
             try
             {
                 // Was an id passed in? If not just return everything
-                response.Data = mapper.Map<List<DataConnectionModel>>(
-                    SessionHandler.CurrentPackage.DataConnections.Where
+                response.Data = mapper.Map<List<TransformationModel>>(
+                    SessionHandler.CurrentPackage.Transformations.Where
                     (def => (id == Guid.Empty || def.Id == id))
                     );
                 
@@ -124,11 +83,11 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         }
 
         [HttpPost]
-        [Route("/api/data/connection")]
-        public ApiResponse<DataConnectionModel> Post([FromBody] DataConnectionModel request)
+        [Route("/api/data/transformation")]
+        public ApiResponse<TransformationModel> Post([FromBody] TransformationModel request)
         {
             // Create the response object
-            ApiResponse<DataConnectionModel> response = new ApiResponse<DataConnectionModel>();
+            ApiResponse<TransformationModel> response = new ApiResponse<TransformationModel>();
 
             // Map the model to a domain object type
             Transformation savedConnection = mapper.Map<Transformation>(request);
@@ -144,7 +103,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                 if (savedConnection != null)
                 {
                     // Map the connection back to a model type and send it back to the user
-                    response.Data = mapper.Map<DataConnectionModel>(savedConnection);
+                    response.Data = mapper.Map<TransformationModel>(savedConnection);
                 }
 
                 // Nothing died .. Success

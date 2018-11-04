@@ -97,14 +97,14 @@ namespace TNDStudios.DataPortals.UI
                     );
 
             // Map from the data connection domain object to a key/value pairing
-            CreateMap<DataConnection, KeyValuePair<Guid, String>>()
+            CreateMap<Transformation, KeyValuePair<Guid, String>>()
                 .ConstructUsing(api => new KeyValuePair<Guid, string>(api.Id, api.Name));
 
             // Map from the data connection domain object to the web view model
-            CreateMap<DataConnection, DataConnectionModel>();
+            CreateMap<Transformation, DataConnectionModel>();
 
             // Map from the web view model of the data connection to the domain object
-            CreateMap<DataConnectionModel, DataConnection>();
+            CreateMap<DataConnectionModel, Transformation>();
             /*
             .ForMember(
                 item => item.Definitions,

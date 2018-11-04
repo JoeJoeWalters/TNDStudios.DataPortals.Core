@@ -123,12 +123,6 @@ namespace TNDStudios.DataPortals.Tests.UI
                 Name = "Name",
                 Description = "Description",
                 ConnectionString = "Connection String Content",
-                Definitions = new List<Guid>()
-                {
-                    Guid.NewGuid(),
-                    Guid.NewGuid(),
-                    Guid.NewGuid()
-                },
                 ProviderType = DataProviderType.MSSQLProvider
             };
 
@@ -141,9 +135,6 @@ namespace TNDStudios.DataPortals.Tests.UI
             Assert.Equal(connection.Name, model.Name);
             Assert.Equal(connection.Description, model.Description);
             Assert.Equal(connection.ConnectionString, model.ConnectionString);
-            Assert.Equal(connection.Definitions.Count, model.Definitions.Count);
-            for (Int32 itemId = 0; itemId < connection.Definitions.Count; itemId++)
-                Assert.Equal(connection.Definitions[itemId], model.Definitions[itemId].Key);
             Assert.Equal(connection.ProviderType, (DataProviderType)model.ProviderType);
         }
 
@@ -160,12 +151,6 @@ namespace TNDStudios.DataPortals.Tests.UI
                 Name = "Name",
                 Description = "Description",
                 ConnectionString = "Connection String Content",
-                Definitions = new List<KeyValuePair<Guid, String>>()
-                {
-                    new KeyValuePair<Guid, String>(Guid.NewGuid(), "Item 1"),
-                    new KeyValuePair<Guid, String>(Guid.NewGuid(), "Item 2"),
-                    new KeyValuePair<Guid, String>(Guid.NewGuid(), "Item 3")
-                },
                 ProviderType = (Int32)DataProviderType.MSSQLProvider
             };
 
@@ -178,9 +163,6 @@ namespace TNDStudios.DataPortals.Tests.UI
             Assert.Equal(connection.Name, model.Name);
             Assert.Equal(connection.Description, model.Description);
             Assert.Equal(connection.ConnectionString, model.ConnectionString);
-            Assert.Equal(connection.Definitions.Count, model.Definitions.Count);
-            for (Int32 itemId = 0; itemId < connection.Definitions.Count; itemId++)
-                Assert.Equal(connection.Definitions[itemId], model.Definitions[itemId].Key);
             Assert.Equal(connection.ProviderType, (DataProviderType)model.ProviderType);
         }
 
@@ -255,13 +237,7 @@ namespace TNDStudios.DataPortals.Tests.UI
                 Name = "Name",
                 Description = "Description",
                 Culture = CultureInfo.GetCultureInfo(culture),
-                EncodingFormat = Encoding.GetEncoding(encoding),
-                Connections = new List<Guid>()
-                {
-                    Guid.NewGuid(),
-                    Guid.NewGuid(),
-                    Guid.NewGuid()
-                }
+                EncodingFormat = Encoding.GetEncoding(encoding)
             };
 
             // Act
@@ -275,9 +251,6 @@ namespace TNDStudios.DataPortals.Tests.UI
             Assert.Equal(definition.Id, model.Id);
             Assert.Equal(definition.Name, model.Name);
             Assert.Equal(definition.Description, model.Description);
-            Assert.Equal(definition.Connections.Count, model.Connections.Count);
-            for (Int32 itemId = 0; itemId < definition.Connections.Count; itemId++)
-                Assert.Equal(model.Connections[itemId].Key, definition.Connections[itemId]);
         }
 
         /// <summary>
@@ -334,13 +307,7 @@ namespace TNDStudios.DataPortals.Tests.UI
                 Name = "Name",
                 Description = "Description",
                 Culture = culture,
-                EncodingFormat = encoding,
-                Connections = new List<KeyValuePair<Guid, String>>()
-                {
-                    new KeyValuePair<Guid, string>(Guid.NewGuid(), "Item 1"),
-                    new KeyValuePair<Guid, string>(Guid.NewGuid(), "Item 2"),
-                    new KeyValuePair<Guid, string>(Guid.NewGuid(), "Item 3")
-                }
+                EncodingFormat = encoding
             };
 
             // Act
@@ -354,9 +321,6 @@ namespace TNDStudios.DataPortals.Tests.UI
             Assert.Equal(definition.Id, model.Id);
             Assert.Equal(definition.Name, model.Name);
             Assert.Equal(definition.Description, model.Description);
-            Assert.Equal(definition.Connections.Count, model.Connections.Count);
-            for (Int32 itemId = 0; itemId < definition.Connections.Count; itemId++)
-                Assert.Equal(model.Connections[itemId].Key, definition.Connections[itemId]);
         }
 
         /// <summary>
