@@ -23,7 +23,6 @@ tndStudios.models.dataConnections =
             this.description = '';
             this.providerType = 0;
             this.connectionString = '';
-            this.definitions = [];
 
             // Copy the content of this connection from another connection
             // e.g. when editing in a secondary editor object
@@ -38,9 +37,6 @@ tndStudios.models.dataConnections =
                 this.description = fromObject.description;
                 this.providerType = fromObject.providerType;
                 this.connectionString = fromObject.connectionString;
-
-                // Copy each definition in
-                this.definitions = fromObject.definitions;
             }
 
             // Create a formatted object that can be passed to the server
@@ -52,8 +48,7 @@ tndStudios.models.dataConnections =
                     Name: this.name,
                     Description: this.description,
                     ProviderType: this.providerType,
-                    ConnectionString: this.connectionString,
-                    Definitions: this.definitions
+                    ConnectionString: this.connectionString
                 };
 
                 return result;
@@ -68,9 +63,6 @@ tndStudios.models.dataConnections =
                 this.description = '';
                 this.providerType = 0;
                 this.connectionString = '';
-
-                // Clear the lists
-                this.definitions = [];
             }
 
             // Any data passed in?

@@ -20,16 +20,10 @@ namespace TNDStudios.DataPortals.Data
         public String ConnectionString { get; set; }
 
         /// <summary>
-        /// The definitions that are assigned to this connection
-        /// </summary>
-        public List<Guid> Definitions { get; set; }
-
-        /// <summary>
         /// Default Constructor
         /// </summary>
         public DataConnection()
         {
-            Definitions = new List<Guid>(); // The definitions that are assigned to this connection
         }
     }
 }

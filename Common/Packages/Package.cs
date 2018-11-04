@@ -105,10 +105,7 @@ namespace TNDStudios.DataPortals.Repositories
                     // If the type is not null
                     if (connection != null)
                     {
-                        // Can't delete if the connection has attached 
-                        // definitions
-                        if (connection.Definitions.Count == 0)
-                            result = this.DataConnections.Remove(connection);
+                        result = this.DataConnections.Remove(connection);
                     }
 
                     break;
@@ -204,7 +201,6 @@ namespace TNDStudios.DataPortals.Repositories
                             existingDataItemDefinition.EncodingFormat = dataItemDefinition.EncodingFormat;
 
                             // Assign the lists
-                            existingDataItemDefinition.Connections = dataItemDefinition.Connections;
                             existingDataItemDefinition.ItemProperties = dataItemDefinition.ItemProperties;
                             existingDataItemDefinition.PropertyBag = dataItemDefinition.PropertyBag;
                         }

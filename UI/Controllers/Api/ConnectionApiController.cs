@@ -109,28 +109,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                     SessionHandler.CurrentPackage.DataConnections.Where
                     (def => (id == Guid.Empty || def.Id == id))
                     );
-
-                // Post processing to fill in the missing titles
-                // as this doesn't really fit well in Automapper due 
-                // to the source column type
-                response.Data.ForEach(item =>
-                {
-                    List<KeyValuePair<Guid, String>> mappedPairs =
-                        new List<KeyValuePair<Guid, String>>();
-
-                    item.Definitions.ForEach(def =>
-                    {
-                        mappedPairs.Add(
-                            mapper.Map<KeyValuePair<Guid, String>>(SessionHandler.CurrentPackage.DataDefinition(def.Key))
-                            );
-                    });
-
-                    // Assign the new list (KeyValue Pairs are readonly and the list
-                    // cannot be modified in the loop to remove items so assigned here)
-                    item.Definitions.Clear();
-                    item.Definitions = mappedPairs;
-                });
-
+                
                 // Success as we got here
                 response.Success = true;
             }

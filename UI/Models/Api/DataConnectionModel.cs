@@ -25,17 +25,10 @@ namespace TNDStudios.DataPortals.UI.Models.Api
         public String ConnectionString { get; set; }
 
         /// <summary>
-        /// The definitions that are assigned to this connection
-        /// </summary>
-        [JsonProperty]
-        public List<KeyValuePair<Guid, String>> Definitions { get; set; }
-
-        /// <summary>
         /// Default Constructor
         /// </summary>
         public DataConnectionModel() : base()
         {
-            Definitions = new List<KeyValuePair<Guid, String>>(); // The definitions that are assigned to this connection
         }
     }
 }

@@ -27,8 +27,7 @@ tndStudios.models.dataDefinitions =
             this.propertyBag = [];
             this.culture = '';
             this.encodingFormat = '';
-            this.connections = [];
-
+            
             // Copy the content of this data item definition from another data item definition
             // e.g. when editing in a secondary editor object
             this.fromObject = function (fromObject) {
@@ -66,7 +65,6 @@ tndStudios.models.dataDefinitions =
                 this.propertyBag = [];
                 this.culture = '';
                 this.encodingFormat = '';
-                this.connections = [];
             }
 
             // Any data passed in?

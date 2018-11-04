@@ -42,12 +42,6 @@ namespace TNDStudios.DataPortals.UI.Models.Api
         public String EncodingFormat { get; set; }
 
         /// <summary>
-        /// List of the connections to this data item definition
-        /// </summary>
-        [JsonProperty]
-        public List<KeyValuePair<Guid, String>> Connections { get; set; }
-
-        /// <summary>
         /// Default Constructor
         /// </summary>
         public DataItemDefinitionModel() : base()
@@ -58,7 +52,6 @@ namespace TNDStudios.DataPortals.UI.Models.Api
             PropertyBag = new Dictionary<String, Object>();
             EncodingFormat = Encoding.Default.WebName;
             Culture = CultureInfo.CurrentCulture.Name;
-            Connections = new List<KeyValuePair<Guid, string>>();
         }
     }
 }

@@ -79,7 +79,6 @@ namespace TNDStudios.DataPortals.UI
                             {
                                 Id = dataConnectionId,
                                 ConnectionString = @"C:\Users\Joe\Documents\Git\TNDStudios.DataPortals.Core\Tests\Providers\FlatFileProvider.Tests\TestFiles\BigFiles\SalesRecords5000.csv",
-                                Definitions = new List<Guid>() { dataDefinitionId },
                                 Description = "Data Connection Description",
                                 Name = "Data Connection",
                                 ProviderType = DataProviderType.FlatFileProvider
@@ -90,7 +89,6 @@ namespace TNDStudios.DataPortals.UI
                             new DataItemDefinition()
                             {
                                 Id = dataDefinitionId,
-                                Connections = new List<Guid>(){ dataConnectionId },
                                 Culture = CultureInfo.GetCultureInfo("en-US"),
                                 Description = "Data Item Definition Description",
                                 EncodingFormat = Encoding.UTF8,

@@ -47,11 +47,6 @@ namespace TNDStudios.DataPortals.Data
         public Encoding EncodingFormat { get; set; }
 
         /// <summary>
-        /// The connections that this definition is assigned to
-        /// </summary>
-        public List<Guid> Connections { get; set; }
-
-        /// <summary>
         /// The default constructor
         /// </summary>
         public DataItemDefinition() : base()
@@ -61,7 +56,6 @@ namespace TNDStudios.DataPortals.Data
             PropertyBag = new Dictionary<String, Object>();
             EncodingFormat = Encoding.Default;
             Culture = CultureInfo.CurrentCulture;
-            Connections = new List<Guid>(); // The connections that this definition is assigned to
         }
 
         /// <summary>

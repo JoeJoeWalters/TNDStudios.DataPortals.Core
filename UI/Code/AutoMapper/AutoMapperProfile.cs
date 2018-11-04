@@ -104,15 +104,17 @@ namespace TNDStudios.DataPortals.UI
             CreateMap<DataConnection, DataConnectionModel>();
 
             // Map from the web view model of the data connection to the domain object
-            CreateMap<DataConnectionModel, DataConnection>()
-                .ForMember(
-                    item => item.Definitions,
-                    opt => opt.MapFrom(
-                        src => src.Definitions.Select(
-                            item => item.Key
-                            ).ToList()
-                        )
-                    );
+            CreateMap<DataConnectionModel, DataConnection>();
+            /*
+            .ForMember(
+                item => item.Definitions,
+                opt => opt.MapFrom(
+                    src => src.Definitions.Select(
+                        item => item.Key
+                        ).ToList()
+                    )
+                );
+                */
 
             // Create a generic key pair to id mapping
             CreateMap<KeyValuePair<Guid, String>, Guid>()

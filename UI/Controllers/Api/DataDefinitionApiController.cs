@@ -40,6 +40,28 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         public ApiResponse<List<DataItemDefinitionModel>> Get()
             => Get(Guid.Empty);
 
+        /// <summary>
+        /// Delete a data definition
+        /// </summary>
+        /// <param name="id">The id of the data definition to delete</param>
+        /// <returns>If the deletion was successful</returns>
+        [HttpDelete]
+        [Route("/api/data/definition/{id}")]
+        public ApiResponse<Boolean> Delete(Guid id)
+        {
+            // Create the response object
+            ApiResponse<Boolean> response = new ApiResponse<Boolean>();
+
+            // Get the item from the repository to make sure that it is 
+            // not attached to other things
+            DataItemDefinition dataDefinition = SessionHandler.CurrentPackage.DataDefinition(id);
+            response.Success = response.Data =
+                SessionHandler.CurrentPackage.Delete<DataItemDefinition>(id);
+
+            // Return the response
+            return response;
+        }
+
         [HttpGet]
         [Route("/api/data/definition/{id}")]
         public ApiResponse<List<DataItemDefinitionModel>> Get(Guid id)
@@ -55,28 +77,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                     SessionHandler.CurrentPackage.DataDefinitions.Where
                         (def => (id == Guid.Empty || def.Id == id))
                     );
-
-                // Post processing to fill in the missing titles
-                // as this doesn't really fit well in Automapper due 
-                // to the source column type
-                response.Data.ForEach(item =>
-                {
-                    List<KeyValuePair<Guid, String>> mappedPairs =
-                        new List<KeyValuePair<Guid, String>>();
-
-                    item.Connections.ForEach(con =>
-                    {
-                        mappedPairs.Add(
-                            mapper.Map<KeyValuePair<Guid, String>>(SessionHandler.CurrentPackage.DataConnection(con.Key))
-                            );
-                    });
-
-                    // Assign the new list (KeyValue Pairs are readonly and the list
-                    // cannot be modified in the loop to remove items so assigned here)
-                    item.Connections.Clear();
-                    item.Connections = mappedPairs;
-                });
-
+                
                 response.Success = true;
             }
             catch(Exception ex)
@@ -90,13 +91,13 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         
         [HttpPost]
         [Route("/api/data/definition")]
-        public ApiResponse<DataItemDefinitionModel> Post([FromBody] ApiRequest<DataItemDefinitionModel> request)
+        public ApiResponse<DataItemDefinitionModel> Post([FromBody] DataItemDefinitionModel request)
         {
             // Create the response object
             ApiResponse<DataItemDefinitionModel> response = new ApiResponse<DataItemDefinitionModel>();
 
             // Map the model to a domain object type
-            DataItemDefinition savedDataItemDefinition = mapper.Map<DataItemDefinition>(request.Data);
+            DataItemDefinition savedDataItemDefinition = mapper.Map<DataItemDefinition>(request);
 
             // Did the mapping work ok?
             if (savedDataItemDefinition != null)
