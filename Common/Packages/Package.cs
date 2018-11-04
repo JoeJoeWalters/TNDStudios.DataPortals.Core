@@ -91,9 +91,27 @@ namespace TNDStudios.DataPortals.Repositories
             {
                 case "apidefinition":
 
+                    // Get the actual value from the object wrapper
+                    ApiDefinition apiDefinition = this.Api(id);
+
+                    // If the type is not null
+                    if (apiDefinition != null)
+                    {
+                        result = this.ApiDefinitions.Remove(apiDefinition);
+                    }
+
                     break;
 
                 case "dataitemdefinition":
+
+                    // Get the actual value from the object wrapper
+                    DataItemDefinition dataItemDefinition = this.DataDefinition(id);
+
+                    // If the type is not null
+                    if (dataItemDefinition != null)
+                    {
+                        result = this.DataDefinitions.Remove(dataItemDefinition);
+                    }
 
                     break;
 

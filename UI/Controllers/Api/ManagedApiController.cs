@@ -70,6 +70,23 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         public ApiResponse<List<ApiDefinitionModel>> Get()
             => Get(Guid.Empty);
 
+        [HttpDelete]
+        [Route("/api/managedapi/definition/{id}")]
+        public ApiResponse<Boolean> Delete(Guid id)
+        {
+            // Create the response object
+            ApiResponse<Boolean> response = new ApiResponse<Boolean>();
+
+            // Get the item from the repository to make sure that it is 
+            // not attached to other things
+            ApiDefinition apiDefinition = SessionHandler.CurrentPackage.Api(id);
+            response.Success = response.Data =
+                SessionHandler.CurrentPackage.Delete<ApiDefinition>(id);
+
+            // Return the response
+            return response;
+        }
+
         [HttpGet]
         [Route("/api/managedapi/definition/{id}")]
         public ApiResponse<List<ApiDefinitionModel>> Get(Guid id)
