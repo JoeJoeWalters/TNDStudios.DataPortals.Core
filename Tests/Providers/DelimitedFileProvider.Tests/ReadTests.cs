@@ -56,7 +56,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
             String testData = TestHelper.GetResourceString(TestHelper.TestFile_Headers);
 
             // Act
-            DataItemDefinition definition = FlatFileHelper.AnalyseText(
+            DataItemDefinition definition = DelimitedFileHelper.AnalyseText(
                 new AnalyseRequest<String>()
                 {
                     Data = testData
@@ -74,7 +74,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
             String testData = TestHelper.GetResourceString(TestHelper.TestFile_DataTypes);
 
             // Act
-            DataItemDefinition definition = FlatFileHelper.AnalyseText(
+            DataItemDefinition definition = DelimitedFileHelper.AnalyseText(
                 new AnalyseRequest<string>()
                 {
                     Data = testData

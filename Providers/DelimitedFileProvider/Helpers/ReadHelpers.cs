@@ -10,7 +10,7 @@ using TNDStudios.DataPortals.Data;
 
 namespace TNDStudios.DataPortals.Helpers
 {
-    public partial class FlatFileHelper
+    public partial class DelimitedFileHelper
     {
         /// <summary>
         /// Analyse some raw data and work out how 

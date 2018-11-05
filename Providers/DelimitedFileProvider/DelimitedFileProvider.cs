@@ -72,7 +72,7 @@ namespace TNDStudios.DataPortals.Data
                 // Read the data from the stream provided
                 using (StreamReader textReader = new StreamReader(stream))
                 {
-                    this.memoryData = FlatFileHelper.TextToDataTable(definition, textReader.ReadToEnd());
+                    this.memoryData = DelimitedFileHelper.TextToDataTable(definition, textReader.ReadToEnd());
                     base.connected = true; // Mark the provider as connected
                     return true; // Connected without any errors
                 }
@@ -176,7 +176,7 @@ namespace TNDStudios.DataPortals.Data
             Boolean result = false; // Failed by default
 
             // Generate the flat file content based on the definition when connecting
-            String flatFileContent = FlatFileHelper.DataTableToString(this.definition, this.memoryData);
+            String flatFileContent = DelimitedFileHelper.DataTableToString(this.definition, this.memoryData);
 
             // Try and write the file to disk
             try
@@ -259,7 +259,7 @@ namespace TNDStudios.DataPortals.Data
                 {
                     Data = rawData
                 };
-            result = FlatFileHelper.AnalyseText(analyseTextRequest);
+            result = DelimitedFileHelper.AnalyseText(analyseTextRequest);
 
             base.MarkLastAction(); // Tell the provider base class that it did something
 
