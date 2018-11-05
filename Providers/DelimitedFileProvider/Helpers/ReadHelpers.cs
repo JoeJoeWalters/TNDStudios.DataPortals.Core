@@ -64,6 +64,7 @@ namespace TNDStudios.DataPortals.Helpers
                                     OridinalPosition = headerId,
                                     Path = csvReader.Context.HeaderRecord[headerId],
                                     Pattern = "",
+                                    Size = 0,
                                     PropertyType = DataItemPropertyType.Property
                                 });
 

@@ -45,6 +45,12 @@ namespace TNDStudios.DataPortals.Data
         public Int32 OridinalPosition { get; set; }
 
         /// <summary>
+        /// The size of the property
+        /// </summary>
+        [JsonProperty]
+        public Int32 Size { get; set; }
+
+        /// <summary>
         /// The pattern of the data (such as the date format etc.)
         /// </summary>
         [JsonProperty]
@@ -76,6 +82,7 @@ namespace TNDStudios.DataPortals.Data
             Key = false; // By default this is not the primary key
             Path = ""; // Empty String by default
             OridinalPosition = -1; // First item in the array by default
+            Size = 0; // The size of the property (width etc.)
             Pattern = ""; // The pattern of the data (such as the date format)
             Quoted = false; // Is the field quoted?
             Calculation = ""; // The column calculation
