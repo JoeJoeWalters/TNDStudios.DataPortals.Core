@@ -20,7 +20,7 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
             // Arrange
 
             // Act
-            DataTable data = (new TestHelper()).PopulateDataTable(TestHelper.TestFile_ISODates); // Get the data
+            DataTable data = (new TestHelper()).PopulateDataTable(TestHelper.TestFile_GenericFixedWidth); // Get the data
 
             // Assert
             Assert.True(data.Rows.Count != 0); // It actually got some data rows

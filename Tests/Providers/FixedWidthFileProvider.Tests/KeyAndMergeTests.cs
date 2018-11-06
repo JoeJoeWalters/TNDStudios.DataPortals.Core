@@ -40,8 +40,8 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
             // Arrange
             TestHelper testHelper = new TestHelper();
 
-            DataItemDefinition definition = testHelper.TestDefinition(TestHelper.TestFile_Headers); // Get the test definition of what to data to filter
-            DataTable unfilteredData = testHelper.PopulateDataTable(TestHelper.TestFile_Headers); // Get the data
+            DataItemDefinition definition = testHelper.TestDefinition(TestHelper.TestFile_GenericFixedWidth); // Get the test definition of what to data to filter
+            DataTable unfilteredData = testHelper.PopulateDataTable(TestHelper.TestFile_GenericFixedWidth); // Get the data
             
             Stream testStream = new MemoryStream(); // A blank stream to write data to
             IDataProvider provider = new FixedWidthFileProvider(); // A flat file provider to use to write the data

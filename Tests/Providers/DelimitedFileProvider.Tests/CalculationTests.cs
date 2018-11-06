@@ -19,6 +19,7 @@ namespace TNDStudios.DataPortals.Tests.DelimitedFile
             DataTable data = (new TestHelper()).PopulateDataTable(TestHelper.TestFile_ExpressionTests); // Get the data
 
             // Assert
+            Assert.NotEqual(0, data.Rows.Count);
             foreach (DataRow row in data.Rows)
             {
                 Assert.Equal(row["Result"], (Double.Parse(row["Value"].ToString()) * (Double)row["Multiplier"]));

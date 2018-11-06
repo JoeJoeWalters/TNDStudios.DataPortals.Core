@@ -30,7 +30,7 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
                 );
 
             // Assert
-            Assert.Equal(14, definition.ItemProperties.Count);
+            Assert.Equal(12, definition.ItemProperties.Count);
         }
 
         [Fact]
@@ -51,7 +51,7 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
             DataTable data = provider.Read("");
 
             // Assert
-            Assert.Equal(5000, data.Rows.Count);
+            Assert.Equal(530, data.Rows.Count);
         }
     }
 }

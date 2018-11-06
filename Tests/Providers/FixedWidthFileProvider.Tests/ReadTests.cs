@@ -19,7 +19,7 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
             // Arrange
 
             // Act
-            DataTable data = (new TestHelper()).PopulateDataTable(TestHelper.TestFile_DataTypes); // Get the data
+            DataTable data = (new TestHelper()).PopulateDataTable(TestHelper.TestFile_GenericFixedWidth); // Get the data
             DataRow dataRow = (data.Rows.Count >= 2) ? data.Rows[2] : null; // Get row 3 to check the data against later
 
             // Assert
@@ -37,7 +37,7 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
             // Arrange
 
             // Act
-            DataTable data = (new TestHelper()).PopulateDataTable(TestHelper.TestFile_Headers); // Get the data
+            DataTable data = (new TestHelper()).PopulateDataTable(TestHelper.TestFile_GenericFixedWidth); // Get the data
             DataRow dataRow = (data.Rows.Count >= 2) ? data.Rows[2] : null; // Get row 3 to check the data against later
 
             // Assert
@@ -53,7 +53,7 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
         public void Analyse_Column_Numbers_From_String()
         {
             // Arrange
-            String testData = (new TestHelper()).GetResourceString(TestHelper.TestFile_Headers);
+            String testData = (new TestHelper()).GetResourceString(TestHelper.TestFile_GenericFixedWidth);
 
             // Act
             DataItemDefinition definition = FixedWidthFileHelper.AnalyseText(
