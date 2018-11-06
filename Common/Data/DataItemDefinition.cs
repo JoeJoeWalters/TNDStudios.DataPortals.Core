@@ -13,11 +13,12 @@ namespace TNDStudios.DataPortals.Data
     /// </summary>
     public enum DataItemPropertyBagItem : Int32
     {
-        HasHeaderRecord = 0,
-        QuoteAllFields = 1,
-        IgnoreQuotes = 2,
-        QuoteCharacter = 3,
-        DelimiterCharacter = 4
+        HasHeaderRecord = 0, // Does this definition have a header record in the file etc.
+        QuoteAllFields = 1, // Do we quote all of the fields if this is a file provider type of a given type
+        IgnoreQuotes = 2, // Do we ignore quotes in the data?
+        QuoteCharacter = 3, // What is the quote (encapsulating) character (depeing on the provider type)
+        DelimiterCharacter = 4, // What is the delimiting character (depending on the provider type)
+        RowsToSkip = 5 // How many rows to skip (not including the header, depending on the provider type)
     }
 
     /// <summary>
