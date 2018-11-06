@@ -6,7 +6,7 @@ using System.Text;
 using TNDStudios.DataPortals.Data;
 using Xunit;
 
-namespace TNDStudios.DataPortals.Tests.FlatFile
+namespace TNDStudios.DataPortals.Tests.DelimitedFile
 {
     /// <summary>
     /// Testing writing data to the data provider
@@ -20,8 +20,10 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
         public void Write_DataTypes()
         {
             // Arrange
-            DataItemDefinition definition = TestHelper.TestDefinition(TestHelper.TestFile_WriteTests); // Get the test definition of what to write
-            DataTable dataToWrite = TestHelper.PopulateDataTable(TestHelper.TestFile_WriteTests); // Get the data
+            TestHelper testHelper = new TestHelper();
+
+            DataItemDefinition definition = testHelper.TestDefinition(TestHelper.TestFile_WriteTests); // Get the test definition of what to write
+            DataTable dataToWrite = testHelper.PopulateDataTable(TestHelper.TestFile_WriteTests); // Get the data
             DataTable dataToRead = null; // Table to read the data back in to (to verify it was created)
             Stream testStream = new MemoryStream(); // A blank stream to write data to
             IDataProvider provider = new DelimitedFileProvider(); // A flat file provider to use to write the data

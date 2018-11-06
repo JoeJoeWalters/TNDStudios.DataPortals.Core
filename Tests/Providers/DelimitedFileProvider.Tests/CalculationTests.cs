@@ -6,7 +6,7 @@ using TNDStudios.DataPortals.Data;
 using System.Data;
 using System.Globalization;
 
-namespace TNDStudios.DataPortals.Tests.FlatFile
+namespace TNDStudios.DataPortals.Tests.DelimitedFile
 {
     public class CalculationTests
     {
@@ -16,7 +16,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
             // Arrange
 
             // Act
-            DataTable data = TestHelper.PopulateDataTable(TestHelper.TestFile_ExpressionTests); // Get the data
+            DataTable data = (new TestHelper()).PopulateDataTable(TestHelper.TestFile_ExpressionTests); // Get the data
 
             // Assert
             foreach (DataRow row in data.Rows)

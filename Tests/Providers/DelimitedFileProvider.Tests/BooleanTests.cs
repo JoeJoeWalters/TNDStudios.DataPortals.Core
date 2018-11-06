@@ -4,7 +4,7 @@ using System.Data;
 using System.Text;
 using Xunit;
 
-namespace TNDStudios.DataPortals.Tests.FlatFile
+namespace TNDStudios.DataPortals.Tests.DelimitedFile
 {
     /// <summary>
     /// Testing reading date strings in various formats
@@ -22,7 +22,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
             // Arrange
 
             // Act
-            DataTable data = TestHelper.PopulateDataTable(TestHelper.TestFile_DataTypes); // Get the data
+            DataTable data = (new TestHelper()).PopulateDataTable(TestHelper.TestFile_DataTypes); // Get the data
 
             // Assert
             Assert.True(data.Rows.Count != 0); // It actually got some data rows

@@ -7,12 +7,12 @@ using System.Reflection;
 using System.Text;
 using TNDStudios.DataPortals.Data;
 
-namespace TNDStudios.DataPortals.Tests.FlatFile
+namespace TNDStudios.DataPortals.Tests.DelimitedFile
 {
     /// <summary>
     /// Support methods to load data from streams etc.
     /// </summary>
-    public class TestHelper
+    public class TestHelper : EmbeddedTestHelperBase
     {
         // Constants for the test files (used so we can get the resouce stream
         // but also so we can abstract the creation of the data definition)
@@ -31,7 +31,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
         /// </summary>
         /// <param name="testDefinition">Which test file to load</param>
         /// <returns>The prepared data table</returns>
-        public static DataTable PopulateDataTable(String testDefinition)
+        public DataTable PopulateDataTable(String testDefinition)
         {
             // Get the test data from the resource in the manifest
             Stream resourceStream = GetResourceStream(testDefinition);
@@ -57,7 +57,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
         /// Generate a test definition that is common between the different test files
         /// </summary>
         /// <returns>The common data definition</returns>
-        public static DataItemDefinition TestDefinition(String testDefinition)
+        public DataItemDefinition TestDefinition(String testDefinition)
         {
             // Arrage: Provide a definition of what wants to be retrieved from the flat file
             DataItemDefinition definition = new DataItemDefinition();
@@ -149,42 +149,5 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
             // Return the definition
             return definition;
         }
-
-        /// <summary>
-        /// Build a memory stream from the embedded resource to feed to the test scenarios
-        /// </summary>
-        /// <param name="embeddedResourceName">The name of the resource to read</param>
-        /// <returns>A memory stream with the data contained within</returns>
-        public static Stream GetResourceStream(String embeddedResourceName)
-        {
-            String name = FormatResourceName(Assembly.GetExecutingAssembly(), embeddedResourceName);
-            return Assembly.GetExecutingAssembly().GetManifestResourceStream(
-                    name
-                    );
-        }
-
-        /// <summary>
-        /// Cast the stream of a given resource to a string to be passed to other methods
-        /// </summary>
-        /// <param name="embeddedResourceName">The name of the resource to read</param>
-        /// <returns>A string representing the resource data</returns>
-        public static String GetResourceString(String embeddedResourceName)
-        {
-            using (StreamReader reader = new StreamReader(GetResourceStream(embeddedResourceName)))
-            {
-                return reader.ReadToEnd();
-            }
-        }
-
-        /// <summary>
-        /// Get the resource name by deriving it from the assembly
-        /// </summary>
-        /// <param name="assembly">The assembly to check</param>
-        /// <param name="resourceName">The name of the resource</param>
-        /// <returns></returns>
-        public static String FormatResourceName(Assembly assembly, string resourceName)
-            => assembly.GetName().Name + "." + resourceName.Replace(" ", "_")
-                                                            .Replace("\\", ".")
-                                                            .Replace("/", ".");
     }
 }

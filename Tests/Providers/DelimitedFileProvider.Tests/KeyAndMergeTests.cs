@@ -6,7 +6,7 @@ using TNDStudios.DataPortals.Data;
 using System.Data;
 using System.Globalization;
 
-namespace TNDStudios.DataPortals.Tests.FlatFile
+namespace TNDStudios.DataPortals.Tests.DelimitedFile
 {
     public class KeyAndMergeTests
     {
@@ -14,10 +14,12 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
         public void Merge_Files_2_Part_Primary_Key()
         {
             // Arrange
-            DataItemDefinition definition = TestHelper.TestDefinition(TestHelper.TestFile_PKMergeFrom); // Get the test definition of what to merge from (but also to)
+            TestHelper testHelper = new TestHelper();
 
-            DataTable baseData = TestHelper.PopulateDataTable(TestHelper.TestFile_PKMergeTo); // Get the data
-            DataTable mergeData = TestHelper.PopulateDataTable(TestHelper.TestFile_PKMergeFrom); // Get the data
+            DataItemDefinition definition = testHelper.TestDefinition(TestHelper.TestFile_PKMergeFrom); // Get the test definition of what to merge from (but also to)
+
+            DataTable baseData = testHelper.PopulateDataTable(TestHelper.TestFile_PKMergeTo); // Get the data
+            DataTable mergeData = testHelper.PopulateDataTable(TestHelper.TestFile_PKMergeFrom); // Get the data
 
             Stream testStream = new MemoryStream(); // A blank stream to write data to
             IDataProvider provider = new DelimitedFileProvider(); // A flat file provider to use to write the data
@@ -36,8 +38,10 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
         public void Filter_Records_With_Command()
         {
             // Arrange
-            DataItemDefinition definition = TestHelper.TestDefinition(TestHelper.TestFile_Headers); // Get the test definition of what to data to filter
-            DataTable unfilteredData = TestHelper.PopulateDataTable(TestHelper.TestFile_Headers); // Get the data
+            TestHelper testHelper = new TestHelper();
+
+            DataItemDefinition definition = testHelper.TestDefinition(TestHelper.TestFile_Headers); // Get the test definition of what to data to filter
+            DataTable unfilteredData = testHelper.PopulateDataTable(TestHelper.TestFile_Headers); // Get the data
             
             Stream testStream = new MemoryStream(); // A blank stream to write data to
             IDataProvider provider = new DelimitedFileProvider(); // A flat file provider to use to write the data

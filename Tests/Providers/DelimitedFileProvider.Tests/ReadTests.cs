@@ -4,7 +4,7 @@ using System.Data;
 using TNDStudios.DataPortals.Helpers;
 using TNDStudios.DataPortals.Data;
 
-namespace TNDStudios.DataPortals.Tests.FlatFile
+namespace TNDStudios.DataPortals.Tests.DelimitedFile
 {
     public class ReadTests
     {
@@ -19,7 +19,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
             // Arrange
 
             // Act
-            DataTable data = TestHelper.PopulateDataTable(TestHelper.TestFile_DataTypes); // Get the data
+            DataTable data = (new TestHelper()).PopulateDataTable(TestHelper.TestFile_DataTypes); // Get the data
             DataRow dataRow = (data.Rows.Count >= 2) ? data.Rows[2] : null; // Get row 3 to check the data against later
 
             // Assert
@@ -37,7 +37,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
             // Arrange
 
             // Act
-            DataTable data = TestHelper.PopulateDataTable(TestHelper.TestFile_Headers); // Get the data
+            DataTable data = (new TestHelper()).PopulateDataTable(TestHelper.TestFile_Headers); // Get the data
             DataRow dataRow = (data.Rows.Count >= 2) ? data.Rows[2] : null; // Get row 3 to check the data against later
 
             // Assert
@@ -53,7 +53,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
         public void Analyse_Column_Numbers_From_String()
         {
             // Arrange
-            String testData = TestHelper.GetResourceString(TestHelper.TestFile_Headers);
+            String testData = (new TestHelper()).GetResourceString(TestHelper.TestFile_Headers);
 
             // Act
             DataItemDefinition definition = DelimitedFileHelper.AnalyseText(
@@ -71,7 +71,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
         public void Analyse_Column_DataType_From_String()
         {
             // Arrange
-            String testData = TestHelper.GetResourceString(TestHelper.TestFile_DataTypes);
+            String testData = (new TestHelper()).GetResourceString(TestHelper.TestFile_DataTypes);
 
             // Act
             DataItemDefinition definition = DelimitedFileHelper.AnalyseText(

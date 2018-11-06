@@ -51,6 +51,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Providers\DelimitedFileProvider\DelimitedFileProvider.csproj" />
+    <ProjectReference Include="..\Provider.Common.Tests\Base.Tests.csproj" />
   </ItemGroup>
 
 </Project>

@@ -5,7 +5,7 @@ using TNDStudios.DataPortals.Helpers;
 using TNDStudios.DataPortals.Data;
 using System.IO;
 
-namespace TNDStudios.DataPortals.Tests.FlatFile
+namespace TNDStudios.DataPortals.Tests.DelimitedFile
 {
     public class AnalysisTests
     {
@@ -17,7 +17,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
         public void Analyse_BigData_ColumnCount()
         {
             // Arrange
-            String file = TestHelper.GetResourceString(
+            String file = (new TestHelper()).GetResourceString(
                 TestHelper.TestFile_BigFileSalesRecords);
             DelimitedFileProvider provider = new DelimitedFileProvider();
 
@@ -37,7 +37,7 @@ namespace TNDStudios.DataPortals.Tests.FlatFile
         public void Analyse_BigData_RowCount()
         {
             // Arrange
-            Stream file = TestHelper.GetResourceStream(
+            Stream file = (new TestHelper()).GetResourceStream(
                 TestHelper.TestFile_BigFileSalesRecords);
             DelimitedFileProvider provider = new DelimitedFileProvider();
 

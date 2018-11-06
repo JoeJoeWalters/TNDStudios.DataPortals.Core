@@ -20,4 +20,9 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Providers\FixedWidthFileProvider\FixedWidthFileProvider.csproj" />
+    <ProjectReference Include="..\Provider.Common.Tests\Base.Tests.csproj" />
+  </ItemGroup>
+
 </Project>
