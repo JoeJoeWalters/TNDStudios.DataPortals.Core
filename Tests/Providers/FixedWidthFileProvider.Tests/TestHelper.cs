@@ -18,6 +18,7 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
         // but also so we can abstract the creation of the data definition)
         public const String TestFile_GenericFixedWidth = "TestFiles.GenericFixedWidthFile.txt";
         public const String TestFile_MergeData = "TestFiles.MergeFile.txt";
+        public const String TestFile_DataTypes = "TestFiles.DataTypes.txt";
 
         /// <summary>
         /// Generate the data set for the testing of different different types
@@ -57,6 +58,19 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
 
             switch (testDefinition)
             {
+                case TestFile_DataTypes:
+
+                    // Definition for different data types and the data defined by ordinal position
+                    definition.Culture = CultureInfo.InvariantCulture;
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "BooleanType", DataType = typeof(Boolean), OridinalPosition = 0, Size = 16 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "DateType", DataType = typeof(DateTime), OridinalPosition = 16, Size = 15 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "NumericType", DataType = typeof(Double), OridinalPosition = 32, Size = 15 });
+
+                    // Property bag items to define how the provider should handle custom settings
+                    definition.PropertyBag[DataItemPropertyBagItem.HasHeaderRecord.ToString()] = true; // There is a header record
+
+                    break;
+
                 case TestFile_MergeData:
 
                     // Definition for different data types and the data defined by ordinal position

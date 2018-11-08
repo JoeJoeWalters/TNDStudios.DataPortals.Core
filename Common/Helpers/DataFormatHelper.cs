@@ -42,7 +42,7 @@ namespace TNDStudios.DataPortals.Helpers
         /// Constants that identify the character of a string as being 
         /// a positive boolean value
         /// </summary>
-        private const String booleanChars = "1ytf";
+        private const String booleanChars = "1yt";
         private static readonly List<String> booleanDetectStrings = 
             new List<String>()
             {

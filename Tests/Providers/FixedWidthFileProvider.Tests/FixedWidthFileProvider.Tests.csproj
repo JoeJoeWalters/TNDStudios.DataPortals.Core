@@ -7,11 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="TestFiles\DataTypes.txt" />
     <None Remove="TestFiles\GenericFixedWidthFile.txt" />
     <None Remove="TestFiles\MergeFile.txt" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="TestFiles\DataTypes.txt">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestFiles\GenericFixedWidthFile.txt" />
     <EmbeddedResource Include="TestFiles\MergeFile.txt" />
   </ItemGroup>

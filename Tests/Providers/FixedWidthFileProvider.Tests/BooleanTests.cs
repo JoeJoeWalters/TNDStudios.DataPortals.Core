@@ -22,15 +22,16 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
             // Arrange
 
             // Act
-            DataTable data = (new TestHelper()).PopulateDataTable(TestHelper.TestFile_GenericFixedWidth); // Get the data
+            DataTable data = (new TestHelper()).PopulateDataTable(TestHelper.TestFile_DataTypes); // Get the data
 
             // Assert
             Assert.True(data.Rows.Count != 0); // It actually got some data rows
-            Assert.True((data.Rows.Count == 5) && (Boolean)data.Rows[0]["Active"] == true); // Check row 0's expected result
-            Assert.True((data.Rows.Count == 5) && (Boolean)data.Rows[1]["Active"] == true); // Check row 1's expected result
-            Assert.True((data.Rows.Count == 5) && (Boolean)data.Rows[2]["Active"] == true); // Check row 2's expected result
-            Assert.True((data.Rows.Count == 5) && (Boolean)data.Rows[3]["Active"] == false); // Check row 3's expected result
-            Assert.True((data.Rows.Count == 5) && (Boolean)data.Rows[4]["Active"] == false); // Check row 4's expected result
+            Assert.True((data.Rows.Count == 6) && (Boolean)data.Rows[0]["BooleanType"] == true); // Check row 0's expected result
+            Assert.True((data.Rows.Count == 6) && (Boolean)data.Rows[1]["BooleanType"] == false); // Check row 1's expected result
+            Assert.True((data.Rows.Count == 6) && (Boolean)data.Rows[2]["BooleanType"] == true); // Check row 2's expected result
+            Assert.True((data.Rows.Count == 6) && (Boolean)data.Rows[3]["BooleanType"] == false); // Check row 3's expected result
+            Assert.True((data.Rows.Count == 6) && (Boolean)data.Rows[4]["BooleanType"] == true); // Check row 4's expected result
+            Assert.True((data.Rows.Count == 6) && (Boolean)data.Rows[5]["BooleanType"] == false); // Check row 5's expected result
         }
     }
 }
