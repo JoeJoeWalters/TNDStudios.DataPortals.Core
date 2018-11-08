@@ -22,7 +22,10 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
             Assert.NotEqual(0, data.Rows.Count);
             foreach (DataRow row in data.Rows)
             {
-                Assert.Equal(row["Result"], (Double.Parse(row["Value"].ToString()) * (Double)row["Multiplier"]));
+                //"IIF(Post, Debit, 0)"
+                Double.TryParse(row["Debit"].ToString(), out Double debit);
+                Double.TryParse(row["Result"].ToString(), out Double result);
+                Assert.Equal(result, ((Boolean)row["Post"]) ? debit : (Double)0.0);
             }
         }
     }

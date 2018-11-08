@@ -59,6 +59,7 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
                 case TestFile_GenericFixedWidth:
 
                     // Definition for different data types and the data defined by ordinal position
+                    definition.Culture = new CultureInfo("en-US");
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Entry", DataType = typeof(Int32), OridinalPosition = 0, Size = 6 });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Per", DataType = typeof(String), OridinalPosition = 8, Size = 4 });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "PostDate", DataType = typeof(DateTime), OridinalPosition = 12, Size = 10 });
@@ -71,6 +72,13 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Debit", DataType = typeof(Decimal), OridinalPosition = 87, Size = 17 });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Credit", DataType = typeof(Decimal), OridinalPosition = 104, Size = 20 });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "All", DataType = typeof(Boolean), OridinalPosition = 130, Size = 3 });
+
+                    // Calculated Properties
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Result", DataType = typeof(Double), OridinalPosition = 0, Size = 0,
+                        PropertyType = DataItemPropertyType.Calculated, Calculation = "IIF(Post, Debit, 0)"
+                    });
+
+                    // Property bag items to define how the provider should handle custom settings
                     definition.PropertyBag[DataItemPropertyBagItem.HasHeaderRecord.ToString()] = true; // There is a header record
                     definition.PropertyBag[DataItemPropertyBagItem.RowsToSkip.ToString()] = 1; // .. but we also want to skip a record as it is a spacer
 

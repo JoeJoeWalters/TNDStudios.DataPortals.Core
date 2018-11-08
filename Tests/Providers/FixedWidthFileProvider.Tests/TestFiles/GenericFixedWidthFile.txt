@@ -2,8 +2,8 @@
 ------------------------------------------------------------------------------------------------------------------------------------
  16524  01  10/17/2012  3930621977   TXNPUES                    S1   Yes RHMXWPCP  Yes                              5,007.10    No  
 191675  01  01/14/2013  2368183100   OUNHQEX XUFQONY            S1   No            Yes                             43,537.00    Yes 
-191667  01  01/14/2013  3714468136   GHAKASC QHJXDFM            S1   Yes           Yes          3,172.53                        Yes 
-191673  01  01/14/2013  2632703881   PAHFSAP LUVIKXZ            S1   No            Yes            983.21                        No  
+191667  01  XX/YY/2013  3714468136   GHAKASC QHJXDFM            S1   Yes           Yes          3,172.53                        Yes 
+191673  01  11/21/2012  2632703881   PAHFSAP LUVIKXZ            S1   No            Yes            983.21                        No  
  80495  01  11/21/2012  2766389794   XDZANTV                    S1   Yes TGZGMOXG  Yes                                903.78    Yes 
  80507  01  11/21/2012  4609266335   BWWYEZL                    S1   Yes USUKVMZO  Yes                                670.31    No  
  80509  01  11/21/2012  1092717420   QJYPKVO                    S1   No  DNUNTASS  Yes                                848.50    Yes 

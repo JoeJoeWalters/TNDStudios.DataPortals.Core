@@ -92,8 +92,11 @@ namespace TNDStudios.DataPortals.Helpers
         {
             Boolean result = true; // Define the default result as a success
 
-            // Loop the properties
-            definition.ItemProperties.ForEach(item => 
+            // Loop the properties that are not calculated items etc.
+            definition.ItemProperties
+                .Where(item => item.PropertyType == DataItemPropertyType.Property)
+                .ToList()
+                .ForEach(item => 
             {
                 // Get the raw value from the line by position and length
                 String rawValue = CutString(line, item.OridinalPosition, item.Size);
