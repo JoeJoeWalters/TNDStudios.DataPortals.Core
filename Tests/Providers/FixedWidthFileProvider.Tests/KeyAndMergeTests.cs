@@ -19,7 +19,7 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
             DataItemDefinition definition = testHelper.TestDefinition(TestHelper.TestFile_GenericFixedWidth); // Get the test definition of what to merge from (but also to)
 
             DataTable baseData = testHelper.PopulateDataTable(TestHelper.TestFile_GenericFixedWidth); // Get the data
-            DataTable mergeData = testHelper.PopulateDataTable(TestHelper.TestFile_GenericFixedWidth); // Get the data
+            DataTable mergeData = testHelper.PopulateDataTable(TestHelper.TestFile_MergeData); // Get the data
 
             Stream testStream = new MemoryStream(); // A blank stream to write data to
             IDataProvider provider = new FixedWidthFileProvider(); // A flat file provider to use to write the data
@@ -31,7 +31,7 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
             DataTable mergedData = provider.Read(""); // Get the new data set back
 
             // Assert
-            Assert.True(mergedData.Rows.Count == 6); // Expect of the total of 8 rows, 2 should merge
+            Assert.True(mergedData.Rows.Count == (baseData.Rows.Count + mergeData.Rows.Count) - 1); // Expect of the total of 8 rows, 2 should merge
         }
 
         [Fact]

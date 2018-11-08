@@ -8,10 +8,12 @@
 
   <ItemGroup>
     <None Remove="TestFiles\GenericFixedWidthFile.txt" />
+    <None Remove="TestFiles\MergeFile.txt" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="TestFiles\GenericFixedWidthFile.txt" />
+    <EmbeddedResource Include="TestFiles\MergeFile.txt" />
   </ItemGroup>
 
   <ItemGroup>
