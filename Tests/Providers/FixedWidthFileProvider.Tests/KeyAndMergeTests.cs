@@ -46,7 +46,7 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
             Stream testStream = new MemoryStream(); // A blank stream to write data to
             IDataProvider provider = new FixedWidthFileProvider(); // A flat file provider to use to write the data
 
-            String command = "Title = 'Title 1'"; // The command to do the filter
+            String command = "[GL Account] = '3930621977'"; // The command to do the filter
 
             // Act
             provider.Connect(definition, testStream); // Connect to the blank stream
