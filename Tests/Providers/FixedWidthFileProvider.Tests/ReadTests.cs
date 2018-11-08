@@ -38,12 +38,14 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
 
             // Act
             DataTable data = (new TestHelper()).PopulateDataTable(TestHelper.TestFile_GenericFixedWidth); // Get the data
-            DataRow dataRow = (data.Rows.Count >= 2) ? data.Rows[2] : null; // Get row 3 to check the data against later
+            DataRow dataRow = (data.Rows.Count >= 1) ? data.Rows[0] : null; // Get row 3 to check the data against later
 
             // Assert
-            Assert.True(data.Rows.Count == 5); // Should be 5 rows (6 - The Header)
-            Assert.True(data.Columns.Contains("Description Header")); // Should be a column that was found even though it had no quotes
-            Assert.True(dataRow != null && (String)dataRow["Description Header"] == "Description 3"); // The third row should have some data for the unquoted header
+            Assert.True(data.Rows.Count == 530); // Should be 530 rows (532 including the header and spacer)
+            Assert.True(data.Columns.Contains("Description")); // Should be a column that was found even though it had no quotes
+            Assert.True(dataRow != null && ((String)dataRow["Description"]).Trim() == "TXNPUES"); // The third row should have some data for the unquoted header
+            Assert.True(dataRow != null && ((String)dataRow["Ref"]).Trim() == "RHMXWPCP"); // The third row should have some data for the unquoted header
+            Assert.True(dataRow != null && (Boolean)dataRow["Post"]); // The third row should have some data for the unquoted header
         }
 
         /// <summary>

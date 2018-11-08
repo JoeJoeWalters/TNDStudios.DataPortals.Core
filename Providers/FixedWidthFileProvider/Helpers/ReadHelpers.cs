@@ -52,10 +52,77 @@ namespace TNDStudios.DataPortals.Helpers
                 // Open up a text reader to stream the data to the CSV Reader
                 using (TextReader textReader = new StringReader(rawData))
                 {
+                    // Get properties needed to process the file (total lines to skip etc.)
+                    Int32 lineNo = 0;
+                    Int32 linesToSkip =
+                        definition.GetPropertyBagItem<Int32>(DataItemPropertyBagItem.RowsToSkip, 0) +
+                        (definition.GetPropertyBagItem<Boolean>(DataItemPropertyBagItem.HasHeaderRecord, false) ? 1 : 0);
+
+                    // Loop each line of the file (ignoring lines that do not need to be processed)
+                    String line = "";
+                    while ((line = textReader.ReadLine()) != null)
+                    {
+                        // Is this a line we should be processing
+                        if (lineNo >= linesToSkip)
+                        {
+                            DataRow row = dataItems.NewRow(); // The new row to populate based on the defintion
+
+                            // Process the row
+                            if (ProcessRow(line, row, definition))
+                            {
+                                dataItems.Rows.Add(row); // Add the row if processing was successful
+                            }
+                        }
+
+                        lineNo++; // Increment the line number counter
+                    }
                 }
             }
 
             return dataItems; // Send the datatable back
+        }
+
+        /// <summary>
+        /// Process a line using a defintion to get a data row
+        /// </summary>
+        /// <param name="line"></param>
+        /// <param name="definition"></param>
+        /// <returns></returns>
+        public static Boolean ProcessRow(String line, DataRow row, DataItemDefinition definition)
+        {
+            Boolean result = true; // Define the default result as a success
+
+            // Loop the properties
+            definition.ItemProperties.ForEach(item => 
+            {
+                // Get the raw value from the line by position and length
+                String rawValue = CutString(line, item.OridinalPosition, item.Size);
+                if (rawValue != null)
+                {
+                    // Cast the data to the appropriate type using the common rule set
+                    Object value = DataFormatHelper.ReadData(rawValue, item, definition);
+                    row[item.Name] = value;
+                }
+            });
+
+            // Return the result
+            return result;
+        }
+
+        /// <summary>
+        /// Cut a segment out of the string if it can to then process by another method
+        /// </summary>
+        /// <returns></returns>
+        public static String CutString(String origional, Int32 start, Int32 length)
+        {
+            String result = null; // By default nothing is found, so make it null
+
+            // Make sure the cut is in bounds
+            if (origional.Length >= (start + length))
+                result = origional.Substring(start, length);
+
+            // Return the result
+            return result;
         }
     }
 }

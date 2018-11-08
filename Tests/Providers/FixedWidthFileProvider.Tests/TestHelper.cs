@@ -60,17 +60,17 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
 
                     // Definition for different data types and the data defined by ordinal position
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Entry", DataType = typeof(Int32), OridinalPosition = 0, Size = 6 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Per", DataType = typeof(String), OridinalPosition = 9, Size = 4 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "PostDate", DataType = typeof(DateTime), OridinalPosition = 13, Size = 10 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "GL Account", DataType = typeof(String), OridinalPosition = 25, Size = 10 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Description", DataType = typeof(String), OridinalPosition = 38, Size = 26 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Src", DataType = typeof(String), OridinalPosition = 65, Size = 4 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Flow", DataType = typeof(Boolean), OridinalPosition = 70, Size = 3 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Ref", DataType = typeof(String), OridinalPosition = 74, Size = 8 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Post", DataType = typeof(Boolean), OridinalPosition = 84, Size = 3 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Debit", DataType = typeof(Decimal), OridinalPosition = 88, Size = 17 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Credit", DataType = typeof(Decimal), OridinalPosition = 105, Size = 20 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "All", DataType = typeof(Boolean), OridinalPosition = 131, Size = 3 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Per", DataType = typeof(String), OridinalPosition = 8, Size = 4 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "PostDate", DataType = typeof(DateTime), OridinalPosition = 12, Size = 10 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "GL Account", DataType = typeof(String), OridinalPosition = 24, Size = 10 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Description", DataType = typeof(String), OridinalPosition = 37, Size = 26 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Src", DataType = typeof(String), OridinalPosition = 64, Size = 4 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Flow", DataType = typeof(Boolean), OridinalPosition = 69, Size = 3 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Ref", DataType = typeof(String), OridinalPosition = 73, Size = 8 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Post", DataType = typeof(Boolean), OridinalPosition = 83, Size = 3 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Debit", DataType = typeof(Decimal), OridinalPosition = 87, Size = 17 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Credit", DataType = typeof(Decimal), OridinalPosition = 104, Size = 20 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "All", DataType = typeof(Boolean), OridinalPosition = 130, Size = 3 });
                     definition.PropertyBag[DataItemPropertyBagItem.HasHeaderRecord.ToString()] = true; // There is a header record
                     definition.PropertyBag[DataItemPropertyBagItem.RowsToSkip.ToString()] = 1; // .. but we also want to skip a record as it is a spacer
 

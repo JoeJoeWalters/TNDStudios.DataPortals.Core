@@ -159,7 +159,7 @@ namespace TNDStudios.DataPortals.Helpers
 
                         // Get the first character of the raw data if there is some
                         Char firstChar =
-                            (value.Length > 0) ? value.ToCharArray()[0] : ' ';
+                            (value.Length > 0) ? value.ToLower().ToCharArray()[0] : ' ';
 
                         // Check the first character to see if it matches a true state
                         result = booleanChars.Contains(firstChar);
