@@ -47,49 +47,5 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
             Assert.True(dataRow != null && ((String)dataRow["Ref"]).Trim() == "RHMXWPCP"); // The third row should have some data for the unquoted header
             Assert.True(dataRow != null && (Boolean)dataRow["Post"]); // The third row should have some data for the unquoted header
         }
-
-        /// <summary>
-        /// Analyse a test string to determine the number of columns using the analysis code
-        /// </summary>
-        [Fact]
-        public void Analyse_Column_Numbers_From_String()
-        {
-            // Arrange
-            String testData = (new TestHelper()).GetResourceString(TestHelper.TestFile_GenericFixedWidth);
-
-            // Act
-            DataItemDefinition definition = FixedWidthFileHelper.AnalyseText(
-                new AnalyseRequest<String>()
-                {
-                    Data = testData
-                }
-                );
-
-            // Assert
-            Assert.Equal(definition.ItemProperties.Count, (int)3);
-        }
-
-        [Fact]
-        public void Analyse_Column_DataType_From_String()
-        {
-            // Arrange
-            String testData = (new TestHelper()).GetResourceString(TestHelper.TestFile_GenericFixedWidth);
-
-            // Act
-            DataItemDefinition definition = FixedWidthFileHelper.AnalyseText(
-                new AnalyseRequest<string>()
-                {
-                    Data = testData
-                });
-
-            // Assert
-            Assert.Equal(definition.ItemProperties.Count, (int)5);
-            Assert.Equal(typeof(String), definition.ItemProperties[0].DataType);
-            Assert.Equal(typeof(DateTime), definition.ItemProperties[1].DataType);
-            Assert.Equal(typeof(int), definition.ItemProperties[2].DataType);
-            Assert.Equal(typeof(String), definition.ItemProperties[3].DataType);
-            Assert.Equal(typeof(int), definition.ItemProperties[4].DataType);
-        }
-
     }
 }

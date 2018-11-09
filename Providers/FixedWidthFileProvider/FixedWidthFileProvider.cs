@@ -10,6 +10,11 @@ namespace TNDStudios.DataPortals.Data
     public class FixedWidthFileProvider : DataProviderBase, IDataProvider
     {
         /// <summary>
+        /// Override to the base behaviour and allow data writing
+        /// </summary>
+        public override Boolean CanWrite { get => true; }
+        
+        /// <summary>
         /// The data that is loaded from the file when the refresh of the
         /// file is made to avoid needing to lock a file (Commiting the data
         /// will overwrite the file with the new data)
@@ -219,53 +224,7 @@ namespace TNDStudios.DataPortals.Data
             else
                 return memoryData; // Simply supply the in-memory datatable back to the user
         }
-
-        /// <summary>
-        /// Look at the file and try and represent the file as a dataset without a definition
-        /// </summary>
-        /// <returns>A representation of the data</returns>
-        public override DataItemDefinition Analyse(AnalyseRequest<Object> request)
-        {
-            // Create a blank result data table
-            DataItemDefinition result = new DataItemDefinition() { };
-
-            String rawData = "";
-            switch (request.Data.GetType().ToShortName())
-            {
-                case "string":
-
-                    rawData = (String)request.Data;
-
-                    break;
-
-                default:
-
-                    ((Stream)request.Data).Position = 0; // Reset the stream position
-
-                    // Read the data from the stream
-                    StreamReader reader = new StreamReader((Stream)request.Data);
-                    rawData = reader.ReadToEnd();
-
-                    // Reset the position again so that it can be re-used
-                    ((Stream)request.Data).Position = 0;
-
-                    break;
-            }
-
-            // Pass down to the analyse text core function
-            AnalyseRequest<String> analyseTextRequest =
-                new AnalyseRequest<String>()
-                {
-                    Data = rawData
-                };
-            result = FixedWidthFileHelper.AnalyseText(analyseTextRequest);
-
-            base.MarkLastAction(); // Tell the provider base class that it did something
-
-            // Send the analysis data table back
-            return result;
-        }
-
+        
         /// <summary>
         /// Default Constructor
         /// </summary>

@@ -11,32 +11,6 @@ namespace TNDStudios.DataPortals.Helpers
     public partial class FixedWidthFileHelper
     {
         /// <summary>
-        /// Analyse some raw data and work out how 
-        /// </summary>
-        /// <param name="rawData"></param>
-        /// <returns></returns>
-        public static DataItemDefinition AnalyseText(AnalyseRequest<String> request)
-        {
-            // Start with a blank definition
-            DataItemDefinition result = new DataItemDefinition()
-            {
-                Culture = CultureInfo.InvariantCulture
-            };
-            Boolean ambigiousCulture = true;
-
-            // Raw data has something to convert?
-            if ((request.Data ?? "") != "")
-            {
-                // Open up a text reader to stream the data to the CSV Reader
-                using (TextReader textReader = new StringReader(request.Data))
-                {
-                }
-            }
-
-            return result; // Send the definition back
-        }
-
-        /// <summary>
         /// Read the raw data file and populate the in-memory data table with it
         /// </summary>
         /// <param name="rawData">The raw flat file data from wherever it came from</param>
@@ -57,7 +31,7 @@ namespace TNDStudios.DataPortals.Helpers
                     Int32 linesToSkip =
                         definition.GetPropertyBagItem<Int32>(DataItemPropertyBagItem.RowsToSkip, 0) +
                         (definition.GetPropertyBagItem<Boolean>(DataItemPropertyBagItem.HasHeaderRecord, false) ? 1 : 0);
-
+                    
                     // Loop each line of the file (ignoring lines that do not need to be processed)
                     String line = "";
                     while ((line = textReader.ReadLine()) != null)

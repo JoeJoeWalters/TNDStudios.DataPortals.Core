@@ -33,6 +33,22 @@ namespace TNDStudios.DataPortals.Data
     public interface IDataProvider
     {
         /// <summary>
+        /// Can this provider read (as a data source)
+        /// </summary>
+        Boolean CanRead { get; }
+
+        /// <summary>
+        /// Can this provider write (as a data destination)
+        /// </summary>
+        Boolean CanWrite { get; }
+
+        /// <summary>
+        /// Can this provider expose analysis services (to reveal the 
+        /// structure of the object being read)
+        /// </summary>
+        Boolean CanAnalyse { get; }
+
+        /// <summary>
         /// Is the data provider marked as being in test mode
         /// </summary>
         Boolean TestMode { get; set; }

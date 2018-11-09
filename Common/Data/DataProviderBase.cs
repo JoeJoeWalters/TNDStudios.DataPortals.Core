@@ -10,6 +10,22 @@ namespace TNDStudios.DataPortals.Data
     public class DataProviderBase : IDataProvider
     {
         /// <summary>
+        /// Can this provider read (as a data source)
+        /// </summary>
+        public virtual Boolean CanRead { get => true; }
+
+        /// <summary>
+        /// Can this provider write (as a data destination)
+        /// </summary>
+        public virtual Boolean CanWrite { get => false; }
+
+        /// <summary>
+        /// Can this provider expose analysis services (to reveal the 
+        /// structure of the object being read)
+        /// </summary>
+        public virtual Boolean CanAnalyse { get => false; }
+
+        /// <summary>
         /// Default Constructor
         /// </summary>
         public DataProviderBase()

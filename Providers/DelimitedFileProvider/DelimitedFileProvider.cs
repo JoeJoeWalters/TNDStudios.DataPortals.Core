@@ -11,6 +11,16 @@ namespace TNDStudios.DataPortals.Data
     public class DelimitedFileProvider : DataProviderBase, IDataProvider
     {
         /// <summary>
+        /// Override to the base behaviour and allow data writing
+        /// </summary>
+        public override Boolean CanWrite { get => true; }
+
+        /// <summary>
+        /// Override to the base behaviour and the provider to analyse
+        /// </summary>
+        public override Boolean CanAnalyse { get => true; }
+
+        /// <summary>
         /// The data that is loaded from the file when the refresh of the
         /// file is made to avoid needing to lock a file (Commiting the data
         /// will overwrite the file with the new data)

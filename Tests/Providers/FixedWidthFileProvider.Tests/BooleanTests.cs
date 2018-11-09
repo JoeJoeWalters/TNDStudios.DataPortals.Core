@@ -11,7 +11,6 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
     /// </summary>
     public class BooleanTests
     {
-
         /// <summary>
         /// Check that the conversion of various type of boolean actually
         /// get converted to the expected result. Such as "yes", "no", "true", 1, 0 etc.
