@@ -97,7 +97,7 @@ namespace TNDStudios.DataPortals.UI
                     );
 
             // Map from the data connection domain object to a key/value pairing
-            CreateMap<Transformation, KeyValuePair<Guid, String>>()
+            CreateMap<DataConnection, KeyValuePair<Guid, String>>()
                 .ConstructUsing(api => new KeyValuePair<Guid, string>(api.Id, api.Name));
 
             // Map from the data connection domain object to the web view model
@@ -105,16 +105,6 @@ namespace TNDStudios.DataPortals.UI
 
             // Map from the web view model of the data connection to the domain object
             CreateMap<DataConnectionModel, DataConnection>();
-            /*
-            .ForMember(
-                item => item.Definitions,
-                opt => opt.MapFrom(
-                    src => src.Definitions.Select(
-                        item => item.Key
-                        ).ToList()
-                    )
-                );
-                */
 
             // Create a generic key pair to id mapping
             CreateMap<KeyValuePair<Guid, String>, Guid>()
@@ -123,7 +113,28 @@ namespace TNDStudios.DataPortals.UI
             // Create a generic id to key pair mapping
             CreateMap<Guid, KeyValuePair<Guid, String>>()
                 .ConstructUsing(key => new KeyValuePair<Guid, String>(key, ""));
+            
+            // Map from the web view model of the transformation model to the domain object
+            CreateMap<TransformationModel, Transformation>()
+                .ForMember(
+                    item => item.Source,
+                    opt => opt.MapFrom(
+                        src => src.Source.Key
+                        )
+                    )
+                .ForMember(
+                    item => item.Destination,
+                    opt => opt.MapFrom(
+                        src => src.Destination.Key
+                        )
+                    );
 
+            // Map from the transformation domain object to a key/value pairing
+            CreateMap<Transformation, KeyValuePair<Guid, String>>()
+                .ConstructUsing(trans => new KeyValuePair<Guid, string>(trans.Id, trans.Name));
+
+            // Map from the transformation domain object to the web view model
+            CreateMap<Transformation, TransformationModel>();
         }
     }
 }

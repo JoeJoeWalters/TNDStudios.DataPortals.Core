@@ -10,6 +10,16 @@ namespace TNDStudios.DataPortals.Data
     public class Transformation : CommonObject
     {
         /// <summary>
+        /// The source data definition reference
+        /// </summary>
+        public Guid Source { get; set; }
+
+        /// <summary>
+        /// The destination data definition reference
+        /// </summary>
+        public Guid Destination { get; set; }
+
+        /// <summary>
         /// Default Constructor
         /// </summary>
         public Transformation()
