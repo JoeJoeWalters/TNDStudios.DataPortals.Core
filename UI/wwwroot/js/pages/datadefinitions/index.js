@@ -29,15 +29,15 @@
 
             // Clear the editor
             app.page.editor.clear();
-            app.page.editItem = null; // No longer attached to an editing object
+            app.page.editorItem = null; // No longer attached to an editing object
         },
 
         // Edit an existing item by assigning it to the editor object
-        edit: function (editItem) {
+        edit: function (editorItem) {
 
             // Copy the data to the data definition editor from the selected object
-            app.page.editor.fromObject(editItem);
-            app.page.editItem = editItem; // Reference to the origional item being edited
+            app.page.editor.fromObject(editorItem);
+            app.page.editorItem = editorItem; // Reference to the origional item being edited
         },
 
         // Delete the current data definition
@@ -75,10 +75,10 @@
             // Remove the item from the data definitions list
             app.page.dataDefinitions = app.page.dataDefinitions.filter(
                 function (dataDefinition) {
-                    return dataDefinition.id !== app.page.editItem.id;
+                    return dataDefinition.id !== app.page.editorItem.id;
                 });
 
-            app.page.editItem = null; // No longer attached to an editing object
+            app.page.editorItem = null; // No longer attached to an editing object
 
             // Notify the user
             tndStudios.utils.ui.notify(1, "Data Definition Deleted Successfully");
@@ -120,16 +120,16 @@
                 app.page.editor.fromObject(data.data);
 
                 // Were we editing an existing item?
-                if (app.page.editItem != null) {
+                if (app.page.editorItem != null) {
 
                     // Update the existing item
-                    app.page.editItem.fromObject(data.data);
+                    app.page.editorItem.fromObject(data.data);
                 }
                 else {
 
                     // Add the new item to the list
-                    app.page.editItem = new tndStudios.models.dataDefinitions.dataItemDefinition(data.data);
-                    app.page.dataDefinitions.push(app.page.editItem);
+                    app.page.editorItem = new tndStudios.models.dataDefinitions.dataItemDefinition(data.data);
+                    app.page.dataDefinitions.push(app.page.editorItem);
                 }
 
                 // Notify the user
@@ -185,7 +185,7 @@
 
             // Generate a random number for the column name
             var randomNumber = Math.floor(Math.random() * 100);
-            var newItemProperty = new tndStudios.models.dataDefinitions.dataItemProperty();
+            var newItemProperty = new tndStudios.models.dataDefinitions.dataItemProperty(null);
             newItemProperty.name = 'Property ' + randomNumber.toString();
 
             app.page.editor.itemProperties.push(newItemProperty);
@@ -204,6 +204,13 @@
         // Start editing a property using the property editor modal
         editProperty: function (item) {
 
+            // Set the property that is currently being edited
+            app.page.propertyEditorItem = item;
+
+            // Assign the values of the item to the actual editor
+            app.page.propertyEditor.fromObject(item);
+
+            // Kick off the modal box
             $('#exampleModal').modal('show');
         }
     }
