@@ -10,6 +10,7 @@ tndStudios.models.dataDefinitions =
             this.searchCriteria = ""; // The filter for the data definitions list
 
             this.editor = new tndStudios.models.dataDefinitions.dataItemDefinition(null); // The editor object
+            this.editorValues = new tndStudios.models.dataDefinitions.dataItemValues(); // The editor values for when it is being analysed
             this.editItem = null; // Reference to the item that is being edited for saving changes back to it
             this.providerTypes = []; // The list of available provider types
         },
