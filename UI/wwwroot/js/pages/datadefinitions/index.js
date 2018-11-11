@@ -191,11 +191,17 @@
             app.page.editor.itemProperties.push(newItemProperty);
         },
 
-        // Remove a property from the proeprty editor
+        // Remove a property from the property editor
         removeProperty: function (item) {
-
+            
+            // Remove the item from the property list
+            app.page.editor.itemProperties = app.page.editor.itemProperties.filter(
+                function (property) {
+                    return property !== item;
+                });
         },
 
+        // Start editing a property using the property editor modal
         editProperty: function (item) {
 
             $('#exampleModal').modal('show');
