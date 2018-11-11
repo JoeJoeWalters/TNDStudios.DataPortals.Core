@@ -179,6 +179,27 @@
         // Load was unsuccessful, inform the user
         loadDataDefinitionsFailure: function () {
         },
+
+        // Add a new property item to the property editor
+        addProperty: function () {
+
+            // Generate a random number for the column name
+            var randomNumber = Math.floor(Math.random() * 100);
+            var newItemProperty = new tndStudios.models.dataDefinitions.dataItemProperty();
+            newItemProperty.name = 'Property ' + randomNumber.toString();
+
+            app.page.editor.itemProperties.push(newItemProperty);
+        },
+
+        // Remove a property from the proeprty editor
+        removeProperty: function (item) {
+
+        },
+
+        editProperty: function (item) {
+
+            $('#exampleModal').modal('show');
+        }
     }
 });
 
