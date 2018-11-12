@@ -185,9 +185,14 @@
 
             // Generate a random number for the column name
             var randomNumber = Math.floor(Math.random() * 100);
+
+            // Generate the new property
             var newItemProperty = new tndStudios.models.dataDefinitions.dataItemProperty(null);
+
+            // Assign some default values
             newItemProperty.name = 'Property ' + randomNumber.toString();
 
+            // Add the property to the list of properties for this editing item
             app.page.editor.itemProperties.push(newItemProperty);
         },
 
@@ -212,6 +217,25 @@
 
             // Kick off the modal box
             $('#exampleModal').modal('show');
+        },
+
+        // Save the property that is being edited
+        saveProperty: function () {
+            
+            // Notify the user
+            tndStudios.utils.ui.notify(1, "Property Saved");
+        },
+
+        // Load data from an existing connection but make the assumption
+        // that the current format is compatable 
+        loadFromConnection: function () {
+            alert("Loading ..");
+        },
+
+        // Analyse the data connection to get the structure and then tell
+        // the system to start loading data from that connection
+        analyseConnection: function () {
+            alert("Analysing ..");
         }
     }
 });

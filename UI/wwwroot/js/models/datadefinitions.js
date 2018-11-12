@@ -44,6 +44,14 @@ tndStudios.models.dataDefinitions =
                 this.id = fromObject.id;
                 this.name = fromObject.name;
                 this.description = fromObject.description;
+
+                // Copy the item properties in from the source
+                var current = this; // Store the context of "this"
+                if (fromObject.itemProperties) {
+                    fromObject.itemProperties.forEach(function (property) {
+                        current.itemProperties.push(new tndStudios.models.dataDefinitions.dataItemProperty(property));
+                    });
+                }
             }
 
             // Create a formatted object that can be passed to the server
@@ -92,6 +100,7 @@ tndStudios.models.dataDefinitions =
             this.pattern = '';
             this.quoted = false;
             this.calculation = '';
+            this.size = 0;
 
             // Clear the property values
             this.clear = function () {
@@ -106,6 +115,7 @@ tndStudios.models.dataDefinitions =
                 this.pattern = '';
                 this.quoted = false;
                 this.calculation = '';
+                this.size = 0;
             };
 
             // Copy the content of this data item property from another data item property
@@ -126,6 +136,7 @@ tndStudios.models.dataDefinitions =
                 this.pattern = fromObject.pattern;
                 this.quoted = fromObject.quoted;
                 this.calculation = fromObject.calculation;
+                this.size = fromObject.size;
             };
 
             // Create a formatted object that can be passed to the server
@@ -142,7 +153,8 @@ tndStudios.models.dataDefinitions =
                     OrdinalPosition: fromObject.ordinalPosition,
                     Pattern: fromObject.pattern,
                     Quoted: fromObject.quoted,
-                    Calculation: fromObject.calculation
+                    Calculation: fromObject.calculation,
+                    Size: fromObject.size
                 };
 
                 return result;
