@@ -149,6 +149,9 @@
             
             // Start loading the datae definitions list
             app.loadDataDefinitions();
+            
+            // Start loading the connections list
+            app.loadConnections();
         },
 
         // load data definitions from the server
@@ -226,6 +229,37 @@
             tndStudios.utils.ui.notify(1, "Property Saved");
         },
 
+        // Load a list of connections for this package that can be used
+        // to analyse the connections and build the data definition
+        loadConnections: function () {
+
+            // Start the api call to load the connections
+            tndStudios.utils.api.call(
+                '/api/data/connection',
+                'GET',
+                null,
+                app.loadConnectionsSuccess,
+                app.loadConnectionsFailure);
+        },
+
+        // Load was successful, assign the data
+        loadConnectionsSuccess: function (data) {
+            if (data.data) {
+
+                app.page.connections = []; // clear the connections array
+
+                // Add the connection objects back in with wrapper for additional functions
+                data.data.forEach(function (connection) {
+                    app.page.connections.push(new tndStudios.models.dataConnections.dataConnection(connection)); // Assign the Json package to the data definition
+                });
+            };
+        },
+
+        // Load was unsuccessful, inform the user
+        loadConnectionsFailure: function () {
+            //alert('Failed to retrieve existing connections list')
+        },
+
         // Load data from an existing connection but make the assumption
         // that the current format is compatable 
         loadFromConnection: function () {
@@ -235,8 +269,42 @@
         // Analyse the data connection to get the structure and then tell
         // the system to start loading data from that connection
         analyseConnection: function () {
-            alert("Analysing ..");
-        }
+
+            var connectionId = app.page.selectedConnection;
+            if (app.page.selectedConnection != null &&
+                app.page.selectedConnection != "") {
+                // The the api call to save the data definition
+                tndStudios.utils.api.call(
+                    '/api/data/connection/analyse/' + connectionId,
+                    'GET',
+                    null,
+                    app.analyseConnectionSuccess,
+                    app.analyseConnectionFailure
+                );
+            }
+            else {
+                tndStudios.utils.ui.notify(0, "No connection selected to analyse");
+            }
+        },
+
+        // Analysis was successful, get the definition from the result
+        analyseConnectionSuccess: function (data) {
+
+            // Got some data?
+            if (data.data) {
+
+                app.page.editor.itemProperties = []; // clear the existing item properties
+
+                // Add the data definition objects back in with wrapper for additional functions
+                data.data.definition.itemProperties.forEach(function (property) {
+                    app.page.editor.itemProperties.push(new tndStudios.models.dataDefinitions.dataItemProperty(property)); // Assign the Json package to the property
+                });
+            };
+        },
+
+        // Analysis was unsuccessful, inform the user
+        analyseConnectionFailure: function () {
+        },
     }
 });
 

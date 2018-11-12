@@ -121,6 +121,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             return response;
         }
 
+        /*
         [HttpPost]
         [Route("/api/data/definition/analyse/file")]
         public ApiResponse<DataItemModel> AnalyseFile(IFormFile upload)
@@ -186,5 +187,6 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             // Respond with the analysed data
             return new ApiResponse<DataItemModel>() { Data = result, Success = true };
         }
+        */
     }
 }

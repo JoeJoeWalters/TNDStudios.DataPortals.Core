@@ -87,9 +87,9 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             // Get the item from the repository to make sure that it is 
             // not attached to other things
             DataConnection connection = SessionHandler.CurrentPackage.DataConnection(id);
-            response.Success = response.Data = 
+            response.Success = response.Data =
                 SessionHandler.CurrentPackage.Delete<Transformation>(id);
-            
+
             // Return the response
             return response;
         }
@@ -109,7 +109,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                     SessionHandler.CurrentPackage.DataConnections.Where
                     (def => (id == Guid.Empty || def.Id == id))
                     );
-                
+
                 // Success as we got here
                 response.Success = true;
             }
@@ -153,6 +153,107 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
 
             // Send the response back
             return response;
+        }
+
+        /// <summary>
+        /// Analyse a connection object to give back the result as a model 
+        /// for the UI to consume
+        /// </summary>
+        /// <param name="connection">The connection to analyse</param>
+        /// <param name="includeSample">Include sample data with the analysis</param>
+        /// <returns>The data item model for the UI to consume</returns>
+        private DataItemModel AnalyseConnection(DataConnection connection, Boolean includeSample)
+        {
+            DataItemModel result = new DataItemModel(); // The result to return
+
+            // Valid connection?
+            if (connection != null)
+            {
+                // Get the appropriate provider object to analyse
+                IDataProvider provider = (new DataProviderFactory()).Get(connection, false);
+
+                // Get the results of the analysis of this connection
+                DataItemDefinition definition =
+                    provider.Analyse(new AnalyseRequest<object>()
+                    {
+                        Data = null,
+                        Connection = connection
+                    });
+
+                // Did we get a result back?
+                if (definition.ItemProperties.Count != 0)
+                {
+                    // Assign the definition to the result
+                    result.Definition = mapper.Map<DataItemDefinitionModel>(definition);
+
+                    /*
+                    // Connect to the data stream now we have a definition to get the data
+                    if (provider.Connect(definition, stream))
+                    {
+                        result.Values = new DataItemValuesModel(); // Create a new values model
+
+                        // Read the data from the connection to the stream
+                        DataTable data = provider.Read("");
+
+                        // Did we get some rows back?
+                        foreach (DataRow row in data.Rows)
+                        {
+                            // Create a new blank data line to cast the data to
+                            Dictionary<String, String> line = new Dictionary<string, string>();
+
+                            // Loop the headers to get the values
+                            foreach (DataItemProperty property in definition.ItemProperties)
+                            {
+                                // Cast the data as appropriate and add it to the line
+                                line[property.Name] =
+                                    DataFormatHelper.WriteData(
+                                        row[property.Name],
+                                        property,
+                                        definition);
+                            }
+
+                            // Add the line to the result values
+                            result.Values.Lines.Add(line);
+                        }
+                    }
+                    */
+                }
+            }
+
+            return result; // Send the result back
+        }
+
+        [HttpGet]
+        [Route("/api/data/connection/analyse/{id}")]
+        public ApiResponse<DataItemModel> AnalyseFromId(Guid id)
+        {
+            // Create the response object
+            ApiResponse<DataItemModel> result = new ApiResponse<DataItemModel>() { Success = false };
+
+            // Get the connection from the current package by the id given
+            DataConnection connection = SessionHandler.CurrentPackage.DataConnection(id);
+
+            // Get the analysis result
+            result.Data = AnalyseConnection(connection, false);
+
+            // Send the resulting analysis back
+            result.Success = (result.Data != null && result.Data.Definition != null);
+            return result;
+        }
+
+        [HttpPost]
+        [Route("/api/data/connection/analyse")]
+        public ApiResponse<DataItemModel> AnalyseFromModel([FromBody] DataConnectionModel request)
+        {
+            // Create the response object
+            ApiResponse<DataItemModel> result = new ApiResponse<DataItemModel>() { Success = false };
+
+            // Map the incoming model to a proper connection object
+            result.Data = AnalyseConnection(mapper.Map<DataConnection>(request), false);
+
+            // Send the resulting analysis back
+            result.Success = (result.Data != null && result.Data.Definition != null);
+            return result;
         }
     }
 }

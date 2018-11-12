@@ -17,6 +17,8 @@ tndStudios.models.dataDefinitions =
             this.propertyEditorItem = null; // Reference to the item that is being edited
 
             this.providerTypes = []; // The list of available provider types
+            this.connections = []; // The list of data connections in this package
+            this.selectedConnection = null; // The selected connection item
         },
 
         // Data Item Definition Model

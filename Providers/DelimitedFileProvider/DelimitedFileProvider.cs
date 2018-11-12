@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Text;
 using CsvHelper;
 using TNDStudios.DataPortals.Helpers;
 
@@ -239,28 +240,39 @@ namespace TNDStudios.DataPortals.Data
         {
             // Create a blank result data table
             DataItemDefinition result = new DataItemDefinition() { };
+            String rawData = ""; // The data which ultimately will be read from
 
-            String rawData = "";
-            switch (request.Data.GetType().ToShortName())
+            // Check to see what can of analysis is being requested
+            if (request.Connection != null && 
+                (request.Connection.ConnectionString ?? String.Empty) != String.Empty)
             {
-                case "string":
+                // Get the stream of data from the raw file
+                rawData = File.ReadAllText(request.Connection.ConnectionString);
+            }
+            else
+            {
+                // No connection was provided so use the raw data provided instead
+                switch (request.Data.GetType().ToShortName())
+                {
+                    case "string":
 
-                    rawData = (String)request.Data;
+                        rawData = (String)request.Data;
 
-                    break;
+                        break;
 
-                default:
+                    default:
 
-                    ((Stream)request.Data).Position = 0; // Reset the stream position
+                        ((Stream)request.Data).Position = 0; // Reset the stream position
 
-                    // Read the data from the stream
-                    StreamReader reader = new StreamReader((Stream)request.Data);
-                    rawData = reader.ReadToEnd();
-                    
-                    // Reset the position again so that it can be re-used
-                    ((Stream)request.Data).Position = 0;
+                        // Read the data from the stream
+                        StreamReader reader = new StreamReader((Stream)request.Data);
+                        rawData = reader.ReadToEnd();
 
-                    break;
+                        // Reset the position again so that it can be re-used
+                        ((Stream)request.Data).Position = 0;
+
+                        break;
+                }
             }
 
             // Pass down to the analyse text core function
