@@ -7,6 +7,7 @@ using TNDStudios.DataPortals.Helpers;
 using System.Threading.Tasks;
 using TNDStudios.DataPortals.Data;
 using TNDStudios.DataPortals.UI.Models.Api;
+using TNDStudios.DataPortals.UI.Models.RequestResponse;
 
 namespace TNDStudios.DataPortals.UI.Controllers.Api
 {
@@ -185,38 +186,6 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                 {
                     // Assign the definition to the result
                     result.Definition = mapper.Map<DataItemDefinitionModel>(definition);
-
-                    /*
-                    // Connect to the data stream now we have a definition to get the data
-                    if (provider.Connect(definition, stream))
-                    {
-                        result.Values = new DataItemValuesModel(); // Create a new values model
-
-                        // Read the data from the connection to the stream
-                        DataTable data = provider.Read("");
-
-                        // Did we get some rows back?
-                        foreach (DataRow row in data.Rows)
-                        {
-                            // Create a new blank data line to cast the data to
-                            Dictionary<String, String> line = new Dictionary<string, string>();
-
-                            // Loop the headers to get the values
-                            foreach (DataItemProperty property in definition.ItemProperties)
-                            {
-                                // Cast the data as appropriate and add it to the line
-                                line[property.Name] =
-                                    DataFormatHelper.WriteData(
-                                        row[property.Name],
-                                        property,
-                                        definition);
-                            }
-
-                            // Add the line to the result values
-                            result.Values.Lines.Add(line);
-                        }
-                    }
-                    */
                 }
             }
 
@@ -225,7 +194,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
 
         [HttpGet]
         [Route("/api/data/connection/analyse/{id}")]
-        public ApiResponse<DataItemModel> AnalyseFromId(Guid id)
+        public ApiResponse<DataItemModel> Analyse(Guid id)
         {
             // Create the response object
             ApiResponse<DataItemModel> result = new ApiResponse<DataItemModel>() { Success = false };
@@ -241,19 +210,28 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             return result;
         }
 
-        [HttpPost]
-        [Route("/api/data/connection/analyse")]
-        public ApiResponse<DataItemModel> AnalyseFromModel([FromBody] DataConnectionModel request)
+        /// <summary>
+        /// Query the connection with a data definition
+        /// </summary>
+        /// <param name="request">The connection request</param>
+        /// <returns>The result of the query</returns>
+        [HttpGet]
+        [Route("/api/data/connection/sample/{id}")]
+        public ApiResponse<DataItemModel> Sample(Guid id)
         {
             // Create the response object
             ApiResponse<DataItemModel> result = new ApiResponse<DataItemModel>() { Success = false };
 
-            // Map the incoming model to a proper connection object
-            result.Data = AnalyseConnection(mapper.Map<DataConnection>(request), false);
+            // Get the connection from the current package by the id given
+            DataConnection connection = SessionHandler.CurrentPackage.DataConnection(id);
+
+            // Get the analysis result
+            result.Data = AnalyseConnection(connection, false);
 
             // Send the resulting analysis back
             result.Success = (result.Data != null && result.Data.Definition != null);
             return result;
         }
+
     }
 }

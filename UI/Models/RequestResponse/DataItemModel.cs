@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TNDStudios.DataPortals.UI.Models.Api;
 
-namespace TNDStudios.DataPortals.UI.Models.Api
+namespace TNDStudios.DataPortals.UI.Models.RequestResponse
 {
     /// <summary>
     /// Model used for analysing and representing the data gathered
