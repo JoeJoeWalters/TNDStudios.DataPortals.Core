@@ -2,9 +2,11 @@
 tndStudios.utils = tndStudios.utils || {};
 tndStudios.utils.api =
     {
+        // Make an API call with the given parameters
         call: function (url, method, request, successCallBack, failureCallBack) {
 
-            // Start the progress spinner
+            // Start the progress spinner in 1/4 of a second just so it
+            // doesn't flash too much if the response is really quick
             tndStudios.utils.ui.progress(true);
 
             // Make the ajax call
