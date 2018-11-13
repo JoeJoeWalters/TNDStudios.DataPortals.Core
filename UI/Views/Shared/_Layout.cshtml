@@ -26,6 +26,7 @@
 </head>
 
 <body id="page-top">
+
     <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
         <a class="navbar-brand mr-1" href="index.html">Data Portals</a>
         <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
@@ -118,13 +119,6 @@
                         <i class="fas fa-fw fa-book-open"></i>
                         <span>APIs</span>
                     </a>
-                    <!--<a class="dropdown-item" href="register.html">Register</a>
-    <a class="dropdown-item" href="forgot-password.html">Forgot Password</a>
-    <div class="dropdown-divider"></div>
-    <h6 class="dropdown-header">Other Pages:</h6>
-    <a class="dropdown-item" href="404.html">404 Page</a>
-    <a class="dropdown-item active" href="blank.html">Blank Page</a>
-    -->
                 </div>
             </li>
             <li class="nav-item">
@@ -139,14 +133,6 @@
                     <span>Swagger</span>
                 </a>
             </li>
-            <!--
-    <li class="nav-item">
-        <a class="nav-link" href="tables.html">
-            <i class="fas fa-fw fa-table"></i>
-            <span>Tables</span>
-        </a>
-    </li>
-        -->
         </ul>
         <div id="content-wrapper">
             <div class="container-fluid" id="contentcontainer">
@@ -155,23 +141,31 @@
                 @RenderBody()
 
             </div>
-            <!-- /.container-fluid -->
-            <!-- Sticky Footer -->
-            <footer class="sticky-footer">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright © The Naked Developer @DateTime.Now.Year.ToString()</span>
-                    </div>
-                </div>
-            </footer>
         </div>
         <!-- /.content-wrapper -->
     </div>
+
+    <footer class="footer" style="position:fixed; width: 100%; bottom: 0; background-color: #ffffff; border-top: 1px solid #999999">
+        <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+
+                <!-- Progress bar -->
+                <div class="hidden d-none center-block clearfix" id="progressBar">
+                    <img src="~/images/icons/loader.gif" />
+                </div>
+
+                <span>Copyright © The Naked Developer @DateTime.Now.Year.ToString()</span>
+            </div>
+        </div>
+    </footer>
     <!-- /#wrapper -->
     <!-- Scroll to Top Button-->
+    <!-- /.container-fluid -->
+    <!-- Sticky Footer -->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
+
     <!-- Logout Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
