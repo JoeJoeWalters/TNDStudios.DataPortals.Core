@@ -324,12 +324,14 @@
             // Got some data?
             if (data.data) {
 
-                app.page.editor.itemProperties = []; // clear the existing item properties
+                var oldObject = app.page.editor.toObject(); // Copy the old object first
 
-                // Add the data definition objects back in with wrapper for additional functions
-                data.data.definition.itemProperties.forEach(function (property) {
-                    app.page.editor.itemProperties.push(new tndStudios.models.dataDefinitions.dataItemProperty(property)); // Assign the Json package to the property
-                });
+                app.page.editor.fromObject(data.data.definition); // Copy the new object in
+
+                // Re-assign the id, name and description field which we want to keep
+                app.page.editor.id = oldObject.Id;
+                app.page.editor.name = oldObject.Name;
+                app.page.editor.description = oldObject.Description;
             };
         },
 
@@ -344,11 +346,15 @@ $("#editorForm").validate(
     {
         rules:
         {
-            name: { required: true }
+            name: { required: true },
+            culture: { required: true },
+            encodingFormat: { required: true }
         },
         messages:
         {
-            name: "Name Of Data Definition Required"
+            name: "Name Of Data Definition Required",
+            culture: "The Culture Type Is Required",
+            encodingFormat: "The Encoding Format Is Required"
         }
     });
 
