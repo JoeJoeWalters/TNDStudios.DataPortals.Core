@@ -186,7 +186,6 @@ namespace TNDStudios.DataPortals.Helpers
                             DataRow dataRow = dataItems.NewRow(); // Create a new row to populate
 
                             // Match all of the properties in the definitions lists
-                            Console.WriteLine(DateTime.Now.Second);
                             propertyValues.ForEach(
                                     property =>
                                     {

@@ -260,10 +260,40 @@
             //alert('Failed to retrieve existing connections list')
         },
 
-        // Load data from an existing connection but make the assumption
-        // that the current format is compatable 
-        loadFromConnection: function () {
-            alert("Loading ..");
+        // Load data from the selected connection using the editor definition
+        sampleConnection: function () {
+
+            var connectionId = app.page.selectedConnection;
+            if (app.page.selectedConnection != null &&
+                app.page.selectedConnection != "") {
+
+                // The the api call to sample the connection with this definition
+                tndStudios.utils.api.call(
+                    '/api/data/connection/sample/' + connectionId,
+                    'POST',
+                    app.page.editor.toObject(),
+                    app.sampleConnectionSuccess,
+                    app.sampleConnectionFailure
+                );
+            }
+            else {
+                tndStudios.utils.ui.notify(0, "No connection selected to sample");
+            }
+        },
+
+        // Sample was successful, get the data from the result
+        sampleConnectionSuccess: function (data) {
+
+            // Got some data?
+            if (data.data) {
+
+                // Assign the data payload to the appropriate object in the editor
+                app.page.editorValues = data.data.values;
+            };
+        },
+
+        // Sample was unsuccessful, inform the user
+        sampleConnectionFailure: function () {
         },
 
         // Analyse the data connection to get the structure and then tell
@@ -273,6 +303,7 @@
             var connectionId = app.page.selectedConnection;
             if (app.page.selectedConnection != null &&
                 app.page.selectedConnection != "") {
+
                 // The the api call to save the data definition
                 tndStudios.utils.api.call(
                     '/api/data/connection/analyse/' + connectionId,

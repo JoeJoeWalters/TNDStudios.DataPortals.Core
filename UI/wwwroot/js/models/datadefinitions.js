@@ -46,6 +46,8 @@ tndStudios.models.dataDefinitions =
                 this.id = fromObject.id;
                 this.name = fromObject.name;
                 this.description = fromObject.description;
+                this.culture = fromObject.culture;
+                this.encodingFormat = fromObject.encodingFormat;
 
                 // Copy the item properties in from the source
                 var current = this; // Store the context of "this"
@@ -59,11 +61,21 @@ tndStudios.models.dataDefinitions =
             // Create a formatted object that can be passed to the server
             this.toObject = function () {
 
+                var toObjectItemProperties = [];
+                if (this.itemProperties) {
+                    this.itemProperties.forEach(function (property) {
+                        toObjectItemProperties.push(property.toObject());
+                    });
+                };
+
                 var result =
                 {
                     Id: this.id,
                     Name: this.name,
-                    Description: this.description
+                    Description: this.description,
+                    Culture: this.culture,
+                    EncodingFormat: this.encodingFormat,
+                    ItemProperties: toObjectItemProperties
                 };
 
                 return result;
@@ -146,17 +158,17 @@ tndStudios.models.dataDefinitions =
 
                 var result =
                 {
-                    DataType: fromObject.dataType,
-                    PropertyType: fromObject.propertyType,
-                    Key: fromObject.key,
-                    Name: fromObject.name,
-                    Description: fromObject.description,
-                    Path: fromObject.path,
-                    OrdinalPosition: fromObject.ordinalPosition,
-                    Pattern: fromObject.pattern,
-                    Quoted: fromObject.quoted,
-                    Calculation: fromObject.calculation,
-                    Size: fromObject.size
+                    DataType: this.dataType,
+                    PropertyType: this.propertyType,
+                    Key: this.key,
+                    Name: this.name,
+                    Description: this.description,
+                    Path: this.path,
+                    OrdinalPosition: this.ordinalPosition,
+                    Pattern: this.pattern,
+                    Quoted: this.quoted,
+                    Calculation: this.calculation,
+                    Size: this.size
                 };
 
                 return result;

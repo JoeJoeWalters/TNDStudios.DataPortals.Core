@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TNDStudios.DataPortals.Data;
 using TNDStudios.DataPortals.UI.Models.Api;
 using TNDStudios.DataPortals.UI.Models.RequestResponse;
+using System.Data;
 
 namespace TNDStudios.DataPortals.UI.Controllers.Api
 {
@@ -163,7 +164,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// <param name="connection">The connection to analyse</param>
         /// <param name="includeSample">Include sample data with the analysis</param>
         /// <returns>The data item model for the UI to consume</returns>
-        private DataItemModel AnalyseConnection(DataConnection connection, Boolean includeSample)
+        private DataItemModel AnalyseConnection(DataConnection connection)
         {
             DataItemModel result = new DataItemModel(); // The result to return
 
@@ -203,7 +204,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             DataConnection connection = SessionHandler.CurrentPackage.DataConnection(id);
 
             // Get the analysis result
-            result.Data = AnalyseConnection(connection, false);
+            result.Data = AnalyseConnection(connection);
 
             // Send the resulting analysis back
             result.Success = (result.Data != null && result.Data.Definition != null);
@@ -215,9 +216,9 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// </summary>
         /// <param name="request">The connection request</param>
         /// <returns>The result of the query</returns>
-        [HttpGet]
+        [HttpPost]
         [Route("/api/data/connection/sample/{id}")]
-        public ApiResponse<DataItemModel> Sample(Guid id)
+        public ApiResponse<DataItemModel> Sample([FromRoute]Guid id, [FromBody]DataItemDefinitionModel request)
         {
             // Create the response object
             ApiResponse<DataItemModel> result = new ApiResponse<DataItemModel>() { Success = false };
@@ -225,12 +226,72 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             // Get the connection from the current package by the id given
             DataConnection connection = SessionHandler.CurrentPackage.DataConnection(id);
 
-            // Get the analysis result
-            result.Data = AnalyseConnection(connection, false);
+            // Get the definition from the model provided
+            DataItemDefinition dataDefinition = mapper.Map<DataItemDefinition>(request);
+
+            // Get the sample result 
+            result.Data = SampleConnection(connection, dataDefinition, 10);
 
             // Send the resulting analysis back
-            result.Success = (result.Data != null && result.Data.Definition != null);
+            result.Success = (result.Data != null && result.Data.Values != null);
             return result;
+        }
+
+        /// <summary>
+        /// Sample the data from a connection object to give back the result as a model 
+        /// for the UI to consume
+        /// </summary>
+        /// <param name="connection">The connection to analyse</param>
+        /// <returns>The data item model for the UI to consume</returns>
+        private DataItemModel SampleConnection(DataConnection connection, DataItemDefinition definition, Int32 sampleSize)
+        {
+            DataItemModel result = new DataItemModel(); // The result to return
+
+            // Valid connection?
+            if (connection != null)
+            {
+                // Get the appropriate provider object to analyse
+                IDataProvider provider = (new DataProviderFactory()).Get(connection, false);
+                if (provider.Connect(definition, connection.ConnectionString))
+                {
+                    result.Values = new DataItemValuesModel(); // Create a new values model
+
+                    // Read the data from the connection to the stream
+                    DataTable data = provider.Read("");
+
+                    // Did we get some rows back?
+                    Int32 rowId = 0;
+                    while (rowId < sampleSize && rowId < data.Rows.Count)
+                    {
+                        // Get the next row
+                        DataRow row = data.Rows[rowId];
+                        if (row != null)
+                        {
+                            // Create a new blank data line to cast the data to
+                            Dictionary<String, String> line = new Dictionary<string, string>();
+
+                            // Loop the headers to get the values
+                            foreach (DataItemProperty property in definition.ItemProperties)
+                            {
+                                // Cast the data as appropriate and add it to the line
+                                line[property.Name] =
+                                    DataFormatHelper.WriteData(
+                                        row[property.Name],
+                                        property,
+                                        definition);
+                            }
+
+                            // Add the line to the result values
+                            result.Values.Lines.Add(line);
+                        }
+
+                        // Move to the next row
+                        rowId++;
+                    }
+                }
+            }
+
+            return result; // Send the result back
         }
 
     }
