@@ -183,7 +183,7 @@
 });
 
 // Create the validation rules for the main editor form
-$("#editorForm").validate(
+var validator = $("#editorForm").validate(
     {
         rules:
         {
