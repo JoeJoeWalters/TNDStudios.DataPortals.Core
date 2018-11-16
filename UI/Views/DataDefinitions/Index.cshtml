@@ -83,7 +83,7 @@
                             <div class="form-group">
                                 <label for="culture">Culture</label>
                                 <!-- Culture of the data definition -->
-                                <select class="form-control" id="culture" name="culture" v-model="page.culture">
+                                <select class="form-control" id="culture" name="culture" v-model="page.editor.culture">
                                     <option v-bind:value="item.key" v-for="item in page.cultureLookup">
                                         {{ item.value }}
                                     </option>
@@ -92,7 +92,7 @@
                             <div class="form-group">
                                 <label for="encodingFormat">Encoding Format</label>
                                 <!-- Encoding Format of the data definition -->
-                                <select class="form-control" id="encodingFormat" name="encodingFormat" v-model="page.encodingFormat">
+                                <select class="form-control" id="encodingFormat" name="encodingFormat" v-model="page.editor.encodingFormat">
                                     <option v-bind:value="item.key" v-for="item in page.encodingLookup">
                                         {{ item.value }}
                                     </option>
