@@ -19,6 +19,9 @@ tndStudios.models.dataDefinitions =
             this.providerTypes = []; // The list of available provider types
             this.connections = []; // The list of data connections in this package
             this.selectedConnection = null; // The selected connection item
+
+            this.cultureLookup = []; // Culture lookup codes
+            this.encodingLookup = []; // Encoding lookup codes
         },
 
         // Data Item Definition Model

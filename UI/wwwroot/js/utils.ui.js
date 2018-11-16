@@ -5,6 +5,7 @@ var tndStudios = tndStudios || {};
 tndStudios.utils = tndStudios.utils || {};
 tndStudios.utils.ui =
     {
+        // List of notificiation event triggers
         notificationEvents: null,
 
         // Notify the user of alerts / messages

@@ -30,7 +30,7 @@ namespace TNDStudios.DataPortals.UI
                 .ForMember(
                     item => item.Culture,
                     opt => opt.MapFrom(
-                        src => (src.Culture == CultureInfo.InvariantCulture) ? "Invariant" : src.Culture.Name
+                        src => (src.Culture == CultureInfo.InvariantCulture) ? "" : src.Culture.Name
                        )
                     )
                 .ForMember(
@@ -54,7 +54,7 @@ namespace TNDStudios.DataPortals.UI
                 .ForMember(
                     item => item.Culture,
                     opt => opt.MapFrom(
-                        src => (src.Culture == "Invariant") ? CultureInfo.InvariantCulture : CultureInfo.GetCultureInfo(src.Culture)
+                        src => (src.Culture == "") ? CultureInfo.InvariantCulture : CultureInfo.GetCultureInfo(src.Culture)
                        )
                     )
                 .ForMember(

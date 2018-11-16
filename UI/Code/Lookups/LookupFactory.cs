@@ -43,9 +43,6 @@ namespace TNDStudios.DataPortals.UI
                             new KeyValuePair<String, String>(culture.Name, culture.DisplayName)
                             ).ToList();
 
-                    // Add the invariant culture
-                    result.Add(new KeyValuePair<String, String>("", "Invariant"));
-
                     break;
 
                 case LookupFactoryType.Encoding:

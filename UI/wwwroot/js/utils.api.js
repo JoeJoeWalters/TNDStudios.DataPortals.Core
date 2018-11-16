@@ -2,6 +2,29 @@
 tndStudios.utils = tndStudios.utils || {};
 tndStudios.utils.api =
     {
+        // Lookup enums
+        lookupTypes: {
+            Encoding: 1,
+            Culture: 2
+        },
+
+        // Get the data for a lookup from the API controller
+        lookup: function (lookupId, callback) {
+
+            // Make the call to the lookup endpoint
+            tndStudios.utils.api.call(
+                '/api/system/lookup/' + lookupId,
+                'GET',
+                null,
+                callback,
+                tndStudios.utils.api.lookupFailure
+            );
+        },
+
+        // Method to hit if the lookup codes fail
+        lookupFailure: function () {
+        },
+
         // Make an API call with the given parameters
         call: function (url, method, request, successCallBack, failureCallBack) {
 

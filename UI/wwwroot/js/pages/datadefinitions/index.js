@@ -152,6 +152,36 @@
             
             // Start loading the connections list
             app.loadConnections();
+
+            // Start loading the connections
+            app.loadLookups();
+        },
+
+        // Load the lookup codes from the server
+        loadLookups: function () {
+
+            // Get the lookups
+            tndStudios.utils.api.lookup(
+                tndStudios.utils.api.lookupTypes.Encoding,
+                this.loadEncodingLookup);
+
+            tndStudios.utils.api.lookup(
+                tndStudios.utils.api.lookupTypes.Culture,
+                this.loadCultureLookup);
+        },
+
+        // Load was successful, assign the data
+        loadEncodingLookup: function (data) {
+            if (data.data) {
+                app.page.encodingLookup = data.data;
+            }
+        },
+
+        // Load was successful, assign the data
+        loadCultureLookup: function (data) {
+            if (data.data) {
+                app.page.cultureLookup = data.data;
+            }
         },
 
         // load data definitions from the server
