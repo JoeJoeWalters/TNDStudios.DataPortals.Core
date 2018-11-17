@@ -5,7 +5,9 @@ tndStudios.utils.api =
         // Lookup enums
         lookupTypes: {
             Encoding: 1,
-            Culture: 2
+            Culture: 2,
+            DataTypes: 3,
+            DataPropertyTypes: 4
         },
 
         // Get the data for a lookup from the API controller

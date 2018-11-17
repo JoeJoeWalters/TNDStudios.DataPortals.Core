@@ -22,6 +22,8 @@ tndStudios.models.dataDefinitions =
 
             this.cultureLookup = []; // Culture lookup codes
             this.encodingLookup = []; // Encoding lookup codes
+            this.dataTypesLookup = []; // Data Types lookup codes
+            this.dataPropertyTypesLookup = []; // Data Property types lookup codes
         },
 
         // Data Item Definition Model

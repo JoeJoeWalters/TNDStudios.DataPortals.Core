@@ -168,6 +168,14 @@
             tndStudios.utils.api.lookup(
                 tndStudios.utils.api.lookupTypes.Culture,
                 this.loadCultureLookup);
+
+            tndStudios.utils.api.lookup(
+                tndStudios.utils.api.lookupTypes.DataTypes,
+                this.loadDataTypesLookup);
+
+            tndStudios.utils.api.lookup(
+                tndStudios.utils.api.lookupTypes.DataPropertyTypes,
+                this.loadDataPropertyTypesLookup);
         },
 
         // Load was successful, assign the data
@@ -181,6 +189,20 @@
         loadCultureLookup: function (data) {
             if (data.data) {
                 app.page.cultureLookup = data.data;
+            }
+        },
+
+        // Load was successful, assign the data
+        loadDataPropertyTypesLookup: function (data) {
+            if (data.data) {
+                app.page.dataPropertyTypesLookup = data.data;
+            }
+        },
+
+        // Load was successful, assign the data
+        loadDataTypesLookup: function (data) {
+            if (data.data) {
+                app.page.dataTypesLookup = data.data;
             }
         },
 

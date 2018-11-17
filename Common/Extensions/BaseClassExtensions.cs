@@ -25,6 +25,19 @@ namespace TNDStudios.DataPortals.Helpers
             return splitString[splitString.Length - 1];
         }
 
+        // Capitalise the first character of a string
+        public static String UppercaseFirst(this String s)
+        {
+            // Check for empty string.
+            if (string.IsNullOrEmpty(s))
+            {
+                return string.Empty;
+            }
+
+            // Return char and concat substring.
+            return char.ToUpper(s[0]) + s.Substring(1);
+        }
+
         /// <summary>
         /// Convert and enumeration to a dictionary object
         /// </summary>

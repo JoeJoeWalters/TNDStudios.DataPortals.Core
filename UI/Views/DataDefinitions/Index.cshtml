@@ -216,22 +216,19 @@
                                     <div class="form-group">
                                         <label for="propertyType">Property Type</label>
                                         <!-- The type of the editing property -->
-                                        <select name="propertyType" id="propertyType" class="form-control" v-model="page.propertyEditor.propertyType">
-                                            <option value="0">Property</option>
-                                            <option value="1">Calculation</option>
+                                        <select class="form-control" id="propertyType" name="propertyType" v-model="page.propertyEditor.propertyType">
+                                            <option v-bind:value="item.key" v-for="item in page.dataPropertyTypesLookup">
+                                                {{ item.value }}
+                                            </option>
                                         </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="dataType">Data Type</label>
                                         <!-- The data type of the editing property -->
-                                        <select name="dataType" id="dataType" class="form-control" v-model="page.propertyEditor.dataType">
-                                            <option value="System.String">String</option>
-                                            <option value="System.DateTime">Date/Time</option>
-                                            <option value="System.Single">Single</option>
-                                            <option value="System.Double">Double</option>
-                                            <option value="System.Int32">Integer (32 Bit)</option>
-                                            <option value="System.Int64">Integer (64 Bit)</option>
-                                            <option value="System.Boolean">Boolean</option>
+                                        <select class="form-control" id="dataType" name="dataType" v-model="page.propertyEditor.dataType">
+                                            <option v-bind:value="item.key" v-for="item in page.dataTypesLookup">
+                                                {{ item.value }}
+                                            </option>
                                         </select>
                                     </div>
                                     <div class="form-group">
