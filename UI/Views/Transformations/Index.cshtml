@@ -40,7 +40,7 @@
             <div class="card-body">
                 <ul class="list-inline">
                     <!-- List of transformations -->
-                    <li class="list-inline-item" v-for="item in filteredTransformations">
+                    <li class="list-group-item" v-for="item in filteredTransformations">
                         <!-- Edit the transformation in the list -->
                         <a v-on:click="edit(item)" href="#">{{item.name}}</a>
                     </li>
@@ -75,6 +75,137 @@
                                 <label for="description">Description</label>
                                 <!-- Description of the transformation -->
                                 <textarea class="form-control" id="description" name="description" v-model="page.editor.description"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div class="w-100" style="overflow: auto; height: 325px">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <input type="button" class="btn btn-block btn-sm" value="Source Item 1" />
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input type="button" class="btn btn-block btn-sm" value="Source Item 2" />
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input type="button" class="btn btn-block btn-sm" value="Source Item 3" />
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input type="button" class="btn btn-block btn-sm" value="Source Item 4" />
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input type="button" class="btn btn-block btn-sm" value="Source Item 5" />
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input type="button" class="btn btn-block btn-sm" value="Source Item 6" />
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input type="button" class="btn btn-block btn-sm" value="Source Item 7" />
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input type="button" class="btn btn-block btn-sm" value="Source Item 8" />
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input type="button" class="btn btn-block btn-sm" value="Source Item 9" />
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input type="button" class="btn btn-block btn-sm" value="Source Item 10" />
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input type="button" class="btn btn-block btn-sm" value="Source Item 11" />
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input type="button" class="btn btn-block btn-sm" value="Source Item 12" />
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div class="w-100" style="overflow: auto; height: 325px">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <input type="button" class="btn btn-block btn-sm" value="Source Item 1" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <i class="fas fa-fw fa-arrow-circle-right"></i>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input type="button" class="btn btn-block btn-sm" value="Dest. Item 1" />
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <input type="button" class="btn btn-block btn-sm" value="Source Item 1" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <i class="fas fa-fw fa-arrow-circle-right"></i>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input type="button" class="btn btn-block btn-sm" value="Dest. Item 1" />
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <input type="button" class="btn btn-block btn-sm" value="Source Item 1" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <i class="fas fa-fw fa-arrow-circle-right"></i>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input type="button" class="btn btn-block btn-sm" value="Dest. Item 1" />
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div class="w-100" style="overflow: auto; height: 325px">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <input type="button" class="btn btn-block btn-sm" value="Dest. Item 1" />
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input type="button" class="btn btn-block btn-sm" value="Dest. Item 2" />
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input type="button" class="btn btn-block btn-sm" value="Dest. Item 3" />
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input type="button" class="btn btn-block btn-sm" value="Dest. Item 4" />
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input type="button" class="btn btn-block btn-sm" value="Dest. Item 5" />
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input type="button" class="btn btn-block btn-sm" value="Dest. Item 6" />
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input type="button" class="btn btn-block btn-sm" value="Dest. Item 7" />
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input type="button" class="btn btn-block btn-sm" value="Dest. Item 8" />
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input type="button" class="btn btn-block btn-sm" value="Dest. Item 9" />
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input type="button" class="btn btn-block btn-sm" value="Dest. Item 10" />
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input type="button" class="btn btn-block btn-sm" value="Dest. Item 11" />
+                                    </li>
+                                    <li class="list-group-item">
+                                        <input type="button" class="btn btn-block btn-sm" value="Dest. Item 12" />
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
