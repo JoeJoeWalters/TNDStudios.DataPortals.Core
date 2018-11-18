@@ -187,7 +187,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                         if (provider.Connected)
                         {
                             // Return the data with the appropriate filter
-                            return DataTableToJsonFormat(provider.Read("Country = 'Central America and the Caribbean'"));
+                            return DataTableToJsonFormat(provider.Read(""));
                         }
                         else
                         {
