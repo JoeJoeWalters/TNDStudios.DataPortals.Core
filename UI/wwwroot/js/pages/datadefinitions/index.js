@@ -276,7 +276,10 @@
 
         // Save the property that is being edited
         saveProperty: function () {
-            
+
+            // Copy the data back in from the editor
+            app.page.propertyEditorItem.fromObject(app.page.propertyEditor);
+
             // Notify the user
             tndStudios.utils.ui.notify(1, "Property Saved");
         },
