@@ -5,10 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="LibGit2Sharp" Version="0.25.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\Providers\DelimitedFileProvider\DelimitedFileProvider.csproj" />
     <ProjectReference Include="..\Providers\FixedWidthFileProvider\FixedWidthFileProvider.csproj" />
     <ProjectReference Include="..\Providers\SQLProvider\SQLProvider.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="SourceControl\" />
   </ItemGroup>
 
 </Project>
