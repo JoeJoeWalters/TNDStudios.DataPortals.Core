@@ -40,9 +40,9 @@
                 </div>
             </div>
             <div class="card-body">
-                <ul class="list-inline">
+                <ul class="list-group list-group-flush">
                     <!-- List of Api Definitions -->
-                    <li class="list-inline-item" v-for="item in filteredApiDefinitions">
+                    <li class="list-group-item" v-for="item in filteredApiDefinitions">
                         <!-- Edit the api definition in the list -->
                         <a v-on:click="edit(item)" href="#">{{item.name}}</a>
                     </li>

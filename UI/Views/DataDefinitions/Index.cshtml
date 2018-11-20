@@ -39,9 +39,9 @@
                 </div>
             </div>
             <div class="card-body">
-                <ul class="list-inline">
+                <ul class="list-group list-group-flush">
                     <!-- List of definitions -->
-                    <li class="list-inline-item" v-for="item in filteredDataDefinitions">
+                    <li class="list-group-item" v-for="item in filteredDataDefinitions">
                         <!-- Edit the definition in the list -->
                         <a v-on:click="edit(item)" href="#">{{item.name}}</a>
                     </li>

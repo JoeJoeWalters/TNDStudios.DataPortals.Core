@@ -38,9 +38,9 @@
                 </div>
             </div>
             <div class="card-body">
-                <ul class="list-inline">
+                <ul class="list-group list-group-flush">
                     <!-- List of connections -->
-                    <li class="list-inline-item" v-for="item in filteredConnections">
+                    <li class="list-group-item" v-for="item in filteredConnections">
                         <!-- Edit the connection in the list -->
                         <a v-on:click="edit(item)" href="#">{{item.name}}</a>
                     </li>
