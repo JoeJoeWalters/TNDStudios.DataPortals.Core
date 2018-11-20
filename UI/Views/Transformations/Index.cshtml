@@ -42,7 +42,6 @@
                     <!-- List of transformations -->
                     <li class="list-inline-item" v-for="item in filteredTransformations">
                         <!-- Edit the transformation in the list -->
-                        <i class="fas fa-fw fa-code-branch"></i>
                         <a v-on:click="edit(item)" href="#">{{item.name}}</a>
                     </li>
                 </ul>

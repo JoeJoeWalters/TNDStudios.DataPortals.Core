@@ -133,13 +133,13 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
 
         [HttpPost]
         [Route("/api/managedapi/definition")]
-        public ApiResponse<ApiDefinitionModel> Post([FromBody] ApiRequest<ApiDefinitionModel> request)
+        public ApiResponse<ApiDefinitionModel> Post([FromBody] ApiDefinitionModel request)
         {
             // Create the response object
             ApiResponse<ApiDefinitionModel> response = new ApiResponse<ApiDefinitionModel>();
 
             // Map the model to a domain object type
-            ApiDefinition savedApiDefinition = mapper.Map<ApiDefinition>(request.Data);
+            ApiDefinition savedApiDefinition = mapper.Map<ApiDefinition>(request);
 
             // Did the mapping work ok?
             if (savedApiDefinition != null)

@@ -2,14 +2,76 @@
 tndStudios.models = tndStudios.models || {};
 tndStudios.models.apiDefinitions =
     {
-        // Data Connection Model
-        apiDefinition: function () {
+        // Edit Page Model
+        page: function () {
 
-            this.id = '';
+            // The properties of the object
+            this.apiDefinitions = []; // The list of api definitions for this package
+            this.searchCriteria = ""; // The filter for the api definitions list
+
+            this.editor = new tndStudios.models.apiDefinitions.apiDefinition(null); // The editor object
+            this.editorItem = null; // Reference to the item that is being edited for saving changes back to it
+
+            this.dataDefinitions = []; // The list of data definitions in this package
+            this.dataConnections = []; // The list of data connections in this package
+        },
+
+        // Api Definition Model
+        apiDefinition: function (data) {
+
+            // General Properties
+            this.id = null;
             this.name = '';
             this.description = '';
-            this.dataDefinition = new tndStudios.models.common.keyValuePair();
-            this.dataConnection = new tndStudios.models.common.keyValuePair();
 
-        },
+            // Item properties
+            this.dataConnection = new tndStudios.models.common.keyValuePair();
+            this.dataDefinition = new tndStudios.models.common.keyValuePair();
+
+            // Copy the content of this data item definition from another data item definition
+            // e.g. when editing in a secondary editor object
+            this.fromObject = function (fromObject) {
+
+                // Clear the object first (just in case)
+                this.clear();
+
+                // Start copying the data from the other object
+                this.id = fromObject.id;
+                this.name = fromObject.name;
+                this.description = fromObject.description;
+                this.dataConnection = fromObject.dataConnection;
+                this.dataDefinition = fromObject.dataDefinition;
+            }
+
+            // Create a formatted object that can be passed to the server
+            this.toObject = function () {
+                
+                var result =
+                {
+                    Id: this.id,
+                    Name: this.name,
+                    Description: this.description,
+                    DataConnection: this.dataConnection,
+                    DataDefinition: this.dataDefinition
+                };
+
+                return result;
+            }
+
+            // Clear this definition object (i.e. make it ready for editing)
+            this.clear = function () {
+
+                // Clear the properties
+                this.id = null;
+                this.name = '';
+                this.description = '';
+                this.dataConnection = new tndStudios.models.common.keyValuePair();
+                this.dataDefinition = new tndStudios.models.common.keyValuePair();
+            }
+
+            // Any data passed in?
+            if (data) {
+                this.fromObject(data); // Assign the data to this object
+            }
+        },        
     };

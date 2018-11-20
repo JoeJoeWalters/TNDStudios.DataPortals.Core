@@ -42,7 +42,6 @@
                     <!-- List of connections -->
                     <li class="list-inline-item" v-for="item in filteredConnections">
                         <!-- Edit the connection in the list -->
-                        <i class="fas fa-fw fa-route"></i>
                         <a v-on:click="edit(item)" href="#">{{item.name}}</a>
                     </li>
                 </ul>
