@@ -21,7 +21,7 @@
 
 <body>
 
-    <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
+    <nav class="navbar navbar-expand navbar-dark bg-dark static-top" id="headercontainer">
         <a class="navbar-brand" href="#">Data Portals</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -32,10 +32,10 @@
                     <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="componentsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Components
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <div class="dropdown-menu" aria-labelledby="componentsDropdown">
                         <a class="dropdown-item" href="#">Wizards</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="~/connections/index">Connections</a>
@@ -44,10 +44,18 @@
                         <a class="dropdown-item" href="~/apidefinitions/index">API Definitions</a>
                     </div>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="toolsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Tools
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="toolsDropdown">
+                        <a class="dropdown-item" href="~/swagger">Swagger</a>
+                    </div>
+                </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                <select id="packageSelector" name="packageSelector" class="form-control mr-sm-2"></select>
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Go</button>
             </form>
         </div>
     </nav>
@@ -104,7 +112,9 @@
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         <script src="~/js/utils.api.js" asp-append-version="true"></script>
         <script src="~/js/utils.ui.js" asp-append-version="true"></script>
-        <script src="~/js/sb-admin.js"></script>
+        <script src="~/js/models/common.js" asp-append-version="true"></script>
+        <script src="~/js/models/packages.js" asp-append-version="true"></script>
+        <script src="~/js/pages/common.js" asp-append-version="true"></script>
         <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
     </environment>
     <environment exclude="Development">
@@ -120,6 +130,9 @@
         <script src="https://cdn.jsdelivr.net/npm/vue"></script>
         <script src="~/js/utils.api.js" asp-append-version="true"></script>
         <script src="~/js/utils.ui.js" asp-append-version="true"></script>
+        <script src="~/js/models/common.js" asp-append-version="true"></script>
+        <script src="~/js/models/packages.js" asp-append-version="true"></script>
+        <script src="~/js/pages/common.js" asp-append-version="true"></script>
         <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     </environment>
 

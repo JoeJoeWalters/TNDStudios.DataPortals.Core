@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Text;
 using TNDStudios.DataPortals.Api;
 using TNDStudios.DataPortals.Data;
+using TNDStudios.DataPortals.Repositories;
 using TNDStudios.DataPortals.UI.Models.Api;
 
 namespace TNDStudios.DataPortals.UI.Controllers.Api
@@ -164,23 +165,26 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         }
 
         [HttpGet]
-        [Route("/api/objects/{objectType}")]
-        public ActionResult<Boolean> Get(String objectType)
+        [Route("/api/{packageId}/objects/{objectType}")]
+        public ActionResult<Boolean> Get(Guid packageId, String objectType)
         {
             try
             {
+                // Get the package from the repository
+                Package package = SessionHandler.PackageRepository.Get(packageId);
+
                 // Make sure we actually have a current package in the session
-                if (SessionHandler.CurrentPackage != null)
+                if (package != null)
                 {
                     // Get the definition for this object type
-                    ApiDefinition apiDefinition = SessionHandler.CurrentPackage.Api(objectType);
+                    ApiDefinition apiDefinition = package.Api(objectType);
                     if (apiDefinition != null)
                     {
                         // Use the api definition to get the data connection and 
                         // definition from the package and then try to connect
                         IDataProvider provider = providerFactory.Get(
-                            SessionHandler.CurrentPackage.DataConnection(apiDefinition.DataConnection),
-                            SessionHandler.CurrentPackage.DataDefinition(apiDefinition.DataDefinition),
+                            package.DataConnection(apiDefinition.DataConnection),
+                            package.DataDefinition(apiDefinition.DataDefinition),
                             true);
 
                         // Are we connected?
@@ -212,29 +216,29 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         }
 
         [HttpPost]
-        [Route("/api/objects/{objectType}")]
-        public ActionResult<Boolean> Post(String objectType)
+        [Route("/api/{packageId}/objects/{objectType}")]
+        public ActionResult<Boolean> Post(String packageId, String objectType)
         {
             return true;
         }
 
         [HttpDelete]
-        [Route("/api/objects/{objectType}")]
-        public ActionResult<Boolean> Delete(String objectType)
+        [Route("/api/{packageId}/objects/{objectType}")]
+        public ActionResult<Boolean> Delete(String packageId, String objectType)
         {
             return true;
         }
 
         [HttpPatch]
-        [Route("/api/objects/{objectType}")]
-        public ActionResult<Boolean> Patch(String objectType)
+        [Route("/api/{packageId}/objects/{objectType}")]
+        public ActionResult<Boolean> Patch(String packageId, String objectType)
         {
             return true;
         }
 
         [HttpPut]
-        [Route("/api/objects/{objectType}")]
-        public ActionResult<Boolean> Put(String objectType)
+        [Route("/api/{packageId}/objects/{objectType}")]
+        public ActionResult<Boolean> Put(String packageId, String objectType)
         {
             return true;
         }

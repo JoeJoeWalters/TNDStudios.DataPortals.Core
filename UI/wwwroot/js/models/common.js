@@ -8,4 +8,10 @@ tndStudios.models.common =
             this.key = "";
             this.value = "";
         },
+    
+        // Page Header Model
+        header: function () {
+
+        },
     }
+

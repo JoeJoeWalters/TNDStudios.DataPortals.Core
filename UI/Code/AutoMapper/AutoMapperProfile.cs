@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TNDStudios.DataPortals.Api;
 using TNDStudios.DataPortals.Data;
+using TNDStudios.DataPortals.Repositories;
 using TNDStudios.DataPortals.UI.Models.Api;
 
 namespace TNDStudios.DataPortals.UI
@@ -135,6 +136,12 @@ namespace TNDStudios.DataPortals.UI
 
             // Map from the transformation domain object to the web view model
             CreateMap<Transformation, TransformationModel>();
+
+            // Map from the package domain object to the web view model
+            CreateMap<Package, PackageModel>();
+
+            // Map from the package web view model to the domain object
+            CreateMap<PackageModel, Package>();
         }
     }
 }
