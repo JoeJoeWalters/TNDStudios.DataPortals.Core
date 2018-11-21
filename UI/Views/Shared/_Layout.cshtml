@@ -54,7 +54,12 @@
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
-                <select id="packageSelector" name="packageSelector" class="form-control mr-sm-2"></select>
+                <select class="form-control" id="packages" name="packages" v-model="page.selectedPackage.key">
+                    <option value=""></option>
+                    <option v-bind:value="item.key" v-for="item in page.packages">
+                        {{ item.value }}
+                    </option>
+                </select>
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Go</button>
             </form>
         </div>

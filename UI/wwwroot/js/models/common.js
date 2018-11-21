@@ -12,6 +12,12 @@ tndStudios.models.common =
         // Page Header Model
         header: function () {
 
+            // List of available packages
+            this.packages = [];
+
+            // The currently selected package
+            this.selectedPackage = new tndStudios.models.common.keyValuePair();
+
         },
     }
 
