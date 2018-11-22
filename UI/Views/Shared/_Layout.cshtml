@@ -31,7 +31,7 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown" v-bind:style="{display: (isPackageSelected ? 'inline' : 'none'), visible: (isPackageSelected ? 'visible' : 'hidden')}">
                     <a class="nav-link dropdown-toggle" href="#" id="componentsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Components
                     </a>

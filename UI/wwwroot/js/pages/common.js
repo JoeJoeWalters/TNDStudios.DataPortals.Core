@@ -5,6 +5,11 @@
     },
     computed: {
 
+        // Is a package selected?
+        isPackageSelected() {
+            return (this.page.selectedPackage.key != '');
+        }
+
     },
     methods: {
 
