@@ -33,6 +33,10 @@
         // Start the load process
         load: function () {
 
+            // Get the package Id from the page to initialise 
+            // the selected package in the drop down
+            this.page.selectedPackage.key = $("#packageId").val();
+
             // Get the list of available packages from the server
             appHeader.loadPackages();
 

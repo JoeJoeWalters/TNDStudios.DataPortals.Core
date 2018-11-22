@@ -14,7 +14,8 @@ namespace TNDStudios.DataPortals.UI.Controllers
         [Route("/packages/{packageId}/datadefinitions/{id}")]
         public IActionResult DataDefinition([FromRoute]Guid packageId, [FromRoute]Guid id)
         {
-            return View("Index");
+            // Show the view with the items needed for the page attached
+            return View("Index", new PackagePageVM() { PackageId = packageId });
         }
     }
 }

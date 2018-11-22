@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@model PackagePageVM
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -108,6 +110,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Items used for the page operation -->
+    @Html.Hidden("packageId", (Model == null) ? Guid.Empty : Model.PackageId)
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
