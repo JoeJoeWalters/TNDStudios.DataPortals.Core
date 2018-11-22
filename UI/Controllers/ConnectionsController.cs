@@ -12,8 +12,8 @@ namespace TNDStudios.DataPortals.UI.Controllers
     [ApiExplorerSettings(IgnoreApi = true)] // Stop swagger from freaking out about the routing with no verbs
     public class ConnectionsController : Controller
     {
-        [Route("/connections/{id}")]
-        public IActionResult Connection([FromRoute]Guid id)
+        [Route("/packages/{packageId}/connections/{id}")]
+        public IActionResult Connection([FromRoute]Guid packageId, [FromRoute]Guid id)
         {
             return View("Index");
         }

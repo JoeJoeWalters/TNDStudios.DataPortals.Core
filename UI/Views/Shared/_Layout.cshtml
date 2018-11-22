@@ -38,10 +38,10 @@
                     <div class="dropdown-menu" aria-labelledby="componentsDropdown">
                         <a class="dropdown-item" href="#">Wizards</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="~/connections/index">Connections</a>
-                        <a class="dropdown-item" href="~/datadefinitions/index">Data Definitions</a>
-                        <a class="dropdown-item" href="~/transformations/index">Transformations</a>
-                        <a class="dropdown-item" href="~/apidefinitions/index">API Definitions</a>
+                        <a class="dropdown-item" v-bind:href="calculatedLink('~/packages/{packageId}/connections/index')">Connections</a>
+                        <a class="dropdown-item" v-bind:href="calculatedLink('~/packages/{packageId}/datadefinitions/index')">Data Definitions</a>
+                        <a class="dropdown-item" v-bind:href="calculatedLink('~/packages/{packageId}/transformations/index')">Transformations</a>
+                        <a class="dropdown-item" v-bind:href="calculatedLink('~/packages/{packageId}/apidefinitions/index')">API Definitions</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">

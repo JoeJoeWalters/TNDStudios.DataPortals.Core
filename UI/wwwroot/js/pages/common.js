@@ -8,10 +8,27 @@
         // Is a package selected?
         isPackageSelected() {
             return (this.page.selectedPackage.key != '');
-        }
+        },
 
     },
     methods: {
+
+        // Calculate a link from a base url
+        calculatedLink: function (link) {
+            if (link != null) {
+                return this.resolveUrl(link.replace("{packageId}", this.page.selectedPackage.key));
+            }
+            else
+                return "#";
+        },
+
+        // Resolve the relative paths of a url
+        resolveUrl: function (url) {
+            if (url.indexOf("~/") == 0) {
+                url = window.location.protocol + "//" + window.location.host + "/" + url.substring(2);
+            }
+            return url;
+        },
 
         // Start the load process
         load: function () {
