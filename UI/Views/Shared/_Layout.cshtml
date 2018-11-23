@@ -62,7 +62,7 @@
                         {{ item.value }}
                     </option>
                 </select>
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Go</button>
+                <button class="btn btn-outline-success my-2 my-sm-0" type="button" v-on:click="goToSelectedPackage()">Go</button>
             </form>
         </div>
     </nav>
@@ -113,6 +113,7 @@
 
     <!-- Items used for the page operation -->
     @Html.Hidden("packageId", (Model == null) ? Guid.Empty : Model.PackageId)
+    @Html.Hidden("pageUrlPattern", (Model == null) ? "" : Model.PageUrlPattern)
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>

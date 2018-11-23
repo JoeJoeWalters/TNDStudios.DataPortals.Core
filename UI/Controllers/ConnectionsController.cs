@@ -16,7 +16,7 @@ namespace TNDStudios.DataPortals.UI.Controllers
         public IActionResult Connection([FromRoute]Guid packageId, [FromRoute]Guid id)
         {
             // Show the view with the items needed for the page attached
-            return View("Index", new PackagePageVM() { PackageId = packageId });
+            return View("Index", PackagePageVM.Create(packageId));
         }
 
     }

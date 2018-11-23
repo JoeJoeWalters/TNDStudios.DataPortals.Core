@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TNDStudios.DataPortals.UI.Models;
@@ -15,7 +16,7 @@ namespace TNDStudios.DataPortals.UI.Controllers
         public IActionResult APIDefinition([FromRoute]Guid packageId, [FromRoute]Guid id)
         {
             // Show the view with the items needed for the page attached
-            return View("Index", new PackagePageVM() { PackageId = packageId });
+            return View("Index", PackagePageVM.Create(packageId));
         }
     }
 }
