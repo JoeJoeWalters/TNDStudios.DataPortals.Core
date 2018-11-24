@@ -116,35 +116,30 @@
     @Html.Hidden("pageUrlPattern", (Model == null) ? "" : Model.PageUrlPattern)
 
     <environment include="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
-        <script src="~/lib/bootstrap-notify/bootstrap-notify.js"></script>
+        <script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstrap-notify/bootstrap-notify.js" asp-append-version="true"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
-        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="~/lib/vue/vue.js" asp-append-version="true"></script>
         <script src="~/js/utils.api.js" asp-append-version="true"></script>
         <script src="~/js/utils.ui.js" asp-append-version="true"></script>
         <script src="~/js/models/common.js" asp-append-version="true"></script>
         <script src="~/js/models/packages.js" asp-append-version="true"></script>
         <script src="~/js/pages/common.js" asp-append-version="true"></script>
-        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
-        </script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="~/lib/bootstrap-notify/bootstrap-notify.js"></script>
+        <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstrap-notify/bootstrap-notify.js" asp-append-version="true"></script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
-        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <script src="~/lib/vue/vue.min.js" asp-append-version="true"></script>
         <script src="~/js/utils.api.js" asp-append-version="true"></script>
         <script src="~/js/utils.ui.js" asp-append-version="true"></script>
         <script src="~/js/models/common.js" asp-append-version="true"></script>
         <script src="~/js/models/packages.js" asp-append-version="true"></script>
         <script src="~/js/pages/common.js" asp-append-version="true"></script>
-        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js" asp-append-version="true"></script>
     </environment>
 
     @RenderSection("Scripts", required: false)
