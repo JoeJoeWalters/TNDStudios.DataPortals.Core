@@ -11,6 +11,8 @@ tndStudios.models.transformations =
 
             this.editor = new tndStudios.models.transformations.transformation(null); // The editor object
             this.editItem = null; // Reference to the item that is being edited for saving changes back to it
+
+            this.packageId = $("#packageId").val(); // Get the package Id from the field on the page
         },
 
         // Transformation Model

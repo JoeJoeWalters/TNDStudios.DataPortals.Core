@@ -24,6 +24,8 @@ tndStudios.models.dataDefinitions =
             this.encodingLookup = []; // Encoding lookup codes
             this.dataTypesLookup = []; // Data Types lookup codes
             this.dataPropertyTypesLookup = []; // Data Property types lookup codes
+
+            this.packageId = $("#packageId").val(); // Get the package Id from the field on the page
         },
 
         // Data Item Definition Model

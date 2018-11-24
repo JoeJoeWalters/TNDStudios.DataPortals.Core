@@ -14,6 +14,8 @@ tndStudios.models.apiDefinitions =
 
             this.dataDefinitions = []; // The list of data definitions in this package
             this.dataConnections = []; // The list of data connections in this package
+
+            this.packageId = $("#packageId").val(); // Get the package Id from the field on the page
         },
 
         // Api Definition Model

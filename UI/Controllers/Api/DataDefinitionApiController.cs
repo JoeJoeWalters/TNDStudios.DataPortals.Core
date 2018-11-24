@@ -15,6 +15,7 @@ using TNDStudios.DataPortals.UI.Models.Api;
 namespace TNDStudios.DataPortals.UI.Controllers.Api
 {
     [ApiController]
+    [Route("/api/{packageId}/data")]
     public class DataDefinitionApiController : ApiControllerBase
     {
         /// <summary>
@@ -36,9 +37,9 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// </summary>
         /// <returns>An API response with a list of data definition models</returns>
         [HttpGet]
-        [Route("/api/data/definition")]
-        public ApiResponse<List<DataItemDefinitionModel>> Get()
-            => Get(Guid.Empty);
+        [Route("definition")]
+        public ApiResponse<List<DataItemDefinitionModel>> Get([FromRoute]Guid packageId)
+            => Get(packageId, Guid.Empty);
 
         /// <summary>
         /// Delete a data definition
@@ -46,8 +47,8 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// <param name="id">The id of the data definition to delete</param>
         /// <returns>If the deletion was successful</returns>
         [HttpDelete]
-        [Route("/api/data/definition/{id}")]
-        public ApiResponse<Boolean> Delete(Guid id)
+        [Route("definition/{id}")]
+        public ApiResponse<Boolean> Delete([FromRoute]Guid packageId, [FromRoute]Guid id)
         {
             // Create the response object
             ApiResponse<Boolean> response = new ApiResponse<Boolean>();
@@ -63,8 +64,8 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         }
 
         [HttpGet]
-        [Route("/api/data/definition/{id}")]
-        public ApiResponse<List<DataItemDefinitionModel>> Get(Guid id)
+        [Route("definition/{id}")]
+        public ApiResponse<List<DataItemDefinitionModel>> Get([FromRoute]Guid packageId, [FromRoute]Guid id)
         {
             // Create the response object
             ApiResponse<List<DataItemDefinitionModel>> response =
@@ -90,8 +91,8 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         }
         
         [HttpPost]
-        [Route("/api/data/definition")]
-        public ApiResponse<DataItemDefinitionModel> Post([FromBody] DataItemDefinitionModel request)
+        [Route("definition")]
+        public ApiResponse<DataItemDefinitionModel> Post([FromRoute]Guid packageId, [FromBody] DataItemDefinitionModel request)
         {
             // Create the response object
             ApiResponse<DataItemDefinitionModel> response = new ApiResponse<DataItemDefinitionModel>();
@@ -120,73 +121,5 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             // Send the response back
             return response;
         }
-
-        /*
-        [HttpPost]
-        [Route("/api/data/definition/analyse/file")]
-        public ApiResponse<DataItemModel> AnalyseFile(IFormFile upload)
-        {
-            // Create the response object
-            DataItemModel result = new DataItemModel() { };
-
-            // Anything to work with?
-            if (upload != null)
-            {
-                // Get a stream of data out of the uploaded file
-                using (MemoryStream stream = new MemoryStream())
-                {
-                    upload.CopyTo(stream); // Copy the data from the file to a readable stream
-
-                    // Cast the stream to a set of content to work with
-                    String content = Encoding.UTF8.GetString(stream.ToArray()) ?? "";
-
-                    // Do we have any content to work with
-                    if (content.Length != 0)
-                    {
-                        IDataProvider provider = new DelimitedFileProvider();
-                        DataItemDefinition definition = provider.Analyse(new AnalyseRequest<object>() { Data = content });
-                        if (definition.ItemProperties.Count != 0)
-                        {
-                            // Assign the definition to the result
-                            result.Definition = mapper.Map<DataItemDefinitionModel>(definition);
-
-                            // Connect to the data stream now we have a definition to get the data
-                            if (provider.Connect(definition, stream))
-                            {
-                                result.Values = new DataItemValuesModel(); // Create a new values model
-
-                                // Read the data from the connection to the stream
-                                DataTable data = provider.Read("");
-
-                                // Did we get some rows back?
-                                foreach (DataRow row in data.Rows)
-                                {
-                                    // Create a new blank data line to cast the data to
-                                    Dictionary<String, String> line = new Dictionary<string, string>();
-
-                                    // Loop the headers to get the values
-                                    foreach (DataItemProperty property in definition.ItemProperties)
-                                    {
-                                        // Cast the data as appropriate and add it to the line
-                                        line[property.Name] =
-                                            DataFormatHelper.WriteData(
-                                                row[property.Name],
-                                                property,
-                                                definition);
-                                    }
-
-                                    // Add the line to the result values
-                                    result.Values.Lines.Add(line);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Respond with the analysed data
-            return new ApiResponse<DataItemModel>() { Data = result, Success = true };
-        }
-        */
     }
 }

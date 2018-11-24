@@ -54,7 +54,7 @@
             if (idString != "") {
 
                 tndStudios.utils.api.call(
-                    '/api/data/connection/' + idString,
+                    '/api/' + app.page.packageId + '/data/connection/' + idString,
                     'DELETE',
                     null,
                     app.deleteSuccess,
@@ -101,7 +101,7 @@
 
                 // The the api call to save the connection
                 tndStudios.utils.api.call(
-                    '/api/data/connection',
+                    '/api/' + app.page.packageId + '/data/connection',
                     'POST',
                     app.page.editor.toObject(),
                     app.saveSuccess,
@@ -150,7 +150,7 @@
 
             // The the api call to test the connection
             tndStudios.utils.api.call(
-                '/api/data/connection/test',
+                '/api/' + app.page.packageId + '/data/connection/test',
                 'POST',
                 app.page.editor.toObject(),
                 app.testSuccess,
@@ -187,7 +187,7 @@
 
             // The the api call to load the provider types
             tndStudios.utils.api.call(
-                '/api/data/providers',
+                '/api/' + app.page.packageId + '/data/providers',
                 'GET',
                 null,
                 app.loadProviderTypesSuccess,
@@ -212,7 +212,7 @@
 
             // Start the api call to load the connections
             tndStudios.utils.api.call(
-                '/api/data/connection',
+                '/api/' + app.page.packageId + '/data/connection',
                 'GET',
                 null,
                 app.loadConnectionsSuccess,

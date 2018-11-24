@@ -10,6 +10,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
     /// Api Controller that managed API's are written to
     /// </summary>
     [ApiController]
+    [Route("/api/system")]
     public class SystemApiController : ApiControllerBase
     {
         /// <summary>
@@ -24,7 +25,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// </summary>
         /// <returns>A list of a given type</returns>
         [HttpGet]
-        [Route("/api/system/lookup/{id}")]
+        [Route("lookup/{id}")]
         public ApiResponse<List<KeyValuePair<String, String>>> Get(LookupFactoryType id)
             => new ApiResponse<List<KeyValuePair<String, String>>>()
             {

@@ -19,6 +19,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
     /// Api Controller that managed API's are written to
     /// </summary>
     [ApiController]
+    [Route("/api/{packageId}/managedapi")]
     public class ManagedApiController : ApiControllerBase
     {
         /// <summary>
@@ -67,13 +68,13 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// </summary>
         /// <returns>An API response with a list of data definition models</returns>
         [HttpGet]
-        [Route("/api/managedapi/definition")]
-        public ApiResponse<List<ApiDefinitionModel>> Get()
-            => Get(Guid.Empty);
+        [Route("definition")]
+        public ApiResponse<List<ApiDefinitionModel>> Get([FromRoute]Guid packageId)
+            => Get(packageId, Guid.Empty);
 
         [HttpDelete]
-        [Route("/api/managedapi/definition/{id}")]
-        public ApiResponse<Boolean> Delete(Guid id)
+        [Route("definition/{id}")]
+        public ApiResponse<Boolean> Delete([FromRoute]Guid packageId, [FromRoute]Guid id)
         {
             // Create the response object
             ApiResponse<Boolean> response = new ApiResponse<Boolean>();
@@ -89,8 +90,8 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         }
 
         [HttpGet]
-        [Route("/api/managedapi/definition/{id}")]
-        public ApiResponse<List<ApiDefinitionModel>> Get(Guid id)
+        [Route("definition/{id}")]
+        public ApiResponse<List<ApiDefinitionModel>> Get([FromRoute]Guid packageId, [FromRoute]Guid id)
         {
             // Create the response object
             ApiResponse<List<ApiDefinitionModel>> response =
@@ -133,8 +134,8 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         }
 
         [HttpPost]
-        [Route("/api/managedapi/definition")]
-        public ApiResponse<ApiDefinitionModel> Post([FromBody] ApiDefinitionModel request)
+        [Route("definition")]
+        public ApiResponse<ApiDefinitionModel> Post([FromRoute]Guid packageId, [FromBody] ApiDefinitionModel request)
         {
             // Create the response object
             ApiResponse<ApiDefinitionModel> response = new ApiResponse<ApiDefinitionModel>();
@@ -165,8 +166,8 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         }
 
         [HttpGet]
-        [Route("/api/{packageId}/objects/{objectType}")]
-        public ActionResult<Boolean> Get(Guid packageId, String objectType)
+        [Route("objects/{objectType}")]
+        public ActionResult<Boolean> Get([FromRoute]Guid packageId, [FromRoute]String objectType)
         {
             try
             {
@@ -216,29 +217,29 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         }
 
         [HttpPost]
-        [Route("/api/{packageId}/objects/{objectType}")]
-        public ActionResult<Boolean> Post(String packageId, String objectType)
+        [Route("objects/{objectType}")]
+        public ActionResult<Boolean> Post([FromRoute]String packageId, [FromRoute]String objectType)
         {
             return true;
         }
 
         [HttpDelete]
-        [Route("/api/{packageId}/objects/{objectType}")]
-        public ActionResult<Boolean> Delete(String packageId, String objectType)
+        [Route("objects/{objectType}")]
+        public ActionResult<Boolean> Delete([FromRoute]String packageId, [FromRoute]String objectType)
         {
             return true;
         }
 
         [HttpPatch]
-        [Route("/api/{packageId}/objects/{objectType}")]
-        public ActionResult<Boolean> Patch(String packageId, String objectType)
+        [Route("objects/{objectType}")]
+        public ActionResult<Boolean> Patch([FromRoute]String packageId, [FromRoute]String objectType)
         {
             return true;
         }
 
         [HttpPut]
-        [Route("/api/{packageId}/objects/{objectType}")]
-        public ActionResult<Boolean> Put(String packageId, String objectType)
+        [Route("objects/{objectType}")]
+        public ActionResult<Boolean> Put([FromRoute]String packageId, [FromRoute]String objectType)
         {
             return true;
         }

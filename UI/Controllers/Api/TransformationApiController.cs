@@ -11,6 +11,7 @@ using TNDStudios.DataPortals.UI.Models.Api;
 namespace TNDStudios.DataPortals.UI.Controllers.Api
 {
     [ApiController]
+    [Route("/api/{packageId}/data")]
     public class TransformationApiController : ApiControllerBase
     {
         /// <summary>
@@ -32,13 +33,13 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// </summary>
         /// <returns>An API response with a list of transformation models</returns>
         [HttpGet]
-        [Route("/api/data/transformation")]
-        public ApiResponse<List<TransformationModel>> Get()
-            => Get(Guid.Empty);
+        [Route("transformation")]
+        public ApiResponse<List<TransformationModel>> Get([FromRoute]Guid packageId)
+            => Get(packageId, Guid.Empty);
         
         [HttpDelete]
-        [Route("/api/data/transformation/{id}")]
-        public ApiResponse<Boolean> Delete(Guid id)
+        [Route("transformation/{id}")]
+        public ApiResponse<Boolean> Delete([FromRoute]Guid packageId, [FromRoute]Guid id)
         {
             // Create the response object
             ApiResponse<Boolean> response = new ApiResponse<Boolean>();
@@ -54,8 +55,8 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         }
 
         [HttpGet]
-        [Route("/api/data/transformation/{id}")]
-        public ApiResponse<List<TransformationModel>> Get(Guid id)
+        [Route("transformation/{id}")]
+        public ApiResponse<List<TransformationModel>> Get([FromRoute]Guid packageId, [FromRoute]Guid id)
         {
             // Create the response object
             ApiResponse<List<TransformationModel>> response =
@@ -83,8 +84,8 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         }
 
         [HttpPost]
-        [Route("/api/data/transformation")]
-        public ApiResponse<TransformationModel> Post([FromBody] TransformationModel request)
+        [Route("transformation")]
+        public ApiResponse<TransformationModel> Post([FromRoute]Guid packageId, [FromBody] TransformationModel request)
         {
             // Create the response object
             ApiResponse<TransformationModel> response = new ApiResponse<TransformationModel>();

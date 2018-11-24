@@ -12,6 +12,8 @@ tndStudios.models.dataConnections =
             this.editor = new tndStudios.models.dataConnections.dataConnection(null); // The editor object
             this.editItem = null; // Reference to the item that is being edited for saving changes back to it
             this.providerTypes = []; // The list of available provider types
+
+            this.packageId = $("#packageId").val(); // Get the package Id from the field on the page
         },
 
         // Data Connection Model

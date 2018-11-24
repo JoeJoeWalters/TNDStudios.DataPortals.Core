@@ -13,6 +13,7 @@ using System.Data;
 namespace TNDStudios.DataPortals.UI.Controllers.Api
 {
     [ApiController]
+    [Route("/api/{packageId}/data")]
     public class ConnectionApiController : ApiControllerBase
     {
         /// <summary>
@@ -33,7 +34,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// </summary>
         /// <returns>The list of available provider types</returns>
         [HttpGet]
-        [Route("/api/data/providers")]
+        [Route("providers")]
         public ApiResponse<List<KeyValuePair<Int32, String>>> GetProviderTypes()
             => new ApiResponse<List<KeyValuePair<Int32, String>>>()
             {
@@ -47,9 +48,9 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// </summary>
         /// <returns>An API response with a list of data connection models</returns>
         [HttpGet]
-        [Route("/api/data/connection")]
-        public ApiResponse<List<DataConnectionModel>> Get()
-            => Get(Guid.Empty);
+        [Route("connection")]
+        public ApiResponse<List<DataConnectionModel>> Get([FromRoute]Guid packageId)
+            => Get(packageId, Guid.Empty);
 
         /// <summary>
         /// Test the connection to a data source
@@ -57,7 +58,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// <param name="request">The data connection model to test</param>
         /// <returns>A success or failure state for the connection</returns>
         [HttpPost]
-        [Route("/api/data/connection/test")]
+        [Route("connection/test")]
         public ApiResponse<Boolean> Test([FromBody] DataConnectionModel request)
         {
             // Create a default response object
@@ -80,8 +81,8 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         }
 
         [HttpDelete]
-        [Route("/api/data/connection/{id}")]
-        public ApiResponse<Boolean> Delete(Guid id)
+        [Route("connection/{id}")]
+        public ApiResponse<Boolean> Delete([FromRoute]Guid packageId, [FromRoute]Guid id)
         {
             // Create the response object
             ApiResponse<Boolean> response = new ApiResponse<Boolean>();
@@ -97,8 +98,8 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         }
 
         [HttpGet]
-        [Route("/api/data/connection/{id}")]
-        public ApiResponse<List<DataConnectionModel>> Get(Guid id)
+        [Route("{id}")]
+        public ApiResponse<List<DataConnectionModel>> Get([FromRoute]Guid packageId, [FromRoute]Guid id)
         {
             // Create the response object
             ApiResponse<List<DataConnectionModel>> response =
@@ -126,8 +127,8 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         }
 
         [HttpPost]
-        [Route("/api/data/connection")]
-        public ApiResponse<DataConnectionModel> Post([FromBody] DataConnectionModel request)
+        [Route("connection")]
+        public ApiResponse<DataConnectionModel> Post([FromRoute]Guid packageId, [FromBody] DataConnectionModel request)
         {
             // Create the response object
             ApiResponse<DataConnectionModel> response = new ApiResponse<DataConnectionModel>();
@@ -164,7 +165,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// <param name="connection">The connection to analyse</param>
         /// <param name="includeSample">Include sample data with the analysis</param>
         /// <returns>The data item model for the UI to consume</returns>
-        private DataItemModel AnalyseConnection(DataConnection connection)
+        private DataItemModel AnalyseConnection(Guid packageId, DataConnection connection)
         {
             DataItemModel result = new DataItemModel(); // The result to return
 
@@ -194,8 +195,8 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         }
 
         [HttpGet]
-        [Route("/api/data/connection/analyse/{id}")]
-        public ApiResponse<DataItemModel> Analyse(Guid id)
+        [Route("connection/analyse/{id}")]
+        public ApiResponse<DataItemModel> Analyse([FromRoute]Guid packageId, [FromRoute]Guid id)
         {
             // Create the response object
             ApiResponse<DataItemModel> result = new ApiResponse<DataItemModel>() { Success = false };
@@ -204,7 +205,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             DataConnection connection = SessionHandler.CurrentPackage.DataConnection(id);
 
             // Get the analysis result
-            result.Data = AnalyseConnection(connection);
+            result.Data = AnalyseConnection(packageId, connection);
 
             // Send the resulting analysis back
             result.Success = (result.Data != null && result.Data.Definition != null);
@@ -217,8 +218,8 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// <param name="request">The connection request</param>
         /// <returns>The result of the query</returns>
         [HttpPost]
-        [Route("/api/data/connection/sample/{id}")]
-        public ApiResponse<DataItemModel> Sample([FromRoute]Guid id, [FromBody]DataItemDefinitionModel request)
+        [Route("connection/sample/{id}")]
+        public ApiResponse<DataItemModel> Sample([FromRoute]Guid packageId, [FromRoute]Guid id, [FromBody]DataItemDefinitionModel request)
         {
             // Create the response object
             ApiResponse<DataItemModel> result = new ApiResponse<DataItemModel>() { Success = false };
