@@ -9,6 +9,7 @@ using TNDStudios.DataPortals.Data;
 using TNDStudios.DataPortals.UI.Models.Api;
 using TNDStudios.DataPortals.UI.Models.RequestResponse;
 using System.Data;
+using TNDStudios.DataPortals.Repositories;
 
 namespace TNDStudios.DataPortals.UI.Controllers.Api
 {
@@ -87,11 +88,15 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             // Create the response object
             ApiResponse<Boolean> response = new ApiResponse<Boolean>();
 
-            // Get the item from the repository to make sure that it is 
-            // not attached to other things
-            DataConnection connection = SessionHandler.CurrentPackage.DataConnection(id);
-            response.Success = response.Data =
-                SessionHandler.CurrentPackage.Delete<Transformation>(id);
+            // Did we find a package?
+            Package package = SessionHandler.PackageRepository.Get(packageId);
+            if (package != null)
+            {
+                // Get the item from the repository to make sure that it is 
+                // not attached to other things
+                DataConnection connection = package.DataConnection(id);
+                response.Success = response.Data = package.Delete<Transformation>(id);
+            }
 
             // Return the response
             return response;
@@ -107,11 +112,16 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
 
             try
             {
-                // Was an id passed in? If not just return everything
-                response.Data = mapper.Map<List<DataConnectionModel>>(
-                    SessionHandler.CurrentPackage.DataConnections.Where
-                    (def => (id == Guid.Empty || def.Id == id))
-                    );
+                // Did we find a package?
+                Package package = SessionHandler.PackageRepository.Get(packageId);
+                if (package != null)
+                {
+                    // Was an id passed in? If not just return everything
+                    response.Data = mapper.Map<List<DataConnectionModel>>(
+                        package.DataConnections.Where
+                            (def => (id == Guid.Empty || def.Id == id))
+                        );
+                }
 
                 // Success as we got here
                 response.Success = true;
@@ -139,9 +149,13 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             // Did the mapping work ok?
             if (savedConnection != null)
             {
-                // Get the repository to save the package for us
-                savedConnection = SessionHandler.CurrentPackage
-                        .Save<DataConnection>(savedConnection);
+                // Did we find a package?
+                Package package = SessionHandler.PackageRepository.Get(packageId);
+                if (package != null)
+                {
+                    // Get the repository to save the package for us
+                    savedConnection = package.Save<DataConnection>(savedConnection);
+                }
 
                 // Saved ok?
                 if (savedConnection != null)
@@ -201,14 +215,20 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             // Create the response object
             ApiResponse<DataItemModel> result = new ApiResponse<DataItemModel>() { Success = false };
 
-            // Get the connection from the current package by the id given
-            DataConnection connection = SessionHandler.CurrentPackage.DataConnection(id);
+            // Did we find a package?
+            Package package = SessionHandler.PackageRepository.Get(packageId);
+            if (package != null)
+            {
+                // Get the connection from the current package by the id given
+                DataConnection connection = package.DataConnection(id);
 
-            // Get the analysis result
-            result.Data = AnalyseConnection(packageId, connection);
+                // Get the analysis result
+                result.Data = AnalyseConnection(packageId, connection);
 
-            // Send the resulting analysis back
-            result.Success = (result.Data != null && result.Data.Definition != null);
+                // Send the resulting analysis back
+                result.Success = (result.Data != null && result.Data.Definition != null);
+            }
+
             return result;
         }
 
@@ -224,17 +244,23 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             // Create the response object
             ApiResponse<DataItemModel> result = new ApiResponse<DataItemModel>() { Success = false };
 
-            // Get the connection from the current package by the id given
-            DataConnection connection = SessionHandler.CurrentPackage.DataConnection(id);
+            // Did we find a package?
+            Package package = SessionHandler.PackageRepository.Get(packageId);
+            if (package != null)
+            {
+                // Get the connection from the current package by the id given
+                DataConnection connection = package.DataConnection(id);
 
-            // Get the definition from the model provided
-            DataItemDefinition dataDefinition = mapper.Map<DataItemDefinition>(request);
+                // Get the definition from the model provided
+                DataItemDefinition dataDefinition = mapper.Map<DataItemDefinition>(request);
 
-            // Get the sample result 
-            result.Data = SampleConnection(connection, dataDefinition, 10);
+                // Get the sample result 
+                result.Data = SampleConnection(connection, dataDefinition, 10);
 
-            // Send the resulting analysis back
-            result.Success = (result.Data != null && result.Data.Values != null);
+                // Send the resulting analysis back
+                result.Success = (result.Data != null && result.Data.Values != null);
+            }
+
             return result;
         }
 

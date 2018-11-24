@@ -20,21 +20,10 @@ namespace TNDStudios.DataPortals.UI
         public static Boolean Initialised { get; set; }
 
         /// <summary>
-        /// The Id of the current collection package
-        /// </summary>
-        public static Guid CurrentPackageId { get; set; }
-
-        /// <summary>
         /// Static package to hold the activity for the website
         /// </summary>
         public static IPackageRepository PackageRepository { get; set; }
-
-        /// <summary>
-        /// Get the current package object
-        /// </summary>
-        public static Package CurrentPackage =>
-            PackageRepository.Get(CurrentPackageId);
-
+        
         /// <summary>
         /// Initialise the session handler
         /// </summary>
@@ -47,19 +36,16 @@ namespace TNDStudios.DataPortals.UI
                 // of the package repository
                 PackageRepository = new MemoryPackageRepository();
 
-#warning [By default for now just create one collection package until we think about multiple orgs / environments etc.]
-                CurrentPackageId = Guid.NewGuid(); // Create a default Id
-
                 // Initialisation Id's
                 Guid dataConnectionId = Guid.NewGuid();
                 Guid dataDefinitionId = Guid.NewGuid();
                 Guid apiId = Guid.NewGuid();
-
+                
                 // Set up a new test package in the repository
                 PackageRepository.Save(
                     new Package()
                     {
-                        Id = CurrentPackageId,
+                        Id = Guid.NewGuid(),
                         Name = "Test Package",
                         Description = "Test Package Description",
                         ApiDefinitions = new List<ApiDefinition>()

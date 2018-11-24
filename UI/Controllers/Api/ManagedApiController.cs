@@ -79,11 +79,15 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             // Create the response object
             ApiResponse<Boolean> response = new ApiResponse<Boolean>();
 
-            // Get the item from the repository to make sure that it is 
-            // not attached to other things
-            ApiDefinition apiDefinition = SessionHandler.CurrentPackage.Api(id);
-            response.Success = response.Data =
-                SessionHandler.CurrentPackage.Delete<ApiDefinition>(id);
+            // Did we find a package?
+            Package package = SessionHandler.PackageRepository.Get(packageId);
+            if (package != null)
+            {
+                // Get the item from the repository to make sure that it is 
+                // not attached to other things
+                ApiDefinition apiDefinition = package.Api(id);
+                response.Success = response.Data = package.Delete<ApiDefinition>(id);
+            }
 
             // Return the response
             return response;
@@ -99,26 +103,32 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
 
             try
             {
-                // Was an id passed in? If not just return everything
-                response.Data = mapper.Map<List<ApiDefinitionModel>>(
-                    SessionHandler.CurrentPackage.ApiDefinitions.Where
-                    (def => (id == Guid.Empty || def.Id == id))
-                    );
 
-                // Post processing to fill in the missing titles
-                // as this doesn't really fit well in Automapper due 
-                // to the source column type
-                response.Data.ForEach(item =>
-                    {
+                // Did we find a package?
+                Package package = SessionHandler.PackageRepository.Get(packageId);
+                if (package != null)
+                {
+                    // Was an id passed in? If not just return everything
+                    response.Data = mapper.Map<List<ApiDefinitionModel>>(
+                        package.ApiDefinitions.Where
+                            (def => (id == Guid.Empty || def.Id == id))
+                        );
+
+                    // Post processing to fill in the missing titles
+                    // as this doesn't really fit well in Automapper due 
+                    // to the source column type
+                    response.Data.ForEach(item =>
+                        {
                         // Assign the correct values to the model
                         item.DataConnection =
-                            mapper.Map<KeyValuePair<Guid, String>>
-                                (SessionHandler.CurrentPackage.DataConnection(item.DataConnection.Key));
+                                mapper.Map<KeyValuePair<Guid, String>>
+                                    (package.DataConnection(item.DataConnection.Key));
 
-                        item.DataDefinition =
-                            mapper.Map<KeyValuePair<Guid, String>>
-                                (SessionHandler.CurrentPackage.DataDefinition(item.DataDefinition.Key));
-                    });
+                            item.DataDefinition =
+                                mapper.Map<KeyValuePair<Guid, String>>
+                                    (package.DataDefinition(item.DataDefinition.Key));
+                        });
+                }
 
                 // Got to here so must be successful
                 response.Success = true;
@@ -146,9 +156,13 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             // Did the mapping work ok?
             if (savedApiDefinition != null)
             {
-                // Get the repository to save the package for us
-                savedApiDefinition = SessionHandler.CurrentPackage
-                        .Save<ApiDefinition>(savedApiDefinition);
+                // Did we find a package?
+                Package package = SessionHandler.PackageRepository.Get(packageId);
+                if (package != null)
+                {
+                    // Get the repository to save the package for us
+                    savedApiDefinition = package.Save<ApiDefinition>(savedApiDefinition);
+                }
 
                 // Saved ok?
                 if (savedApiDefinition != null)
@@ -173,8 +187,6 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             {
                 // Get the package from the repository
                 Package package = SessionHandler.PackageRepository.Get(packageId);
-
-                // Make sure we actually have a current package in the session
                 if (package != null)
                 {
                     // Get the definition for this object type

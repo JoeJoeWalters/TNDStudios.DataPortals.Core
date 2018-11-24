@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TNDStudios.DataPortals.Data;
 using TNDStudios.DataPortals.Helpers;
+using TNDStudios.DataPortals.Repositories;
 using TNDStudios.DataPortals.UI.Models.Api;
 
 namespace TNDStudios.DataPortals.UI.Controllers.Api
@@ -52,12 +53,16 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         {
             // Create the response object
             ApiResponse<Boolean> response = new ApiResponse<Boolean>();
-
-            // Get the item from the repository to make sure that it is 
-            // not attached to other things
-            DataItemDefinition dataDefinition = SessionHandler.CurrentPackage.DataDefinition(id);
-            response.Success = response.Data =
-                SessionHandler.CurrentPackage.Delete<DataItemDefinition>(id);
+            
+            // Did we find a package?
+            Package package = SessionHandler.PackageRepository.Get(packageId);
+            if (package != null)
+            {
+                // Get the item from the repository to make sure that it is 
+                // not attached to other things
+                DataItemDefinition dataDefinition = package.DataDefinition(id);
+                response.Success = response.Data = package.Delete<DataItemDefinition>(id);
+            }
 
             // Return the response
             return response;
@@ -73,12 +78,17 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
 
             try
             {
-                // Was an id passed in? If not just return everything
-                response.Data = mapper.Map<List<DataItemDefinitionModel>>(
-                    SessionHandler.CurrentPackage.DataDefinitions.Where
-                        (def => (id == Guid.Empty || def.Id == id))
-                    );
-                
+                // Did we find a package?
+                Package package = SessionHandler.PackageRepository.Get(packageId);
+                if (package != null)
+                {
+                    // Was an id passed in? If not just return everything
+                    response.Data = mapper.Map<List<DataItemDefinitionModel>>(
+                        package.DataDefinitions.Where
+                            (def => (id == Guid.Empty || def.Id == id))
+                        );
+                }
+
                 response.Success = true;
             }
             catch(Exception ex)
@@ -103,9 +113,13 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             // Did the mapping work ok?
             if (savedDataItemDefinition != null)
             {
-                // Get the repository to save the package for us
-                savedDataItemDefinition = SessionHandler.CurrentPackage
-                        .Save<DataItemDefinition>(savedDataItemDefinition);
+                // Did we find a package?
+                Package package = SessionHandler.PackageRepository.Get(packageId);
+                if (package != null)
+                {
+                    // Get the repository to save the package for us
+                    savedDataItemDefinition = package.Save<DataItemDefinition>(savedDataItemDefinition);
+                }
 
                 // Saved ok?
                 if (savedDataItemDefinition != null)

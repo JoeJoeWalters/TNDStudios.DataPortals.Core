@@ -7,6 +7,7 @@ using TNDStudios.DataPortals.Helpers;
 using System.Threading.Tasks;
 using TNDStudios.DataPortals.Data;
 using TNDStudios.DataPortals.UI.Models.Api;
+using TNDStudios.DataPortals.Repositories;
 
 namespace TNDStudios.DataPortals.UI.Controllers.Api
 {
@@ -44,12 +45,16 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             // Create the response object
             ApiResponse<Boolean> response = new ApiResponse<Boolean>();
 
-            // Get the item from the repository to make sure that it is 
-            // not attached to other things
-            Transformation connection = SessionHandler.CurrentPackage.Transformation(id);
-            response.Success = response.Data = 
-                SessionHandler.CurrentPackage.Delete<Transformation>(id);
-            
+            // Did we find a package?
+            Package package = SessionHandler.PackageRepository.Get(packageId);
+            if (package != null)
+            {
+                // Get the item from the repository to make sure that it is 
+                // not attached to other things
+                Transformation connection = package.Transformation(id);
+                response.Success = response.Data = package.Delete<Transformation>(id);
+            }
+
             // Return the response
             return response;
         }
@@ -64,12 +69,17 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
 
             try
             {
-                // Was an id passed in? If not just return everything
-                response.Data = mapper.Map<List<TransformationModel>>(
-                    SessionHandler.CurrentPackage.Transformations.Where
-                    (def => (id == Guid.Empty || def.Id == id))
-                    );
-                
+                // Did we find a package?
+                Package package = SessionHandler.PackageRepository.Get(packageId);
+                if (package != null)
+                {
+                    // Was an id passed in? If not just return everything
+                    response.Data = mapper.Map<List<TransformationModel>>(
+                        package.Transformations.Where
+                            (def => (id == Guid.Empty || def.Id == id))
+                        );
+                }
+
                 // Success as we got here
                 response.Success = true;
             }
@@ -96,9 +106,14 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             // Did the mapping work ok?
             if (savedConnection != null)
             {
-                // Get the repository to save the package for us
-                savedConnection = SessionHandler.CurrentPackage
-                        .Save<Transformation>(savedConnection);
+
+                // Did we find a package?
+                Package package = SessionHandler.PackageRepository.Get(packageId);
+                if (package != null)
+                {
+                    // Get the repository to save the package for us
+                    savedConnection = package.Save<Transformation>(savedConnection);
+                }
 
                 // Saved ok?
                 if (savedConnection != null)
