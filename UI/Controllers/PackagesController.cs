@@ -12,11 +12,11 @@ namespace UI.Controllers
     [Route("/package")]
     public class PackagesController : Controller
     {
-        [Route("index")]
-        public IActionResult Transformations([FromRoute]Guid id)
+        [Route("{packageId}")]
+        public IActionResult Transformations([FromRoute]Guid packageId)
         {
             // Show the view with the items needed for the page attached
-            return View("Index", PackagePageVM.Create(id));
+            return View("Index", PackagePageVM.Create(packageId));
         }
     }
 }

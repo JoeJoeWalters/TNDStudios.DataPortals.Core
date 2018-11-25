@@ -7,9 +7,8 @@
 
         // Is a package selected?
         isPackageSelected() {
-            return (this.page.currentPackageId != undefined &&
-                this.page.currentPackageId != '' &&
-                this.page.currentPackageId != '00000000-0000-0000-0000-000000000000');
+            return (this.page.selectedPackage != undefined &&
+                this.page.selectedPackage.key != '00000000-0000-0000-0000-000000000000');
         },
 
     },

@@ -40,15 +40,40 @@ namespace TNDStudios.DataPortals.UI.Models
         {
             // Get the calling method
             MethodBase method = (new StackTrace()).GetFrame(1).GetMethod();
-            
-            // Get the route attribute of the calling method
-            RouteAttribute attr = (RouteAttribute)method.GetCustomAttributes(typeof(RouteAttribute), true)[0];
-            
+            String template = "";
+
+            // Did we find a calling method?
+            if (method != null)
+            {
+                // Get the route attribute of the calling class type
+                if (method.ReflectedType != null)
+                {
+                    // Get the custom attributes of the calling class
+                    object[] typeAttributes = method.ReflectedType.GetCustomAttributes(typeof(RouteAttribute), true);
+
+                    // If we have any attributes then assign the template of the route to the template string
+                    if (typeAttributes.Count() != 0)
+                        template = ((RouteAttribute)typeAttributes[0]).Template;
+                }
+
+                // Get the route attribute of the calling method
+                object[] attributes = method.GetCustomAttributes(typeof(RouteAttribute), true);
+                if (attributes.Count() > 0)
+                {
+                    // There was a route prefix, add a seperator
+                    if (template.Length > 0)
+                        template = $"{template}/";
+
+                    // Assign the rest of the route
+                    template += ((RouteAttribute)attributes[0]).Template;
+                }
+            }
+
             // Create a new page VM to return
             return new PackagePageVM()
             {
                 PackageId = packageId,
-                PageUrlPattern = attr.Template.Replace("{id}", (packageId == Guid.Empty) ? "Index" : packageId.ToString())
+                PageUrlPattern = template.Replace("{id}", packageId.ToString())
             };
         }
     }

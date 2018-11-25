@@ -12,7 +12,7 @@ tndStudios.models.packages =
             this.editor = new tndStudios.models.packages.package(null); // The editor object
             this.editorItem = null; // Reference to the item that is being edited for saving changes back to it
 
-            //this.packageId = $("#packageId").val(); // Get the package Id from the field on the page
+            this.packageId = $("#packageId").val(); // Get the package Id from the field on the page
         },
 
         // Package Model
