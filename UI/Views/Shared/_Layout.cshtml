@@ -31,15 +31,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="~/package/index">Packages</a>
                 </li>
                 <li class="nav-item dropdown" v-bind:style="{display: (isPackageSelected ? 'inline' : 'none'), visible: (isPackageSelected ? 'visible' : 'hidden')}">
                     <a class="nav-link dropdown-toggle" href="#" id="componentsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Components
                     </a>
                     <div class="dropdown-menu" aria-labelledby="componentsDropdown">
-                        <a class="dropdown-item" href="#">Wizards</a>
-                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" v-bind:href="calculatedLink('~/package/{packageId}/connections/index')">Connections</a>
                         <a class="dropdown-item" v-bind:href="calculatedLink('~/package/{packageId}/datadefinitions/index')">Data Definitions</a>
                         <a class="dropdown-item" v-bind:href="calculatedLink('~/package/{packageId}/transformations/index')">Transformations</a>

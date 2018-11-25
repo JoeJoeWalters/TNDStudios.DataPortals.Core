@@ -2,6 +2,19 @@
 tndStudios.models = tndStudios.models || {};
 tndStudios.models.packages =
     {
+        // Edit Page Model
+        page: function () {
+
+            // The properties of the object
+            this.packages = []; // The list of packages
+            this.searchCriteria = ""; // The filter for the package list
+
+            this.editor = new tndStudios.models.packages.package(null); // The editor object
+            this.editorItem = null; // Reference to the item that is being edited for saving changes back to it
+
+            //this.packageId = $("#packageId").val(); // Get the package Id from the field on the page
+        },
+
         // Package Model
         package: function (data) {
 
