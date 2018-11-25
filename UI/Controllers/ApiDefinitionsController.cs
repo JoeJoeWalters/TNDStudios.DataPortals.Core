@@ -10,9 +10,10 @@ using TNDStudios.DataPortals.UI.Models;
 namespace TNDStudios.DataPortals.UI.Controllers
 {
     [ApiExplorerSettings(IgnoreApi = true)] // Stop swagger from freaking out about the routing with no verbs
+    [Route("/package/{packageId}")]
     public class ApiDefinitionsController : Controller
     {
-        [Route("/packages/{packageId}/apidefinitions/{id}")]
+        [Route("apidefinitions/{id}")]
         public IActionResult APIDefinition([FromRoute]Guid packageId, [FromRoute]Guid id)
         {
             // Show the view with the items needed for the page attached

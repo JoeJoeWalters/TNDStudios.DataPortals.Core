@@ -54,7 +54,7 @@
             if (idString != "") {
 
                 tndStudios.utils.api.call(
-                    '/api/' + app.page.packageId + '/data/definition/' + idString,
+                    '/api/package/' + app.page.packageId + '/data/definition/' + idString,
                     'DELETE',
                     null,
                     app.deleteSuccess,
@@ -100,7 +100,7 @@
 
                 // The the api call to save the data definition
                 tndStudios.utils.api.call(
-                    '/api/' + app.page.packageId + '/data/definition',
+                    '/api/package/' + app.page.packageId + '/data/definition',
                     'POST',
                     app.page.editor.toObject(),
                     app.saveSuccess,
@@ -211,7 +211,7 @@
 
             // Start the api call to load the data definitions
             tndStudios.utils.api.call(
-                '/api/' + app.page.packageId + '/data/definition',
+                '/api/package/' + app.page.packageId + '/data/definition',
                 'GET',
                 null,
                 app.loadDataDefinitionsSuccess,
@@ -290,7 +290,7 @@
 
             // Start the api call to load the connections
             tndStudios.utils.api.call(
-                '/api/' + app.page.packageId + '/data/connection',
+                '/api/package/' + app.page.packageId + '/data/connection',
                 'GET',
                 null,
                 app.loadConnectionsSuccess,
@@ -324,7 +324,7 @@
 
                 // The the api call to sample the connection with this definition
                 tndStudios.utils.api.call(
-                    '/api/' + app.page.packageId + '/data/connection/sample/' + connectionId,
+                    '/api/package/' + app.page.packageId + '/data/connection/' + connectionId + '/sample',
                     'POST',
                     app.page.editor.toObject(),
                     app.sampleConnectionSuccess,
@@ -361,7 +361,7 @@
 
                 // The the api call to save the data definition
                 tndStudios.utils.api.call(
-                    '/api/' + app.page.packageId + '/data/connection/analyse/' + connectionId,
+                    '/api/package/' + app.page.packageId + '/data/connection/' + connectionId + '/analyse',
                     'GET',
                     null,
                     app.analyseConnectionSuccess,

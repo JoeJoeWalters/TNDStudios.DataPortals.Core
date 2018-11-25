@@ -19,7 +19,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
     /// Api Controller that managed API's are written to
     /// </summary>
     [ApiController]
-    [Route("/api/{packageId}/managedapi")]
+    [Route("/api/package/{packageId}/managedapi")]
     public class ManagedApiController : ApiControllerBase
     {
         /// <summary>

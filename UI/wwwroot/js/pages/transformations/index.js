@@ -54,7 +54,7 @@
             if (idString != "") {
 
                 tndStudios.utils.api.call(
-                    '/api/' + app.page.packageId + '/data/transformation/' + idString,
+                    '/api/package/' + app.page.packageId + '/data/transformation/' + idString,
                     'DELETE',
                     null,
                     app.deleteSuccess,
@@ -100,7 +100,7 @@
 
                 // The the api call to save the transformations
                 tndStudios.utils.api.call(
-                    '/api/' + app.page.packageId + '/data/transformation',
+                    '/api/package/' + app.page.packageId + '/data/transformation',
                     'POST',
                     app.page.editor.toObject(),
                     app.saveSuccess,
@@ -156,7 +156,7 @@
 
             // Start the api call to load the transformations
             tndStudios.utils.api.call(
-                '/api/' + app.page.packageId + '/data/transformation',
+                '/api/package/' + app.page.packageId + '/data/transformation',
                 'GET',
                 null,
                 app.loadTransformationsSuccess,

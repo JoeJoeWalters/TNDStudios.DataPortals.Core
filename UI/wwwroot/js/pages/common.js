@@ -7,7 +7,9 @@
 
         // Is a package selected?
         isPackageSelected() {
-            return (this.page.currentPackageId != '');
+            return (this.page.currentPackageId != undefined &&
+                this.page.currentPackageId != '' &&
+                this.page.currentPackageId != '00000000-0000-0000-0000-000000000000');
         },
 
     },
@@ -55,7 +57,7 @@
 
             // The the api call to load the provider types
             tndStudios.utils.api.call(
-                '/api/packages',
+                '/api/package',
                 'GET',
                 null,
                 appHeader.loadPackagesSuccess,

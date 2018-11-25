@@ -12,7 +12,7 @@ using TNDStudios.DataPortals.Repositories;
 namespace TNDStudios.DataPortals.UI.Controllers.Api
 {
     [ApiController]
-    [Route("/api/{packageId}/data")]
+    [Route("/api/package/{packageId}/data")]
     public class TransformationApiController : ApiControllerBase
     {
         /// <summary>

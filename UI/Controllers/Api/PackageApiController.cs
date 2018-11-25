@@ -35,7 +35,7 @@ namespace UI.Controllers.Api
         /// </summary>
         /// <returns>A list of a given type</returns>
         [HttpGet]
-        [Route("/api/packages")]
+        [Route("/api/package")]
         public ApiResponse<List<KeyValuePair<String, String>>> Get()
             => new ApiResponse<List<KeyValuePair<String, String>>>()
             {

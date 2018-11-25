@@ -54,7 +54,7 @@
             if (idString != "") {
 
                 tndStudios.utils.api.call(
-                    '/api/' + app.page.packageId + '/managedapi/definition/' + idString,
+                    '/api/package/' + app.page.packageId + '/managedapi/definition/' + idString,
                     'DELETE',
                     null,
                     app.deleteSuccess,
@@ -100,7 +100,7 @@
 
                 // The the api call to save the api definition
                 tndStudios.utils.api.call(
-                    '/api/' + app.page.packageId + '/managedapi/definition',
+                    '/api/package/' + app.page.packageId + '/managedapi/definition',
                     'POST',
                     app.page.editor.toObject(),
                     app.saveSuccess,
@@ -162,7 +162,7 @@
 
             // Start the api call to load the api definitions
             tndStudios.utils.api.call(
-                '/api/' + app.page.packageId + '/managedapi/definition',
+                '/api/package/' + app.page.packageId + '/managedapi/definition',
                 'GET',
                 null,
                 app.loadApiDefinitionsSuccess,
@@ -191,7 +191,7 @@
 
             // Start the api call to load the connections
             tndStudios.utils.api.call(
-                '/api/' + app.page.packageId + '/data/connection',
+                '/api/package/' + app.page.packageId + '/data/connection',
                 'GET',
                 null,
                 app.loadConnectionsSuccess,
@@ -221,7 +221,7 @@
 
             // Start the api call to load the data definitions
             tndStudios.utils.api.call(
-                '/api/' + app.page.packageId + '/data/definition',
+                '/api/package/' + app.page.packageId + '/data/definition',
                 'GET',
                 null,
                 app.loadDataDefinitionsSuccess,

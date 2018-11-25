@@ -14,7 +14,7 @@ using TNDStudios.DataPortals.Repositories;
 namespace TNDStudios.DataPortals.UI.Controllers.Api
 {
     [ApiController]
-    [Route("/api/{packageId}/data")]
+    [Route("/api/package/{packageId}/data")]
     public class ConnectionApiController : ApiControllerBase
     {
         /// <summary>
@@ -103,7 +103,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         }
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("connection/{id}")]
         public ApiResponse<List<DataConnectionModel>> Get([FromRoute]Guid packageId, [FromRoute]Guid id)
         {
             // Create the response object
@@ -209,7 +209,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         }
 
         [HttpGet]
-        [Route("connection/analyse/{id}")]
+        [Route("connection/{id}/analyse")]
         public ApiResponse<DataItemModel> Analyse([FromRoute]Guid packageId, [FromRoute]Guid id)
         {
             // Create the response object
@@ -238,7 +238,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// <param name="request">The connection request</param>
         /// <returns>The result of the query</returns>
         [HttpPost]
-        [Route("connection/sample/{id}")]
+        [Route("connection/{id}/sample")]
         public ApiResponse<DataItemModel> Sample([FromRoute]Guid packageId, [FromRoute]Guid id, [FromBody]DataItemDefinitionModel request)
         {
             // Create the response object

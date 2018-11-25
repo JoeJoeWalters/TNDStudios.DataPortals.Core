@@ -16,7 +16,7 @@ using TNDStudios.DataPortals.UI.Models.Api;
 namespace TNDStudios.DataPortals.UI.Controllers.Api
 {
     [ApiController]
-    [Route("/api/{packageId}/data")]
+    [Route("/api/package/{packageId}/data")]
     public class DataDefinitionApiController : ApiControllerBase
     {
         /// <summary>
