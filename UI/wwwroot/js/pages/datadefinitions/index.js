@@ -53,13 +53,12 @@
             // someone clicked the delete before it was saved
             if (idString != "") {
 
-                tndStudios.utils.api.call(
-                    '/api/package/' + app.page.packageId + '/data/definition/' + idString,
-                    'DELETE',
-                    null,
+                // The the api call to delete the definition
+                tndStudios.models.dataDefinitions.delete(
+                    app.page.packageId,
+                    idString,
                     app.deleteSuccess,
-                    app.deleteFailure
-                );
+                    app.deleteFailure);
             }
             else
                 tndStudios.utils.ui.notify(0, 'Cannot Delete An Item That Is Not Saved Yet');
@@ -98,14 +97,12 @@
             // Is the form valid?
             if ($("#editorForm").valid()) {
 
-                // The the api call to save the data definition
-                tndStudios.utils.api.call(
-                    '/api/package/' + app.page.packageId + '/data/definition',
-                    'POST',
+                // The the api call to delete the definition
+                tndStudios.models.dataDefinitions.save(
+                    app.page.packageId,
                     app.page.editor.toObject(),
                     app.saveSuccess,
-                    app.saveFailure
-                );
+                    app.saveFailure);
             }
 
         },
@@ -143,13 +140,13 @@
             // Notify the user
             tndStudios.utils.ui.notify(0, "Data Definition Could Not Be Saved");
         },
-        
+
         // Start the load process
         load: function () {
-            
+
             // Start loading the datae definitions list
             app.loadDataDefinitions();
-            
+
             // Start loading the connections list
             app.loadConnections();
 
@@ -210,9 +207,8 @@
         loadDataDefinitions: function () {
 
             // Start the api call to load the data definitions
-            tndStudios.utils.api.call(
-                '/api/package/' + app.page.packageId + '/data/definition',
-                'GET',
+            tndStudios.models.dataDefinitions.list(
+                app.page.packageId,
                 null,
                 app.loadDataDefinitionsSuccess,
                 app.loadDataDefinitionsFailure);
@@ -253,7 +249,7 @@
 
         // Remove a property from the property editor
         removeProperty: function (item) {
-            
+
             // Remove the item from the property list
             app.page.editor.itemProperties = app.page.editor.itemProperties.filter(
                 function (property) {
@@ -289,9 +285,8 @@
         loadConnections: function () {
 
             // Start the api call to load the connections
-            tndStudios.utils.api.call(
-                '/api/package/' + app.page.packageId + '/data/connection',
-                'GET',
+            tndStudios.models.dataConnections.list(
+                app.page.packageId,
                 null,
                 app.loadConnectionsSuccess,
                 app.loadConnectionsFailure);
@@ -323,13 +318,12 @@
                 app.page.selectedConnection != "") {
 
                 // The the api call to sample the connection with this definition
-                tndStudios.utils.api.call(
-                    '/api/package/' + app.page.packageId + '/data/connection/' + connectionId + '/sample',
-                    'POST',
+                tndStudios.models.dataConnections.sample(
+                    app.page.packageId,
+                    connectionId,
                     app.page.editor.toObject(),
                     app.sampleConnectionSuccess,
-                    app.sampleConnectionFailure
-                );
+                    app.sampleConnectionFailure);
             }
             else {
                 tndStudios.utils.ui.notify(0, "No connection selected to sample");
@@ -360,13 +354,11 @@
                 app.page.selectedConnection != "") {
 
                 // The the api call to save the data definition
-                tndStudios.utils.api.call(
-                    '/api/package/' + app.page.packageId + '/data/connection/' + connectionId + '/analyse',
-                    'GET',
-                    null,
+                tndStudios.models.dataConnections.analyse(
+                    app.page.packageId,
+                    connectionId,
                     app.analyseConnectionSuccess,
-                    app.analyseConnectionFailure
-                );
+                    app.analyseConnectionFailure);
             }
             else {
                 tndStudios.utils.ui.notify(0, "No connection selected to analyse");

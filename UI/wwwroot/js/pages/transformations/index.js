@@ -52,14 +52,13 @@
             // Make sure this is a real transformation just in case
             // someone clicked the delete before it was saved
             if (idString != "") {
-
-                tndStudios.utils.api.call(
-                    '/api/package/' + app.page.packageId + '/data/transformation/' + idString,
-                    'DELETE',
-                    null,
+                
+                // Call the delete function
+                tndStudios.models.transformations.delete(
+                    app.page.packageId,
+                    idString,
                     app.deleteSuccess,
-                    app.deleteFailure
-                );
+                    app.deleteFailure);
             }
             else
                 tndStudios.utils.ui.notify(0, 'Cannot Delete A Transformation That Is Not Saved Yet');
@@ -99,13 +98,11 @@
             if ($("#editorForm").valid()) {
 
                 // The the api call to save the transformations
-                tndStudios.utils.api.call(
-                    '/api/package/' + app.page.packageId + '/data/transformation',
-                    'POST',
+                tndStudios.models.transformations.save(
+                    app.page.packageId,
                     app.page.editor.toObject(),
                     app.saveSuccess,
-                    app.saveFailure
-                );
+                    app.saveFailure);
             }
 
         },
@@ -153,11 +150,10 @@
 
         // load transformations from the server
         loadTransformations: function () {
-
+            
             // Start the api call to load the transformations
-            tndStudios.utils.api.call(
-                '/api/package/' + app.page.packageId + '/data/transformation',
-                'GET',
+            tndStudios.models.transformations.list(
+                app.page.packageId,
                 null,
                 app.loadTransformationsSuccess,
                 app.loadTransformationsFailure);

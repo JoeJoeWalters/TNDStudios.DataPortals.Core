@@ -63,4 +63,39 @@ tndStudios.models.transformations =
                 this.fromObject(data); // Assign the data to this object
             }
         },
+
+        // Call the delete endpoint
+        delete: function (packageId, id, success, failure) {
+
+            tndStudios.utils.api.call(
+                '/api/package/' + packageId + '/data/transformation/' + id,
+                'DELETE',
+                null,
+                success,
+                failure
+            );
+        },
+
+        // The the api call to save the transformations
+        save: function (packageId, saveObject, success, failure) {
+
+            tndStudios.utils.api.call(
+                '/api/package/' + packageId + '/data/transformation',
+                'POST',
+                saveObject,
+                success,
+                failure
+            );
+        },
+
+        // Start the api call to load the transformations
+        list: function (packageId, filter, success, failure) {
+
+            tndStudios.utils.api.call(
+                '/api/package/' + packageId + '/data/transformation',
+                'GET',
+                null,
+                success,
+                failure);
+        },
     };

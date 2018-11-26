@@ -47,7 +47,7 @@ tndStudios.models.apiDefinitions =
 
             // Create a formatted object that can be passed to the server
             this.toObject = function () {
-                
+
                 var result =
                 {
                     Id: this.id,
@@ -75,5 +75,38 @@ tndStudios.models.apiDefinitions =
             if (data) {
                 this.fromObject(data); // Assign the data to this object
             }
-        },        
+        },
+        
+        // Call the delete endpoint
+        delete: function (packageId, id, success, failure) {
+            tndStudios.utils.api.call(
+                '/api/package/' + packageId + '/managedapi/definition/' + id,
+                'DELETE',
+                null,
+                success,
+                failure);
+        },
+
+        // Call the Save endpoint
+        save: function (packageId, apiObject, success, failure) {
+            tndStudios.utils.api.call(
+                '/api/package/' + packageId + '/managedapi/definition',
+                'POST',
+                apiObject,
+                success,
+                failure
+            );
+        },
+
+        // Call the Save endpoint
+        list: function (packageId, filter, success, failure) {
+
+            tndStudios.utils.api.call(
+                '/api/package/' + packageId + '/managedapi/definition',
+                'GET',
+                null,
+                success,
+                failure);
+    }
+        
     };

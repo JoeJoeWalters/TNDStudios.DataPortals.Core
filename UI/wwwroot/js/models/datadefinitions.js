@@ -107,6 +107,41 @@ tndStudios.models.dataDefinitions =
             }
         },
 
+        // Load the list of available connections
+        list: function (packageId, filter, success, failure) {
+
+            tndStudios.utils.api.call(
+                '/api/package/' + packageId + '/data/definition',
+                'GET',
+                null,
+                success,
+                failure);
+        },
+
+        // The the api call to save the definition
+        delete: function (packageId, id, success, failure) {
+
+            tndStudios.utils.api.call(
+                '/api/package/' + packageId + '/data/definition/' + id,
+                'DELETE',
+                null,
+                success,
+                failure
+            );
+        },
+
+        // The the api call to save the data definition
+        save: function (packageId, saveObject, success, failure) {
+
+            tndStudios.utils.api.call(
+                '/api/package/' + packageId + '/data/definition',
+                'POST',
+                saveObject,
+                success,
+                failure
+            );
+    },
+        
         // Data Item Property Model
         dataItemProperty: function (data) {
 

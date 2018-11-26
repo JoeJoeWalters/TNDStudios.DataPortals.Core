@@ -52,14 +52,13 @@
             // Make sure this is a real api definition just in case
             // someone clicked the delete before it was saved
             if (idString != "") {
-
-                tndStudios.utils.api.call(
-                    '/api/package/' + app.page.packageId + '/managedapi/definition/' + idString,
-                    'DELETE',
-                    null,
+                
+                // Call the delete function
+                tndStudios.models.apiDefinitions.delete(
+                    app.page.packageId,
+                    idString,
                     app.deleteSuccess,
-                    app.deleteFailure
-                );
+                    app.deleteFailure);
             }
             else
                 tndStudios.utils.ui.notify(0, 'Cannot Delete An Item That Is Not Saved Yet');
@@ -98,14 +97,12 @@
             // Is the form valid?
             if ($("#editorForm").valid()) {
 
-                // The the api call to save the api definition
-                tndStudios.utils.api.call(
-                    '/api/package/' + app.page.packageId + '/managedapi/definition',
-                    'POST',
+                // Call the Save function
+                tndStudios.models.apiDefinitions.save(
+                    app.page.packageId,
                     app.page.editor.toObject(),
                     app.saveSuccess,
-                    app.saveFailure
-                );
+                    app.saveFailure);
             }
 
         },
@@ -160,10 +157,9 @@
         // load api definitions from the server
         loadApiDefinitions: function () {
 
-            // Start the api call to load the api definitions
-            tndStudios.utils.api.call(
-                '/api/package/' + app.page.packageId + '/managedapi/definition',
-                'GET',
+            // Call the Save endpoint
+            tndStudios.models.apiDefinitions.list(
+                app.page.packageId,
                 null,
                 app.loadApiDefinitionsSuccess,
                 app.loadApiDefinitionsFailure);
@@ -189,10 +185,9 @@
         // Load a list of connections for this package that can be used
         loadConnections: function () {
 
-            // Start the api call to load the connections
-            tndStudios.utils.api.call(
-                '/api/package/' + app.page.packageId + '/data/connection',
-                'GET',
+            // Load the list of available connections
+            tndStudios.models.dataConnections.list(
+                app.page.packageId,
                 null,
                 app.loadConnectionsSuccess,
                 app.loadConnectionsFailure);
@@ -218,11 +213,10 @@
 
         // Load a list of data definitions for this package that can be used
         loadDataDefinitions: function () {
-
-            // Start the api call to load the data definitions
-            tndStudios.utils.api.call(
-                '/api/package/' + app.page.packageId + '/data/definition',
-                'GET',
+            
+            // Load the list of available connections
+            tndStudios.models.dataDefinitions.list(
+                app.page.packageId,
                 null,
                 app.loadDataDefinitionsSuccess,
                 app.loadDataDefinitionsFailure);

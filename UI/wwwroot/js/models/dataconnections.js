@@ -72,4 +72,97 @@ tndStudios.models.dataConnections =
                 this.fromObject(data); // Assign the data to this object
             }
         },
+
+        // Load the list of available connections
+        list: function (packageId, filter, success, failure) {
+
+            tndStudios.utils.api.call(
+                '/api/package/' + packageId + '/data/connection',
+                'GET',
+                null,
+                success,
+                failure);
+        },
+
+        // Delete an existing connection
+        delete: function (packageId, id, success, failure) {
+
+            tndStudios.utils.api.call(
+                '/api/package/' + packageId + '/data/connection/' + id,
+                'DELETE',
+                null,
+                success,
+                failure
+            );
+        },
+
+        // The the api call to save the connection
+        save: function (packageId, saveObject, success, failure) {
+
+            tndStudios.utils.api.call(
+                '/api/package/' + packageId + '/data/connection',
+                'POST',
+                saveObject,
+                success,
+                failure
+            );
+        },
+
+        // Test the connection provided
+        test: function (packageId, saveObject, success, failure) {
+
+            tndStudios.utils.api.call(
+                '/api/package/' + packageId + '/data/connection/test',
+                'POST',
+                saveObject,
+                success,
+                failure
+            );
+        },
+
+        // The the api call to sample the connection with this definition
+        sample: function (
+            packageId,
+            connectionId,
+            sampleObject,
+            success,
+            failure) {
+
+            tndStudios.utils.api.call(
+                '/api/package/' + packageId + '/data/connection/' + connectionId + '/sample',
+                'POST',
+                sampleObject,
+                success,
+                failure
+            );
+        },
+
+        // The the api call to save the data definition
+        analyse: function (
+            packageId,
+            connectionId,
+            success,
+            failure) {
+
+            tndStudios.utils.api.call(
+                '/api/package/' + packageId + '/data/connection/' + connectionId + '/analyse',
+                'GET',
+                null,
+                success,
+                failure
+            );
+        },
+
+        // The the api call to load the provider types
+        providers: function (packageId, success, failure) {
+
+            tndStudios.utils.api.call(
+                '/api/package/' + packageId + '/data/providers',
+                'GET',
+                null,
+                success,
+                failure
+            );
+        },
+
     };

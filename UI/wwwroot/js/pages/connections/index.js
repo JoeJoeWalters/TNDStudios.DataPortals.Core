@@ -52,14 +52,12 @@
             // Make sure this is a real connection just in case
             // someone clicked the delete before it was saved
             if (idString != "") {
-
-                tndStudios.utils.api.call(
-                    '/api/package/' + app.page.packageId + '/data/connection/' + idString,
-                    'DELETE',
-                    null,
+                
+                tndStudios.models.dataConnections.delete(
+                    app.page.packageId,
+                    idString,
                     app.deleteSuccess,
-                    app.deleteFailure
-                );
+                    app.deleteFailure);
             }
             else
                 tndStudios.utils.ui.notify(0, 'Cannot Delete An Item That Is Not Saved Yet');
@@ -100,13 +98,11 @@
             if ($("#editorForm").valid()) {
 
                 // The the api call to save the connection
-                tndStudios.utils.api.call(
-                    '/api/package/' + app.page.packageId + '/data/connection',
-                    'POST',
+                tndStudios.models.dataConnections.save(
+                    app.page.packageId,
                     app.page.editor.toObject(),
                     app.saveSuccess,
-                    app.saveFailure
-                );
+                    app.saveFailure);
             }
 
         },
@@ -149,13 +145,11 @@
         testConnection: function (testItem) {
 
             // The the api call to test the connection
-            tndStudios.utils.api.call(
-                '/api/package/' + app.page.packageId + '/data/connection/test',
-                'POST',
+            tndStudios.models.dataConnections.test(
+                app.page.packageId,
                 app.page.editor.toObject(),
                 app.testSuccess,
-                app.testFailure
-            );
+                app.testFailure);
         },
 
         // Test was successful
@@ -186,13 +180,10 @@
         loadProviderTypes: function () {
 
             // The the api call to load the provider types
-            tndStudios.utils.api.call(
-                '/api/package/' + app.page.packageId + '/data/providers',
-                'GET',
-                null,
+            tndStudios.models.dataConnections.providers(
+                app.page.packageId,
                 app.loadProviderTypesSuccess,
-                app.loadProviderTypesFailure
-            );
+                app.loadProviderTypesFailure);
         },
 
         // Load was successful, assign the data
@@ -211,9 +202,8 @@
         loadConnections: function () {
 
             // Start the api call to load the connections
-            tndStudios.utils.api.call(
-                '/api/package/' + app.page.packageId + '/data/connection',
-                'GET',
+            tndStudios.models.dataConnections.list(
+                app.page.packageId,
                 null,
                 app.loadConnectionsSuccess,
                 app.loadConnectionsFailure);
