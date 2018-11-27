@@ -5,12 +5,14 @@ tndStudios.models.packages =
         // Edit Page Model
         page: function () {
 
-            // The properties of the object
-            this.packages = []; // The list of packages
-            this.searchCriteria = ""; // The filter for the package list
-
+            // The properties of the object            
             this.editor = new tndStudios.models.packages.package(null); // The editor object
-            this.editorItem = null; // Reference to the item that is being edited for saving changes back to it
+
+            // Attached items (connections, api definitions etc.)
+            this.apiDefinitions = [];
+            this.connections = [];
+            this.dataDefintions = [];
+            this.transformations = [];
 
             this.packageId = $("#packageId").val(); // Get the package Id from the field on the page
         },
@@ -63,4 +65,16 @@ tndStudios.models.packages =
                 this.fromObject(data); // Assign the data to this object
             }
         },
+
+        // The the api call to save the package
+        save: function (packageId, saveObject, callback) {
+        },
+
+        // The api call to list the packages
+        list: function (filter, callback) {
+        },
+
+        // The api call to delete a package
+        delete: function () {
+        }
     };

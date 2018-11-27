@@ -95,9 +95,8 @@
             if ($("#editorForm").valid()) {
 
                 // The the api call to save the package
-                tndStudios.utils.api.call(
-                    '/api/' + app.page.packageId + '/data/definition',
-                    'POST',
+                tndStudios.models.packages.save(
+                    app.page.packageId,
                     app.page.editor.toObject(),
                     app.saveCallback
                 );
@@ -137,38 +136,62 @@
                 tndStudios.utils.ui.notify(0, "Package Could Not Be Saved");
         },
 
-        // Start the load process
+        // Start the load process for this package
         load: function () {
 
-            // Start loading the packages list
-            app.loadPackages();
+            // Load the API Definitions for this package
+            tndStudios.models.apiDefinitions.list(app.page.packageId, null, this.loadApiDefinitionsCallback);
+
+            // Load the Data Connections for this package
+            tndStudios.models.dataConnections.list(app.page.packageId, null, this.loadConnectionsCallback);
+
+            // Load the Data Definitions for this package
+            tndStudios.models.dataDefinitions.list(app.page.packageId, null, this.loadDataDefinitionsCallback);
+
+            // Load the Transformations for this package
+            tndStudios.models.transformations.list(app.page.packageId, null, this.loadTransformationsCallback);
         },
 
-        // load packages from the server
-        loadPackages: function () {
-
-            // Start the api call to load the packages
-            tndStudios.utils.api.call(
-                '/api/' + app.page.packageId + '/data/definition',
-                'GET',
-                null,
-                app.loadPackagesCallback);
-        },
-
-        // Load callback, assign the data
-        loadPackagesCallback: function (success, data) {
-            if (success) {
-                if (data.data) {
-
-                    app.page.packages = []; // clear the packages array
-
-                    // Add the package objects back in with wrapper for additional functions
-                    data.data.forEach(function (package) {
-                        app.page.packages.push(new tndStudios.models.packages.package(package)); // Assign the Json package to the package
-                    });
-                };
+        // Callback for when the API Definitions are loaded
+        loadApiDefinitionsCallback: function (success, data) {
+            if (success && data.data) {
+                app.page.apiDefinitions = []; // clear the api definitions array
+                data.data.forEach(function (apiDefinition) {
+                    app.page.apiDefinitions.push(new tndStudios.models.apiDefinitions.apiDefinition(apiDefinition)); // Assign the Json package to the data definition
+                });
             }
         },
+
+        // Callback for when the Connections are loaded
+        loadConnectionsCallback: function (success, data) {
+            if (success && data.data) {
+                app.page.connections = []; // clear the connections array
+                data.data.forEach(function (connection) {
+                    app.page.connections.push(new tndStudios.models.dataConnections.dataConnection(connection)); // Assign the Json package to the data definition
+                });
+            }
+        },
+
+        // Callback for when the Data Definitions are loaded
+        loadDataDefinitionsCallback: function (success, data) {
+            if (success && data.data) {
+                app.page.dataDefinitions = []; // clear the data definitions array
+                data.data.forEach(function (dataDefinition) {
+                    app.page.dataDefinitions.push(new tndStudios.models.dataDefinitions.dataItemDefinition(dataDefinition)); // Assign the Json package to the data definition
+                });
+            }
+        },
+
+        // Callback for when the Transformations are loaded
+        loadTransformationsCallback: function (success, data) {
+            if (success && data.data) {
+                app.page.transformations = []; // clear the transformations array
+                data.data.forEach(function (transformation) {
+                    app.page.transformations.push(new tndStudios.models.transformations.transformation(transformation)); // Assign the Json package to the data definition
+                });
+            }
+        },
+
     }
 });
 
