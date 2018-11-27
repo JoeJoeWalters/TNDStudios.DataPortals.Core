@@ -76,37 +76,33 @@ tndStudios.models.apiDefinitions =
                 this.fromObject(data); // Assign the data to this object
             }
         },
-        
+
         // Call the delete endpoint
-        delete: function (packageId, id, success, failure) {
+        delete: function (packageId, id, success, callback) {
             tndStudios.utils.api.call(
                 '/api/package/' + packageId + '/managedapi/definition/' + id,
                 'DELETE',
                 null,
-                success,
-                failure);
+                callback);
         },
 
         // Call the Save endpoint
-        save: function (packageId, apiObject, success, failure) {
+        save: function (packageId, apiObject, callback) {
             tndStudios.utils.api.call(
                 '/api/package/' + packageId + '/managedapi/definition',
                 'POST',
                 apiObject,
-                success,
-                failure
+                callback
             );
         },
 
         // Call the Save endpoint
-        list: function (packageId, filter, success, failure) {
-
+        list: function (packageId, filter, callback) {
             tndStudios.utils.api.call(
                 '/api/package/' + packageId + '/managedapi/definition',
                 'GET',
                 null,
-                success,
-                failure);
-    }
-        
+                callback);
+        }
+
     };

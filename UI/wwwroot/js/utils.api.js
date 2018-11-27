@@ -28,7 +28,7 @@ tndStudios.utils.api =
         },
 
         // Make an API call with the given parameters
-        call: function (url, method, request, successCallBack, failureCallBack) {
+        call: function (url, method, request, callback) {
 
             // Start the progress spinner in 1/4 of a second just so it
             // doesn't flash too much if the response is really quick
@@ -49,9 +49,9 @@ tndStudios.utils.api =
 
                     // Success?
                     if (data.success)
-                        successCallBack(data);
+                        callback(true, data);
                     else
-                        failureCallBack();
+                        callback(false, null);
                 },
                 error: function (jgXHR, status) {
 
@@ -59,7 +59,7 @@ tndStudios.utils.api =
                     tndStudios.utils.ui.progress(false);
 
                     // Do the failure call
-                    failureCallBack();
+                    callback(false, null);
                 }
             });
         }

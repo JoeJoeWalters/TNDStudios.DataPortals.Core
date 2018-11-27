@@ -59,21 +59,15 @@
                 '/api/package',
                 'GET',
                 null,
-                appHeader.loadPackagesSuccess,
-                appHeader.loadPackagesFailure
+                appHeader.loadPackagesCallback
             );
         },
 
-        // Load was successful, assign the data
-        loadPackagesSuccess: function (data) {
-            if (data.data) {
+        // Load callback, assign the data
+        loadPackagesCallback: function (success, data) {
+            if (success, data.data) {
                 appHeader.page.packages = data.data; // Assign the Json package to the packages list
             };
-        },
-
-        // Load was unsuccessful, inform the user
-        loadPackagesFailure: function () {
-            //alert('Failed to retrieve the list of provider types')
         },
 
     }

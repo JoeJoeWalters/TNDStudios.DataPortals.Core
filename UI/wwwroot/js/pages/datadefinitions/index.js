@@ -57,39 +57,35 @@
                 tndStudios.models.dataDefinitions.delete(
                     app.page.packageId,
                     idString,
-                    app.deleteSuccess,
-                    app.deleteFailure);
+                    app.deleteCallback);
             }
             else
                 tndStudios.utils.ui.notify(0, 'Cannot Delete An Item That Is Not Saved Yet');
 
         },
 
-        // Test was successful
-        deleteSuccess: function (data) {
+        // Delete callback
+        deleteCallback: function (success, data) {
 
-            // Clear the editor (as it was showing the data definition when it was deleted)
-            app.page.editor.clear();
+            if (success) {
 
-            // Remove the item from the data definitions list
-            app.page.dataDefinitions = app.page.dataDefinitions.filter(
-                function (dataDefinition) {
-                    return dataDefinition.id !== app.page.editorItem.id;
-                });
+                // Clear the editor (as it was showing the data definition when it was deleted)
+                app.page.editor.clear();
 
-            app.page.editorItem = null; // No longer attached to an editing object
+                // Remove the item from the data definitions list
+                app.page.dataDefinitions = app.page.dataDefinitions.filter(
+                    function (dataDefinition) {
+                        return dataDefinition.id !== app.page.editorItem.id;
+                    });
 
-            // Notify the user
-            tndStudios.utils.ui.notify(1, "Data Definition Deleted Successfully");
+                app.page.editorItem = null; // No longer attached to an editing object
+
+                // Notify the user
+                tndStudios.utils.ui.notify(1, "Data Definition Deleted Successfully");
+            }
+            else
+                tndStudios.utils.ui.notify(0, "Data Definition Deletion Failed");
         },
-
-        // Test failed
-        deleteFailure: function () {
-
-            // Notify the user
-            tndStudios.utils.ui.notify(0, "Data Definition Deletion Failed");
-        },
-
 
         // Save the contents of the editor object 
         saveDataDefinition: function () {
@@ -101,44 +97,39 @@
                 tndStudios.models.dataDefinitions.save(
                     app.page.packageId,
                     app.page.editor.toObject(),
-                    app.saveSuccess,
-                    app.saveFailure);
+                    app.saveCallback);
             }
-
         },
 
-        // Save was successful, assign the appropriate items
-        saveSuccess: function (data) {
+        // Save callback, assign the appropriate items
+        saveCallback: function (success, data) {
 
-            // Some data came back?
-            if (data.data) {
+            if (success) {
+                // Some data came back?
+                if (data.data) {
 
-                // Update the editor itself (possibily with new links or id if a new item)
-                app.page.editor.fromObject(data.data);
+                    // Update the editor itself (possibily with new links or id if a new item)
+                    app.page.editor.fromObject(data.data);
 
-                // Were we editing an existing item?
-                if (app.page.editorItem != null) {
+                    // Were we editing an existing item?
+                    if (app.page.editorItem != null) {
 
-                    // Update the existing item
-                    app.page.editorItem.fromObject(data.data);
-                }
-                else {
+                        // Update the existing item
+                        app.page.editorItem.fromObject(data.data);
+                    }
+                    else {
 
-                    // Add the new item to the list
-                    app.page.editorItem = new tndStudios.models.dataDefinitions.dataItemDefinition(data.data);
-                    app.page.dataDefinitions.push(app.page.editorItem);
-                }
+                        // Add the new item to the list
+                        app.page.editorItem = new tndStudios.models.dataDefinitions.dataItemDefinition(data.data);
+                        app.page.dataDefinitions.push(app.page.editorItem);
+                    }
 
-                // Notify the user
-                tndStudios.utils.ui.notify(1, "Data Definition Saved ('" + data.data.name + "')");
-            };
-        },
-
-        // Save was unsuccessful, inform the user
-        saveFailure: function () {
-
-            // Notify the user
-            tndStudios.utils.ui.notify(0, "Data Definition Could Not Be Saved");
+                    // Notify the user
+                    tndStudios.utils.ui.notify(1, "Data Definition Saved ('" + data.data.name + "')");
+                };
+            }
+            else
+                tndStudios.utils.ui.notify(0, "Data Definition Could Not Be Saved");
         },
 
         // Start the load process
@@ -176,29 +167,29 @@
         },
 
         // Load was successful, assign the data
-        loadEncodingLookup: function (data) {
-            if (data.data) {
+        loadEncodingLookup: function (success, data) {
+            if (success && data.data) {
                 app.page.encodingLookup = data.data;
             }
         },
 
         // Load was successful, assign the data
-        loadCultureLookup: function (data) {
-            if (data.data) {
+        loadCultureLookup: function (success, data) {
+            if (success && data.data) {
                 app.page.cultureLookup = data.data;
             }
         },
 
         // Load was successful, assign the data
-        loadDataPropertyTypesLookup: function (data) {
-            if (data.data) {
+        loadDataPropertyTypesLookup: function (success, data) {
+            if (success && data.data) {
                 app.page.dataPropertyTypesLookup = data.data;
             }
         },
 
         // Load was successful, assign the data
-        loadDataTypesLookup: function (data) {
-            if (data.data) {
+        loadDataTypesLookup: function (success, data) {
+            if (success, data.data) {
                 app.page.dataTypesLookup = data.data;
             }
         },
@@ -210,25 +201,22 @@
             tndStudios.models.dataDefinitions.list(
                 app.page.packageId,
                 null,
-                app.loadDataDefinitionsSuccess,
-                app.loadDataDefinitionsFailure);
+                app.loadDataDefinitionsCallback);
         },
 
-        // Load was successful, assign the data
-        loadDataDefinitionsSuccess: function (data) {
-            if (data.data) {
+        // Load callback, assign the data
+        loadDataDefinitionsCallback: function (success, data) {
+            if (success) {
+                if (data.data) {
 
-                app.page.dataDefinitions = []; // clear the data definitions array
+                    app.page.dataDefinitions = []; // clear the data definitions array
 
-                // Add the data definition objects back in with wrapper for additional functions
-                data.data.forEach(function (dataDefinition) {
-                    app.page.dataDefinitions.push(new tndStudios.models.dataDefinitions.dataItemDefinition(dataDefinition)); // Assign the Json package to the data definition
-                });
-            };
-        },
-
-        // Load was unsuccessful, inform the user
-        loadDataDefinitionsFailure: function () {
+                    // Add the data definition objects back in with wrapper for additional functions
+                    data.data.forEach(function (dataDefinition) {
+                        app.page.dataDefinitions.push(new tndStudios.models.dataDefinitions.dataItemDefinition(dataDefinition)); // Assign the Json package to the data definition
+                    });
+                };
+            }
         },
 
         // Add a new property item to the property editor
@@ -288,26 +276,22 @@
             tndStudios.models.dataConnections.list(
                 app.page.packageId,
                 null,
-                app.loadConnectionsSuccess,
-                app.loadConnectionsFailure);
+                app.loadConnectionsCallback);
         },
 
-        // Load was successful, assign the data
-        loadConnectionsSuccess: function (data) {
-            if (data.data) {
+        // Load callback, assign the data
+        loadConnectionsCallback: function (success, data) {
+            if (success) {
+                if (data.data) {
 
-                app.page.connections = []; // clear the connections array
+                    app.page.connections = []; // clear the connections array
 
-                // Add the connection objects back in with wrapper for additional functions
-                data.data.forEach(function (connection) {
-                    app.page.connections.push(new tndStudios.models.dataConnections.dataConnection(connection)); // Assign the Json package to the data definition
-                });
-            };
-        },
-
-        // Load was unsuccessful, inform the user
-        loadConnectionsFailure: function () {
-            //alert('Failed to retrieve existing connections list')
+                    // Add the connection objects back in with wrapper for additional functions
+                    data.data.forEach(function (connection) {
+                        app.page.connections.push(new tndStudios.models.dataConnections.dataConnection(connection)); // Assign the Json package to the data definition
+                    });
+                };
+            }
         },
 
         // Load data from the selected connection using the editor definition
@@ -322,27 +306,21 @@
                     app.page.packageId,
                     connectionId,
                     app.page.editor.toObject(),
-                    app.sampleConnectionSuccess,
-                    app.sampleConnectionFailure);
+                    app.sampleConnectionCallback);
             }
             else {
                 tndStudios.utils.ui.notify(0, "No connection selected to sample");
             }
         },
 
-        // Sample was successful, get the data from the result
-        sampleConnectionSuccess: function (data) {
-
-            // Got some data?
-            if (data.data) {
-
-                // Assign the data payload to the appropriate object in the editor
-                app.page.editorValues = data.data.values;
-            };
-        },
-
-        // Sample was unsuccessful, inform the user
-        sampleConnectionFailure: function () {
+        // Sample callback, get the data from the result
+        sampleConnectionCallback: function (success, data) {
+            if (success) {
+                if (data.data) {
+                    // Assign the data payload to the appropriate object in the editor
+                    app.page.editorValues = data.data.values;
+                };
+            }
         },
 
         // Analyse the data connection to get the structure and then tell
@@ -357,33 +335,31 @@
                 tndStudios.models.dataConnections.analyse(
                     app.page.packageId,
                     connectionId,
-                    app.analyseConnectionSuccess,
-                    app.analyseConnectionFailure);
+                    app.analyseConnectionCallback);
             }
             else {
                 tndStudios.utils.ui.notify(0, "No connection selected to analyse");
             }
         },
 
-        // Analysis was successful, get the definition from the result
-        analyseConnectionSuccess: function (data) {
+        // Analysis callback, get the definition from the result
+        analyseConnectionCallback: function (success, data) {
 
-            // Got some data?
-            if (data.data) {
+            if (success) {
 
-                var oldObject = app.page.editor.toObject(); // Copy the old object first
+                // Got some data?
+                if (data.data) {
 
-                app.page.editor.fromObject(data.data.definition); // Copy the new object in
+                    var oldObject = app.page.editor.toObject(); // Copy the old object first
 
-                // Re-assign the id, name and description field which we want to keep
-                app.page.editor.id = oldObject.Id;
-                app.page.editor.name = oldObject.Name;
-                app.page.editor.description = oldObject.Description;
-            };
-        },
+                    app.page.editor.fromObject(data.data.definition); // Copy the new object in
 
-        // Analysis was unsuccessful, inform the user
-        analyseConnectionFailure: function () {
+                    // Re-assign the id, name and description field which we want to keep
+                    app.page.editor.id = oldObject.Id;
+                    app.page.editor.name = oldObject.Name;
+                    app.page.editor.description = oldObject.Description;
+                };
+            }
         },
     }
 });

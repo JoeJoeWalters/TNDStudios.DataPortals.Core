@@ -74,49 +74,42 @@ tndStudios.models.dataConnections =
         },
 
         // Load the list of available connections
-        list: function (packageId, filter, success, failure) {
-
+        list: function (packageId, filter, callback) {
             tndStudios.utils.api.call(
                 '/api/package/' + packageId + '/data/connection',
                 'GET',
                 null,
-                success,
-                failure);
+                callback);
         },
 
         // Delete an existing connection
         delete: function (packageId, id, success, failure) {
-
             tndStudios.utils.api.call(
                 '/api/package/' + packageId + '/data/connection/' + id,
                 'DELETE',
                 null,
-                success,
-                failure
+                callback
             );
         },
 
         // The the api call to save the connection
-        save: function (packageId, saveObject, success, failure) {
-
+        save: function (packageId, saveObject, callback) {
             tndStudios.utils.api.call(
                 '/api/package/' + packageId + '/data/connection',
                 'POST',
                 saveObject,
-                success,
-                failure
+                callback
             );
         },
 
         // Test the connection provided
-        test: function (packageId, saveObject, success, failure) {
+        test: function (packageId, saveObject, callback) {
 
             tndStudios.utils.api.call(
                 '/api/package/' + packageId + '/data/connection/test',
                 'POST',
                 saveObject,
-                success,
-                failure
+                callback
             );
         },
 
@@ -125,15 +118,13 @@ tndStudios.models.dataConnections =
             packageId,
             connectionId,
             sampleObject,
-            success,
-            failure) {
+            callback) {
 
             tndStudios.utils.api.call(
                 '/api/package/' + packageId + '/data/connection/' + connectionId + '/sample',
                 'POST',
                 sampleObject,
-                success,
-                failure
+                callback
             );
         },
 
@@ -141,27 +132,24 @@ tndStudios.models.dataConnections =
         analyse: function (
             packageId,
             connectionId,
-            success,
-            failure) {
+            callback) {
 
             tndStudios.utils.api.call(
                 '/api/package/' + packageId + '/data/connection/' + connectionId + '/analyse',
                 'GET',
                 null,
-                success,
-                failure
+                callback
             );
         },
 
         // The the api call to load the provider types
-        providers: function (packageId, success, failure) {
+        providers: function (packageId, callback) {
 
             tndStudios.utils.api.call(
                 '/api/package/' + packageId + '/data/providers',
                 'GET',
                 null,
-                success,
-                failure
+                callback
             );
         },
 

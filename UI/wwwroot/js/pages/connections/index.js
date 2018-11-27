@@ -52,44 +52,39 @@
             // Make sure this is a real connection just in case
             // someone clicked the delete before it was saved
             if (idString != "") {
-                
+
                 tndStudios.models.dataConnections.delete(
                     app.page.packageId,
                     idString,
-                    app.deleteSuccess,
-                    app.deleteFailure);
+                    app.deleteCallback);
             }
             else
                 tndStudios.utils.ui.notify(0, 'Cannot Delete An Item That Is Not Saved Yet');
 
         },
 
-        // Test was successful
-        deleteSuccess: function (data) {
+        // Delete callback
+        deleteCallback: function (success, data) {
 
-            // Clear the editor (as it was showing the connection when it was deleted)
-            app.page.editor.clear();
+            if (success) {
 
-            // Remove the item from the connections list
-            app.page.connections = app.page.connections.filter(
-                function (connection)
-                {
-                    return connection.id !== app.page.editItem.id;
-                });
+                // Clear the editor (as it was showing the connection when it was deleted)
+                app.page.editor.clear();
 
-            app.page.editItem = null; // No longer attached to an editing object
+                // Remove the item from the connections list
+                app.page.connections = app.page.connections.filter(
+                    function (connection) {
+                        return connection.id !== app.page.editItem.id;
+                    });
 
-            // Notify the user
-            tndStudios.utils.ui.notify(1, "Connection Deleted Successfully");
+                app.page.editItem = null; // No longer attached to an editing object
+
+                // Notify the user
+                tndStudios.utils.ui.notify(1, "Connection Deleted Successfully");
+            }
+            else
+                tndStudios.utils.ui.notify(0, "Connection Deletion Failed");
         },
-
-        // Test failed
-        deleteFailure: function () {
-
-            // Notify the user
-            tndStudios.utils.ui.notify(0, "Connection Deletion Failed");
-        },
-
 
         // Save the contents of the editor object 
         saveConnection: function () {
@@ -101,44 +96,41 @@
                 tndStudios.models.dataConnections.save(
                     app.page.packageId,
                     app.page.editor.toObject(),
-                    app.saveSuccess,
-                    app.saveFailure);
+                    app.saveCallback);
             }
 
         },
 
-        // Save was successful, assign the appropriate items
-        saveSuccess: function (data) {
+        // Save callback, assign the appropriate items
+        saveCallback: function (success, data) {
 
-            // Some data came back?
-            if (data.data) {
+            if (success) {
 
-                // Update the editor itself (possibily with new links or id if a new item)
-                app.page.editor.fromObject(data.data);
+                // Some data came back?
+                if (data.data) {
 
-                // Were we editing an existing item?
-                if (app.page.editItem != null) {
+                    // Update the editor itself (possibily with new links or id if a new item)
+                    app.page.editor.fromObject(data.data);
 
-                    // Update the existing item
-                    app.page.editItem.fromObject(data.data);
-                }
-                else {
+                    // Were we editing an existing item?
+                    if (app.page.editItem != null) {
 
-                    // Add the new item to the list
-                    app.page.editItem = new tndStudios.models.dataConnections.dataConnection(data.data);
-                    app.page.connections.push(app.page.editItem);
-                }
+                        // Update the existing item
+                        app.page.editItem.fromObject(data.data);
+                    }
+                    else {
 
-                // Notify the user
-                tndStudios.utils.ui.notify(1, "Connection Saved ('" + data.data.name + "')");
-            };
-        },
+                        // Add the new item to the list
+                        app.page.editItem = new tndStudios.models.dataConnections.dataConnection(data.data);
+                        app.page.connections.push(app.page.editItem);
+                    }
 
-        // Save was unsuccessful, inform the user
-        saveFailure: function () {
-
-            // Notify the user
-            tndStudios.utils.ui.notify(0, "Connection Could Not Be Saved");
+                    // Notify the user
+                    tndStudios.utils.ui.notify(1, "Connection Saved ('" + data.data.name + "')");
+                };
+            }
+            else
+                tndStudios.utils.ui.notify(0, "Connection Could Not Be Saved");
         },
 
         // Test the connection of a given connection
@@ -148,22 +140,16 @@
             tndStudios.models.dataConnections.test(
                 app.page.packageId,
                 app.page.editor.toObject(),
-                app.testSuccess,
-                app.testFailure);
+                app.testCallback);
         },
 
-        // Test was successful
-        testSuccess: function (data) {
+        // Test was successful?
+        testCallback: function (success, data) {
 
-            // Notify the user
-            tndStudios.utils.ui.notify(1, "Connection Tested Successfully");
-        },
-
-        // Test failed
-        testFailure: function () {
-
-            // Notify the user
-            tndStudios.utils.ui.notify(0, "Connection Test Failed");
+            if (success)
+                tndStudios.utils.ui.notify(1, "Connection Tested Successfully");
+            else
+                tndStudios.utils.ui.notify(0, "Connection Test Failed");
         },
 
         // Start the load process
@@ -182,20 +168,16 @@
             // The the api call to load the provider types
             tndStudios.models.dataConnections.providers(
                 app.page.packageId,
-                app.loadProviderTypesSuccess,
-                app.loadProviderTypesFailure);
+                app.loadProviderTypesCallback);
         },
 
         // Load was successful, assign the data
-        loadProviderTypesSuccess: function (data) {
-            if (data.data) {
-                app.page.providerTypes = data.data; // Assign the Json package to the provider types
-            };
-        },
-
-        // Load was unsuccessful, inform the user
-        loadProviderTypesFailure: function () {
-            //alert('Failed to retrieve the list of provider types')
+        loadProviderTypesCallback: function (success, data) {
+            if (success) {
+                if (data.data) {
+                    app.page.providerTypes = data.data; // Assign the Json package to the provider types
+                };
+            }
         },
 
         // load connections from the server
@@ -205,27 +187,21 @@
             tndStudios.models.dataConnections.list(
                 app.page.packageId,
                 null,
-                app.loadConnectionsSuccess,
-                app.loadConnectionsFailure);
+                app.loadConnectionsCallback);
         },
 
         // Load was successful, assign the data
-        loadConnectionsSuccess: function (data) {
-            if (data.data) {
-
-                app.page.connections = []; // clear the connections array
-
-                // Add the connection objects back in with wrapper for additional functions
-                data.data.forEach(function (connection) {
-                    app.page.connections.push(new tndStudios.models.dataConnections.dataConnection(connection)); // Assign the Json package to the data definition
-                });
-            };
+        loadConnectionsCallback: function (success, data) {
+            if (success) {
+                if (data.data) {
+                    app.page.connections = []; // clear the connections array
+                    data.data.forEach(function (connection) {
+                        app.page.connections.push(new tndStudios.models.dataConnections.dataConnection(connection)); // Assign the Json package to the data definition
+                    });
+                }
+            }
         },
 
-        // Load was unsuccessful, inform the user
-        loadConnectionsFailure: function () {
-            //alert('Failed to retrieve existing connections list')
-        },
     }
 });
 

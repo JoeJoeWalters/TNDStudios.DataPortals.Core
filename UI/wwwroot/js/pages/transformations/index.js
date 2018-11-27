@@ -52,44 +52,40 @@
             // Make sure this is a real transformation just in case
             // someone clicked the delete before it was saved
             if (idString != "") {
-                
+
                 // Call the delete function
                 tndStudios.models.transformations.delete(
                     app.page.packageId,
                     idString,
-                    app.deleteSuccess,
-                    app.deleteFailure);
+                    app.deleteCallback);
             }
             else
                 tndStudios.utils.ui.notify(0, 'Cannot Delete A Transformation That Is Not Saved Yet');
 
         },
 
-        // Test was successful
-        deleteSuccess: function (data) {
+        // Delete callback
+        deleteCallback: function (success, data) {
 
-            // Clear the editor (as it was showing the transformation when it was deleted)
-            app.page.editor.clear();
+            if (success) {
 
-            // Remove the item from the transformation list
-            app.page.transformations = app.page.transformations.filter(
-                function (transformation) {
-                    return transformation.id !== app.page.editItem.id;
-                });
+                // Clear the editor (as it was showing the transformation when it was deleted)
+                app.page.editor.clear();
 
-            app.page.editItem = null; // No longer attached to an editing object
+                // Remove the item from the transformation list
+                app.page.transformations = app.page.transformations.filter(
+                    function (transformation) {
+                        return transformation.id !== app.page.editItem.id;
+                    });
 
-            // Notify the user
-            tndStudios.utils.ui.notify(1, "Transformation Deleted Successfully");
+                app.page.editItem = null; // No longer attached to an editing object
+
+                // Notify the user
+                tndStudios.utils.ui.notify(1, "Transformation Deleted Successfully");
+            }
+            else
+                tndStudios.utils.ui.notify(0, "Transformation Deletion Failed");
         },
-
-        // Test failed
-        deleteFailure: function () {
-
-            // Notify the user
-            tndStudios.utils.ui.notify(0, "Transformation Deletion Failed");
-        },
-
 
         // Save the contents of the editor object 
         saveTransformation: function () {
@@ -101,68 +97,63 @@
                 tndStudios.models.transformations.save(
                     app.page.packageId,
                     app.page.editor.toObject(),
-                    app.saveSuccess,
-                    app.saveFailure);
+                    app.saveCallback);
             }
 
         },
 
-        // Save was successful, assign the appropriate items
-        saveSuccess: function (data) {
+        // Save callback, assign the appropriate items
+        saveCallback: function (success, data) {
 
-            // Some data came back?
-            if (data.data) {
+            if (success) {
 
-                // Update the editor itself (possibily with new links or id if a new item)
-                app.page.editor.fromObject(data.data);
+                // Some data came back?
+                if (data.data) {
 
-                // Were we editing an existing item?
-                if (app.page.editItem != null) {
+                    // Update the editor itself (possibily with new links or id if a new item)
+                    app.page.editor.fromObject(data.data);
 
-                    // Update the existing item
-                    app.page.editItem.fromObject(data.data);
-                }
-                else {
+                    // Were we editing an existing item?
+                    if (app.page.editItem != null) {
 
-                    // Add the new item to the list
-                    app.page.editItem = new tndStudios.models.transformations.transformation(data.data);
-                    app.page.transformations.push(app.page.editItem);
-                }
+                        // Update the existing item
+                        app.page.editItem.fromObject(data.data);
+                    }
+                    else {
 
-                // Notify the user
-                tndStudios.utils.ui.notify(1, "Transformation Saved ('" + data.data.name + "')");
-            };
+                        // Add the new item to the list
+                        app.page.editItem = new tndStudios.models.transformations.transformation(data.data);
+                        app.page.transformations.push(app.page.editItem);
+                    }
+
+                    // Notify the user
+                    tndStudios.utils.ui.notify(1, "Transformation Saved ('" + data.data.name + "')");
+                };
+            }
+            else
+                tndStudios.utils.ui.notify(0, "Transformation Could Not Be Saved");
         },
 
-        // Save was unsuccessful, inform the user
-        saveFailure: function () {
-
-            // Notify the user
-            tndStudios.utils.ui.notify(0, "Transformation Could Not Be Saved");
-        },
-        
         // Start the load process
         load: function () {
-            
+
             // Start loading the transformations list
             app.loadTransformations();
         },
 
         // load transformations from the server
         loadTransformations: function () {
-            
+
             // Start the api call to load the transformations
             tndStudios.models.transformations.list(
                 app.page.packageId,
                 null,
-                app.loadTransformationsSuccess,
-                app.loadTransformationsFailure);
+                app.loadTransformationsCallback);
         },
 
-        // Load was successful, assign the data
-        loadTransformationsSuccess: function (data) {
-            if (data.data) {
-
+        // Load callback, assign the data
+        loadTransformationsCallback: function (success, data) {
+            if (success && data.data) {
                 app.page.transformations = []; // clear the transformations array
 
                 // Add the transformation objects back in with wrapper for additional functions
@@ -170,10 +161,6 @@
                     app.page.transformations.push(new tndStudios.models.transformations.transformation(transformation)); // Assign the Json package to the data definition
                 });
             };
-        },
-
-        // Load was unsuccessful, inform the user
-        loadTransformationsFailure: function () {
         },
     }
 });

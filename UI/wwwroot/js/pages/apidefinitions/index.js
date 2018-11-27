@@ -57,39 +57,35 @@
                 tndStudios.models.apiDefinitions.delete(
                     app.page.packageId,
                     idString,
-                    app.deleteSuccess,
-                    app.deleteFailure);
+                    app.deleteCallback);
             }
             else
                 tndStudios.utils.ui.notify(0, 'Cannot Delete An Item That Is Not Saved Yet');
 
         },
 
-        // Delete was successful
-        deleteSuccess: function (data) {
+        // Delete callback
+        deleteCallback: function (success, data) {
 
-            // Clear the editor (as it was showing the api definition when it was deleted)
-            app.page.editor.clear();
+            if (success) {
 
-            // Remove the item from the api definitions list
-            app.page.apiDefinitions = app.page.apiDefinitions.filter(
-                function (apiDefinition) {
-                    return apiDefinition.id !== app.page.editorItem.id;
-                });
+                // Clear the editor (as it was showing the api definition when it was deleted)
+                app.page.editor.clear();
 
-            app.page.editorItem = null; // No longer attached to an editing object
+                // Remove the item from the api definitions list
+                app.page.apiDefinitions = app.page.apiDefinitions.filter(
+                    function (apiDefinition) {
+                        return apiDefinition.id !== app.page.editorItem.id;
+                    });
 
-            // Notify the user
-            tndStudios.utils.ui.notify(1, "Api Definition Deleted Successfully");
+                app.page.editorItem = null; // No longer attached to an editing object
+
+                // Notify the user
+                tndStudios.utils.ui.notify(1, "Api Definition Deleted Successfully");
+            }
+            else
+                tndStudios.utils.ui.notify(0, "Api Definition Deletion Failed");
         },
-
-        // Delete failed
-        deleteFailure: function () {
-
-            // Notify the user
-            tndStudios.utils.ui.notify(0, "Api Definition Deletion Failed");
-        },
-
 
         // Save the contents of the editor object 
         saveApiDefinition: function () {
@@ -101,44 +97,41 @@
                 tndStudios.models.apiDefinitions.save(
                     app.page.packageId,
                     app.page.editor.toObject(),
-                    app.saveSuccess,
-                    app.saveFailure);
+                    app.saveCallback);
             }
 
         },
 
-        // Save was successful, assign the appropriate items
-        saveSuccess: function (data) {
+        // Save callback, assign the appropriate items
+        saveCallback: function (success, data) {
 
-            // Some data came back?
-            if (data.data) {
+            if (success) {
 
-                // Update the editor itself (possibily with new links or id if a new item)
-                app.page.editor.fromObject(data.data);
+                // Some data came back?
+                if (data.data) {
 
-                // Were we editing an existing item?
-                if (app.page.editorItem != null) {
+                    // Update the editor itself (possibily with new links or id if a new item)
+                    app.page.editor.fromObject(data.data);
 
-                    // Update the existing item
-                    app.page.editorItem.fromObject(data.data);
-                }
-                else {
+                    // Were we editing an existing item?
+                    if (app.page.editorItem != null) {
 
-                    // Add the new item to the list
-                    app.page.editorItem = new tndStudios.models.apiDefinitions.apiDefinition(data.data);
-                    app.page.apiDefinitions.push(app.page.editorItem);
-                }
+                        // Update the existing item
+                        app.page.editorItem.fromObject(data.data);
+                    }
+                    else {
 
-                // Notify the user
-                tndStudios.utils.ui.notify(1, "Api Definition Saved ('" + data.data.name + "')");
-            };
-        },
+                        // Add the new item to the list
+                        app.page.editorItem = new tndStudios.models.apiDefinitions.apiDefinition(data.data);
+                        app.page.apiDefinitions.push(app.page.editorItem);
+                    }
 
-        // Save was unsuccessful, inform the user
-        saveFailure: function () {
-
-            // Notify the user
-            tndStudios.utils.ui.notify(0, "Api Definition Could Not Be Saved");
+                    // Notify the user
+                    tndStudios.utils.ui.notify(1, "Api Definition Saved ('" + data.data.name + "')");
+                };
+            }
+            else
+                tndStudios.utils.ui.notify(0, "Api Definition Could Not Be Saved");
         },
 
         // Start the load process
@@ -161,25 +154,26 @@
             tndStudios.models.apiDefinitions.list(
                 app.page.packageId,
                 null,
-                app.loadApiDefinitionsSuccess,
-                app.loadApiDefinitionsFailure);
+                app.loadApiDefinitionsCallback);
         },
 
         // Load was successful, assign the data
-        loadApiDefinitionsSuccess: function (data) {
-            if (data.data) {
+        loadApiDefinitionsCallback: function (success, data) {
 
-                app.page.apiDefinitions = []; // clear the api definitions array
+            if (success) {
 
-                // Add the api definition objects back in with wrapper for additional functions
-                data.data.forEach(function (apiDefinition) {
-                    app.page.apiDefinitions.push(new tndStudios.models.apiDefinitions.apiDefinition(apiDefinition)); // Assign the Json package to the data definition
-                });
-            };
-        },
+                if (data.data) {
 
-        // Load was unsuccessful, inform the user
-        loadApiDefinitionsFailure: function () {
+                    app.page.apiDefinitions = []; // clear the api definitions array
+
+                    // Add the api definition objects back in with wrapper for additional functions
+                    data.data.forEach(function (apiDefinition) {
+                        app.page.apiDefinitions.push(new tndStudios.models.apiDefinitions.apiDefinition(apiDefinition)); // Assign the Json package to the data definition
+                    });
+                };
+            }
+            else
+                tndStudios.utils.ui.notify(0, "Api Definitions Could Not Be Loaded");
         },
 
         // Load a list of connections for this package that can be used
@@ -189,26 +183,26 @@
             tndStudios.models.dataConnections.list(
                 app.page.packageId,
                 null,
-                app.loadConnectionsSuccess,
-                app.loadConnectionsFailure);
+                app.loadConnectionsCallback);
         },
 
-        // Load was successful, assign the data
-        loadConnectionsSuccess: function (data) {
-            if (data.data) {
+        // Load callback, assign the data
+        loadConnectionsCallback: function (success, data) {
 
-                app.page.dataConnections = []; // clear the connections array
+            if (success) {
 
-                // Add the connection objects back in with wrapper for additional functions
-                data.data.forEach(function (connection) {
-                    app.page.dataConnections.push(new tndStudios.models.dataConnections.dataConnection(connection)); // Assign the Json package to the data definition
-                });
-            };
-        },
+                if (data.data) {
 
-        // Load was unsuccessful, inform the user
-        loadConnectionsFailure: function () {
-            //alert('Failed to retrieve existing connections list')
+                    app.page.dataConnections = []; // clear the connections array
+
+                    // Add the connection objects back in with wrapper for additional functions
+                    data.data.forEach(function (connection) {
+                        app.page.dataConnections.push(new tndStudios.models.dataConnections.dataConnection(connection)); // Assign the Json package to the data definition
+                    });
+                };
+            }
+            else
+                tndStudios.utils.ui.notify(0, "Connections Could Not Be Loaded");
         },
 
         // Load a list of data definitions for this package that can be used
@@ -218,27 +212,27 @@
             tndStudios.models.dataDefinitions.list(
                 app.page.packageId,
                 null,
-                app.loadDataDefinitionsSuccess,
-                app.loadDataDefinitionsFailure);
+                app.loadDataDefinitionsCallback);
         },
 
-        // Load was successful, assign the data
-        loadDataDefinitionsSuccess: function (data) {
-            if (data.data) {
+        // Load callback, assign the data
+        loadDataDefinitionsCallback: function (success, data) {
 
-                app.page.dataDefinitions = []; // clear the data definitions array
+            if (success) {
 
-                // Add the data definitions objects back in with wrapper for additional functions
-                data.data.forEach(function (dataDefinition) {
-                    app.page.dataDefinitions.push(new tndStudios.models.dataDefinitions.dataItemDefinition(dataDefinition)); // Assign the Json package to the data definition
-                });
-            };
+                if (data.data) {
+
+                    app.page.dataDefinitions = []; // clear the data definitions array
+
+                    // Add the data definitions objects back in with wrapper for additional functions
+                    data.data.forEach(function (dataDefinition) {
+                        app.page.dataDefinitions.push(new tndStudios.models.dataDefinitions.dataItemDefinition(dataDefinition)); // Assign the Json package to the data definition
+                    });
+                };
+            }
+            else
+                tndStudios.utils.ui.notify(0, "Data Definitions Could Not Be Loaded");
         },
-
-        // Load was unsuccessful, inform the user
-        loadDataDefinitionsFailure: function () {
-            //alert('Failed to retrieve existing connections list')
-        }
 
     }
 });
