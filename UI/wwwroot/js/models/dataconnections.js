@@ -83,7 +83,7 @@ tndStudios.models.dataConnections =
         },
 
         // Delete an existing connection
-        delete: function (packageId, id, success, failure) {
+        delete: function (packageId, id, callback) {
             tndStudios.utils.api.call(
                 '/api/package/' + packageId + '/data/connection/' + id,
                 'DELETE',

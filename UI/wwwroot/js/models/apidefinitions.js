@@ -78,7 +78,7 @@ tndStudios.models.apiDefinitions =
         },
 
         // Call the delete endpoint
-        delete: function (packageId, id, success, callback) {
+        delete: function (packageId, id, callback) {
             tndStudios.utils.api.call(
                 '/api/package/' + packageId + '/managedapi/definition/' + id,
                 'DELETE',
