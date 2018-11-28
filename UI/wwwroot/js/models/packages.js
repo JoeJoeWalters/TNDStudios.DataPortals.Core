@@ -11,7 +11,7 @@ tndStudios.models.packages =
             // Attached items (connections, api definitions etc.)
             this.apiDefinitions = [];
             this.connections = [];
-            this.dataDefintions = [];
+            this.dataDefinitions = [];
             this.transformations = [];
 
             this.packageId = $("#packageId").val(); // Get the package Id from the field on the page
