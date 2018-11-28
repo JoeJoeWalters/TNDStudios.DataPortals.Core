@@ -55,7 +55,7 @@
             </ul>
             <form class="form-inline my-2 my-lg-0">
                 <select class="form-control" id="packages" name="packages" v-model="page.selectedPackage.key">
-                    <option value=""></option>
+                    <option value="00000000-0000-0000-0000-000000000000"><< New Package >></option>
                     <option v-bind:value="item.key" v-for="item in page.packages">
                         {{ item.value }}
                     </option>

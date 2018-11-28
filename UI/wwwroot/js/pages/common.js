@@ -7,8 +7,8 @@
 
         // Is a package selected?
         isPackageSelected() {
-            return (this.page.selectedPackage != undefined &&
-                this.page.selectedPackage.key != '00000000-0000-0000-0000-000000000000');
+            return (this.page.packageId != undefined &&
+                this.page.packageId != '00000000-0000-0000-0000-000000000000');
         },
 
     },
@@ -17,7 +17,7 @@
         // Calculate a link from a base url
         calculatedLink: function (link) {
             if (link != null) {
-                return this.resolveUrl(link.replace("{packageId}", this.page.currentPackageId));
+                return this.resolveUrl(link.replace("{packageId}", this.page.packageId));
             }
             else
                 return "#";
@@ -27,7 +27,7 @@
         goToSelectedPackage: function () {
             var link = $("#pageUrlPattern").val();
             if (link != undefined)
-                window.location = this.resolveUrl(link.replace("{packageId}", this.page.selectedPackage.key));
+                window.location = this.resolveUrl("~/package/{packageId}".replace("{packageId}", this.page.selectedPackage.key));
         },
 
         // Resolve the relative paths of a url
@@ -43,7 +43,6 @@
 
             // Get the package Id from the page to initialise 
             // the selected package in the drop down
-            this.page.currentPackageId = $("#packageId").val();
             this.page.selectedPackage.key = $("#packageId").val();
 
             // Get the list of available packages from the server
