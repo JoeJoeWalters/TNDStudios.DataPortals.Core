@@ -82,6 +82,15 @@ tndStudios.models.dataConnections =
                 callback);
         },
 
+        // Get the full version of the connection
+        get: function (packageId, id, callback) {
+            tndStudios.utils.api.call(
+                '/api/package/' + packageId + '/data/connection/' + id,
+                'GET',
+                null,
+                callback);
+        },
+
         // Delete an existing connection
         delete: function (packageId, id, callback) {
             tndStudios.utils.api.call(

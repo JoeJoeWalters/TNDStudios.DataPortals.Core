@@ -35,9 +35,8 @@
         // Edit an existing item by assigning it to the editor object
         edit: function (editItem) {
 
-            // Copy the data to the connection editor from the selected object
-            app.page.editor.fromObject(editItem);
             app.page.editItem = editItem; // Reference to the origional item being edited
+            this.loadConnection(editItem.id); // Load the data from the server
         },
 
         // Delete the current connection
@@ -196,12 +195,30 @@
                 if (data.data) {
                     app.page.connections = []; // clear the connections array
                     data.data.forEach(function (connection) {
-                        app.page.connections.push(new tndStudios.models.dataConnections.dataConnection(connection)); // Assign the Json package to the data definition
+                        app.page.connections.push(new tndStudios.models.common.commonObject(connection)); // Assign the Json package to the list object
                     });
                 }
             }
         },
+        
+        // load singular connection from the server (as the list is only the headers)
+        loadConnection: function (id) {
 
+            // Start the api call to load the connections
+            tndStudios.models.dataConnections.get(
+                app.page.packageId,
+                id,
+                app.loadConnectionCallback);
+        },
+
+        // Load was successful, assign the data to the editor
+        loadConnectionCallback: function (success, data) {
+            if (success) {
+                if (data.data) {
+                    app.page.editor.fromObject(data.data);
+                }
+            }
+        },
     }
 });
 

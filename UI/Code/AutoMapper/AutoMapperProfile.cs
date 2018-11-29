@@ -40,6 +40,7 @@ namespace TNDStudios.DataPortals.UI
                         src => src.EncodingFormat.WebName
                         )
                     );
+            CreateMap<DataItemDefinition, CommonObjectModel>();
 
             // Map from the data item definition sub-property to the web view model
             CreateMap<DataItemProperty, DataItemPropertyModel>()
@@ -64,6 +65,7 @@ namespace TNDStudios.DataPortals.UI
                         src => Encoding.GetEncoding(src.EncodingFormat)
                         )
                     );
+            CreateMap<CommonObjectModel, DataItemDefinition>();
 
             // Map from the web view model sub-property of the data item definition
             // back to the domain object type
@@ -81,6 +83,7 @@ namespace TNDStudios.DataPortals.UI
 
             // Map from the api definition domain object to web view model
             CreateMap<ApiDefinition, ApiDefinitionModel>();
+            CreateMap<ApiDefinition, CommonObjectModel>();
 
             // Map from the web view model of the api definition to the domain object
             CreateMap<ApiDefinitionModel, ApiDefinition>()
@@ -96,6 +99,7 @@ namespace TNDStudios.DataPortals.UI
                         src => src.DataDefinition.Key
                         )
                     );
+            CreateMap<CommonObjectModel, ApiDefinition>();
 
             // Map from the data connection domain object to a key/value pairing
             CreateMap<DataConnection, KeyValuePair<Guid, String>>()
@@ -103,9 +107,11 @@ namespace TNDStudios.DataPortals.UI
 
             // Map from the data connection domain object to the web view model
             CreateMap<DataConnection, DataConnectionModel>();
+            CreateMap<DataConnection, CommonObjectModel>();
 
             // Map from the web view model of the data connection to the domain object
             CreateMap<DataConnectionModel, DataConnection>();
+            CreateMap<CommonObjectModel, DataConnection>();
 
             // Create a generic key pair to id mapping
             CreateMap<KeyValuePair<Guid, String>, Guid>()
@@ -129,6 +135,7 @@ namespace TNDStudios.DataPortals.UI
                         src => src.Destination.Key
                         )
                     );
+            CreateMap<CommonObjectModel, Transformation>();
 
             // Map from the transformation domain object to a key/value pairing
             CreateMap<Transformation, KeyValuePair<Guid, String>>()
@@ -136,12 +143,15 @@ namespace TNDStudios.DataPortals.UI
 
             // Map from the transformation domain object to the web view model
             CreateMap<Transformation, TransformationModel>();
+            CreateMap<Transformation, CommonObjectModel>();
 
             // Map from the package domain object to the web view model
             CreateMap<Package, PackageModel>();
+            CreateMap<Package, CommonObjectModel>();
 
             // Map from the package web view model to the domain object
             CreateMap<PackageModel, Package>();
+            CreateMap<CommonObjectModel, Package>();
         }
     }
 }

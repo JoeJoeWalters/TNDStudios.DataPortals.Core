@@ -50,8 +50,33 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// <returns>An API response with a list of data connection models</returns>
         [HttpGet]
         [Route("connection")]
-        public ApiResponse<List<DataConnectionModel>> Get([FromRoute]Guid packageId)
-            => Get(packageId, Guid.Empty);
+        public ApiResponse<List<CommonObjectModel>> Get([FromRoute]Guid packageId)
+        {
+            // Create the response object
+            ApiResponse<List<CommonObjectModel>> response = new ApiResponse<List<CommonObjectModel>>();
+
+            try
+            {
+                // Did we find a package?
+                Package package = SessionHandler.PackageRepository.Get(packageId);
+                if (package != null)
+                {
+                    // Was an id passed in? If not just return everything
+                    response.Data = mapper.Map<List<CommonObjectModel>>(package.DataConnections);
+                }
+
+                // Success as we got here
+                response.Success = true;
+            }
+            catch (Exception ex)
+            {
+                response.Data.Clear(); // Clear the data as we don't want to send back partial data
+                response.Success = false; // Failed due to hard failure
+            }
+
+            // Return the response object
+            return response;
+        }
 
         /// <summary>
         /// Test the connection to a data source
@@ -104,11 +129,10 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
 
         [HttpGet]
         [Route("connection/{id}")]
-        public ApiResponse<List<DataConnectionModel>> Get([FromRoute]Guid packageId, [FromRoute]Guid id)
+        public ApiResponse<DataConnectionModel> Get([FromRoute]Guid packageId, [FromRoute]Guid id)
         {
             // Create the response object
-            ApiResponse<List<DataConnectionModel>> response =
-                new ApiResponse<List<DataConnectionModel>>();
+            ApiResponse<DataConnectionModel> response = new ApiResponse<DataConnectionModel>();
 
             try
             {
@@ -117,9 +141,9 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                 if (package != null)
                 {
                     // Was an id passed in? If not just return everything
-                    response.Data = mapper.Map<List<DataConnectionModel>>(
+                    response.Data = mapper.Map<DataConnectionModel>(
                         package.DataConnections.Where
-                            (def => (id == Guid.Empty || def.Id == id))
+                            (def => (id == Guid.Empty || def.Id == id)).FirstOrDefault()
                         );
                 }
 
@@ -128,7 +152,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             }
             catch (Exception ex)
             {
-                response.Data.Clear(); // Clear the data as we don't want to send back partial data
+                response.Data = null; // Clear the data as we don't want to send back partial data
                 response.Success = false; // Failed due to hard failure
             }
 
