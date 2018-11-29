@@ -29,15 +29,15 @@
 
             // Clear the editor
             app.page.editor.clear();
-            app.page.editorItem = null; // No longer attached to an editing object
+            app.page.editItem = null; // No longer attached to an editing object
         },
 
         // Edit an existing item by assigning it to the editor object
-        edit: function (editorItem) {
+        edit: function (editItem) {
 
             // Copy the data to the api definition editor from the selected object
-            app.page.editor.fromObject(editorItem);
-            app.page.editorItem = editorItem; // Reference to the origional item being edited
+            app.page.editItem = editItem; // Reference to the origional item being edited
+            this.loadApiDefinition(editItem.id); // Load the data from the server
         },
 
         // Delete the current data definition
@@ -75,10 +75,10 @@
                 // Remove the item from the api definitions list
                 app.page.apiDefinitions = app.page.apiDefinitions.filter(
                     function (apiDefinition) {
-                        return apiDefinition.id !== app.page.editorItem.id;
+                        return apiDefinition.id !== app.page.editItem.id;
                     });
 
-                app.page.editorItem = null; // No longer attached to an editing object
+                app.page.editItem = null; // No longer attached to an editing object
 
                 // Notify the user
                 tndStudios.utils.ui.notify(1, "Api Definition Deleted Successfully");
@@ -114,16 +114,16 @@
                     app.page.editor.fromObject(data.data);
 
                     // Were we editing an existing item?
-                    if (app.page.editorItem != null) {
+                    if (app.page.editItem != null) {
 
                         // Update the existing item
-                        app.page.editorItem.fromObject(data.data);
+                        app.page.editItem.fromObject(data.data);
                     }
                     else {
 
                         // Add the new item to the list
-                        app.page.editorItem = new tndStudios.models.apiDefinitions.apiDefinition(data.data);
-                        app.page.apiDefinitions.push(app.page.editorItem);
+                        app.page.editItem = new tndStudios.models.apiDefinitions.apiDefinition(data.data);
+                        app.page.apiDefinitions.push(app.page.editItem);
                     }
 
                     // Notify the user
@@ -168,12 +168,31 @@
 
                     // Add the api definition objects back in with wrapper for additional functions
                     data.data.forEach(function (apiDefinition) {
-                        app.page.apiDefinitions.push(new tndStudios.models.apiDefinitions.apiDefinition(apiDefinition)); // Assign the Json package to the data definition
+                        app.page.apiDefinitions.push(new tndStudios.models.common.commonObject(apiDefinition)); // Assign the Json package to the data definition
                     });
                 };
             }
             else
                 tndStudios.utils.ui.notify(0, "Api Definitions Could Not Be Loaded");
+        },
+
+        // load singular api definition from the server (as the list is only the headers)
+        loadApiDefinition: function (id) {
+
+            // Start the api call to load the connections
+            tndStudios.models.apiDefinitions.get(
+                app.page.packageId,
+                id,
+                app.loadApiDefinitionCallback);
+        },
+
+        // Load was successful, assign the data to the editor
+        loadApiDefinitionCallback: function (success, data) {
+            if (success) {
+                if (data.data) {
+                    app.page.editor.fromObject(data.data);
+                }
+            }
         },
 
         // Load a list of connections for this package that can be used

@@ -10,11 +10,11 @@ tndStudios.models.dataDefinitions =
             this.searchCriteria = ""; // The filter for the data definitions list
 
             this.editor = new tndStudios.models.dataDefinitions.dataItemDefinition(null); // The editor object
-            this.editorItem = null; // Reference to the item that is being edited for saving changes back to it
+            this.editItem = null; // Reference to the item that is being edited for saving changes back to it
             this.editorValues = new tndStudios.models.dataDefinitions.dataItemValues(); // The editor values for when it is being analysed
 
             this.propertyEditor = new tndStudios.models.dataDefinitions.dataItemProperty(null); // The editor for the current property
-            this.propertyEditorItem = null; // Reference to the item that is being edited
+            this.propertyeditItem = null; // Reference to the item that is being edited
 
             this.providerTypes = []; // The list of available provider types
             this.connections = []; // The list of data connections in this package

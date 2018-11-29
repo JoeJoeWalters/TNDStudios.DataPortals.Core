@@ -69,8 +69,34 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// <returns>An API response with a list of data definition models</returns>
         [HttpGet]
         [Route("definition")]
-        public ApiResponse<List<ApiDefinitionModel>> Get([FromRoute]Guid packageId)
-            => Get(packageId, Guid.Empty);
+        public ApiResponse<List<CommonObjectModel>> Get([FromRoute]Guid packageId)
+        {
+            // Create the response object
+            ApiResponse<List<CommonObjectModel>> response = new ApiResponse<List<CommonObjectModel>>();
+
+            try
+            {
+
+                // Did we find a package?
+                Package package = SessionHandler.PackageRepository.Get(packageId);
+                if (package != null)
+                {
+                    // Was an id passed in? If not just return everything
+                    response.Data = mapper.Map<List<CommonObjectModel>>(package.ApiDefinitions);                    
+                }
+
+                // Got to here so must be successful
+                response.Success = true;
+            }
+            catch (Exception ex)
+            {
+                response.Data.Clear(); // Clear the data as we don't want to send back partial data
+                response.Success = false; // Failed due to hard failure
+            }
+
+            // Return the response object
+            return response;
+        }
 
         [HttpDelete]
         [Route("definition/{id}")]
@@ -95,11 +121,10 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
 
         [HttpGet]
         [Route("definition/{id}")]
-        public ApiResponse<List<ApiDefinitionModel>> Get([FromRoute]Guid packageId, [FromRoute]Guid id)
+        public ApiResponse<ApiDefinitionModel> Get([FromRoute]Guid packageId, [FromRoute]Guid id)
         {
             // Create the response object
-            ApiResponse<List<ApiDefinitionModel>> response =
-                new ApiResponse<List<ApiDefinitionModel>>();
+            ApiResponse<ApiDefinitionModel> response = new ApiResponse<ApiDefinitionModel>();
 
             try
             {
@@ -109,25 +134,21 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                 if (package != null)
                 {
                     // Was an id passed in? If not just return everything
-                    response.Data = mapper.Map<List<ApiDefinitionModel>>(
+                    response.Data = mapper.Map<ApiDefinitionModel>(
                         package.ApiDefinitions.Where
-                            (def => (id == Guid.Empty || def.Id == id))
+                            (def => (id == Guid.Empty || def.Id == id)).FirstOrDefault()
                         );
 
                     // Post processing to fill in the missing titles
                     // as this doesn't really fit well in Automapper due 
                     // to the source column type
-                    response.Data.ForEach(item =>
-                        {
-                        // Assign the correct values to the model
-                        item.DataConnection =
+                    response.Data.DataConnection =
                                 mapper.Map<KeyValuePair<Guid, String>>
-                                    (package.DataConnection(item.DataConnection.Key));
+                                    (package.DataConnection(response.Data.DataConnection.Key));
 
-                            item.DataDefinition =
+                    response.Data.DataDefinition =
                                 mapper.Map<KeyValuePair<Guid, String>>
-                                    (package.DataDefinition(item.DataDefinition.Key));
-                        });
+                                    (package.DataDefinition(response.Data.DataDefinition.Key));
                 }
 
                 // Got to here so must be successful
@@ -135,7 +156,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             }
             catch (Exception ex)
             {
-                response.Data.Clear(); // Clear the data as we don't want to send back partial data
+                response.Data = null; // Clear the data as we don't want to send back partial data
                 response.Success = false; // Failed due to hard failure
             }
 

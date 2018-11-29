@@ -158,7 +158,7 @@
 
                 // Add the transformation objects back in with wrapper for additional functions
                 data.data.forEach(function (transformation) {
-                    app.page.transformations.push(new tndStudios.models.transformations.transformation(transformation)); // Assign the Json package to the data definition
+                    app.page.transformations.push(new tndStudios.models.common.commonObject(transformation)); // Assign the Json package to the transformation
                 });
             };
         },

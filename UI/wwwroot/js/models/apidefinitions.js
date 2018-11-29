@@ -10,7 +10,7 @@ tndStudios.models.apiDefinitions =
             this.searchCriteria = ""; // The filter for the api definitions list
 
             this.editor = new tndStudios.models.apiDefinitions.apiDefinition(null); // The editor object
-            this.editorItem = null; // Reference to the item that is being edited for saving changes back to it
+            this.editItem = null; // Reference to the item that is being edited for saving changes back to it
 
             this.dataDefinitions = []; // The list of data definitions in this package
             this.dataConnections = []; // The list of data connections in this package
@@ -100,6 +100,15 @@ tndStudios.models.apiDefinitions =
         list: function (packageId, filter, callback) {
             tndStudios.utils.api.call(
                 '/api/package/' + packageId + '/managedapi/definition',
+                'GET',
+                null,
+                callback);
+        },
+
+        // Get the full version of the api definition
+        get: function (packageId, id, callback) {
+            tndStudios.utils.api.call(
+                '/api/package/' + packageId + '/managedapi/definition/' + id,
                 'GET',
                 null,
                 callback);
