@@ -39,8 +39,31 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// <returns>An API response with a list of data definition models</returns>
         [HttpGet]
         [Route("definition")]
-        public ApiResponse<List<DataItemDefinitionModel>> Get([FromRoute]Guid packageId)
-            => Get(packageId, Guid.Empty);
+        public ApiResponse<List<CommonObjectModel>> Get([FromRoute]Guid packageId)
+        {
+            // Create the response object
+            ApiResponse<List<CommonObjectModel>> response = new ApiResponse<List<CommonObjectModel>>();
+
+            try
+            {
+                // Did we find a package?
+                Package package = SessionHandler.PackageRepository.Get(packageId);
+                if (package != null)
+                {
+                    // Was an id passed in? If not just return everything
+                    response.Data = mapper.Map<List<CommonObjectModel>>(package.DataDefinitions);
+                }
+
+                response.Success = true;
+            }
+            catch (Exception ex)
+            {
+                response.Data.Clear(); // Clear the data as we don't want to send back partial data
+                response.Success = false; // Failed due to hard failure
+            }
+            // Return the response object
+            return response;
+        }
 
         /// <summary>
         /// Delete a data definition
@@ -70,11 +93,10 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
 
         [HttpGet]
         [Route("definition/{id}")]
-        public ApiResponse<List<DataItemDefinitionModel>> Get([FromRoute]Guid packageId, [FromRoute]Guid id)
+        public ApiResponse<DataItemDefinitionModel> Get([FromRoute]Guid packageId, [FromRoute]Guid id)
         {
             // Create the response object
-            ApiResponse<List<DataItemDefinitionModel>> response =
-                new ApiResponse<List<DataItemDefinitionModel>>();
+            ApiResponse<DataItemDefinitionModel> response = new ApiResponse<DataItemDefinitionModel>();
 
             try
             {
@@ -83,9 +105,9 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                 if (package != null)
                 {
                     // Was an id passed in? If not just return everything
-                    response.Data = mapper.Map<List<DataItemDefinitionModel>>(
+                    response.Data = mapper.Map<DataItemDefinitionModel>(
                         package.DataDefinitions.Where
-                            (def => (id == Guid.Empty || def.Id == id))
+                            (def => (id == Guid.Empty || def.Id == id)).FirstOrDefault()
                         );
                 }
 
@@ -93,9 +115,10 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             }
             catch(Exception ex)
             {
-                response.Data.Clear(); // Clear the data as we don't want to send back partial data
+                response.Data = null; // Clear the data as we don't want to send back partial data
                 response.Success = false; // Failed due to hard failure
             }
+
             // Return the response object
             return response;
         }

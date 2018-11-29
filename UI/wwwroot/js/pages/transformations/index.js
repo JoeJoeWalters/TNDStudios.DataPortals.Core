@@ -36,8 +36,8 @@
         edit: function (editItem) {
 
             // Copy the data to the transformation editor from the selected object
-            app.page.editor.fromObject(editItem);
             app.page.editItem = editItem; // Reference to the origional item being edited
+            this.loadTransformation(editItem.id); // Load the data from the server
         },
 
         // Delete the current transformation
@@ -161,6 +161,25 @@
                     app.page.transformations.push(new tndStudios.models.common.commonObject(transformation)); // Assign the Json package to the transformation
                 });
             };
+        },
+
+        // load the transformation from the server
+        loadTransformation: function (id) {
+
+            // Start the api call to load the transformation
+            tndStudios.models.transformations.get(
+                app.page.packageId,
+                id,
+                app.loadTransformationCallback);
+        },
+
+        // Load callback, assign the data
+        loadTransformationCallback: function (success, data) {
+            if (success) {
+                if (data.data) {
+                    app.page.editor.fromObject(data.data);
+                }
+            }
         },
     }
 });

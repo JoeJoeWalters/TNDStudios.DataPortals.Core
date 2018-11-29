@@ -92,4 +92,14 @@ tndStudios.models.transformations =
                 null,
                 callback);
         },
+        
+        // Get the full version of the transformation
+        get: function (packageId, id, callback) {
+            tndStudios.utils.api.call(
+                '/api/package/' + packageId + '/data/transformation/' + id,
+                'GET',
+                null,
+                callback);
+        }
+
     };

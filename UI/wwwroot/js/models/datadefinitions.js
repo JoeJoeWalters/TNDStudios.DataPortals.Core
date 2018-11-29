@@ -116,6 +116,15 @@ tndStudios.models.dataDefinitions =
                 callback);
         },
 
+        // Get the full version of the definition
+        get: function (packageId, id, callback) {
+            tndStudios.utils.api.call(
+                '/api/package/' + packageId + '/data/definition/' + id,
+                'GET',
+                null,
+                callback);
+        },
+
         // The the api call to save the definition
         delete: function (packageId, id, callback) {
             tndStudios.utils.api.call(

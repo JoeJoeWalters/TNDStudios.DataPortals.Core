@@ -35,9 +35,34 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// <returns>An API response with a list of transformation models</returns>
         [HttpGet]
         [Route("transformation")]
-        public ApiResponse<List<TransformationModel>> Get([FromRoute]Guid packageId)
-            => Get(packageId, Guid.Empty);
-        
+        public ApiResponse<List<CommonObjectModel>> Get([FromRoute]Guid packageId)
+        {
+            // Create the response object
+            ApiResponse<List<CommonObjectModel>> response = new ApiResponse<List<CommonObjectModel>>();
+
+            try
+            {
+                // Did we find a package?
+                Package package = SessionHandler.PackageRepository.Get(packageId);
+                if (package != null)
+                {
+                    // Was an id passed in? If not just return everything
+                    response.Data = mapper.Map<List<CommonObjectModel>>(package.Transformations);
+                }
+
+                // Success as we got here
+                response.Success = true;
+            }
+            catch (Exception ex)
+            {
+                response.Data.Clear(); // Clear the data as we don't want to send back partial data
+                response.Success = false; // Failed due to hard failure
+            }
+
+            // Return the response object
+            return response;
+        }
+
         [HttpDelete]
         [Route("transformation/{id}")]
         public ApiResponse<Boolean> Delete([FromRoute]Guid packageId, [FromRoute]Guid id)
@@ -61,11 +86,10 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
 
         [HttpGet]
         [Route("transformation/{id}")]
-        public ApiResponse<List<TransformationModel>> Get([FromRoute]Guid packageId, [FromRoute]Guid id)
+        public ApiResponse<TransformationModel> Get([FromRoute]Guid packageId, [FromRoute]Guid id)
         {
             // Create the response object
-            ApiResponse<List<TransformationModel>> response =
-                new ApiResponse<List<TransformationModel>>();
+            ApiResponse<TransformationModel> response = new ApiResponse<TransformationModel>();
 
             try
             {
@@ -74,9 +98,9 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                 if (package != null)
                 {
                     // Was an id passed in? If not just return everything
-                    response.Data = mapper.Map<List<TransformationModel>>(
+                    response.Data = mapper.Map<TransformationModel>(
                         package.Transformations.Where
-                            (def => (id == Guid.Empty || def.Id == id))
+                            (def => (id == Guid.Empty || def.Id == id)).FirstOrDefault()
                         );
                 }
 
@@ -85,7 +109,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             }
             catch (Exception ex)
             {
-                response.Data.Clear(); // Clear the data as we don't want to send back partial data
+                response.Data = null; // Clear the data as we don't want to send back partial data
                 response.Success = false; // Failed due to hard failure
             }
 

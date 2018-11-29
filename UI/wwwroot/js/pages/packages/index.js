@@ -157,7 +157,7 @@
             if (success && data.data) {
                 app.page.apiDefinitions = []; // clear the api definitions array
                 data.data.forEach(function (apiDefinition) {
-                    app.page.apiDefinitions.push(new tndStudios.models.apiDefinitions.apiDefinition(apiDefinition)); // Assign the Json package to the data definition
+                    app.page.apiDefinitions.push(new tndStudios.models.common.commonObject(apiDefinition)); // Assign the Json package to the data definition
                 });
             }
         },
@@ -167,7 +167,7 @@
             if (success && data.data) {
                 app.page.connections = []; // clear the connections array
                 data.data.forEach(function (connection) {
-                    app.page.connections.push(new tndStudios.models.dataConnections.dataConnection(connection)); // Assign the Json package to the data definition
+                    app.page.connections.push(new tndStudios.models.common.commonObject(connection)); // Assign the Json package to the data definition
                 });
             }
         },
@@ -177,7 +177,7 @@
             if (success && data.data) {
                 app.page.dataDefinitions = []; // clear the data definitions array
                 data.data.forEach(function (dataDefinition) {
-                    app.page.dataDefinitions.push(new tndStudios.models.dataDefinitions.dataItemDefinition(dataDefinition)); // Assign the Json package to the data definition
+                    app.page.dataDefinitions.push(new tndStudios.models.common.commonObject(dataDefinition)); // Assign the Json package to the data definition
                 });
             }
         },
@@ -187,7 +187,7 @@
             if (success && data.data) {
                 app.page.transformations = []; // clear the transformations array
                 data.data.forEach(function (transformation) {
-                    app.page.transformations.push(new tndStudios.models.transformations.transformation(transformation)); // Assign the Json package to the data definition
+                    app.page.transformations.push(new tndStudios.models.common.commonObject(transformation)); // Assign the Json package to the data definition
                 });
             }
         },

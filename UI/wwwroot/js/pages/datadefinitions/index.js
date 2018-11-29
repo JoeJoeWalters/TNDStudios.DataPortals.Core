@@ -36,8 +36,8 @@
         edit: function (editItem) {
 
             // Copy the data to the data definition editor from the selected object
-            app.page.editor.fromObject(editItem);
             app.page.editItem = editItem; // Reference to the origional item being edited
+            this.loadDataDefinition(editItem.id); // Load the data from the server
         },
 
         // Delete the current data definition
@@ -219,6 +219,25 @@
             }
         },
 
+        // load data definition from the server
+        loadDataDefinition: function (id) {
+
+            // Start the api call to load the data definition
+            tndStudios.models.dataDefinitions.get(
+                app.page.packageId,
+                id,
+                app.loadDataDefinitionCallback);
+        },
+
+        // Load callback, assign the data
+        loadDataDefinitionCallback: function (success, data) {
+            if (success) {
+                if (data.data) {
+                    app.page.editor.fromObject(data.data);
+                }
+            }
+        },
+
         // Add a new property item to the property editor
         addProperty: function () {
 
@@ -288,7 +307,7 @@
 
                     // Add the connection objects back in with wrapper for additional functions
                     data.data.forEach(function (connection) {
-                        app.page.connections.push(new tndStudios.models.dataConnections.dataConnection(connection)); // Assign the Json package to the data definition
+                        app.page.connections.push(new tndStudios.models.common.commonObject(connection)); // Assign the Json package to the data definition
                     });
                 };
             }
