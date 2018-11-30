@@ -122,7 +122,7 @@
                     else {
 
                         // Add the new item to the list
-                        app.page.editItem = new tndStudios.models.transformations.transformation(data.data);
+                        app.page.editItem = new tndStudios.models.common.commonObject(data.data);
                         app.page.transformations.push(app.page.editItem);
                     }
 
@@ -136,6 +136,9 @@
 
         // Start the load process
         load: function () {
+
+            // Has an id been specified to load straight away?
+            tndStudios.models.common.loadAtStart(this.loadTransformation);
 
             // Start loading the transformations list
             app.loadTransformations();

@@ -40,7 +40,8 @@ namespace TNDStudios.DataPortals.UI
                 Guid dataConnectionId = Guid.NewGuid();
                 Guid dataDefinitionId = Guid.NewGuid();
                 Guid apiId = Guid.NewGuid();
-                
+                Guid transformationId = Guid.NewGuid();
+
                 // Set up a new test package in the repository
                 PackageRepository.Save(
                     new Package()
@@ -113,6 +114,15 @@ namespace TNDStudios.DataPortals.UI
                                 },
                                 Name = "Data Item Definition",
                                 PropertyBag = new Dictionary<String, Object>()
+                            }
+                        },
+                        Transformations = new List<Transformation>()
+                        {
+                            new Transformation()
+                            {
+                                Id = transformationId,
+                                Name = "Transformation",
+                                Description = "Transformation Description",
                             }
                         }
                     });

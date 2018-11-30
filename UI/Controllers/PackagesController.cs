@@ -16,7 +16,7 @@ namespace UI.Controllers
         public IActionResult Transformations([FromRoute]Guid packageId)
         {
             // Show the view with the items needed for the page attached
-            return View("Index", PackagePageVM.Create(packageId));
+            return View("Index", PackagePageVM.Create(packageId, Guid.Empty));
         }
     }
 }

@@ -23,6 +23,36 @@ tndStudios.models.common =
 
         },
 
+        // Calculate a link from a base url
+        calculatedLink: function (link, packageId, id) {
+            if (link != null) {
+                return this.resolveUrl(
+                    link.replace("{packageId}", packageId)
+                        .replace("{id}", id)
+                );
+            }
+            else
+                return "#";
+        },
+
+        // Resolve the relative paths of a url
+        resolveUrl: function (url) {
+            if (url.indexOf("~/") == 0) {
+                url = window.location.protocol + "//" + window.location.host + "/" + url.substring(2);
+            }
+            return url;
+        },
+
+        // Tell the page to check to see if an id has been passed in to start loading
+        loadAtStart: function (callback) {
+            var loadId = $("#loadId").val();
+            if (loadId != undefined &&
+                loadId != "" &&
+                loadId != '00000000-0000-0000-0000-000000000000') {
+                callback(loadId); // Call the callback signature
+            }
+        },
+
         // Common Object Model (Base for all saveable items)
         commonObject: function (data) {
 
@@ -30,7 +60,7 @@ tndStudios.models.common =
             this.id = null;
             this.name = '';
             this.description = '';
-            
+
             // Copy the content of this object from another object
             this.fromObject = function (fromObject) {
 
@@ -72,4 +102,3 @@ tndStudios.models.common =
         },
 
     }
-

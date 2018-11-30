@@ -19,6 +19,11 @@ namespace TNDStudios.DataPortals.UI.Models
         public Guid PackageId { get; set; }
 
         /// <summary>
+        /// The Id for the current item being shown (or loaded)
+        /// </summary>
+        public Guid Id { get; set; }
+
+        /// <summary>
         /// The pattern of the Url for the current page
         /// </summary>
         public String PageUrlPattern { get; set; }
@@ -29,6 +34,7 @@ namespace TNDStudios.DataPortals.UI.Models
         public PackagePageVM()
         {
             PackageId = Guid.Empty;
+            Id = Guid.Empty;
             PageUrlPattern = "";
         }
 
@@ -36,7 +42,7 @@ namespace TNDStudios.DataPortals.UI.Models
         /// Create an instance of the package vm based on the routing etc.
         /// </summary>
         /// <returns></returns>
-        public static PackagePageVM Create(Guid packageId)
+        public static PackagePageVM Create(Guid packageId, Guid id)
         {
             // Get the calling method
             MethodBase method = (new StackTrace()).GetFrame(1).GetMethod();
@@ -73,7 +79,10 @@ namespace TNDStudios.DataPortals.UI.Models
             return new PackagePageVM()
             {
                 PackageId = packageId,
-                PageUrlPattern = template.Replace("{id}", packageId.ToString())
+                Id = id,
+                PageUrlPattern = template
+                /*.Replace("{packageId}", packageId.ToString())
+                .Replace("{id}", id.ToString())*/
             };
         }
     }

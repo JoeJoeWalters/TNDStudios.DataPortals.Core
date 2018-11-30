@@ -16,26 +16,14 @@
 
         // Calculate a link from a base url
         calculatedLink: function (link) {
-            if (link != null) {
-                return this.resolveUrl(link.replace("{packageId}", this.page.packageId));
-            }
-            else
-                return "#";
+            return tndStudios.models.common.calculatedLink(link, this.page.packageId, 'Index');
         },
 
         // Go to the selected package link based on the url template
         goToSelectedPackage: function () {
             var link = $("#pageUrlPattern").val();
             if (link != undefined)
-                window.location = this.resolveUrl("~/package/{packageId}".replace("{packageId}", this.page.selectedPackage.key));
-        },
-
-        // Resolve the relative paths of a url
-        resolveUrl: function (url) {
-            if (url.indexOf("~/") == 0) {
-                url = window.location.protocol + "//" + window.location.host + "/" + url.substring(2);
-            }
-            return url;
+                window.location = tndStudios.models.common.resolveUrl("~/package/{packageId}".replace("{packageId}", this.page.selectedPackage.key));
         },
 
         // Start the load process

@@ -120,7 +120,7 @@
                     else {
 
                         // Add the new item to the list
-                        app.page.editItem = new tndStudios.models.dataDefinitions.dataItemDefinition(data.data);
+                        app.page.editItem = new tndStudios.models.common.commonObject(data.data);
                         app.page.dataDefinitions.push(app.page.editItem);
                     }
 
@@ -134,6 +134,9 @@
 
         // Start the load process
         load: function () {
+
+            // Has an id been specified to load straight away?
+            tndStudios.models.common.loadAtStart(this.loadDataDefinition);
 
             // Start loading the datae definitions list
             app.loadDataDefinitions();

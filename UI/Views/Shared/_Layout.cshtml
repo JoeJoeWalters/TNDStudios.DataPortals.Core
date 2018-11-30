@@ -110,6 +110,7 @@
     </div>
 
     <!-- Items used for the page operation -->
+    @Html.Hidden("loadId", (Model == null) ? Guid.Empty : Model.Id)
     @Html.Hidden("packageId", (Model == null) ? Guid.Empty : Model.PackageId)
     @Html.Hidden("pageUrlPattern", (Model == null) ? "" : Model.PageUrlPattern)
 

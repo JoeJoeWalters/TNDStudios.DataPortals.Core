@@ -124,7 +124,7 @@
                     else {
 
                         // Add the new item to the list
-                        app.page.editorItem = new tndStudios.models.packages.package(data.data);
+                        app.page.editorItem = new tndStudios.models.common.commonObject(data.data);
                         app.page.packages.push(app.page.editorItem);
                     }
 
@@ -192,6 +192,10 @@
             }
         },
 
+        // Calculate a link from a base url
+        calculatedLink: function (link, id) {
+            return tndStudios.models.common.calculatedLink(link, this.page.packageId, id);
+        },
     }
 });
 
