@@ -189,6 +189,7 @@ namespace TNDStudios.DataPortals.Repositories
                             // Assign the values from the item to save
                             existingApiDefinition.Description = apiDefinition.Description;
                             existingApiDefinition.Name = apiDefinition.Name;
+                            existingApiDefinition.LastUpdated = DateTime.Now;
 
                             // Assign the foreign keys
                             existingApiDefinition.DataConnection = apiDefinition.DataConnection;
@@ -231,6 +232,7 @@ namespace TNDStudios.DataPortals.Repositories
                             existingDataItemDefinition.Name = dataItemDefinition.Name;
                             existingDataItemDefinition.Culture = dataItemDefinition.Culture;
                             existingDataItemDefinition.EncodingFormat = dataItemDefinition.EncodingFormat;
+                            existingDataItemDefinition.LastUpdated = DateTime.Now;
 
                             // Assign the lists
                             existingDataItemDefinition.ItemProperties = dataItemDefinition.ItemProperties;
@@ -273,9 +275,7 @@ namespace TNDStudios.DataPortals.Repositories
                             existingConnection.Description = connection.Description;
                             existingConnection.Name = connection.Name;
                             existingConnection.ProviderType = connection.ProviderType;
-
-                            // Note: For now don't re-assign the definitions
-                            //existingConnection.Definitions = connection.Definitions;
+                            existingConnection.LastUpdated = DateTime.Now;                            
                         }
 
                         // Convert the data back to the return data type (which is actually the same)
@@ -311,7 +311,8 @@ namespace TNDStudios.DataPortals.Repositories
                         {
                             // Assign the values from the item to save
                             existingTransformation.Description = transformation.Description;
-                            existingTransformation.Name = transformation.Name;                           
+                            existingTransformation.Name = transformation.Name;
+                            existingTransformation.LastUpdated = DateTime.Now;
                         }
 
                         // Convert the data back to the return data type (which is actually the same)
