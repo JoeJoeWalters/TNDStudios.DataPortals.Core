@@ -41,6 +41,28 @@
         },
 
         // Delete the current data definition
+        previewApiDefinition: function () {
+
+            // Get the editor id field
+            var apiName = "";
+            if (app.page.editor && app.page.editor.name) {
+                apiName = app.page.editor.name;
+            }
+
+            // Make sure this is a real api definition
+            if (apiName != "") {
+
+                // Call the preview function
+                tndStudios.models.apiDefinitions.preview(
+                    app.page.packageId,
+                    apiName);
+            }
+            else
+                tndStudios.utils.ui.notify(0, 'Cannot Preview An Item That Is Not Saved Yet');
+
+        },
+
+        // Delete the current data definition
         deleteApiDefinition: function () {
 
             // Get the editor id field

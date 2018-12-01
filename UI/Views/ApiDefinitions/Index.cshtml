@@ -104,6 +104,7 @@
                         <div class="col-lg-12">
                             <span v-bind:style="{visibility: isSavedVisible}">
                                 <input v-on:click="deleteApiDefinition()" type="button" class="btn btn-danger" value="Delete" />
+                                <input v-on:click="previewApiDefinition()" type="button" class="btn" value="Preview" />
                             </span>
                             <input v-on:click="saveApiDefinition()" type="button" style="margin-left: 0.1em; margin-right: 0.1em" class="btn btn-primary float-right" id="save" name="save" value="Save" />
                         </div>

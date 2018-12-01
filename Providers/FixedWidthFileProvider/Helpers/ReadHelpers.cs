@@ -73,7 +73,7 @@ namespace TNDStudios.DataPortals.Helpers
                 .ForEach(item => 
             {
                 // Get the raw value from the line by position and length
-                String rawValue = CutString(line, item.OridinalPosition, item.Size);
+                String rawValue = CutString(line, item.OrdinalPosition, item.Size);
                 if (rawValue != null)
                 {
                     // Cast the data to the appropriate type using the common rule set

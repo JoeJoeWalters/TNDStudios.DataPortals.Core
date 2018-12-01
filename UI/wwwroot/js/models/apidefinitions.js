@@ -112,6 +112,11 @@ tndStudios.models.apiDefinitions =
                 'GET',
                 null,
                 callback);
+        },
+
+        // Preview the api output
+        preview: function (packageId, name) {
+            window.open('/api/package/' + packageId + '/managedapi/objects/' + name, '_blank');
         }
 
     };

@@ -42,7 +42,7 @@ namespace TNDStudios.DataPortals.Data
         /// The oridinal position of the property when using flat files etc.
         /// </summary>
         [JsonProperty]
-        public Int32 OridinalPosition { get; set; }
+        public Int32 OrdinalPosition { get; set; }
 
         /// <summary>
         /// The size of the property
@@ -81,7 +81,7 @@ namespace TNDStudios.DataPortals.Data
             PropertyType = DataItemPropertyType.Property; // Standard type by default
             Key = false; // By default this is not the primary key
             Path = ""; // Empty String by default
-            OridinalPosition = -1; // First item in the array by default
+            OrdinalPosition = -1; // First item in the array by default
             Size = 0; // The size of the property (width etc.)
             Pattern = ""; // The pattern of the data (such as the date format)
             Quoted = false; // Is the field quoted?
