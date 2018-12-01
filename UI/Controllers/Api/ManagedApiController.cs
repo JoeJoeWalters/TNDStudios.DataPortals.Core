@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Globalization;
 using System.Linq;
 using System.Net;
-using System.Reflection;
-using System.Text;
 using TNDStudios.DataPortals.Api;
 using TNDStudios.DataPortals.Data;
+using TNDStudios.DataPortals.Json;
 using TNDStudios.DataPortals.Repositories;
 using TNDStudios.DataPortals.UI.Models.Api;
 
@@ -42,7 +41,21 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// </summary>
         /// <returns></returns>
         private JsonResult DataTableToJsonFormat(DataTable data)
-            => new JsonResult(data.Rows);
+        {
+            // Define the way the serialisation should be done
+            JsonSerializerSettings serializerSettings = new JsonSerializerSettings()
+            {
+                Formatting = Formatting.Indented,
+                NullValueHandling = NullValueHandling.Ignore,
+                ObjectCreationHandling = ObjectCreationHandling.Replace,
+                MissingMemberHandling = MissingMemberHandling.Ignore,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                Converters = new List<JsonConverter>() { new DataRowConverter() }
+            };
+            
+            // Send back the formatted results
+            return new JsonResult(data.Rows, serializerSettings);
+        }
 
         /// <summary>
         /// Default Constructor
@@ -82,7 +95,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                 if (package != null)
                 {
                     // Was an id passed in? If not just return everything
-                    response.Data = mapper.Map<List<CommonObjectModel>>(package.ApiDefinitions);                    
+                    response.Data = mapper.Map<List<CommonObjectModel>>(package.ApiDefinitions);
                 }
 
                 // Got to here so must be successful

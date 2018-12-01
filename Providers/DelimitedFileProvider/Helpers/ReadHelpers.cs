@@ -61,7 +61,7 @@ namespace TNDStudios.DataPortals.Helpers
                                     Description = $"Column {headerId.ToString()}",
                                     Name = csvReader.Context.HeaderRecord[headerId],
                                     Key = false,
-                                    OridinalPosition = headerId,
+                                    OrdinalPosition = headerId,
                                     Path = csvReader.Context.HeaderRecord[headerId],
                                     Pattern = "",
                                     Size = 0,
@@ -288,8 +288,8 @@ namespace TNDStudios.DataPortals.Helpers
             // Try and get the value from either the oridinal position or by the 
             // column name
             Int32 calculatedPosition =
-                (property.OridinalPosition != -1) ?
-                    property.OridinalPosition :
+                (property.OrdinalPosition != -1) ?
+                    property.OrdinalPosition :
                     Array.IndexOf(csvReader.Context.HeaderRecord, property.Name);
 
             //response = csvReader.TryGetField(overridingDataType, calculatedPosition, out tempValue);

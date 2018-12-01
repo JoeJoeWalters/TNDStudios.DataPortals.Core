@@ -65,7 +65,7 @@ namespace TNDStudios.DataPortals.UI
                             new DataConnection()
                             {
                                 Id = dataConnectionId,
-                                ConnectionString = @"C:\Users\Joe\Documents\Git\TNDStudios.DataPortals.Core\Tests\Providers\DelimitedFileProvider.Tests\TestFiles\BigFiles\SalesRecords5000.csv",
+                                ConnectionString = @"C:\Users\Joe\Documents\Git\TNDStudios.DataPortals.Core\Tests\Providers\DelimitedFileProvider.Tests\TestFiles\DataTypesTest.txt",
                                 Description = "Data Connection Description",
                                 Name = "Data Connection",
                                 ProviderType = DataProviderType.DelimitedFileProvider
@@ -76,7 +76,7 @@ namespace TNDStudios.DataPortals.UI
                             new DataItemDefinition()
                             {
                                 Id = dataDefinitionId,
-                                Culture = CultureInfo.GetCultureInfo("en-US"),
+                                Culture = CultureInfo.GetCultureInfo("en-GB"),
                                 Description = "Data Item Definition Description",
                                 EncodingFormat = Encoding.UTF8,
                                 ItemProperties = new List<DataItemProperty>()
@@ -84,31 +84,31 @@ namespace TNDStudios.DataPortals.UI
                                     new DataItemProperty()
                                     {
                                         DataType = typeof(String),
-                                        Name = "Country",
-                                        Description = "Country",
-                                        Path = "Country",
+                                        Name = "Column 1",
+                                        Description = "Column 1",
+                                        Path = "",
                                         PropertyType = DataItemPropertyType.Property,
-                                        OridinalPosition = 0,
+                                        OrdinalPosition = 0,
+                                        Quoted = false
+                                    },
+                                    new DataItemProperty()
+                                    {
+                                        DataType = typeof(DateTime),
+                                        Name = "Column 2",
+                                        Description = "Column 2",
+                                        Path = "",
+                                        PropertyType = DataItemPropertyType.Property,
+                                        OrdinalPosition = 1,
                                         Quoted = false
                                     },
                                     new DataItemProperty()
                                     {
                                         DataType = typeof(String),
-                                        Name = "Item Type",
-                                        Description = "Item Type",
-                                        Path = "Item Type",
+                                        Name = "Column 3",
+                                        Description = "Column 3",
+                                        Path = "",
                                         PropertyType = DataItemPropertyType.Property,
-                                        OridinalPosition = 1,
-                                        Quoted = false
-                                    },
-                                    new DataItemProperty()
-                                    {
-                                        DataType = typeof(String),
-                                        Name = "Region",
-                                        Description = "Region",
-                                        Path = "Region",
-                                        PropertyType = DataItemPropertyType.Property,
-                                        OridinalPosition = 2,
+                                        OrdinalPosition = 2,
                                         Quoted = false
                                     }
                                 },
