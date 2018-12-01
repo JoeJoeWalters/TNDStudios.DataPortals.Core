@@ -30,6 +30,12 @@ namespace TNDStudios.DataPortals
         public String Description { get; set; }
 
         /// <summary>
+        /// The last time that this object was updated
+        /// </summary>
+        [JsonProperty]
+        public DateTime LastUpdated { get; set; }
+
+        /// <summary>
         /// Default Constructor
         /// </summary>
         public CommonObject()
@@ -37,6 +43,7 @@ namespace TNDStudios.DataPortals
             Id = Guid.NewGuid();
             Name = "";
             Description = "";
+            LastUpdated = DateTime.Now; // Default value (Mainly used for refreshing caches)
         }
     }
 }

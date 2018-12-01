@@ -31,11 +31,18 @@ namespace TNDStudios.DataPortals.UI.Models.Api
         public String Description { get; set; }
 
         /// <summary>
+        /// The last time the object was updated
+        /// </summary>
+        [JsonProperty]
+        public DateTime LastUpdated { get; set; }
+
+        /// <summary>
         /// Default Constructor
         /// </summary>
         public CommonObjectModel()
         {
             Id = Guid.Empty; // No Id by default but not null too
+            LastUpdated = DateTime.Now; // Default date
         }
 
     }
