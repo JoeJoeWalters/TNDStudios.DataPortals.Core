@@ -23,10 +23,20 @@ namespace TNDStudios.DataPortals.UI.Models.Api
         public KeyValuePair<Guid, String> DataConnection { get; set; }
 
         /// <summary>
+        /// List of credentials that are allowed access to this API and how they 
+        /// are configured for reading etc.
+        /// </summary>
+        [JsonProperty]
+        public List<CredentialsLinkModel> CredentialsLinks { get; set; }
+        
+        /// <summary>
         /// Default constructor
         /// </summary>
         public ApiDefinitionModel() : base()
         {
+            DataDefinition = new KeyValuePair<Guid, String>(Guid.Empty, ""); // No link by default
+            DataConnection = new KeyValuePair<Guid, String>(Guid.Empty, ""); // No link by default
+            CredentialsLinks = new List<CredentialsLinkModel>(); // No credential links by default
         }
     }
 }

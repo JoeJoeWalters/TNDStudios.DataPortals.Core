@@ -169,11 +169,13 @@ namespace TNDStudios.DataPortals.UI
             CreateMap<Credentials, CredentialsModel>();
             CreateMap<Credential, CredentialModel>();
             CreateMap<Credentials, CommonObjectModel>();
+            CreateMap<CredentialsLink, CredentialsLinkModel>();
 
             // Map from the credentials web view model to the domain object
             CreateMap<CredentialsModel, Credentials>();
             CreateMap<CredentialModel, Credential>();
             CreateMap<CommonObjectModel, Credentials>();
+            CreateMap<CredentialsLinkModel, CredentialsLink>();
         }
     }
 }

@@ -25,7 +25,7 @@ tndStudios.models.credentials =
 
             // Item properties
             this.properties = [];
-            
+
             // Copy the content of the credentials from another credentials object
             // e.g. when editing in a secondary editor object
             this.fromObject = function (fromObject) {
@@ -122,7 +122,7 @@ tndStudios.models.credentials =
             );
         },
 
-        // Data Item Property Model
+        // Individual Credential Model
         credential: function (data) {
 
             // Model Properties
@@ -165,6 +165,66 @@ tndStudios.models.credentials =
                     Description: this.description,
                     Value: this.value,
                     Encrypted: this.encrypted
+                };
+
+                return result;
+            };
+
+            // Any data passed in?
+            if (data) {
+                this.fromObject(data); // Assign the data to this object
+            };
+        },
+
+        // Set of credentials to another object model
+        credentialsLink: function (data) {
+
+            // Model Properties
+            this.credentials = new tndStudios.models.common.keyValuePair();
+            this.canCreate = false;
+            this.canRead = false;
+            this.canUpdate = false;
+            this.canDelete = false;
+            this.filter = '';
+
+            // Clear the property values
+            this.clear = function () {
+
+                this.credentials = new tndStudios.models.common.keyValuePair();
+                this.canCreate = false;
+                this.canRead = false;
+                this.canUpdate = false;
+                this.canDelete = false;
+                this.filter = '';
+            };
+
+            // Copy the content of this credential from another credential
+            // e.g. when editing in a secondary editor object
+            this.fromObject = function (fromObject) {
+
+                // Clear the object first (just in case)
+                this.clear();
+
+                // Start copying the data from the other object
+                this.credentials = fromObject.credentials;
+                this.canCreate = fromObject.canCreate;
+                this.canRead = fromObject.canRead;
+                this.canUpdate = fromObject.canUpdate;
+                this.canDelete = fromObject.canDate;
+                this.filter = fromObject.filter;
+            };
+
+            // Create a formatted object that can be passed to the server
+            this.toObject = function () {
+
+                var result =
+                {
+                    Credentials: this.credentials,
+                    CanCreate: this.canCreate,
+                    CanRead: this.canRead,
+                    CanUpdate: this.canUpdate,
+                    CanDelete: this.canDate,
+                    Filter: this.filter
                 };
 
                 return result;

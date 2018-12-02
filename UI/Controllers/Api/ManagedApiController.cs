@@ -52,7 +52,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                 Converters = new List<JsonConverter>() { new DataRowConverter() }
             };
-            
+
             // Send back the formatted results
             return new JsonResult(data.Rows, serializerSettings);
         }
@@ -162,6 +162,14 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                     response.Data.DataDefinition =
                                 mapper.Map<KeyValuePair<Guid, String>>
                                     (package.DataDefinition(response.Data.DataDefinition.Key));
+
+                    // Loop through the credential links
+                    response.Data.CredentialsLinks.ForEach(credentialsLink =>
+                    {
+                        // Map the credentials object to get the title etc.
+                        credentialsLink.Credentials = mapper.Map<KeyValuePair<Guid, String>>
+                            (package.Credentials(credentialsLink.Credentials.Key));
+                    });
                 }
 
                 // Got to here so must be successful

@@ -41,7 +41,7 @@
         },
 
         // Delete the current data definition
-        previewApiDefinition: function () {
+        previewApiDefinition: function (credentials) {
 
             // Get the editor id field
             var apiName = "";
@@ -55,7 +55,8 @@
                 // Call the preview function
                 tndStudios.models.apiDefinitions.preview(
                     app.page.packageId,
-                    apiName);
+                    apiName,
+                    credentials);
             }
             else
                 tndStudios.utils.ui.notify(0, 'Cannot Preview An Item That Is Not Saved Yet');
@@ -167,6 +168,9 @@
 
             // Start loading the connections list
             app.loadConnections();
+            
+            // Start loading the credentials list
+            app.loadCredentials();
 
             // Start loading the data definitions list
             app.loadDataDefinitions();
@@ -278,6 +282,35 @@
                 tndStudios.utils.ui.notify(0, "Data Definitions Could Not Be Loaded");
         },
 
+
+        // Load a list of credentials for this package that can be used
+        loadCredentials: function () {
+
+            // Load the list of available credentials
+            tndStudios.models.credentials.list(
+                app.page.packageId,
+                null,
+                app.loadCredentialsCallback);
+        },
+
+        // Load callback, assign the data
+        loadCredentialsCallback: function (success, data) {
+
+            if (success) {
+
+                if (data.data) {
+
+                    app.page.credentialsStore = []; // clear the credentials array
+
+                    // Add the credentials objects back in with wrapper for additional functions
+                    data.data.forEach(function (credentials) {
+                        app.page.credentialsStore.push(new tndStudios.models.credentials.credentials(credentials)); // Assign the Json package to the credentials listing
+                    });
+                };
+            }
+            else
+                tndStudios.utils.ui.notify(0, "Credentials List Could Not Be Loaded");
+        },
     }
 });
 

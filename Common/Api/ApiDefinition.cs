@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TNDStudios.DataPortals.Security;
 
 namespace TNDStudios.DataPortals.Api
 {
@@ -20,11 +21,19 @@ namespace TNDStudios.DataPortals.Api
         public Guid DataConnection { get; set; }
 
         /// <summary>
+        /// Links to credentials and what each set of credentials will
+        /// allow the credentials to do
+        /// </summary>
+        public List<CredentialsLink> CredentialsLinks { get; set; }
+
+        /// <summary>
         /// Default constructor
         /// </summary>
         public ApiDefinition() : base()
         {
-
+            DataDefinition = Guid.Empty; // No Data Definition by default
+            DataConnection = Guid.Empty; // No Connection by default
+            CredentialsLinks = new List<CredentialsLink>(); // Create an empty list of credential links
         }
     }
 }
