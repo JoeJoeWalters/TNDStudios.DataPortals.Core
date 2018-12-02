@@ -145,6 +145,13 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                         package.DataConnections.Where
                             (def => (id == Guid.Empty || def.Id == id)).FirstOrDefault()
                         );
+
+                    // Post processing to fill in the missing titles
+                    // as this doesn't really fit well in Automapper due 
+                    // to the source column type
+                    response.Data.Credentials =
+                                mapper.Map<KeyValuePair<Guid, String>>
+                                    (package.Credentials(response.Data.Credentials.Key));
                 }
 
                 // Success as we got here

@@ -159,6 +159,9 @@
             
             // Load the provider types
             app.loadProviderTypes();
+            
+            // Start loading the credentials list
+            app.loadCredentials();
 
             // Start loading the connections list
             app.loadConnections();
@@ -180,6 +183,35 @@
                     app.page.providerTypes = data.data; // Assign the Json package to the provider types
                 };
             }
+        },
+
+        // Load a list of credentials for this package that can be used
+        loadCredentials: function () {
+
+            // Load the list of available credentials
+            tndStudios.models.credentials.list(
+                app.page.packageId,
+                null,
+                app.loadCredentialsCallback);
+        },
+
+        // Load callback, assign the data
+        loadCredentialsCallback: function (success, data) {
+
+            if (success) {
+
+                if (data.data) {
+
+                    app.page.credentialsStore = []; // clear the credentials array
+
+                    // Add the credentials objects back in with wrapper for additional functions
+                    data.data.forEach(function (credentials) {
+                        app.page.credentialsStore.push(new tndStudios.models.credentials.credentials(credentials)); // Assign the Json package to the credentials listing
+                    });
+                };
+            }
+            else
+                tndStudios.utils.ui.notify(0, "Credentials List Could Not Be Loaded");
         },
 
         // load connections from the server

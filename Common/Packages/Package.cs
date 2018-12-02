@@ -5,6 +5,7 @@ using System.Text;
 using TNDStudios.DataPortals.Api;
 using TNDStudios.DataPortals.Data;
 using TNDStudios.DataPortals.Helpers;
+using TNDStudios.DataPortals.Security;
 
 namespace TNDStudios.DataPortals.Repositories
 {
@@ -36,6 +37,11 @@ namespace TNDStudios.DataPortals.Repositories
         public List<Transformation> Transformations { get; set; }
 
         /// <summary>
+        /// List of transformations for this package
+        /// </summary>
+        public List<Credentials> CredentialsStore { get; set; }
+
+        /// <summary>
         /// Default Constructor
         /// </summary>
         public Package() : base()
@@ -44,6 +50,7 @@ namespace TNDStudios.DataPortals.Repositories
             DataDefinitions = new List<DataItemDefinition>();
             DataConnections = new List<DataConnection>();
             Transformations = new List<Transformation>();
+            CredentialsStore = new List<Credentials>();
         }
 
         /// <summary>
@@ -85,6 +92,14 @@ namespace TNDStudios.DataPortals.Repositories
         /// <returns>The transformation</returns>
         public Transformation Transformation(Guid id)
             => Transformations.Where(item => item.Id == id).FirstOrDefault();
+
+        /// <summary>
+        /// Get the Data connection based on the id given
+        /// </summary>
+        /// <param name="id">The id of the connection</param>
+        /// <returns>The data connection</returns>
+        public Credentials Credentials(Guid id)
+            => CredentialsStore.Where(item => item.Id == id).FirstOrDefault();
 
         /// <summary>
         /// Delete an object from the package
@@ -138,6 +153,19 @@ namespace TNDStudios.DataPortals.Repositories
                     if (connection != null)
                     {
                         result = this.DataConnections.Remove(connection);
+                    }
+
+                    break;
+
+                case "credentials":
+
+                    // Get the actual value from the object wrapper
+                    Credentials credentials = this.Credentials(id);
+
+                    // If the type is not null
+                    if (credentials != null)
+                    {
+                        result = this.CredentialsStore.Remove(credentials);
                     }
 
                     break;
@@ -275,6 +303,7 @@ namespace TNDStudios.DataPortals.Repositories
                             existingConnection.Description = connection.Description;
                             existingConnection.Name = connection.Name;
                             existingConnection.ProviderType = connection.ProviderType;
+                            existingConnection.Credentials = connection.Credentials;
                             existingConnection.LastUpdated = DateTime.Now;                            
                         }
 
@@ -317,6 +346,53 @@ namespace TNDStudios.DataPortals.Repositories
 
                         // Convert the data back to the return data type (which is actually the same)
                         dataToSave = (T)Convert.ChangeType(existingTransformation, typeof(T));
+                    }
+
+                    break;
+                    
+                case "credentials":
+
+                    // Get the actual value from the object wrapper
+                    Credentials credentials = (Credentials)Convert.ChangeType(dataToSave, typeof(Credentials));
+
+                    // If the type is not null
+                    if (credentials != null)
+                    {
+                        // Does this set of credentials already exist?
+                        Credentials existingCredentials =
+                            (credentials.Id == Guid.Empty) ? null : this.Credentials(credentials.Id);
+
+                        // Loop the properties and see if any have not been saved before. If not give them an Id
+                        credentials.Properties.ForEach(credential => 
+                        {
+                            if (credential.Id == null)
+                                credential.Id = Guid.NewGuid();
+                        });
+
+                        // No credentials found?
+                        if (existingCredentials == null)
+                        {
+                            // Doesn't exist currently so create a new Id
+                            // and assign the object as the "existing" credentials
+                            existingCredentials = credentials;
+                            existingCredentials.Id = Guid.NewGuid();
+
+                            // Add this new credentials to the repository
+                            CredentialsStore.Add(existingCredentials);
+                        }
+                        else
+                        {
+                            // Assign the values from the item to save
+                            existingCredentials.Description = credentials.Description;
+                            existingCredentials.Name = credentials.Name;
+                            existingCredentials.LastUpdated = DateTime.Now;
+
+                            // Assign the lists
+                            existingCredentials.Properties = credentials.Properties;
+                        }
+
+                        // Convert the data back to the return data type (which is actually the same)
+                        dataToSave = (T)Convert.ChangeType(existingCredentials, typeof(T));
                     }
 
                     break;

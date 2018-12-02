@@ -6,6 +6,7 @@ using System.Text;
 using TNDStudios.DataPortals.Api;
 using TNDStudios.DataPortals.Data;
 using TNDStudios.DataPortals.Repositories;
+using TNDStudios.DataPortals.Security;
 
 namespace TNDStudios.DataPortals.UI
 {
@@ -23,7 +24,7 @@ namespace TNDStudios.DataPortals.UI
         /// Static package to hold the activity for the website
         /// </summary>
         public static IPackageRepository PackageRepository { get; set; }
-        
+
         /// <summary>
         /// Initialise the session handler
         /// </summary>
@@ -41,6 +42,7 @@ namespace TNDStudios.DataPortals.UI
                 Guid dataDefinitionId = Guid.NewGuid();
                 Guid apiId = Guid.NewGuid();
                 Guid transformationId = Guid.NewGuid();
+                Guid CredentialsId = Guid.NewGuid();
 
                 // Set up a new test package in the repository
                 PackageRepository.Save(
@@ -49,6 +51,22 @@ namespace TNDStudios.DataPortals.UI
                         Id = Guid.NewGuid(),
                         Name = "Test Package",
                         Description = "Test Package Description",
+                        CredentialsStore = new List<Credentials>()
+                        {
+                            new Credentials()
+                            {
+                                Id = CredentialsId,
+                                Name = "Default Credentials",
+                                Description = "Credentials Description",
+                                Properties = new List<Credential>()
+                                {
+                                    new Credential(){ Name = "Username", Value = "username" },
+                                    new Credential(){ Name = "Password", Value = "password", Encrypted = true },
+                                    new Credential(){ Name = "ClientId", Value = "client id" },
+                                    new Credential(){ Name = "ClientSecret", Value = "client secret" }
+                                }
+                            }
+                        },
                         ApiDefinitions = new List<ApiDefinition>()
                         {
                             new ApiDefinition()
@@ -68,7 +86,8 @@ namespace TNDStudios.DataPortals.UI
                                 ConnectionString = @"C:\Users\Joe\Documents\Git\TNDStudios.DataPortals.Core\Tests\Providers\DelimitedFileProvider.Tests\TestFiles\DataTypesTest.txt",
                                 Description = "Data Connection Description",
                                 Name = "Data Connection",
-                                ProviderType = DataProviderType.DelimitedFileProvider
+                                ProviderType = DataProviderType.DelimitedFileProvider,
+                                Credentials = CredentialsId
                             }
                         },
                         DataDefinitions = new List<DataItemDefinition>()

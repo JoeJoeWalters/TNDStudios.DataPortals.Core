@@ -7,6 +7,7 @@
 
     <!-- Models required for this page -->
     <script src="~/js/models/dataconnections.js"></script>
+    <script src="~/js/models/credentials.js"></script>
 
     <!-- Vue script for this page-->
     <script src="~/js/pages/connections/index.js"></script>
@@ -90,6 +91,16 @@
                                 <label for="connectionString">Connection String <span class="required">*</span></label>
                                 <!-- Connection String -->
                                 <textarea class="form-control" id="connectionString" name="connectionString" v-model="page.editor.connectionString"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="dataConnection">Credentials</label>
+                                <!-- The credentials that authenticate the connection -->
+                                <select class="form-control" id="credentials" name="credentials" v-model="page.editor.credentials.key">
+                                    <option value="00000000-0000-0000-0000-000000000000"></option>
+                                    <option v-bind:value="item.id" v-for="item in page.credentialsStore">
+                                        {{ item.name }}
+                                    </option>
+                                </select>
                             </div>
                         </div>
                     </div>
