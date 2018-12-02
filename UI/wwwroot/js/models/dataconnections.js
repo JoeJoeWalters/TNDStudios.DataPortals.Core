@@ -26,7 +26,7 @@ tndStudios.models.dataConnections =
             this.description = '';
             this.providerType = 0;
             this.connectionString = '';
-            this.credentials = null;
+            this.credentials = new tndStudios.models.common.keyValuePair();
 
             // Copy the content of this connection from another connection
             // e.g. when editing in a secondary editor object
@@ -69,7 +69,7 @@ tndStudios.models.dataConnections =
                 this.description = '';
                 this.providerType = 0;
                 this.connectionString = '';
-                this.credentials = null;
+                this.credentials = new tndStudios.models.common.keyValuePair();
             }
 
             // Any data passed in?

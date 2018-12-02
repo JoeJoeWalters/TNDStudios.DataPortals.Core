@@ -111,7 +111,14 @@ namespace TNDStudios.DataPortals.UI
             CreateMap<DataConnection, CommonObjectModel>();
 
             // Map from the web view model of the data connection to the domain object
-            CreateMap<DataConnectionModel, DataConnection>();
+            CreateMap<DataConnectionModel, DataConnection>()
+                .ForMember(
+                    item => item.Credentials,
+                    opt => opt.MapFrom(
+                        src => src.Credentials.Key
+                        )
+                    );
+
             CreateMap<CommonObjectModel, DataConnection>();
 
             // Create a generic key pair to id mapping
@@ -153,6 +160,10 @@ namespace TNDStudios.DataPortals.UI
             // Map from the package web view model to the domain object
             CreateMap<PackageModel, Package>();
             CreateMap<CommonObjectModel, Package>();
+
+            // Map from the Credentials object to a key/value pairing
+            CreateMap<Credentials, KeyValuePair<Guid, String>>()
+                .ConstructUsing(cred => new KeyValuePair<Guid, string>(cred.Id, cred.Name));
 
             // Map from the credentials domain object to the web view model
             CreateMap<Credentials, CredentialsModel>();

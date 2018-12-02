@@ -95,7 +95,7 @@
                             <div class="form-group">
                                 <label for="dataConnection">Credentials</label>
                                 <!-- The credentials that authenticate the connection -->
-                                <select class="form-control" id="credentials" name="credentials" v-model="page.editor.credentials">
+                                <select class="form-control" id="credentials" name="credentials" v-model="page.editor.credentials.key">
                                     <option value="00000000-0000-0000-0000-000000000000"></option>
                                     <option v-bind:value="item.id" v-for="item in page.credentialsStore">
                                         {{ item.name }}

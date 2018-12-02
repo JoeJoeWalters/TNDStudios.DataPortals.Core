@@ -29,14 +29,13 @@ namespace TNDStudios.DataPortals.UI.Models.Api
         /// in to connections strings etc.
         /// </summary>
         [JsonProperty]
-        public Guid Credentials { get; set; }
+        public KeyValuePair<Guid, String> Credentials { get; set; }
 
         /// <summary>
         /// Default Constructor
         /// </summary>
         public DataConnectionModel() : base()
         {
-            Credentials = Guid.Empty; // No credentials by default
         }
     }
 }
