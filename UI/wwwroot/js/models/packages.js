@@ -13,6 +13,7 @@ tndStudios.models.packages =
             this.connections = [];
             this.dataDefinitions = [];
             this.transformations = [];
+            this.credentialsStore = [];
 
             this.packageId = $("#packageId").val(); // Get the package Id from the field on the page
         },

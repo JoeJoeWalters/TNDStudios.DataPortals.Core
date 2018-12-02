@@ -12,6 +12,7 @@ tndStudios.models.dataConnections =
             this.editor = new tndStudios.models.dataConnections.dataConnection(null); // The editor object
             this.editItem = null; // Reference to the item that is being edited for saving changes back to it
             this.providerTypes = []; // The list of available provider types
+            this.credentialsStore = []; // The list of credentials for this package
 
             this.packageId = $("#packageId").val(); // Get the package Id from the field on the page
         },
@@ -25,6 +26,7 @@ tndStudios.models.dataConnections =
             this.description = '';
             this.providerType = 0;
             this.connectionString = '';
+            this.credentials = null;
 
             // Copy the content of this connection from another connection
             // e.g. when editing in a secondary editor object
@@ -39,6 +41,7 @@ tndStudios.models.dataConnections =
                 this.description = fromObject.description;
                 this.providerType = fromObject.providerType;
                 this.connectionString = fromObject.connectionString;
+                this.credentials = fromObject.credentials;
             }
 
             // Create a formatted object that can be passed to the server
@@ -50,7 +53,8 @@ tndStudios.models.dataConnections =
                     Name: this.name,
                     Description: this.description,
                     ProviderType: this.providerType,
-                    ConnectionString: this.connectionString
+                    ConnectionString: this.connectionString,
+                    Credentials: this.credentials
                 };
 
                 return result;
@@ -65,6 +69,7 @@ tndStudios.models.dataConnections =
                 this.description = '';
                 this.providerType = 0;
                 this.connectionString = '';
+                this.credentials = null;
             }
 
             // Any data passed in?

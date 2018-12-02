@@ -20,10 +20,17 @@ namespace TNDStudios.DataPortals.Data
         public String ConnectionString { get; set; }
 
         /// <summary>
+        /// Which credentials pack to use for this connection
+        /// items in the credentials pack can be transposed in to connection strings
+        /// </summary>
+        public Guid Credentials { get; set; }
+
+        /// <summary>
         /// Default Constructor
         /// </summary>
         public DataConnection()
         {
+            Credentials = Guid.Empty; // No credentials by default
         }
     }
 }

@@ -86,7 +86,8 @@ namespace TNDStudios.DataPortals.UI
                                 ConnectionString = @"C:\Users\Joe\Documents\Git\TNDStudios.DataPortals.Core\Tests\Providers\DelimitedFileProvider.Tests\TestFiles\DataTypesTest.txt",
                                 Description = "Data Connection Description",
                                 Name = "Data Connection",
-                                ProviderType = DataProviderType.DelimitedFileProvider
+                                ProviderType = DataProviderType.DelimitedFileProvider,
+                                Credentials = CredentialsId
                             }
                         },
                         DataDefinitions = new List<DataItemDefinition>()

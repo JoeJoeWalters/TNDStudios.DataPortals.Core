@@ -23,12 +23,20 @@ namespace TNDStudios.DataPortals.UI.Models.Api
         /// </summary>
         [JsonProperty]
         public String ConnectionString { get; set; }
+        
+        /// <summary>
+        /// Which set of credentials to use to transpose security information
+        /// in to connections strings etc.
+        /// </summary>
+        [JsonProperty]
+        public Guid Credentials { get; set; }
 
         /// <summary>
         /// Default Constructor
         /// </summary>
         public DataConnectionModel() : base()
         {
+            Credentials = Guid.Empty; // No credentials by default
         }
     }
 }

@@ -303,6 +303,7 @@ namespace TNDStudios.DataPortals.Repositories
                             existingConnection.Description = connection.Description;
                             existingConnection.Name = connection.Name;
                             existingConnection.ProviderType = connection.ProviderType;
+                            existingConnection.Credentials = connection.Credentials;
                             existingConnection.LastUpdated = DateTime.Now;                            
                         }
 
