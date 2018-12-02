@@ -126,7 +126,7 @@ tndStudios.models.credentials =
         credential: function (data) {
 
             // Model Properties
-            this.id = '';
+            this.id = null;
             this.name = 'New Credential';
             this.description = 'Credential Description';
             this.value = '';
@@ -135,7 +135,7 @@ tndStudios.models.credentials =
             // Clear the property values
             this.clear = function () {
 
-                this.id = '';
+                this.id = null;
                 this.name = 'New Credential';
                 this.description = 'Credential Description';
                 this.value = '';
@@ -161,7 +161,6 @@ tndStudios.models.credentials =
 
                 var result =
                 {
-                    Id: this.id,
                     Name: this.name,
                     Description: this.description,
                     Value: this.value,
