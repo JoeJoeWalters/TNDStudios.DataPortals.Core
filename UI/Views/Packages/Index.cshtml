@@ -1,0 +1,106 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@section Scripts {
+
+    <!-- Models needed for this page to summarise each -->
+    <script src="~/js/models/apidefinitions.js"></script>
+    <script src="~/js/models/dataconnections.js"></script>
+    <script src="~/js/models/datadefinitions.js"></script>
+    <script src="~/js/models/transformations.js"></script>
+    <script src="~/js/models/credentials.js"></script>
+
+    <!-- Vue script for this page-->
+    <script src="~/js/pages/packages/index.js"></script>
+}
+
+<!-- Breadcrumbs-->
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">Packages</li>
+    <li class="breadcrumb-item active">Summary</li>
+</ol>
+
+<!-- Main Content -->
+<div class="row">
+    <div class="col-lg-4 col-md-6 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                API Definitions
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <!-- List of Api Definitions -->
+                    <li class="list-group-item" v-for="item in page.apiDefinitions">
+                        <!-- Edit the api definition in the list -->
+                        <a v-bind:href="calculatedLink('~/package/{packageId}/apidefinitions/{id}', item.id)">{{item.name}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                Connections
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <!-- List of Connections -->
+                    <li class="list-group-item" v-for="item in page.connections">
+                        <!-- Edit the connections in the list -->
+                        <a v-bind:href="calculatedLink('~/package/{packageId}/connections/{id}', item.id)">{{item.name}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                Data Definitions
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <!-- List of Data Definitions -->
+                    <li class="list-group-item" v-for="item in page.dataDefinitions">
+                        <!-- Edit the data definition in the list -->
+                        <a v-bind:href="calculatedLink('~/package/{packageId}/datadefinitions/{id}', item.id)">{{item.name}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                Transformations
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <!-- List of Transformations -->
+                    <li class="list-group-item" v-for="item in page.transformations">
+                        <!-- Edit the transformations in the list -->
+                        <a v-bind:href="calculatedLink('~/package/{packageId}/transformations/{id}', item.id)">{{item.name}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                Credentials
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <!-- List of Credentials -->
+                    <li class="list-group-item" v-for="item in page.credentialsStore">
+                        <!-- Edit the credentials in the list -->
+                        <a v-bind:href="calculatedLink('~/package/{packageId}/credentials/{id}', item.id)">{{item.name}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

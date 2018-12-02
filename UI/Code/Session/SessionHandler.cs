@@ -75,7 +75,19 @@ namespace TNDStudios.DataPortals.UI
                                 DataDefinition = dataDefinitionId,
                                 Description = "Flat File Api Definition",
                                 Id = apiId,
-                                Name = "flatfile"
+                                Name = "flatfile",
+                                CredentialsLinks = new List<CredentialsLink>()
+                                {
+                                    new CredentialsLink()
+                                    {
+                                        CanCreate = true,
+                                        CanDelete = true,
+                                        CanRead = true,
+                                        CanUpdate = true,
+                                        Credentials = CredentialsId,
+                                        Filter = ""
+                                    }
+                                }
                             }
                         },
                         DataConnections = new List<DataConnection>()

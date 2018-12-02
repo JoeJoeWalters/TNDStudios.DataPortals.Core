@@ -14,6 +14,7 @@ tndStudios.models.apiDefinitions =
 
             this.dataDefinitions = []; // The list of data definitions in this package
             this.dataConnections = []; // The list of data connections in this package
+            this.credentialsStore = []; // The list of credentials in this package
 
             this.packageId = $("#packageId").val(); // Get the package Id from the field on the page
         },
@@ -29,6 +30,7 @@ tndStudios.models.apiDefinitions =
             // Item properties
             this.dataConnection = new tndStudios.models.common.keyValuePair();
             this.dataDefinition = new tndStudios.models.common.keyValuePair();
+            this.credentialsLinks = [];
 
             // Copy the content of this data item definition from another data item definition
             // e.g. when editing in a secondary editor object
@@ -43,6 +45,15 @@ tndStudios.models.apiDefinitions =
                 this.description = fromObject.description;
                 this.dataConnection = fromObject.dataConnection;
                 this.dataDefinition = fromObject.dataDefinition;
+
+                // Copy the credential links in from the source
+                this.credentialsLinks = [];
+                var current = this; // Store the context of "this"
+                if (fromObject.credentialsLinks) {
+                    fromObject.credentialsLinks.forEach(function (credentialsLink) {
+                        current.credentialsLinks.push(new tndStudios.models.credentials.credentialsLink(credentialsLink));
+                    });
+                }
             }
 
             // Create a formatted object that can be passed to the server
@@ -54,7 +65,8 @@ tndStudios.models.apiDefinitions =
                     Name: this.name,
                     Description: this.description,
                     DataConnection: this.dataConnection,
-                    DataDefinition: this.dataDefinition
+                    DataDefinition: this.dataDefinition,
+                    CredentialsLinks: this.credentialsLinks
                 };
 
                 return result;
@@ -69,6 +81,7 @@ tndStudios.models.apiDefinitions =
                 this.description = '';
                 this.dataConnection = new tndStudios.models.common.keyValuePair();
                 this.dataDefinition = new tndStudios.models.common.keyValuePair();
+                this.credentialsLinks = [];
             }
 
             // Any data passed in?
@@ -115,7 +128,7 @@ tndStudios.models.apiDefinitions =
         },
 
         // Preview the api output
-        preview: function (packageId, name) {
+        preview: function (packageId, name, credentials) {
             window.open('/api/package/' + packageId + '/managedapi/objects/' + name, '_blank');
         }
 

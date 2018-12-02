@@ -222,6 +222,7 @@ namespace TNDStudios.DataPortals.Repositories
                             // Assign the foreign keys
                             existingApiDefinition.DataConnection = apiDefinition.DataConnection;
                             existingApiDefinition.DataDefinition = apiDefinition.DataDefinition;
+                            existingApiDefinition.CredentialsLinks = apiDefinition.CredentialsLinks;
                         }
 
                         // Convert the data back to the return data type (which is actually the same)
