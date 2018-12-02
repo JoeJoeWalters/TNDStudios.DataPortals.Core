@@ -1,27 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Text;
 
-namespace TNDStudios.DataPortals.Security
+namespace TNDStudios.DataPortals.UI.Models.Api
 {
     /// <summary>
     /// Credentials object used for supplying connections etc. with the authentication they 
     /// need to connect
     /// </summary>
-    public class Credentials : CommonObject 
+    public class CredentialsModel : CommonObjectModel
     {
         /// <summary>
         /// Property bag of credential items
         /// </summary>
-        public List<Credential> Properties { get; set; }
+        public List<CredentialModel> Properties { get; set; }
 
         /// <summary>
         /// The default constructor
         /// </summary>
-        public Credentials()
+        public CredentialsModel()
         {
-            Properties = new List<Credential>(); // Default to an empty array
+            Properties = new List<CredentialModel>(); // Default to an empty array
         }
     }
 }

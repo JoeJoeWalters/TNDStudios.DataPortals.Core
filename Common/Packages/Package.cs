@@ -5,6 +5,7 @@ using System.Text;
 using TNDStudios.DataPortals.Api;
 using TNDStudios.DataPortals.Data;
 using TNDStudios.DataPortals.Helpers;
+using TNDStudios.DataPortals.Security;
 
 namespace TNDStudios.DataPortals.Repositories
 {
@@ -36,6 +37,11 @@ namespace TNDStudios.DataPortals.Repositories
         public List<Transformation> Transformations { get; set; }
 
         /// <summary>
+        /// List of transformations for this package
+        /// </summary>
+        public List<Credentials> CredentialsStore { get; set; }
+
+        /// <summary>
         /// Default Constructor
         /// </summary>
         public Package() : base()
@@ -44,6 +50,7 @@ namespace TNDStudios.DataPortals.Repositories
             DataDefinitions = new List<DataItemDefinition>();
             DataConnections = new List<DataConnection>();
             Transformations = new List<Transformation>();
+            CredentialsStore = new List<Credentials>();
         }
 
         /// <summary>
@@ -85,6 +92,14 @@ namespace TNDStudios.DataPortals.Repositories
         /// <returns>The transformation</returns>
         public Transformation Transformation(Guid id)
             => Transformations.Where(item => item.Id == id).FirstOrDefault();
+
+        /// <summary>
+        /// Get the Data connection based on the id given
+        /// </summary>
+        /// <param name="id">The id of the connection</param>
+        /// <returns>The data connection</returns>
+        public Credentials Credentials(Guid id)
+            => CredentialsStore.Where(item => item.Id == id).FirstOrDefault();
 
         /// <summary>
         /// Delete an object from the package

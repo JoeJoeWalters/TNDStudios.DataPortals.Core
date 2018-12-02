@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TNDStudios.DataPortals.Api;
 using TNDStudios.DataPortals.Data;
 using TNDStudios.DataPortals.Repositories;
+using TNDStudios.DataPortals.Security;
 using TNDStudios.DataPortals.UI.Models.Api;
 
 namespace TNDStudios.DataPortals.UI
@@ -152,6 +153,16 @@ namespace TNDStudios.DataPortals.UI
             // Map from the package web view model to the domain object
             CreateMap<PackageModel, Package>();
             CreateMap<CommonObjectModel, Package>();
+
+            // Map from the credentials domain object to the web view model
+            CreateMap<Credentials, CredentialsModel>();
+            CreateMap<Credential, CredentialModel>();
+            CreateMap<Credentials, CommonObjectModel>();
+
+            // Map from the credentials web view model to the domain object
+            CreateMap<CredentialsModel, Credentials>();
+            CreateMap<CredentialModel, Credential>();
+            CreateMap<CommonObjectModel, Credentials>();
         }
     }
 }
