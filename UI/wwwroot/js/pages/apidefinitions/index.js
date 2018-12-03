@@ -41,7 +41,7 @@
         },
 
         // Delete the current data definition
-        previewApiDefinition: function (credentials) {
+        previewApiDefinition: function (credentialsLink) {
 
             // Get the editor id field
             var apiName = "";
@@ -56,7 +56,7 @@
                 tndStudios.models.apiDefinitions.preview(
                     app.page.packageId,
                     apiName,
-                    credentials);
+                    credentialsLink.credentials.key);
             }
             else
                 tndStudios.utils.ui.notify(0, 'Cannot Preview An Item That Is Not Saved Yet');

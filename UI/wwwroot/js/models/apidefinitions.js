@@ -128,8 +128,8 @@ tndStudios.models.apiDefinitions =
         },
 
         // Preview the api output
-        preview: function (packageId, name, credentials) {
-            window.open('/api/package/' + packageId + '/managedapi/objects/' + name, '_blank');
+        preview: function (packageId, name, credentialsId) {
+            window.open('/api/package/' + packageId + '/managedapi/objects/' + name + '/preview/' + credentialsId, '_blank');
         }
 
     };
