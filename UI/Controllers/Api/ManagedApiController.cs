@@ -41,6 +41,11 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         private static DataProviderFactory providerFactory;
 
         /// <summary>
+        /// Helper classes that are set up and used often across multiple sessions
+        /// </summary>
+        private static WebAuthHelper webAuthHelper;
+
+        /// <summary>
         /// Convert a data table to the correct format for returning to the user
         /// </summary>
         /// <returns></returns>
@@ -71,6 +76,10 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             // Is the API system initialised?
             if (!initialised)
             {
+                // Create an instance of the web authorisation helper (static as it will be used quite often
+                // and this controller is session based)
+                webAuthHelper = new WebAuthHelper();
+
                 // Create a provider factory so that connections can be pooled
                 providerFactory = new DataProviderFactory();
 
@@ -287,74 +296,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             // Something was very wrong that there could be no service available
             return StatusCode((Int32)HttpStatusCode.ServiceUnavailable, $"There was not package loaded to search for an endpoint of type '{objectType}'");
         }
-
-        /// <summary>
-        /// Authenticate the request made to the service
-        /// </summary>
-        /// <param name="request">The Http Request</param>
-        /// <param name="package">The Package To Check Against</param>
-        /// <param name="apiDefinition">The Api Definition found</param>
-        /// <returns></returns>
-        private Boolean AuthenticateRequest(HttpRequest request, Package package, ApiDefinition apiDefinition)
-        {
-            // Result
-            Boolean result = false;
-
-            // Did we pass in some authentication headers?
-            String authenticationHeader = request.Headers.ContainsKey("Authorization") ?
-                Request.Headers["Authorization"].ToString() : String.Empty;
-
-            // Did we have a header?
-            if (authenticationHeader != String.Empty)
-            {
-                // Split the authentication parts
-                String[] authenticationParts = authenticationHeader.Split(' ');
-
-                // We should have 2 parts e.g. ("Basic dsddfsfsfdff2232")
-                if (authenticationParts.Length == 2)
-                {
-                    // Get the authentication type
-                    String authenticationType = (authenticationParts[0] ?? String.Empty).ToLower().Trim();
-                    switch (authenticationType)
-                    {
-                        case "basic":
-
-                            // Basic authentication, parse out the username and password
-                            String details = Encoding.ASCII.GetString(
-                                Convert.FromBase64String(
-                                    authenticationParts[1] ?? String.Empty
-                                    )
-                                );
-
-                            String[] authParts = details.Split(':');
-                            if (authParts.Length == 2)
-                            {
-                                // Get a list of the available credential ids for the Api endpoint to check against
-                                List<Guid> credentialIds = apiDefinition.CredentialsLinks
-                                    .Select(link => link.Credentials).ToList();
-
-                                // Search the available credentials to see if any contain a match
-                                Credentials credentials = package.CredentialsStore.Where(cred => 
-                                    credentialIds.Contains(cred.Id) &&
-                                    cred.GetValue("username") == authParts[0].Trim() &&
-                                    cred.GetValue("password") == authParts[1].Trim()).FirstOrDefault();
-
-                                // Did we find a match?
-                                if (credentials != null)
-                                {
-                                    result = true;
-                                }
-                            }
-
-                            break;
-                    }
-                }
-            }
-
-            // Return the result of the check
-            return result;
-        }
-
+        
         [HttpGet]
         [Route("objects/{objectType}")]
         public ActionResult<Boolean> Get([FromRoute]Guid packageId, [FromRoute]String objectType)
@@ -370,7 +312,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                     if (apiDefinition != null)
                     {
                         // Authenticate this request against the Api Definition
-                        if (AuthenticateRequest(Request, package, apiDefinition))
+                        if (webAuthHelper.AuthenticateRequest(Request, package, apiDefinition))
                         {
                             // Use the api definition to get the data connection and 
                             // definition from the package and then try to connect
