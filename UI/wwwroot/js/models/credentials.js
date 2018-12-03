@@ -15,6 +15,62 @@ tndStudios.models.credentials =
             this.packageId = $("#packageId").val(); // Get the package Id from the field on the page
         },
 
+        // Permissions Mode
+        permissions: function (data) {
+
+            // Model Properties
+            this.canCreate = false;
+            this.canRead = false;
+            this.canUpdate = false;
+            this.canDelete = false;
+            this.filter = '';
+
+            // Clear the property values
+            this.clear = function () {
+
+                this.canCreate = false;
+                this.canRead = false;
+                this.canUpdate = false;
+                this.canDelete = false;
+                this.filter = '';
+            };
+
+            // Copy the content of this credential from another credential
+            // e.g. when editing in a secondary editor object
+            this.fromObject = function (fromObject) {
+
+                // Clear the object first (just in case)
+                this.clear();
+
+                // Start copying the data from the other object
+                this.canCreate = fromObject.canCreate;
+                this.canRead = fromObject.canRead;
+                this.canUpdate = fromObject.canUpdate;
+                this.canDelete = fromObject.canDate;
+                this.filter = fromObject.filter;
+            };
+
+            // Create a formatted object that can be passed to the server
+            this.toObject = function () {
+
+                var result =
+                {
+                    CanCreate: this.canCreate,
+                    CanRead: this.canRead,
+                    CanUpdate: this.canUpdate,
+                    CanDelete: this.canDate,
+                    Filter: this.filter
+                };
+
+                return result;
+            };
+
+            // Any data passed in?
+            if (data) {
+                this.fromObject(data); // Assign the data to this object
+            };
+        },
+
         // Credentials Model
         credentials: function (data) {
 
@@ -181,21 +237,13 @@ tndStudios.models.credentials =
 
             // Model Properties
             this.credentials = new tndStudios.models.common.keyValuePair();
-            this.canCreate = false;
-            this.canRead = false;
-            this.canUpdate = false;
-            this.canDelete = false;
-            this.filter = '';
+            this.permissions = new tndStudios.models.credentials.permissions();
 
             // Clear the property values
             this.clear = function () {
 
                 this.credentials = new tndStudios.models.common.keyValuePair();
-                this.canCreate = false;
-                this.canRead = false;
-                this.canUpdate = false;
-                this.canDelete = false;
-                this.filter = '';
+                this.permissions = new tndStudios.models.credentials.permissions();
             };
 
             // Copy the content of this credential from another credential
@@ -207,11 +255,7 @@ tndStudios.models.credentials =
 
                 // Start copying the data from the other object
                 this.credentials = fromObject.credentials;
-                this.canCreate = fromObject.canCreate;
-                this.canRead = fromObject.canRead;
-                this.canUpdate = fromObject.canUpdate;
-                this.canDelete = fromObject.canDate;
-                this.filter = fromObject.filter;
+                this.permissions = fromObject.permissions;
             };
 
             // Create a formatted object that can be passed to the server
@@ -220,11 +264,7 @@ tndStudios.models.credentials =
                 var result =
                 {
                     Credentials: this.credentials,
-                    CanCreate: this.canCreate,
-                    CanRead: this.canRead,
-                    CanUpdate: this.canUpdate,
-                    CanDelete: this.canDate,
-                    Filter: this.filter
+                    Permissions: this.permissions
                 };
 
                 return result;

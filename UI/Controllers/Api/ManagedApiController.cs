@@ -272,19 +272,40 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                     var byteArray = Encoding.ASCII.GetBytes($"{username}:{password}");
                     webRequest.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(byteArray));
 
-                    // Call and get the response from the api
-                    WebResponse webResponse = webRequest.GetResponse();
-
-                    // Get the content from the api as it comes in 
+                    // Define some response text
                     String responseText = String.Empty;
-                    using (StreamReader reader =
-                        new StreamReader(webResponse.GetResponseStream(), ASCIIEncoding.ASCII))
+                    try
                     {
-                        responseText = reader.ReadToEnd(); // Read all of the text
-                    }
+                        // Call and get the response from the api
+                        WebResponse webResponse = webRequest.GetResponse();
 
-                    // Close the web response
-                    webResponse.Close();
+                        // Get the content from the api as it comes in 
+                        using (StreamReader reader =
+                            new StreamReader(webResponse.GetResponseStream(), ASCIIEncoding.ASCII))
+                        {
+                            responseText = reader.ReadToEnd(); // Read all of the text
+                        }
+
+                        // Close the web response
+                        webResponse.Close();
+                    }
+                    catch(Exception ex)
+                    {
+                        if (ex.GetType() == typeof(WebException))
+                        {
+                            WebException webException = (WebException)ex;
+                            if (webException != null)
+                            { 
+                                HttpStatusCode statusCode = ((HttpWebResponse)webException.Response).StatusCode;
+                                return StatusCode((Int32)statusCode, webException.Message);
+                        }
+                        else
+                            return StatusCode((Int32)HttpStatusCode.ServiceUnavailable, "Failure in preview service. Please contact your administrator.");
+                        }
+                        else
+                            return StatusCode((Int32)HttpStatusCode.ServiceUnavailable, "Failure in preview service. Please contact your administrator.");
+
+                    }
 
                     // Return the data to the caller
                     return Content(responseText);

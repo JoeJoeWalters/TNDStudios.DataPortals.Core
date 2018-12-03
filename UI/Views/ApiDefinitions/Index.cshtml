@@ -155,19 +155,19 @@
                                             {{credentials.credentials.value}}
                                         </td>
                                         <td>
-                                            <input type="checkbox" v-model="credentials.canCreate" />
+                                            <input type="checkbox" v-model="credentials.permissions.canCreate" />
                                         </td>
                                         <td>
-                                            <input type="checkbox" v-model="credentials.canRead" />
+                                            <input type="checkbox" v-model="credentials.permissions.canRead" />
                                         </td>
                                         <td>
-                                            <input type="checkbox" v-model="credentials.canUpdate" />
+                                            <input type="checkbox" v-model="credentials.permissions.canUpdate" />
                                         </td>
                                         <td>
-                                            <input type="checkbox" v-model="credentials.canDelete" />
+                                            <input type="checkbox" v-model="credentials.permissions.canDelete" />
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control" v-model="credentials.filter" />
+                                            <input type="text" class="form-control" v-model="credentials.permissions.filter" />
                                         </td>
                                         <td>
                                             <input v-on:click="removeCredentials(credentials)" type="button" style="margin-left: 0.1em; margin-right: 0.1em" class="btn btn-sm btn-danger" value="Delete" />
