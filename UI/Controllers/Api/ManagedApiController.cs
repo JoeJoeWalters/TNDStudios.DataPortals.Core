@@ -4,12 +4,15 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using TNDStudios.DataPortals.Api;
 using TNDStudios.DataPortals.Data;
 using TNDStudios.DataPortals.Json;
 using TNDStudios.DataPortals.Repositories;
+using TNDStudios.DataPortals.Security;
 using TNDStudios.DataPortals.UI.Models.Api;
 
 namespace TNDStudios.DataPortals.UI.Controllers.Api
@@ -221,12 +224,106 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             return response;
         }
 
+        /// <summary>
+        /// Preview an Api end point using a set of credentials without needing to know the actual credentials
+        /// </summary>
+        /// <param name="objectType">The key of the api</param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("objects/{objectType}/preview/{credentialsId}")]
+        public ActionResult<Boolean> Preview(
+            [FromRoute]Guid packageId, 
+            [FromRoute]String objectType, 
+            [FromRoute]Guid credentialsId)
+        {
+            // Get the package from the repository
+            Package package = SessionHandler.PackageRepository.Get(packageId);
+            if (package != null)
+            {
+                // Get the credentials for this api Definition
+                Credentials credentials = package.Credentials(credentialsId);
+                if (credentials != null)
+                {
+                    // Get the username and password from the credentials
+                    String username = credentials.GetValue("username");
+                    String password = credentials.GetValue("password");
+
+                    // Work out the endpoint to call (it's this controller with a different endpoint)
+                    String protocol = (HttpContext.Request.IsHttps ? "https" : "http");
+                    String path = $"{protocol}://{HttpContext.Request.Host}/api/package/{packageId.ToString()}/managedapi/objects/{objectType}";
+
+                    // Create a web request to the actual endpoint location
+                    WebRequest webRequest = WebRequest.Create(path);
+
+                    // Set the content type to be json as if it was real
+                    webRequest.ContentType = "application/json";
+
+                    // Set the authorization values based on the credentials to preview as
+                    var byteArray = Encoding.ASCII.GetBytes($"{username}:{password}");
+                    webRequest.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(byteArray));
+
+                    // Call and get the response from the api
+                    WebResponse webResponse = webRequest.GetResponse();
+
+                    // Get the content from the api as it comes in 
+                    String responseText = String.Empty;
+                    using (StreamReader reader = 
+                        new StreamReader(webResponse.GetResponseStream(), ASCIIEncoding.ASCII))
+                    {
+                        responseText = reader.ReadToEnd(); // Read all of the text
+                    }
+
+                    // Close the web response
+                    webResponse.Close();
+
+                    // Return the data to the caller
+                    return Content(responseText);
+                }
+                else
+                    return StatusCode((Int32)HttpStatusCode.Unauthorized, $"There were no valid credentials assigned for endpoint of type '{objectType}'");
+            }
+
+            // Something was very wrong that there could be no service available
+            return StatusCode((Int32)HttpStatusCode.ServiceUnavailable, $"There was not package loaded to search for an endpoint of type '{objectType}'");
+        }
+
         [HttpGet]
         [Route("objects/{objectType}")]
         public ActionResult<Boolean> Get([FromRoute]Guid packageId, [FromRoute]String objectType)
         {
             try
             {
+                // Did we pass in some authentication headers?
+                String authenticationHeader = Request.Headers.ContainsKey("Authorization") ? 
+                    Request.Headers["Authorization"].ToString() : String.Empty;
+
+                // Did we have a header?
+                if (authenticationHeader != String.Empty)
+                {
+                    // Split the authentication parts
+                    String[] authenticationParts = authenticationHeader.Split(' ');
+
+                    // We should have 2 parts e.g. ("Basic dsddfsfsfdff2232")
+                    if (authenticationParts.Length == 2)
+                    {
+                        // Get the authentication type
+                        String authenticationType = (authenticationParts[0] ?? String.Empty).ToLower().Trim(); 
+                        switch (authenticationType)
+                        {
+                            case "basic":
+
+                                // Basic authentication, parse out the username and password
+                                String details = Encoding.ASCII.GetString(
+                                    Convert.FromBase64String(
+                                        authenticationParts[1] ?? String.Empty
+                                        )
+                                    );
+                                
+                                break;
+                        }
+                    }
+                }
+
                 // Get the package from the repository
                 Package package = SessionHandler.PackageRepository.Get(packageId);
                 if (package != null)
