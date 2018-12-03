@@ -312,7 +312,8 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                     if (apiDefinition != null)
                     {
                         // Authenticate this request against the Api Definition
-                        if (webAuthHelper.AuthenticateRequest(Request, package, apiDefinition))
+                        Permissions permissions = webAuthHelper.AuthenticateRequest(Request, package, apiDefinition);
+                        if (permissions != null && permissions.CanRead)
                         {
                             // Use the api definition to get the data connection and 
                             // definition from the package and then try to connect
@@ -325,7 +326,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                             if (provider.Connected)
                             {
                                 // Return the data with the appropriate filter
-                                return DataTableToJsonFormat(provider.Read(""));
+                                return DataTableToJsonFormat(provider.Read(permissions.Filter));
                             }
                             else
                             {

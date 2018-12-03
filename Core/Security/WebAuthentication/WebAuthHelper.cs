@@ -18,10 +18,10 @@ namespace TNDStudios.DataPortals.Security
         /// <param name="package">The Package To Check Against</param>
         /// <param name="apiDefinition">The Api Definition found</param>
         /// <returns></returns>
-        public Boolean AuthenticateRequest(HttpRequest request, Package package, ApiDefinition apiDefinition)
+        public Permissions AuthenticateRequest(HttpRequest request, Package package, ApiDefinition apiDefinition)
         {
             // Result
-            Boolean result = false;
+            Permissions result = new Permissions();
 
             // Did we pass in some authentication headers?
             String authenticationHeader = request.Headers.ContainsKey("Authorization") ?
@@ -65,7 +65,13 @@ namespace TNDStudios.DataPortals.Security
                                 // Did we find a match?
                                 if (credentials != null)
                                 {
-                                    result = true;
+                                    // Get the permissions associated with these credentials from the 
+                                    // links themselves
+                                    result = apiDefinition
+                                        .CredentialsLinks
+                                        .Where(link => link.Credentials == credentials.Id)
+                                        .Select(link => link.Permissions)
+                                        .FirstOrDefault();
                                 }
                             }
 
@@ -74,7 +80,7 @@ namespace TNDStudios.DataPortals.Security
                 }
             }
 
-            // Return the result of the check
+            // Return the permissions of the check
             return result;
         }
     }
