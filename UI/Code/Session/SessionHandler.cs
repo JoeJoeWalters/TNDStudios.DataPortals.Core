@@ -80,12 +80,15 @@ namespace TNDStudios.DataPortals.UI
                                 {
                                     new CredentialsLink()
                                     {
-                                        CanCreate = true,
-                                        CanDelete = true,
-                                        CanRead = true,
-                                        CanUpdate = true,
-                                        Credentials = CredentialsId,
-                                        Filter = ""
+                                        Permissions = new Permissions()
+                                        {
+                                            CanCreate = true,
+                                            CanDelete = true,
+                                            CanRead = true,
+                                            CanUpdate = true,
+                                            Filter = "[Column 3] > 1.5"
+                                        },
+                                        Credentials = CredentialsId
                                     }
                                 }
                             }
@@ -134,7 +137,7 @@ namespace TNDStudios.DataPortals.UI
                                     },
                                     new DataItemProperty()
                                     {
-                                        DataType = typeof(String),
+                                        DataType = typeof(Double),
                                         Name = "Column 3",
                                         Description = "Column 3",
                                         Path = "",
