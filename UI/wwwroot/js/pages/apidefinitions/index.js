@@ -75,7 +75,7 @@
             // Make sure this is a real api definition just in case
             // someone clicked the delete before it was saved
             if (idString != "") {
-                
+
                 // Call the delete function
                 tndStudios.models.apiDefinitions.delete(
                     app.page.packageId,
@@ -168,14 +168,14 @@
 
             // Start loading the connections list
             app.loadConnections();
-            
+
             // Start loading the credentials list
             app.loadCredentials();
 
             // Start loading the data definitions list
             app.loadDataDefinitions();
         },
-        
+
         // load api definitions from the server
         loadApiDefinitions: function () {
 
@@ -255,7 +255,7 @@
 
         // Load a list of data definitions for this package that can be used
         loadDataDefinitions: function () {
-            
+
             // Load the list of available connections
             tndStudios.models.dataDefinitions.list(
                 app.page.packageId,
@@ -310,6 +310,52 @@
             }
             else
                 tndStudios.utils.ui.notify(0, "Credentials List Could Not Be Loaded");
+        },
+
+        // Remove a set of credentials
+        removeCredentials: function (item) {
+
+            // Delete the item
+            app.page.editor.credentialsLinks =
+                app.page.editor.credentialsLinks.filter(function (listItem) {
+                    return (item != listItem);
+                });
+        },
+
+        // Add a new set of credentials to this api definition (assuming a set is selected)
+        addCredentials: function () {
+
+            // Something selected?
+            if (app.page.selectedCredentials != undefined &&
+                app.page.selectedCredentials != null &&
+                app.page.selectedCredentials != '00000000-0000-0000-0000-000000000000') {
+
+                // Check that the item has not already been assigned
+                if (app.page.editor.credentialsLinks.filter(function (item) {
+                    return (item.credentials.key == app.page.selectedCredentials);
+                }).length == 0) {
+
+                    // Add a new link to the array
+                    var credentialsLink = new tndStudios.models.credentials.credentialsLink();
+
+                    // Assign the values
+                    credentialsLink.credentials.key = app.page.selectedCredentials; // Assign the key
+                    credentialsLink.permissions.canRead = true; // Allow read access by default
+
+                    // Loop the credentials array to pick up the name
+                    var credentialCheck = app.page.credentialsStore.filter(function (item) {
+                        return (item.id == app.page.selectedCredentials);
+                    });
+
+                    if (credentialCheck.length != 0)
+                        credentialsLink.credentials.value = credentialCheck[0].name;
+
+                    // Add the new link to the array in the editor
+                    app.page.editor.credentialsLinks.push(credentialsLink);
+                }
+                else
+                    tndStudios.utils.ui.notify(0, 'Cannot Add The Same Credentials More Than Once');
+            }
         },
     }
 });

@@ -15,6 +15,8 @@ tndStudios.models.apiDefinitions =
             this.dataDefinitions = []; // The list of data definitions in this package
             this.dataConnections = []; // The list of data connections in this package
             this.credentialsStore = []; // The list of credentials in this package
+            
+            this.selectedCredentials = null; // The selected credentials item
 
             this.packageId = $("#packageId").val(); // Get the package Id from the field on the page
         },

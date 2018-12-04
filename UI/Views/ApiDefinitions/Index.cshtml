@@ -118,6 +118,13 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <input v-on:click="addCredentials()" type="button" style="margin-left: 0.1em; margin-right: 0.1em" class="btn btn-sm btn-primary float-right" id="addCredentials" name="addCredentials" value="Add Credentials" />
+                        <!-- The credentials that authenticate the connection -->
+                        <select class="form-control-sm float-right" id="credentials" name="credentials" v-model="page.selectedCredentials">
+                            <option value="00000000-0000-0000-0000-000000000000"></option>
+                            <option v-bind:value="item.id" v-for="item in page.credentialsStore">
+                                {{ item.name }}
+                            </option>
+                        </select>
                     </div>
                 </div>
                 <div class="row">
