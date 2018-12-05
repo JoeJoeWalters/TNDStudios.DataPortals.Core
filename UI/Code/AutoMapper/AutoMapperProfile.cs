@@ -7,9 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using TNDStudios.DataPortals.Api;
 using TNDStudios.DataPortals.Data;
+using TNDStudios.DataPortals.PropertyBag;
 using TNDStudios.DataPortals.Repositories;
 using TNDStudios.DataPortals.Security;
 using TNDStudios.DataPortals.UI.Models.Api;
+using TNDStudios.DataPortals.Helpers;
 
 namespace TNDStudios.DataPortals.UI
 {
@@ -182,6 +184,39 @@ namespace TNDStudios.DataPortals.UI
 
             // Map from the permissions web view model to the domain object
             CreateMap<PermissionsModel, Permissions>();
+
+            // Map from the property bag domain object to the web view model
+            CreateMap<PropertyBagItem, PropertyBagItemModel>();
+            CreateMap<PropertyBagItemType, PropertyBagItemTypeModel>()
+                .ForMember(
+                    item => item.PropertyType,
+                    opt => opt.MapFrom(
+                        src => (Int32)src.PropertyType
+                        )
+                    )
+                .ForMember(
+                    item => item.DataType,
+                    opt => opt.MapFrom(
+                        src => src.DataType.ToShortName()
+                        )
+                    );
+
+            // Map from the property bag web view model to the domain object
+#warning Conversion back from proeprty bag item type model is probably not needed but right now it only converts the type back a type of "System.String"
+            CreateMap<PropertyBagItemModel, PropertyBagItem>();
+            CreateMap<PropertyBagItemTypeModel, PropertyBagItemType>()
+                .ForMember(
+                    item => item.PropertyType,
+                    opt => opt.MapFrom(
+                        src => (PropertyBagItemTypeEnum)src.PropertyType
+                        )
+                    )
+                .ForMember(
+                    item => item.DataType,
+                    opt => opt.MapFrom(
+                        src => typeof(String)
+                        )
+                    );
         }
     }
 }

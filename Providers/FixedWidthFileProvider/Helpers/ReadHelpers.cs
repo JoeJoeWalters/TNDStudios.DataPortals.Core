@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using TNDStudios.DataPortals.Data;
+using TNDStudios.DataPortals.PropertyBag;
 
 namespace TNDStudios.DataPortals.Helpers
 {
@@ -29,8 +30,8 @@ namespace TNDStudios.DataPortals.Helpers
                     // Get properties needed to process the file (total lines to skip etc.)
                     Int32 lineNo = 0;
                     Int32 linesToSkip =
-                        definition.GetPropertyBagItem<Int32>(DataItemPropertyBagItem.RowsToSkip, 0) +
-                        (definition.GetPropertyBagItem<Boolean>(DataItemPropertyBagItem.HasHeaderRecord, false) ? 1 : 0);
+                        definition.GetPropertyBagItem<Int32>(PropertyBagItemTypeEnum.RowsToSkip, 0) +
+                        (definition.GetPropertyBagItem<Boolean>(PropertyBagItemTypeEnum.HasHeaderRecord, false) ? 1 : 0);
                     
                     // Loop each line of the file (ignoring lines that do not need to be processed)
                     String line = "";

@@ -53,7 +53,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                 // Success as we got here
                 response.Success = true;
             }
-            catch (Exception ex)
+            catch
             {
                 response.Data.Clear(); // Clear the data as we don't want to send back partial data
                 response.Success = false; // Failed due to hard failure
@@ -107,7 +107,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                 // Success as we got here
                 response.Success = true;
             }
-            catch (Exception ex)
+            catch
             {
                 response.Data = null; // Clear the data as we don't want to send back partial data
                 response.Success = false; // Failed due to hard failure

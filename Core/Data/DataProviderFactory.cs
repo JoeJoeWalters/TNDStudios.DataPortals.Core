@@ -17,7 +17,6 @@ namespace TNDStudios.DataPortals.Data
         /// (which could also include the definition)
         /// </summary>
         /// <returns></returns>
-#warning [This isn't the best approach but for small amounts of connections it's fine for now, use MD5 or other crytography has to get a larger Id later]
         public String GenerateConnectionKey(List<Guid> keys)
             => String.Join("-", keys.ToArray()).GetHashCode().ToString();
             

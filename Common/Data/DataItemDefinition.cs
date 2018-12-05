@@ -4,23 +4,10 @@ using System.ComponentModel;
 using System.Data;
 using System.Globalization;
 using System.Text;
+using TNDStudios.DataPortals.PropertyBag;
 
 namespace TNDStudios.DataPortals.Data
 {
-    /// <summary>
-    /// Enumeration to make the property bag values 
-    /// standard across all providers
-    /// </summary>
-    public enum DataItemPropertyBagItem : Int32
-    {
-        HasHeaderRecord = 0, // Does this definition have a header record in the file etc.
-        QuoteAllFields = 1, // Do we quote all of the fields if this is a file provider type of a given type
-        IgnoreQuotes = 2, // Do we ignore quotes in the data?
-        QuoteCharacter = 3, // What is the quote (encapsulating) character (depeing on the provider type)
-        DelimiterCharacter = 4, // What is the delimiting character (depending on the provider type)
-        RowsToSkip = 5 // How many rows to skip (not including the header, depending on the provider type)
-    }
-
     /// <summary>
     /// The definition of a data item (How the properties of
     /// the data item are mapped etc.)
@@ -83,10 +70,24 @@ namespace TNDStudios.DataPortals.Data
 
                     case DataItemPropertyType.Calculated:
 
-                        result.Columns.Add(
-                            new DataColumn(property.Name, property.DataType, property.Calculation)
-                            {
-                            });
+                        try
+                        {
+                            // Try and add the column in
+                            result.Columns.Add(
+                                new DataColumn(property.Name, property.DataType, property.Calculation)
+                                {
+                                });
+                        }
+                        catch (Exception ex)
+                        {
+#warning "Bit of a hack for now, expression columns can reference other expression columns but they need to be added in the right order, fix this later by adding the expressions after the fact"
+                            // Cannot create a calculated column based on another calculated column
+                            // So add in a column where the calculation is empty
+                            result.Columns.Add(
+                                new DataColumn(property.Name, property.DataType, "")
+                                {
+                                });
+                        }
 
                         break;
                 }
@@ -102,7 +103,7 @@ namespace TNDStudios.DataPortals.Data
         /// <typeparam name="T">The type of data that is requested</typeparam>
         /// <param name="key">The key for the data</param>
         /// <returns>The data formatted as the correct type</returns>
-        public T GetPropertyBagItem<T>(DataItemPropertyBagItem key, T defaultValue)
+        public T GetPropertyBagItem<T>(PropertyBagItemTypeEnum key, T defaultValue)
             => GetPropertyBagItem<T>(key.ToString(), defaultValue);
 
         public T GetPropertyBagItem<T>(String key, T defaultValue)

@@ -4,6 +4,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using TNDStudios.DataPortals.Data;
+using TNDStudios.DataPortals.PropertyBag;
 
 namespace TNDStudios.DataPortals.Helpers
 {
@@ -26,7 +27,7 @@ namespace TNDStudios.DataPortals.Helpers
                 using (CsvWriter writer = SetupWriter(definition, streamWriter))
                 {
                     // Do we need to write a header?
-                    if (definition.GetPropertyBagItem<Boolean>(DataItemPropertyBagItem.HasHeaderRecord, false))
+                    if (definition.GetPropertyBagItem<Boolean>(PropertyBagItemTypeEnum.HasHeaderRecord, false))
                     {
                         // Loop the header records and output the header record line manually
                         definition.ItemProperties
@@ -82,7 +83,7 @@ namespace TNDStudios.DataPortals.Helpers
 
             // Force all fields to be quoted or not
             writer.Configuration.QuoteAllFields =
-                definition.GetPropertyBagItem<Boolean>(DataItemPropertyBagItem.QuoteAllFields, false);
+                definition.GetPropertyBagItem<Boolean>(PropertyBagItemTypeEnum.QuoteAllFields, false);
 
             return writer;
         }

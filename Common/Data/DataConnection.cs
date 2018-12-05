@@ -26,11 +26,17 @@ namespace TNDStudios.DataPortals.Data
         public Guid Credentials { get; set; }
 
         /// <summary>
+        /// Adhoc configuration items for different providers
+        /// </summary>
+        public Dictionary<String, Object> PropertyBag { get; set; }
+
+        /// <summary>
         /// Default Constructor
         /// </summary>
         public DataConnection()
         {
             Credentials = Guid.Empty; // No credentials by default
+            PropertyBag = new Dictionary<String, Object>(); // No properties by default
         }
     }
 }

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using TNDStudios.DataPortals.Data;
 using TNDStudios.DataPortals.Helpers;
+using TNDStudios.DataPortals.PropertyBag;
 
 namespace TNDStudios.DataPortals.UI
 {
@@ -18,7 +18,8 @@ namespace TNDStudios.DataPortals.UI
         Encoding = 1,
         Culture = 2,
         DataTypes = 3,
-        DataPropertyTypes = 4
+        DataPropertyTypes = 4,
+        DataItemPropertyBagItems = 5
     }
 
     /// <summary>
@@ -37,6 +38,17 @@ namespace TNDStudios.DataPortals.UI
             typeof(Single),
             typeof(Boolean)
         };
+
+        /// <summary>
+        /// The enum to cast to a list type for the UI to consume
+        /// </summary>
+        /// <param name="enumType">The type to cast</param>
+        /// <returns>A new list of keyvalue pairs for the UI to consume</returns>
+        private List<KeyValuePair<String, String>> EnumToList(Type enumType)
+            => enumType.ToList()
+                .Select(item =>
+                    new KeyValuePair<string, string>(item.Key.ToString(), item.Value)
+                    ).ToList();
 
         /// <summary>
         /// Get a lookup of a given type
@@ -77,7 +89,7 @@ namespace TNDStudios.DataPortals.UI
                     result = dataTypes
                         .Select(dataType =>
                             new KeyValuePair<String, String>(
-                                dataType.ToString(), 
+                                dataType.ToString(),
                                 dataType.ToShortName().UppercaseFirst()
                                 )
                             ).ToList(); // Return the data types constant
@@ -87,12 +99,14 @@ namespace TNDStudios.DataPortals.UI
                 case LookupFactoryType.DataPropertyTypes:
 
                     // Cast the enumeration to a format that can be returned
-                    result = typeof(DataItemPropertyType)
-                        .ToList()
-                        .Select(item => 
-                            new KeyValuePair<String,String>(item.Key.ToString(), item.Value)
-                            )
-                        .ToList();
+                    result = EnumToList(typeof(DataItemPropertyType));
+
+                    break;
+
+                case LookupFactoryType.DataItemPropertyBagItems:
+
+                    // Cast the enumeration to a format that can be returned
+                    result = EnumToList(typeof(PropertyBagItemTypeEnum));
 
                     break;
             }

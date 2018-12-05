@@ -7,6 +7,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using TNDStudios.DataPortals.Data;
+using TNDStudios.DataPortals.PropertyBag;
 
 namespace TNDStudios.DataPortals.Helpers
 {
@@ -228,17 +229,17 @@ namespace TNDStudios.DataPortals.Helpers
 
             // Configure the CSV Reader
             result.Configuration.HasHeaderRecord = (definition == null) ? true :
-                definition.GetPropertyBagItem<Boolean>(DataItemPropertyBagItem.HasHeaderRecord, true);
+                definition.GetPropertyBagItem<Boolean>(PropertyBagItemTypeEnum.HasHeaderRecord, true);
             result.Configuration.BadDataFound = null; // Don't pipe bad data
             result.Configuration.CultureInfo = (definition == null) ?
                 System.Globalization.CultureInfo.CurrentCulture : definition.Culture;
             result.Configuration.TrimOptions = TrimOptions.Trim;
             result.Configuration.Delimiter = (definition == null) ? "," :
-                definition.GetPropertyBagItem<String>(DataItemPropertyBagItem.DelimiterCharacter, ",");
+                definition.GetPropertyBagItem<String>(PropertyBagItemTypeEnum.DelimiterCharacter, ",");
             result.Configuration.Quote = (definition == null) ? '"' :
-                definition.GetPropertyBagItem<Char>(DataItemPropertyBagItem.QuoteCharacter, '"');
+                definition.GetPropertyBagItem<Char>(PropertyBagItemTypeEnum.QuoteCharacter, '"');
             result.Configuration.IgnoreQuotes = (definition == null) ? true :
-                definition.GetPropertyBagItem<Boolean>(DataItemPropertyBagItem.IgnoreQuotes, true);
+                definition.GetPropertyBagItem<Boolean>(PropertyBagItemTypeEnum.IgnoreQuotes, true);
             result.Configuration.MissingFieldFound = null;
             result.Configuration.ReadingExceptionOccurred = null;
 

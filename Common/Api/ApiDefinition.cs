@@ -21,6 +21,11 @@ namespace TNDStudios.DataPortals.Api
         public Guid DataConnection { get; set; }
 
         /// <summary>
+        /// Adhoc configuration items for different settings
+        /// </summary>
+        public Dictionary<String, Object> PropertyBag { get; set; }
+
+        /// <summary>
         /// Links to credentials and what each set of credentials will
         /// allow the credentials to do
         /// </summary>
@@ -34,6 +39,7 @@ namespace TNDStudios.DataPortals.Api
             DataDefinition = Guid.Empty; // No Data Definition by default
             DataConnection = Guid.Empty; // No Connection by default
             CredentialsLinks = new List<CredentialsLink>(); // Create an empty list of credential links
+            PropertyBag = new Dictionary<String, Object>(); // No properties by default
         }
     }
 }
