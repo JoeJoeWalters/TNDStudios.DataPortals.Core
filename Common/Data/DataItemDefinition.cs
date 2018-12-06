@@ -78,7 +78,7 @@ namespace TNDStudios.DataPortals.Data
                                 {
                                 });
                         }
-                        catch (Exception ex)
+                        catch
                         {
 #warning "Bit of a hack for now, expression columns can reference other expression columns but they need to be added in the right order, fix this later by adding the expressions after the fact"
                             // Cannot create a calculated column based on another calculated column

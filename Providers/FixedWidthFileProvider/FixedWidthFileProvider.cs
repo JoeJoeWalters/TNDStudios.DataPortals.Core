@@ -4,6 +4,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using TNDStudios.DataPortals.Helpers;
+using TNDStudios.DataPortals.PropertyBag;
 
 namespace TNDStudios.DataPortals.Data
 {
@@ -13,7 +14,17 @@ namespace TNDStudios.DataPortals.Data
         /// Override to the base behaviour and allow data writing
         /// </summary>
         public override Boolean CanWrite { get => true; }
-        
+
+        /// <summary>
+        /// The property bag types that can be used to define this connection
+        /// </summary>
+        public override List<PropertyBagItemType> PropertyBagTypes() =>
+            new List<PropertyBagItemType>()
+            {
+                new PropertyBagItemType(){ DataType = typeof(Boolean), DefaultValue = true, PropertyType = PropertyBagItemTypeEnum.HasHeaderRecord },
+                new PropertyBagItemType(){ DataType = typeof(Int32), DefaultValue = 0, PropertyType = PropertyBagItemTypeEnum.RowsToSkip }
+            };
+
         /// <summary>
         /// The data that is loaded from the file when the refresh of the
         /// file is made to avoid needing to lock a file (Commiting the data

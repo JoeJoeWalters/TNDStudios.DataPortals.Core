@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using CsvHelper;
 using TNDStudios.DataPortals.Helpers;
+using TNDStudios.DataPortals.PropertyBag;
 
 namespace TNDStudios.DataPortals.Data
 {
@@ -20,6 +21,20 @@ namespace TNDStudios.DataPortals.Data
         /// Override to the base behaviour and the provider to analyse
         /// </summary>
         public override Boolean CanAnalyse { get => true; }
+
+        /// <summary>
+        /// The property bag types that can be used to define this connection
+        /// </summary>
+        public override List<PropertyBagItemType> PropertyBagTypes() => 
+            new List<PropertyBagItemType>()
+            {
+                new PropertyBagItemType(){ DataType = typeof(String), DefaultValue = ",", PropertyType = PropertyBagItemTypeEnum.DelimiterCharacter },
+                new PropertyBagItemType(){ DataType = typeof(Boolean), DefaultValue = true, PropertyType = PropertyBagItemTypeEnum.HasHeaderRecord },
+                new PropertyBagItemType(){ DataType = typeof(Boolean), DefaultValue = true, PropertyType = PropertyBagItemTypeEnum.IgnoreQuotes },
+                new PropertyBagItemType(){ DataType = typeof(Boolean), DefaultValue = true, PropertyType = PropertyBagItemTypeEnum.QuoteAllFields },
+                new PropertyBagItemType(){ DataType = typeof(Char), DefaultValue = '"', PropertyType = PropertyBagItemTypeEnum.QuoteCharacter },
+                new PropertyBagItemType(){ DataType = typeof(Int32), DefaultValue = 0, PropertyType = PropertyBagItemTypeEnum.RowsToSkip }
+            };
 
         /// <summary>
         /// The data that is loaded from the file when the refresh of the
@@ -42,7 +57,7 @@ namespace TNDStudios.DataPortals.Data
         {
             Boolean result = false; // Failed by default
 
-            // Does the file that we are trying to connet to exist?
+            // Does the file that we are trying to connect to exist?
             if (File.Exists(connectionString))
             {
                 // Connect to the file and read the data from it
@@ -224,14 +239,14 @@ namespace TNDStudios.DataPortals.Data
                 DataView view = new DataView(memoryData)
                 {
                     RowFilter = command // Set the filter from the command
-                }; 
+                };
 
                 return view.ToTable(); // Return the filtered table
             }
             else
                 return memoryData; // Simply supply the in-memory datatable back to the user
         }
-        
+
         /// <summary>
         /// Look at the file and try and represent the file as a dataset without a definition
         /// </summary>
@@ -243,7 +258,7 @@ namespace TNDStudios.DataPortals.Data
             String rawData = ""; // The data which ultimately will be read from
 
             // Check to see what can of analysis is being requested
-            if (request.Connection != null && 
+            if (request.Connection != null &&
                 (request.Connection.ConnectionString ?? String.Empty) != String.Empty)
             {
                 // Get the stream of data from the raw file
@@ -276,7 +291,7 @@ namespace TNDStudios.DataPortals.Data
             }
 
             // Pass down to the analyse text core function
-            AnalyseRequest<String> analyseTextRequest = 
+            AnalyseRequest<String> analyseTextRequest =
                 new AnalyseRequest<String>()
                 {
                     Data = rawData
@@ -296,7 +311,6 @@ namespace TNDStudios.DataPortals.Data
         {
             connectionString = ""; // No connection string by default
             connected = false; // Not connected until the file can be proven as existing
-
         }
     }
 }

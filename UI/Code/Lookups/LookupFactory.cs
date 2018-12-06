@@ -19,7 +19,8 @@ namespace TNDStudios.DataPortals.UI
         Culture = 2,
         DataTypes = 3,
         DataPropertyTypes = 4,
-        DataItemPropertyBagItems = 5
+        DataItemPropertyBagItems = 5,
+        ObjectTypes = 6
     }
 
     /// <summary>
@@ -107,6 +108,13 @@ namespace TNDStudios.DataPortals.UI
 
                     // Cast the enumeration to a format that can be returned
                     result = EnumToList(typeof(PropertyBagItemTypeEnum));
+
+                    break;
+
+                case LookupFactoryType.ObjectTypes:
+
+                    // Cast the enumeration to a format that can be returned
+                    result = EnumToList(typeof(ObjectTypes));
 
                     break;
             }

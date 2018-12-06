@@ -5,6 +5,7 @@ using System.Data;
 using System.IO;
 using System.Text;
 using TNDStudios.DataPortals.Helpers;
+using TNDStudios.DataPortals.PropertyBag;
 
 namespace TNDStudios.DataPortals.Data
 {
@@ -58,6 +59,11 @@ namespace TNDStudios.DataPortals.Data
         /// e.g. SQL connection string or path for a file etc.
         /// </summary>
         String ConnectionString { get; }
+
+        /// <summary>
+        /// The property bag types that can be used to define this connection
+        /// </summary>
+        List<PropertyBagItemType> PropertyBagTypes();
 
         /// <summary>
         /// Connect to the location of the data (Database connection, flat file, xml, etc.)

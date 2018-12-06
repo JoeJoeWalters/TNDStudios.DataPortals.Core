@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TNDStudios.DataPortals.PropertyBag;
+using TNDStudios.DataPortals.UI.Models.Api;
+
 namespace TNDStudios.DataPortals.UI.Controllers.Api
 {
     /// <summary>
@@ -14,10 +18,16 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
     public class SystemApiController : ApiControllerBase
     {
         /// <summary>
+        /// Automapper set by the dependency injection to the constructor
+        /// </summary>
+        private readonly IMapper mapper;
+
+        /// <summary>
         /// Default Constructor
         /// </summary>
-        public SystemApiController() : base()
+        public SystemApiController(IMapper mapper) : base()
         {
+            this.mapper = mapper; // Assign the mapper from the dependency injection
         }
 
         /// <summary>
@@ -26,10 +36,23 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// <returns>A list of a given type</returns>
         [HttpGet]
         [Route("lookup/{id}")]
-        public ApiResponse<List<KeyValuePair<String, String>>> Get(LookupFactoryType id)
+        public ApiResponse<List<KeyValuePair<String, String>>> GetLookup([FromRoute] LookupFactoryType id)
             => new ApiResponse<List<KeyValuePair<String, String>>>()
             {
                 Data = (new LookupFactory()).Get(id),
+                Success = true
+            };
+
+        /// <summary>
+        /// Get a list from the given lookup
+        /// </summary>
+        /// <returns>A list of a given type</returns>
+        [HttpGet]
+        [Route("propertybag/{objectType}/{value}")]
+        public ApiResponse<List<PropertyBagItemTypeModel>> GetPropertyBag([FromRoute] ObjectTypes objectType, [FromRoute] Int32 value)
+            => new ApiResponse<List<PropertyBagItemTypeModel>>()
+            {
+                Data = mapper.Map<List<PropertyBagItemTypeModel>>((new PropertyBagFactory()).Get(objectType, value)),
                 Success = true
             };
     }

@@ -4,6 +4,7 @@ using System.Data;
 using System.IO;
 using System.Text;
 using TNDStudios.DataPortals.Helpers;
+using TNDStudios.DataPortals.PropertyBag;
 
 namespace TNDStudios.DataPortals.Data
 {
@@ -24,6 +25,11 @@ namespace TNDStudios.DataPortals.Data
         /// structure of the object being read)
         /// </summary>
         public virtual Boolean CanAnalyse { get => false; }
+
+        /// <summary>
+        /// The property bag types that can be used to define this connection
+        /// </summary>
+        public virtual List<PropertyBagItemType> PropertyBagTypes() => new List<PropertyBagItemType>() { };
 
         /// <summary>
         /// Default Constructor
