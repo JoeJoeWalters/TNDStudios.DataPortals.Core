@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace TNDStudios.DataPortals.Helpers
@@ -52,22 +53,8 @@ namespace TNDStudios.DataPortals.Helpers
             foreach (var item in Enum.GetValues(value))
             {
                 // Do we have a description attribute?
-                String description = item.ToString();
-
-                // Get the member information for the enum item
-                var memInfo = value.GetMember(value.GetEnumName(item));
-                if (memInfo.Length != 0)
-                {
-                    // Get the first description attribute
-                    var descriptionAttribute = memInfo[0]
-                        .GetCustomAttributes(typeof(DescriptionAttribute), false)
-                        .FirstOrDefault() as DescriptionAttribute;
-
-                    // We got something, assign the value
-                    if (descriptionAttribute != null)
-                        description = descriptionAttribute.Description;
-                }
-
+                String description = ((Enum)item).GetEnumDescription();
+                
                 // Add the result to the return dictionary
                 result.Add(new KeyValuePair<int, string>((Int32)item, description));
             }
@@ -75,5 +62,25 @@ namespace TNDStudios.DataPortals.Helpers
             return result; // Send the dictionary back
         }
 
+        /// <summary>
+        /// Get the description attribute from an enum value
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string GetEnumDescription(this Enum value)
+        {
+            FieldInfo fi = value.GetType().GetField(value.ToString());
+
+            DescriptionAttribute[] attributes =
+                (DescriptionAttribute[])fi.GetCustomAttributes(
+                typeof(DescriptionAttribute),
+                false);
+
+            if (attributes != null &&
+                attributes.Length > 0)
+                return attributes[0].Description;
+            else
+                return value.ToString();
+        }
     }
 }

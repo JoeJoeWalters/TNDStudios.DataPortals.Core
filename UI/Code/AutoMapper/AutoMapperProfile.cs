@@ -191,7 +191,10 @@ namespace TNDStudios.DataPortals.UI
                 .ForMember(
                     item => item.PropertyType,
                     opt => opt.MapFrom(
-                        src => (Int32)src.PropertyType
+                        src => new KeyValuePair<Int32, String>(
+                            (Int32)src.PropertyType, 
+                            src.PropertyType.GetEnumDescription()
+                            )
                         )
                     )
                 .ForMember(
@@ -208,7 +211,7 @@ namespace TNDStudios.DataPortals.UI
                 .ForMember(
                     item => item.PropertyType,
                     opt => opt.MapFrom(
-                        src => (PropertyBagItemTypeEnum)src.PropertyType
+                        src => src.PropertyType.Key
                         )
                     )
                 .ForMember(
