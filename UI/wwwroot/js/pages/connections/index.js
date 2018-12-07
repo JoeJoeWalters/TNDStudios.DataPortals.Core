@@ -24,6 +24,36 @@
     },
     methods: {
 
+        // Is the form type one that can be displayed
+        isCorrectFormType: function (sourceType, typeToCheck) {
+
+            var visible = false; // Not visible by default
+
+            // Got something to work with?
+            if (sourceType != undefined && typeToCheck != undefined) {
+
+                // Lowercase the source type for comparison
+                sourceType = sourceType.toLowerCase();
+
+                // Check the different types
+                switch (typeToCheck) {
+                    case "checkbox":
+                        if (sourceType == "boolean") {
+                            visible = true;
+                        }
+                        break;
+
+                    case "text":
+                        if (sourceType == "string" || sourceType == "char") {
+                            visible = true;
+                        }
+                        break;
+                }
+            }
+
+            return visible ? "visible" : "hidden";
+        },
+
         // Add a new item to the definition list
         newConnection: function () {
 
@@ -156,10 +186,10 @@
 
             // Has an id been specified to load straight away?
             tndStudios.models.common.loadAtStart(this.loadConnection);
-            
+
             // Load the provider types
             app.loadProviderTypes();
-            
+
             // Start loading the credentials list
             app.loadCredentials();
 
@@ -177,7 +207,7 @@
         },
 
         // When the property bag is loaded (or not, call this)
-        propertyBagCallback: function(success, data) {
+        propertyBagCallback: function (success, data) {
             if (success) {
                 if (data.data) {
 
@@ -197,7 +227,7 @@
                         // Push the item to the list
                         app.page.editor.propertyBag.push(
                             new tndStudios.models.propertyBag.propertyBagItem(propertyBagItem)
-                        ); 
+                        );
                     });
                 }
             }
@@ -271,7 +301,7 @@
                 }
             }
         },
-        
+
         // load singular connection from the server (as the list is only the headers)
         loadConnection: function (id) {
 

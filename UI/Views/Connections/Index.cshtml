@@ -125,7 +125,8 @@
                                                 {{ property.itemType.propertyType.value }}
                                             </td>
                                             <td>
-                                                <input type="text" v-model="property.value" class="form-control" />
+                                                <input type="text" v-bind:style="{visibility: isCorrectFormType(property.itemType.dataType, 'text')}"  v-model="property.value" class="form-control" />
+                                                <input type="checkbox" v-bind:style="{visibility: isCorrectFormType(property.itemType.dataType, 'checkbox')}"  v-model="property.value" class="form-control" />
                                             </td>
                                         </tr>
                                     </tbody>
