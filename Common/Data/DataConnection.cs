@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TNDStudios.DataPortals.PropertyBag;
 
 namespace TNDStudios.DataPortals.Data
 {
@@ -28,7 +29,7 @@ namespace TNDStudios.DataPortals.Data
         /// <summary>
         /// Adhoc configuration items for different providers
         /// </summary>
-        public Dictionary<String, Object> PropertyBag { get; set; }
+        public List<PropertyBagItem> PropertyBag { get; set; }
 
         /// <summary>
         /// Default Constructor
@@ -36,7 +37,9 @@ namespace TNDStudios.DataPortals.Data
         public DataConnection()
         {
             Credentials = Guid.Empty; // No credentials by default
-            PropertyBag = new Dictionary<String, Object>(); // No properties by default
+            ProviderType = DataProviderType.Unknown; // No provider type by default
+            ConnectionString = String.Empty; // No connection string by default
+            PropertyBag = new List<PropertyBagItem>(); // No properties by default
         }
     }
 }

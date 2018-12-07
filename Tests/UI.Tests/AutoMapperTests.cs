@@ -268,7 +268,7 @@ namespace TNDStudios.DataPortals.Tests.UI
                 Description = "description value",
                 Key = true,
                 Name = "name value",
-                OridinalPosition = 100001,
+                OrdinalPosition = 100001,
                 Path = "path/to/the/value",
                 Pattern = "dd MMM yyyy",
                 PropertyType = DataItemPropertyType.Calculated,
@@ -286,7 +286,7 @@ namespace TNDStudios.DataPortals.Tests.UI
             Assert.Equal(property.Description, model.Description);
             Assert.Equal(property.Key, model.Key);
             Assert.Equal(property.Name, model.Name);
-            Assert.Equal(property.OridinalPosition, model.OridinalPosition);
+            Assert.Equal(property.OrdinalPosition, model.OrdinalPosition);
             Assert.Equal(property.Path, model.Path);
             Assert.Equal(property.Pattern, model.Pattern);
             Assert.Equal(property.PropertyType, model.PropertyType);
@@ -337,7 +337,7 @@ namespace TNDStudios.DataPortals.Tests.UI
                 Description = "description value",
                 Key = true,
                 Name = "name value",
-                OridinalPosition = 100001,
+                OrdinalPosition = 100001,
                 Path = "path/to/the/value",
                 Pattern = "dd MMM yyyy",
                 PropertyType = DataItemPropertyType.Calculated,
@@ -354,7 +354,7 @@ namespace TNDStudios.DataPortals.Tests.UI
             Assert.Equal(model.Description, property.Description);
             Assert.Equal(model.Key, property.Key);
             Assert.Equal(model.Name, property.Name);
-            Assert.Equal(model.OridinalPosition, property.OridinalPosition);
+            Assert.Equal(model.OrdinalPosition, property.OrdinalPosition);
             Assert.Equal(model.Path, property.Path);
             Assert.Equal(model.Pattern, property.Pattern);
             Assert.Equal(model.PropertyType, property.PropertyType);

@@ -167,6 +167,42 @@
             app.loadConnections();
         },
 
+        // The provider was changed (Get the property bag etc.)
+        providerChanged: function () {
+            tndStudios.models.propertyBag.getDefaults(
+                tndStudios.models.common.objectTypes.Providers,
+                app.page.editor.providerType,
+                this.propertyBagCallback
+            );
+        },
+
+        // When the property bag is loaded (or not, call this)
+        propertyBagCallback: function(success, data) {
+            if (success) {
+                if (data.data) {
+
+                    // Clear the property bag
+                    app.page.editor.propertyBag = [];
+
+                    // Loop the incoming defaults and create new property bag items
+                    data.data.forEach(function (propertyBagDefault) {
+
+                        // Create a new property bag item
+                        var propertyBagItem = new tndStudios.models.propertyBag.propertyBagItem();
+
+                        // Assign the new values
+                        propertyBagItem.itemType = propertyBagDefault;
+                        propertyBagItem.value = propertyBagDefault.defaultValue;
+
+                        // Push the item to the list
+                        app.page.editor.propertyBag.push(
+                            new tndStudios.models.propertyBag.propertyBagItem(propertyBagItem)
+                        ); 
+                    });
+                }
+            }
+        },
+
         // Load the available provider types
         loadProviderTypes: function () {
 

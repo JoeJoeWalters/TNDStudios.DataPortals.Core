@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TNDStudios.DataPortals.PropertyBag;
 using TNDStudios.DataPortals.Security;
 
 namespace TNDStudios.DataPortals.Api
@@ -23,7 +24,7 @@ namespace TNDStudios.DataPortals.Api
         /// <summary>
         /// Adhoc configuration items for different settings
         /// </summary>
-        public Dictionary<String, Object> PropertyBag { get; set; }
+        public List<PropertyBagItem> PropertyBag { get; set; }
 
         /// <summary>
         /// Links to credentials and what each set of credentials will
@@ -39,7 +40,7 @@ namespace TNDStudios.DataPortals.Api
             DataDefinition = Guid.Empty; // No Data Definition by default
             DataConnection = Guid.Empty; // No Connection by default
             CredentialsLinks = new List<CredentialsLink>(); // Create an empty list of credential links
-            PropertyBag = new Dictionary<String, Object>(); // No properties by default
+            PropertyBag = new List<PropertyBagItem>(); // No properties by default
         }
     }
 }

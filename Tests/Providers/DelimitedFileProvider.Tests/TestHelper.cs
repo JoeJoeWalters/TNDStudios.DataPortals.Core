@@ -6,6 +6,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using TNDStudios.DataPortals.Data;
+using TNDStudios.DataPortals.PropertyBag;
 
 namespace TNDStudios.DataPortals.Tests.DelimitedFile
 {
@@ -67,30 +68,67 @@ namespace TNDStudios.DataPortals.Tests.DelimitedFile
                 case TestFile_DataTypes:
 
                     // Definition for different data types and the data defined by ordinal position
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Title", DataType = typeof(String), OridinalPosition = 0 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "CreatedDate", DataType = typeof(DateTime), OridinalPosition = 1 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Size", DataType = typeof(Double), OridinalPosition = 2 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Description", DataType = typeof(String), OridinalPosition = 3 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Active", DataType = typeof(Boolean), OridinalPosition = 4 });
-                    definition.PropertyBag[DataItemPropertyBagItem.HasHeaderRecord.ToString()] = false;
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Title", DataType = typeof(String), OrdinalPosition = 0 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "CreatedDate", DataType = typeof(DateTime), OrdinalPosition = 1 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Size", DataType = typeof(Double), OrdinalPosition = 2 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Description", DataType = typeof(String), OrdinalPosition = 3 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Active", DataType = typeof(Boolean), OrdinalPosition = 4 });
 
+                    // Property bag items to define how the provider should handle custom settings
+                    definition.PropertyBag.Add(
+                                            new PropertyBagItem()
+                                            {
+                                                ItemType = new PropertyBagItemType()
+                                                {
+                                                    DataType = typeof(Boolean),
+                                                    DefaultValue = false,
+                                                    PropertyType = PropertyBagItemTypeEnum.HasHeaderRecord
+                                                },
+                                                Value = false
+                                            }); // There is a header record
+                    
                     break;
 
                 case TestFile_Headers:
 
                     // Definition for getting the data by the name of the header
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Title", DataType = typeof(String), OridinalPosition = -1 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Description Header", DataType = typeof(String), OridinalPosition = -1 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Value", DataType = typeof(String), OridinalPosition = -1 });
-                    definition.PropertyBag[DataItemPropertyBagItem.HasHeaderRecord.ToString()] = true;
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Title", DataType = typeof(String), OrdinalPosition = -1 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Description Header", DataType = typeof(String), OrdinalPosition = -1 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Value", DataType = typeof(String), OrdinalPosition = -1 });
+
+                    // Property bag items to define how the provider should handle custom settings
+                    definition.PropertyBag.Add(
+                                            new PropertyBagItem()
+                                            {
+                                                ItemType = new PropertyBagItemType()
+                                                {
+                                                    DataType = typeof(Boolean),
+                                                    DefaultValue = true,
+                                                    PropertyType = PropertyBagItemTypeEnum.HasHeaderRecord
+                                                },
+                                                Value = true
+                                            }); // There is a header record
 
                     break;
 
                 case TestFile_ISODates:
 
                     // Definition for supplying a list of ISO (and bad) dates to test
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Date", DataType = typeof(DateTime), OridinalPosition = 0 });
-                    definition.PropertyBag[DataItemPropertyBagItem.HasHeaderRecord.ToString()] = true;
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Date", DataType = typeof(DateTime), OrdinalPosition = 0 });
+
+                    // Property bag items to define how the provider should handle custom settings
+                    definition.PropertyBag.Add(
+                                            new PropertyBagItem()
+                                            {
+                                                ItemType = new PropertyBagItemType()
+                                                {
+                                                    DataType = typeof(Boolean),
+                                                    DefaultValue = true,
+                                                    PropertyType = PropertyBagItemTypeEnum.HasHeaderRecord
+                                                },
+                                                Value = true
+                                            }); // There is a header record
+
                     definition.Culture = CultureInfo.InvariantCulture;
 
                     break;
@@ -99,8 +137,21 @@ namespace TNDStudios.DataPortals.Tests.DelimitedFile
 
                     // Definition for supplying a list of custom (and bad) dates to test
                     // where the format is defined as dd MMM yyyy
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Date", DataType = typeof(DateTime), OridinalPosition = 0, Pattern = "dd MMM yyyy" });
-                    definition.PropertyBag[DataItemPropertyBagItem.HasHeaderRecord.ToString()] = true;
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Date", DataType = typeof(DateTime), OrdinalPosition = 0, Pattern = "dd MMM yyyy" });
+
+                    // Property bag items to define how the provider should handle custom settings
+                    definition.PropertyBag.Add(
+                                            new PropertyBagItem()
+                                            {
+                                                ItemType = new PropertyBagItemType()
+                                                {
+                                                    DataType = typeof(Boolean),
+                                                    DefaultValue = true,
+                                                    PropertyType = PropertyBagItemTypeEnum.HasHeaderRecord
+                                                },
+                                                Value = true
+                                            }); // There is a header record
+
                     definition.Culture = CultureInfo.CurrentCulture;
 
                     break;
@@ -108,11 +159,24 @@ namespace TNDStudios.DataPortals.Tests.DelimitedFile
                 case TestFile_WriteTests:
 
                     // Define lots of different data types to write to a file
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "StringValue", DataType = typeof(String), OridinalPosition = 0 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "DateValue", DataType = typeof(DateTime), OridinalPosition = 1, Pattern = "dd MMM yyyy" });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "BooleanValue", DataType = typeof(Boolean), OridinalPosition = 2 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "NumericValue", DataType = typeof(Double), OridinalPosition = 3 });
-                    definition.PropertyBag[DataItemPropertyBagItem.HasHeaderRecord.ToString()] = true;
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "StringValue", DataType = typeof(String), OrdinalPosition = 0 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "DateValue", DataType = typeof(DateTime), OrdinalPosition = 1, Pattern = "dd MMM yyyy" });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "BooleanValue", DataType = typeof(Boolean), OrdinalPosition = 2 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "NumericValue", DataType = typeof(Double), OrdinalPosition = 3 });
+
+                    // Property bag items to define how the provider should handle custom settings
+                    definition.PropertyBag.Add(
+                                            new PropertyBagItem()
+                                            {
+                                                ItemType = new PropertyBagItemType()
+                                                {
+                                                    DataType = typeof(Boolean),
+                                                    DefaultValue = true,
+                                                    PropertyType = PropertyBagItemTypeEnum.HasHeaderRecord
+                                                },
+                                                Value = true
+                                            }); // There is a header record
+
                     definition.Culture = CultureInfo.CurrentCulture;
 
                     break;
@@ -121,10 +185,23 @@ namespace TNDStudios.DataPortals.Tests.DelimitedFile
                 case TestFile_PKMergeTo:
 
                     // Define lots of different data types to write to a file
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Primary Key Part 1", DataType = typeof(String), OridinalPosition = 0, Key = true });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Primary Key Part 2", DataType = typeof(String), OridinalPosition = 1, Key = true });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Data", DataType = typeof(String), OridinalPosition = 2 });
-                    definition.PropertyBag[DataItemPropertyBagItem.HasHeaderRecord.ToString()] = true;
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Primary Key Part 1", DataType = typeof(String), OrdinalPosition = 0, Key = true });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Primary Key Part 2", DataType = typeof(String), OrdinalPosition = 1, Key = true });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Data", DataType = typeof(String), OrdinalPosition = 2 });
+
+                    // Property bag items to define how the provider should handle custom settings
+                    definition.PropertyBag.Add(
+                                            new PropertyBagItem()
+                                            {
+                                                ItemType = new PropertyBagItemType()
+                                                {
+                                                    DataType = typeof(Boolean),
+                                                    DefaultValue = true,
+                                                    PropertyType = PropertyBagItemTypeEnum.HasHeaderRecord
+                                                },
+                                                Value = true
+                                            }); // There is a header record
+
                     definition.Culture = CultureInfo.CurrentCulture;
 
                     break;
@@ -132,11 +209,24 @@ namespace TNDStudios.DataPortals.Tests.DelimitedFile
                 case TestFile_ExpressionTests:
 
                     // Define lots of different data types to write to a file
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Title", DataType = typeof(String), OridinalPosition = 0, Key = true });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Value", DataType = typeof(int), OridinalPosition = 1 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Multiplier", DataType = typeof(Double), OridinalPosition = 2 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Result", DataType = typeof(Double), OridinalPosition = 3, Calculation = "(Value * Multiplier)", PropertyType = DataItemPropertyType.Calculated });
-                    definition.PropertyBag[DataItemPropertyBagItem.HasHeaderRecord.ToString()] = true;
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Title", DataType = typeof(String), OrdinalPosition = 0, Key = true });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Value", DataType = typeof(int), OrdinalPosition = 1 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Multiplier", DataType = typeof(Double), OrdinalPosition = 2 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Result", DataType = typeof(Double), OrdinalPosition = 3, Calculation = "(Value * Multiplier)", PropertyType = DataItemPropertyType.Calculated });
+
+                    // Property bag items to define how the provider should handle custom settings
+                    definition.PropertyBag.Add(
+                                            new PropertyBagItem()
+                                            {
+                                                ItemType = new PropertyBagItemType()
+                                                {
+                                                    DataType = typeof(Boolean),
+                                                    DefaultValue = true,
+                                                    PropertyType = PropertyBagItemTypeEnum.HasHeaderRecord
+                                                },
+                                                Value = true
+                                            }); // There is a header record
+
                     definition.Culture = CultureInfo.CurrentCulture;
 
                     break;

@@ -32,10 +32,20 @@ namespace TNDStudios.DataPortals.UI.Models.Api
         public KeyValuePair<Guid, String> Credentials { get; set; }
 
         /// <summary>
+        /// The property bag for the connection object
+        /// </summary>
+        [JsonProperty]
+        public List<PropertyBagItemModel> PropertyBag { get; set; }
+
+        /// <summary>
         /// Default Constructor
         /// </summary>
         public DataConnectionModel() : base()
         {
+            ProviderType = 0; // No provider type by default
+            ConnectionString = String.Empty; // No connection string by default
+            Credentials = new KeyValuePair<Guid, String>(Guid.Empty, ""); // No credentials by default
+            PropertyBag = new List<PropertyBagItemModel>(); // No properties by default
         }
     }
 }

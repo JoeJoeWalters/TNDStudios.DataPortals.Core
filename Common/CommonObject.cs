@@ -9,6 +9,7 @@ namespace TNDStudios.DataPortals
     /// <summary>
     /// An enumeration to define the different object types within the system
     /// so it could be used for factory classes or just general classification
+    /// Replicated in javascript - tndStudios.models.common (common.js)
     /// </summary>
     public enum ObjectTypes
     {

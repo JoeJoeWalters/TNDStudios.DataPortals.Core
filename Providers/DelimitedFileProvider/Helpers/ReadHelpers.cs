@@ -34,6 +34,7 @@ namespace TNDStudios.DataPortals.Helpers
                 using (TextReader textReader = new StringReader(request.Data))
                 {
                     // Create an instance of the CSV Reader
+#warning "This no longer works as we need a definition by default, Might be worth gettig a default reader somehow"
                     using (CsvReader csvReader = SetupReader(textReader, null))
                     {
                         // Can we read from the stream?
@@ -227,19 +228,22 @@ namespace TNDStudios.DataPortals.Helpers
             // Produce a new CSV Reader
             CsvReader result = new CsvReader(textReader);
 
+            // Create a helper to read the property bag items
+            PropertyBagHelper propertyBagHelper = new PropertyBagHelper(definition.PropertyBag);
+
             // Configure the CSV Reader
             result.Configuration.HasHeaderRecord = (definition == null) ? true :
-                definition.GetPropertyBagItem<Boolean>(PropertyBagItemTypeEnum.HasHeaderRecord, true);
+                propertyBagHelper.GetPropertyBagItem<Boolean>(PropertyBagItemTypeEnum.HasHeaderRecord, true);
             result.Configuration.BadDataFound = null; // Don't pipe bad data
             result.Configuration.CultureInfo = (definition == null) ?
-                System.Globalization.CultureInfo.CurrentCulture : definition.Culture;
+                CultureInfo.CurrentCulture : definition.Culture;
             result.Configuration.TrimOptions = TrimOptions.Trim;
             result.Configuration.Delimiter = (definition == null) ? "," :
-                definition.GetPropertyBagItem<String>(PropertyBagItemTypeEnum.DelimiterCharacter, ",");
+                propertyBagHelper.GetPropertyBagItem<String>(PropertyBagItemTypeEnum.DelimiterCharacter, ",");
             result.Configuration.Quote = (definition == null) ? '"' :
-                definition.GetPropertyBagItem<Char>(PropertyBagItemTypeEnum.QuoteCharacter, '"');
+                propertyBagHelper.GetPropertyBagItem<Char>(PropertyBagItemTypeEnum.QuoteCharacter, '"');
             result.Configuration.IgnoreQuotes = (definition == null) ? true :
-                definition.GetPropertyBagItem<Boolean>(PropertyBagItemTypeEnum.IgnoreQuotes, true);
+                propertyBagHelper.GetPropertyBagItem<Boolean>(PropertyBagItemTypeEnum.IgnoreQuotes, true);
             result.Configuration.MissingFieldFound = null;
             result.Configuration.ReadingExceptionOccurred = null;
 

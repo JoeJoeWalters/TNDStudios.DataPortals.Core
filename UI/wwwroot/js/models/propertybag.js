@@ -94,6 +94,16 @@ tndStudios.models.propertyBag =
             if (data) {
                 this.fromObject(data); // Assign the data to this object
             }
-        }
+        },
+
+        // Get the property bag default values for a given component of a given type
+        getDefaults: function (objectType, id, callback) {
+            tndStudios.utils.api.call(
+                '/api/system/propertybag/' + objectType + '/' + id,
+                'GET',
+                null,
+                callback
+            );
+        },
 
     }

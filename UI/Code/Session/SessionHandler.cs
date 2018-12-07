@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using TNDStudios.DataPortals.Api;
 using TNDStudios.DataPortals.Data;
+using TNDStudios.DataPortals.PropertyBag;
 using TNDStudios.DataPortals.Repositories;
 using TNDStudios.DataPortals.Security;
 
@@ -147,7 +148,9 @@ namespace TNDStudios.DataPortals.UI
                                     }
                                 },
                                 Name = "Data Item Definition",
-                                PropertyBag = new Dictionary<String, Object>()
+                                PropertyBag = new List<PropertyBagItem>()
+                                {
+                                }
                             }
                         },
                         Transformations = new List<Transformation>()

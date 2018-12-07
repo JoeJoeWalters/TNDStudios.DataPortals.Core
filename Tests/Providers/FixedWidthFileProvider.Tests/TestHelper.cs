@@ -6,6 +6,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using TNDStudios.DataPortals.Data;
+using TNDStudios.DataPortals.PropertyBag;
 
 namespace TNDStudios.DataPortals.Tests.FixedWidthFile
 {
@@ -62,12 +63,22 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
 
                     // Definition for different data types and the data defined by ordinal position
                     definition.Culture = CultureInfo.InvariantCulture;
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "BooleanType", DataType = typeof(Boolean), OridinalPosition = 0, Size = 16 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "DateType", DataType = typeof(DateTime), OridinalPosition = 16, Size = 15 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "NumericType", DataType = typeof(Double), OridinalPosition = 32, Size = 15 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "BooleanType", DataType = typeof(Boolean), OrdinalPosition = 0, Size = 16 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "DateType", DataType = typeof(DateTime), OrdinalPosition = 16, Size = 15 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "NumericType", DataType = typeof(Double), OrdinalPosition = 32, Size = 15 });
 
                     // Property bag items to define how the provider should handle custom settings
-                    definition.PropertyBag[DataItemPropertyBagItem.HasHeaderRecord.ToString()] = true; // There is a header record
+                    definition.PropertyBag.Add(
+                        new PropertyBagItem()
+                        {
+                            ItemType = new PropertyBagItemType()
+                            {
+                                DataType = typeof(Boolean),
+                                DefaultValue = true,
+                                PropertyType = PropertyBagItemTypeEnum.HasHeaderRecord
+                            },
+                            Value = true
+                        }); // There is a header record
 
                     break;
 
@@ -75,22 +86,43 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
 
                     // Definition for different data types and the data defined by ordinal position
                     definition.Culture = new CultureInfo("en-US");
-                    definition.ItemProperties.Add(new DataItemProperty() { Key = true, Name = "Entry", DataType = typeof(Int32), OridinalPosition = 0, Size = 6 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Per", DataType = typeof(String), OridinalPosition = 8, Size = 4 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "PostDate", DataType = typeof(DateTime), OridinalPosition = 12, Size = 10 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "GL Account", DataType = typeof(String), OridinalPosition = 24, Size = 10 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Description", DataType = typeof(String), OridinalPosition = 37, Size = 26 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Src", DataType = typeof(String), OridinalPosition = 64, Size = 4 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Flow", DataType = typeof(Boolean), OridinalPosition = 69, Size = 3 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Ref", DataType = typeof(String), OridinalPosition = 73, Size = 8 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Post", DataType = typeof(Boolean), OridinalPosition = 83, Size = 3 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Debit", DataType = typeof(Decimal), OridinalPosition = 87, Size = 17 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Credit", DataType = typeof(Decimal), OridinalPosition = 104, Size = 20 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "All", DataType = typeof(Boolean), OridinalPosition = 130, Size = 3 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Key = true, Name = "Entry", DataType = typeof(Int32), OrdinalPosition = 0, Size = 6 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Per", DataType = typeof(String), OrdinalPosition = 8, Size = 4 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "PostDate", DataType = typeof(DateTime), OrdinalPosition = 12, Size = 10 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "GL Account", DataType = typeof(String), OrdinalPosition = 24, Size = 10 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Description", DataType = typeof(String), OrdinalPosition = 37, Size = 26 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Src", DataType = typeof(String), OrdinalPosition = 64, Size = 4 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Flow", DataType = typeof(Boolean), OrdinalPosition = 69, Size = 3 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Ref", DataType = typeof(String), OrdinalPosition = 73, Size = 8 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Post", DataType = typeof(Boolean), OrdinalPosition = 83, Size = 3 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Debit", DataType = typeof(Decimal), OrdinalPosition = 87, Size = 17 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Credit", DataType = typeof(Decimal), OrdinalPosition = 104, Size = 20 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "All", DataType = typeof(Boolean), OrdinalPosition = 130, Size = 3 });
 
                     // Property bag items to define how the provider should handle custom settings
-                    definition.PropertyBag[DataItemPropertyBagItem.HasHeaderRecord.ToString()] = true; // There is a header record
-                    definition.PropertyBag[DataItemPropertyBagItem.RowsToSkip.ToString()] = 1; // .. but we also want to skip a record as it is a spacer
+                    definition.PropertyBag.Add(
+                                            new PropertyBagItem()
+                                            {
+                                                ItemType = new PropertyBagItemType()
+                                                {
+                                                    DataType = typeof(Boolean),
+                                                    DefaultValue = true,
+                                                    PropertyType = PropertyBagItemTypeEnum.HasHeaderRecord
+                                                },
+                                                Value = true
+                                            }); // There is a header record
+
+                    definition.PropertyBag.Add(
+                        new PropertyBagItem()
+                        {
+                            ItemType = new PropertyBagItemType()
+                            {
+                                DataType = typeof(Int32),
+                                DefaultValue = 1,
+                                PropertyType = PropertyBagItemTypeEnum.RowsToSkip
+                            },
+                            Value = 1
+                        });  // .. but we also want to skip a record as it is a spacer
 
                     break;
 
@@ -98,27 +130,54 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
 
                     // Definition for different data types and the data defined by ordinal position
                     definition.Culture = new CultureInfo("en-US");
-                    definition.ItemProperties.Add(new DataItemProperty() { Key = true, Name = "Entry", DataType = typeof(Int32), OridinalPosition = 0, Size = 6 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Per", DataType = typeof(String), OridinalPosition = 8, Size = 4 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "PostDate", DataType = typeof(DateTime), OridinalPosition = 12, Size = 10 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "GL Account", DataType = typeof(String), OridinalPosition = 24, Size = 10 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Description", DataType = typeof(String), OridinalPosition = 37, Size = 26 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Src", DataType = typeof(String), OridinalPosition = 64, Size = 4 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Flow", DataType = typeof(Boolean), OridinalPosition = 69, Size = 3 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Ref", DataType = typeof(String), OridinalPosition = 73, Size = 8 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Post", DataType = typeof(Boolean), OridinalPosition = 83, Size = 3 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Debit", DataType = typeof(Decimal), OridinalPosition = 87, Size = 17 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Credit", DataType = typeof(Decimal), OridinalPosition = 104, Size = 20 });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "All", DataType = typeof(Boolean), OridinalPosition = 130, Size = 3 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Key = true, Name = "Entry", DataType = typeof(Int32), OrdinalPosition = 0, Size = 6 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Per", DataType = typeof(String), OrdinalPosition = 8, Size = 4 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "PostDate", DataType = typeof(DateTime), OrdinalPosition = 12, Size = 10 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "GL Account", DataType = typeof(String), OrdinalPosition = 24, Size = 10 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Description", DataType = typeof(String), OrdinalPosition = 37, Size = 26 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Src", DataType = typeof(String), OrdinalPosition = 64, Size = 4 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Flow", DataType = typeof(Boolean), OrdinalPosition = 69, Size = 3 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Ref", DataType = typeof(String), OrdinalPosition = 73, Size = 8 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Post", DataType = typeof(Boolean), OrdinalPosition = 83, Size = 3 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Debit", DataType = typeof(Decimal), OrdinalPosition = 87, Size = 17 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Credit", DataType = typeof(Decimal), OrdinalPosition = 104, Size = 20 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "All", DataType = typeof(Boolean), OrdinalPosition = 130, Size = 3 });
 
                     // Calculated Properties
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Result", DataType = typeof(Double), OridinalPosition = 0, Size = 0,
-                        PropertyType = DataItemPropertyType.Calculated, Calculation = "IIF(Post, Debit, 0)"
+                    definition.ItemProperties.Add(new DataItemProperty()
+                    {
+                        Name = "Result",
+                        DataType = typeof(Double),
+                        OrdinalPosition = 0,
+                        Size = 0,
+                        PropertyType = DataItemPropertyType.Calculated,
+                        Calculation = "IIF(Post, Debit, 0)"
                     });
 
                     // Property bag items to define how the provider should handle custom settings
-                    definition.PropertyBag[DataItemPropertyBagItem.HasHeaderRecord.ToString()] = true; // There is a header record
-                    definition.PropertyBag[DataItemPropertyBagItem.RowsToSkip.ToString()] = 1; // .. but we also want to skip a record as it is a spacer
+                    definition.PropertyBag.Add(
+                                            new PropertyBagItem()
+                                            {
+                                                ItemType = new PropertyBagItemType()
+                                                {
+                                                    DataType = typeof(Boolean),
+                                                    DefaultValue = true,
+                                                    PropertyType = PropertyBagItemTypeEnum.HasHeaderRecord
+                                                },
+                                                Value = true
+                                            }); // There is a header record
+
+                    definition.PropertyBag.Add(
+                        new PropertyBagItem()
+                        {
+                            ItemType = new PropertyBagItemType()
+                            {
+                                DataType = typeof(Int32),
+                                DefaultValue = 1,
+                                PropertyType = PropertyBagItemTypeEnum.RowsToSkip
+                            },
+                            Value = 1
+                        });  // .. but we also want to skip a record as it is a spacer
 
                     break;
             }

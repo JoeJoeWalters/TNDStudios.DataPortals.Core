@@ -18,6 +18,9 @@ namespace TNDStudios.DataPortals.Helpers
         public static String DataTableToString(DataItemDefinition definition, DataTable dataTable)
         {
             String result = ""; // New empty string to populate
+            
+            // Create a helper to read the property bag items
+            PropertyBagHelper propertyBagHelper = new PropertyBagHelper(definition.PropertyBag);
 
             // Get the stream from the file
             using (MemoryStream textStream = new MemoryStream())
@@ -27,7 +30,7 @@ namespace TNDStudios.DataPortals.Helpers
                 using (CsvWriter writer = SetupWriter(definition, streamWriter))
                 {
                     // Do we need to write a header?
-                    if (definition.GetPropertyBagItem<Boolean>(PropertyBagItemTypeEnum.HasHeaderRecord, false))
+                    if (propertyBagHelper.GetPropertyBagItem<Boolean>(PropertyBagItemTypeEnum.HasHeaderRecord, false))
                     {
                         // Loop the header records and output the header record line manually
                         definition.ItemProperties
@@ -81,9 +84,12 @@ namespace TNDStudios.DataPortals.Helpers
             // Create the new writer
             CsvWriter writer = new CsvWriter(textWriter);
 
+            // Create a helper to read the property bag items
+            PropertyBagHelper propertyBagHelper = new PropertyBagHelper(definition.PropertyBag);
+
             // Force all fields to be quoted or not
             writer.Configuration.QuoteAllFields =
-                definition.GetPropertyBagItem<Boolean>(PropertyBagItemTypeEnum.QuoteAllFields, false);
+                propertyBagHelper.GetPropertyBagItem<Boolean>(PropertyBagItemTypeEnum.QuoteAllFields, false);
 
             return writer;
         }

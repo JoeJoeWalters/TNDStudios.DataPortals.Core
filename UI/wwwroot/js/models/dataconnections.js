@@ -28,6 +28,7 @@ tndStudios.models.dataConnections =
             this.connectionString = '';
             this.credentials = new tndStudios.models.common.keyValuePair();
             this.credentials.key = '00000000-0000-0000-0000-000000000000';
+            this.propertyBag = []; // Property bag for this connection
 
             // Copy the content of this connection from another connection
             // e.g. when editing in a secondary editor object
@@ -43,10 +44,14 @@ tndStudios.models.dataConnections =
                 this.providerType = fromObject.providerType;
                 this.connectionString = fromObject.connectionString;
                 this.credentials = fromObject.credentials;
+                this.propertyBag = fromObject.propertyBag;
             }
 
             // Create a formatted object that can be passed to the server
             this.toObject = function () {
+
+                // Construct the property bag model
+                var constructedPropertyBag = [];
 
                 var result =
                 {
@@ -55,7 +60,8 @@ tndStudios.models.dataConnections =
                     Description: this.description,
                     ProviderType: this.providerType,
                     ConnectionString: this.connectionString,
-                    Credentials: this.credentials
+                    Credentials: this.credentials,
+                    PropertyBag: constructedPropertyBag
                 };
 
                 return result;
@@ -72,6 +78,7 @@ tndStudios.models.dataConnections =
                 this.connectionString = '';
                 this.credentials = new tndStudios.models.common.keyValuePair();
                 this.credentials.key = '00000000-0000-0000-0000-000000000000';
+                this.propertyBag = [];
             }
 
             // Any data passed in?

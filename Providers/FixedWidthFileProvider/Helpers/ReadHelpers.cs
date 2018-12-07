@@ -21,6 +21,9 @@ namespace TNDStudios.DataPortals.Helpers
             // Create a list of data items to return
             DataTable dataItems = definition.ToDataTable();
 
+            // Create a helper to read the property bag items
+            PropertyBagHelper propertyBagHelper = new PropertyBagHelper(definition.PropertyBag);
+
             // Raw data has something to convert?
             if ((rawData ?? "") != "")
             {
@@ -30,8 +33,8 @@ namespace TNDStudios.DataPortals.Helpers
                     // Get properties needed to process the file (total lines to skip etc.)
                     Int32 lineNo = 0;
                     Int32 linesToSkip =
-                        definition.GetPropertyBagItem<Int32>(PropertyBagItemTypeEnum.RowsToSkip, 0) +
-                        (definition.GetPropertyBagItem<Boolean>(PropertyBagItemTypeEnum.HasHeaderRecord, false) ? 1 : 0);
+                        propertyBagHelper.GetPropertyBagItem<Int32>(PropertyBagItemTypeEnum.RowsToSkip, 0) +
+                        (propertyBagHelper.GetPropertyBagItem<Boolean>(PropertyBagItemTypeEnum.HasHeaderRecord, false) ? 1 : 0);
                     
                     // Loop each line of the file (ignoring lines that do not need to be processed)
                     String line = "";

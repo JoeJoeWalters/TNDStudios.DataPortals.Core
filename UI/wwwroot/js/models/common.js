@@ -2,6 +2,16 @@
 tndStudios.models = tndStudios.models || {};
 tndStudios.models.common =
     {
+        // System Object Types
+        objectTypes: {
+            ApiDefinitions: 1,
+            DataDefinitions: 2,
+            Connections: 3,
+            Credentials: 4,
+            Transformations: 5,
+            Providers: 6
+        },
+
         // Key Value Pair definition
         keyValuePair: function () {
 

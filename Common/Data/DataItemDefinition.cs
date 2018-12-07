@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using TNDStudios.DataPortals.PropertyBag;
 
@@ -22,7 +23,7 @@ namespace TNDStudios.DataPortals.Data
         /// <summary>
         /// Adhoc configuration items for different providers
         /// </summary>
-        public Dictionary<String, Object> PropertyBag { get; set; }
+        public List<PropertyBagItem> PropertyBag { get; set; }
 
         /// <summary>
         /// The specific culture information for this definition
@@ -41,7 +42,7 @@ namespace TNDStudios.DataPortals.Data
         {
             Name = $"Item Definition {Id.ToString()}";
             ItemProperties = new List<DataItemProperty>();
-            PropertyBag = new Dictionary<String, Object>();
+            PropertyBag = new List<PropertyBagItem>();
             EncodingFormat = Encoding.Default;
             Culture = CultureInfo.CurrentCulture;
         }
@@ -95,20 +96,5 @@ namespace TNDStudios.DataPortals.Data
 
             return result; // Return the data table
         }
-
-        /// <summary>
-        /// Get a configuration item from the property bag
-        /// and format it as appropriate
-        /// </summary>
-        /// <typeparam name="T">The type of data that is requested</typeparam>
-        /// <param name="key">The key for the data</param>
-        /// <returns>The data formatted as the correct type</returns>
-        public T GetPropertyBagItem<T>(PropertyBagItemTypeEnum key, T defaultValue)
-            => GetPropertyBagItem<T>(key.ToString(), defaultValue);
-
-        public T GetPropertyBagItem<T>(String key, T defaultValue)
-            => PropertyBag.ContainsKey(key) ? (T)PropertyBag[key] : defaultValue;
-
-
     }
 }

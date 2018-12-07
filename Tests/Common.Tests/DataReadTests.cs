@@ -20,7 +20,7 @@ namespace TNDStudios.DataPortals.Tests.Common
             {
                 DataType = typeof(DateTime),
                 Name = "DateTimeTest",
-                OridinalPosition = -1,
+                OrdinalPosition = -1,
                 Size = 0,
                 Pattern = "dd MMM yyyy"
             };
@@ -50,7 +50,7 @@ namespace TNDStudios.DataPortals.Tests.Common
             {
                 DataType = typeof(String),
                 Name = "StringTest",
-                OridinalPosition = -1,
+                OrdinalPosition = -1,
                 Size = 0
             };
 
@@ -76,7 +76,7 @@ namespace TNDStudios.DataPortals.Tests.Common
             {
                 DataType = typeof(Boolean),
                 Name = "BooleanTest",
-                OridinalPosition = -1,
+                OrdinalPosition = -1,
                 Size = 0
             };
 

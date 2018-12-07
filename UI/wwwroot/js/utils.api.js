@@ -7,7 +7,9 @@ tndStudios.utils.api =
             Encoding: 1,
             Culture: 2,
             DataTypes: 3,
-            DataPropertyTypes: 4
+            DataPropertyTypes: 4,
+            DataItemPropertyBagItems: 5,
+            ObjectTypes: 6
         },
 
         // Get the data for a lookup from the API controller
@@ -18,13 +20,8 @@ tndStudios.utils.api =
                 '/api/system/lookup/' + lookupId,
                 'GET',
                 null,
-                callback,
-                tndStudios.utils.api.lookupFailure
+                callback
             );
-        },
-
-        // Method to hit if the lookup codes fail
-        lookupFailure: function () {
         },
 
         // Make an API call with the given parameters
