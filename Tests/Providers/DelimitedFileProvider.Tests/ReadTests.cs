@@ -53,13 +53,15 @@ namespace TNDStudios.DataPortals.Tests.DelimitedFile
         public void Analyse_Column_Numbers_From_String()
         {
             // Arrange
-            String testData = (new TestHelper()).GetResourceString(TestHelper.TestFile_Headers);
+            TestHelper testHelper = new TestHelper();
+            String testData = testHelper.GetResourceString(TestHelper.TestFile_Headers);
 
             // Act
             DataItemDefinition definition = DelimitedFileHelper.AnalyseText(
                 new AnalyseRequest<String>()
                 {
-                    Data = testData
+                    Data = testData,
+                    Connection = testHelper.TestConnection()
                 }
                 );
 
@@ -71,13 +73,15 @@ namespace TNDStudios.DataPortals.Tests.DelimitedFile
         public void Analyse_Column_DataType_From_String()
         {
             // Arrange
-            String testData = (new TestHelper()).GetResourceString(TestHelper.TestFile_DataTypes);
+            TestHelper testHelper = new TestHelper();
+            String testData = testHelper.GetResourceString(TestHelper.TestFile_DataTypes);
 
             // Act
             DataItemDefinition definition = DelimitedFileHelper.AnalyseText(
                 new AnalyseRequest<string>()
                 {
-                    Data = testData
+                    Data = testData,
+                    Connection = testHelper.TestConnection()
                 });
 
             // Assert
