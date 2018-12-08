@@ -22,6 +22,7 @@ namespace TNDStudios.DataPortals.Tests.DelimitedFile
             // Arrange
             TestHelper testHelper = new TestHelper();
 
+            DataConnection connection = testHelper.TestConnection(); // Get a test connection
             DataItemDefinition definition = testHelper.TestDefinition(TestHelper.TestFile_WriteTests); // Get the test definition of what to write
             DataTable dataToWrite = testHelper.PopulateDataTable(TestHelper.TestFile_WriteTests); // Get the data
             DataTable dataToRead = null; // Table to read the data back in to (to verify it was created)
@@ -29,7 +30,7 @@ namespace TNDStudios.DataPortals.Tests.DelimitedFile
             IDataProvider provider = new DelimitedFileProvider(); // A flat file provider to use to write the data
 
             // Act
-            provider.Connect(definition, testStream); // Connect to the blank stream
+            provider.Connect(definition, connection, testStream); // Connect to the blank stream
             provider.Write(dataToWrite, ""); // Write the data to the empty stream
             dataToRead = provider.Read(""); // Get the data back
 

@@ -16,6 +16,7 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
             // Arrange
             TestHelper testHelper = new TestHelper();
 
+            DataConnection connection = testHelper.TestConnection(); // Get a test connection
             DataItemDefinition definition = testHelper.TestDefinition(TestHelper.TestFile_GenericFixedWidth); // Get the test definition of what to merge from (but also to)
 
             DataTable baseData = testHelper.PopulateDataTable(TestHelper.TestFile_GenericFixedWidth); // Get the data
@@ -25,7 +26,7 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
             IDataProvider provider = new FixedWidthFileProvider(); // A flat file provider to use to write the data
 
             // Act
-            provider.Connect(definition, testStream); // Connect to the blank stream
+            provider.Connect(definition, connection, testStream); // Connect to the blank stream
             provider.Write(baseData, ""); // Write the data to the empty stream
             provider.Write(mergeData, ""); // Write some more records with some updates and some adds
             DataTable mergedData = provider.Read(""); // Get the new data set back
@@ -40,6 +41,7 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
             // Arrange
             TestHelper testHelper = new TestHelper();
 
+            DataConnection connection = testHelper.TestConnection(); // Get a test connection
             DataItemDefinition definition = testHelper.TestDefinition(TestHelper.TestFile_GenericFixedWidth); // Get the test definition of what to data to filter
             DataTable unfilteredData = testHelper.PopulateDataTable(TestHelper.TestFile_GenericFixedWidth); // Get the data
             
@@ -49,7 +51,7 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
             String command = "[GL Account] = '3930621977'"; // The command to do the filter
 
             // Act
-            provider.Connect(definition, testStream); // Connect to the blank stream
+            provider.Connect(definition, connection, testStream); // Connect to the blank stream
             provider.Write(unfilteredData, ""); // Write the unfiltered data to the empty stream
             DataTable filteredData = provider.Read(command); // Get the new data set back that has been filtered
 

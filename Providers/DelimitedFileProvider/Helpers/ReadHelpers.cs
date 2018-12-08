@@ -35,7 +35,7 @@ namespace TNDStudios.DataPortals.Helpers
                 {
                     // Create an instance of the CSV Reader
 #warning "This no longer works as we need a definition by default, Might be worth gettig a default reader somehow"
-                    using (CsvReader csvReader = SetupReader(textReader, null))
+                    using (CsvReader csvReader = SetupReader(textReader, request.Connection, null))
                     {
                         // Can we read from the stream?
                         Int32 headerId = 0;
@@ -144,7 +144,7 @@ namespace TNDStudios.DataPortals.Helpers
         /// </summary>
         /// <param name="rawData">The raw flat file data from wherever it came from</param>
         /// <returns>If the translation was successful</returns>
-        public static DataTable TextToDataTable(DataItemDefinition definition, String rawData)
+        public static DataTable TextToDataTable(DataItemDefinition definition, DataConnection connection, String rawData)
         {
             // Create a list of data items to return
             DataTable dataItems = definition.ToDataTable();
@@ -156,7 +156,7 @@ namespace TNDStudios.DataPortals.Helpers
                 using (TextReader textReader = new StringReader(rawData))
                 {
                     // Create an instance of the CSV Reader
-                    using (CsvReader csvReader = SetupReader(textReader, definition))
+                    using (CsvReader csvReader = SetupReader(textReader, connection, definition))
                     {
                         // Get the record header if needed
                         if (csvReader.Configuration.HasHeaderRecord)
@@ -223,13 +223,13 @@ namespace TNDStudios.DataPortals.Helpers
         /// <param name="textReader">The text reader to inject in to the CSV reader</param>
         /// <param name="definition">The definition of the file</param>
         /// <returns>The newly configured CSV Reader</returns>
-        private static CsvReader SetupReader(TextReader textReader, DataItemDefinition definition)
+        private static CsvReader SetupReader(TextReader textReader, DataConnection connection, DataItemDefinition definition)
         {
             // Produce a new CSV Reader
             CsvReader result = new CsvReader(textReader);
 
             // Create a helper to read the property bag items
-            PropertyBagHelper propertyBagHelper = new PropertyBagHelper(definition.PropertyBag);
+            PropertyBagHelper propertyBagHelper = new PropertyBagHelper(connection.PropertyBag);
 
             // Configure the CSV Reader
             result.Configuration.HasHeaderRecord = (definition == null) ? true :

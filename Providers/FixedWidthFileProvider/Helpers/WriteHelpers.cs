@@ -13,7 +13,7 @@ namespace TNDStudios.DataPortals.Helpers
         /// </summary>
         /// <param name="dataTable"></param>
         /// <returns></returns>
-        public static String DataTableToString(DataItemDefinition definition, DataTable dataTable)
+        public static String DataTableToString(DataItemDefinition definition, DataConnection connection, DataTable dataTable)
         {
             String result = ""; // New empty string to populate
 

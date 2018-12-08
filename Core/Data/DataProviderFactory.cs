@@ -73,6 +73,12 @@ namespace TNDStudios.DataPortals.Data
             else
                 result = providers[uniqueKey];
 
+            // If the provider is stale (something configuration-wise has been changed)
+            if (result.LastAction <= connection.LastUpdated)
+            {
+
+            }
+
             // Did we get a provider?
             if (result != null)
             {
@@ -81,7 +87,7 @@ namespace TNDStudios.DataPortals.Data
                 if ((!result.Connected || (result.LastAction <= definition.LastUpdated))
                     && definition != null)
                 {
-                    result.Connect(definition, connection.ConnectionString); // Connect attempt
+                    result.Connect(definition, connection); // Connect attempt
                     existingProvider = false; // Re-connected potentially so reset to make sure it's added to the cache
                 }
 

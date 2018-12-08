@@ -15,12 +15,12 @@ namespace TNDStudios.DataPortals.Helpers
         /// </summary>
         /// <param name="dataTable"></param>
         /// <returns></returns>
-        public static String DataTableToString(DataItemDefinition definition, DataTable dataTable)
+        public static String DataTableToString(DataItemDefinition definition, DataConnection connection, DataTable dataTable)
         {
             String result = ""; // New empty string to populate
             
             // Create a helper to read the property bag items
-            PropertyBagHelper propertyBagHelper = new PropertyBagHelper(definition.PropertyBag);
+            PropertyBagHelper propertyBagHelper = new PropertyBagHelper(connection.PropertyBag);
 
             // Get the stream from the file
             using (MemoryStream textStream = new MemoryStream())

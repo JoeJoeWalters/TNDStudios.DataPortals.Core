@@ -28,6 +28,12 @@ namespace TNDStudios.DataPortals.Tests.DelimitedFile
         public const String TestFile_BigFileSalesRecords = "TestFiles.BigFiles.SalesRecords5000.csv";
 
         /// <summary>
+        /// Get a test connection for use with the readers
+        /// </summary>
+        /// <returns>A test connection</returns>
+        public DataConnection TestConnection() => new DataConnection() { };
+
+        /// <summary>
         /// Generate the data set for the testing of different different types
         /// </summary>
         /// <param name="testDefinition">Which test file to load</param>
@@ -40,12 +46,15 @@ namespace TNDStudios.DataPortals.Tests.DelimitedFile
             // Get the test definition (The columns, data types etc. for this file)
             DataItemDefinition definition = TestDefinition(testDefinition);
 
+            // Get a test connection
+            DataConnection connection = TestConnection();
+
             // Create a new flat file provider
             IDataProvider provider = new DelimitedFileProvider()
             {
                 TestMode = true // The provider should be marked as being in test mode
             };
-            provider.Connect(definition, resourceStream); // Connect to the location of the data
+            provider.Connect(definition, connection, resourceStream); // Connect to the location of the data
 
             // Read the data from the provider
             DataTable data = provider.Read(""); // Get the data

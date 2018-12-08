@@ -305,7 +305,8 @@ namespace TNDStudios.DataPortals.Repositories
                             existingConnection.Name = connection.Name;
                             existingConnection.ProviderType = connection.ProviderType;
                             existingConnection.Credentials = connection.Credentials;
-                            existingConnection.LastUpdated = DateTime.Now;                            
+                            existingConnection.LastUpdated = DateTime.Now;
+                            existingConnection.PropertyBag = connection.PropertyBag;
                         }
 
                         // Convert the data back to the return data type (which is actually the same)

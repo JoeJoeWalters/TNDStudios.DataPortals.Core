@@ -42,12 +42,14 @@ namespace TNDStudios.DataPortals.Tests.DelimitedFile
             DelimitedFileProvider provider = new DelimitedFileProvider();
 
             // Act
-            DataItemDefinition definition = provider.Analyse(
-                new AnalyseRequest<Object>()
-                {
-                    Data = file
-                });
-            provider.Connect(definition, file);
+            AnalyseRequest<Object> analysisRequest = new AnalyseRequest<Object>()
+            {
+                Data = file,
+                Connection = new DataConnection() { }
+            };
+            DataItemDefinition definition = provider.Analyse(analysisRequest);
+
+            provider.Connect(definition, analysisRequest.Connection, file);
             DataTable data = provider.Read("");
 
             // Assert

@@ -22,6 +22,12 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
         public const String TestFile_DataTypes = "TestFiles.DataTypes.txt";
 
         /// <summary>
+        /// Get a test connection for use with the readers
+        /// </summary>
+        /// <returns>A test connection</returns>
+        public DataConnection TestConnection() => new DataConnection() { };
+
+        /// <summary>
         /// Generate the data set for the testing of different different types
         /// </summary>
         /// <param name="testDefinition">Which test file to load</param>
@@ -31,6 +37,8 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
             // Get the test data from the resource in the manifest
             Stream resourceStream = GetResourceStream(testDefinition);
 
+            DataConnection connection = TestConnection(); // Get a test connection
+
             // Get the test definition (The columns, data types etc. for this file)
             DataItemDefinition definition = TestDefinition(testDefinition);
 
@@ -39,7 +47,7 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
             {
                 TestMode = true // The provider should be marked as being in test mode
             };
-            provider.Connect(definition, resourceStream); // Connect to the location of the data
+            provider.Connect(definition, connection, resourceStream); // Connect to the location of the data
 
             // Read the data from the provider
             DataTable data = provider.Read(""); // Get the data

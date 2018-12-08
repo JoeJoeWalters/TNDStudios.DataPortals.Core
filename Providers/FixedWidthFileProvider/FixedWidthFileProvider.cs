@@ -42,19 +42,23 @@ namespace TNDStudios.DataPortals.Data
         /// </summary>
         /// <param name="connectionString">The connection string to use</param>
         /// <returns>If the file exists when it is connected</returns>
-        public override Boolean Connect(DataItemDefinition definition, String connectionString)
+        public override Boolean Connect(DataItemDefinition definition, DataConnection connection)
         {
             Boolean result = false; // Failed by default
 
+            // Check it is an object
+            if (connection == null)
+                return false;
+
             // Does the file that we are trying to connet to exist?
-            if (File.Exists(connectionString))
+            if (File.Exists(connection.ConnectionString))
             {
                 // Connect to the file and read the data from it
-                using (Stream fileStream = File.OpenRead(connectionString))
+                using (Stream fileStream = File.OpenRead(connection.ConnectionString))
                 {
-                    result = Connect(definition, fileStream); // Do a standard stream connect to reuse that code
+                    result = Connect(definition, Connection, fileStream); // Do a standard stream connect to reuse that code
                     if (result)
-                        this.connectionString = connectionString; // Remember the connection string
+                        this.Connection = connection; // Remember the connection string
                 }
             }
 
@@ -67,9 +71,9 @@ namespace TNDStudios.DataPortals.Data
         /// </summary>
         /// <param name="stream">The stream of data to connect to</param>
         /// <returns>If the data was valid and is a stream</returns>
-        public override Boolean Connect(DataItemDefinition definition, Stream stream)
+        public override Boolean Connect(DataItemDefinition definition, DataConnection connection, Stream stream)
         {
-            this.connectionString = ""; // Blank out the connection string as we are using a stream instead
+            this.Connection = connection; // Blank out the connection string as we are using a stream instead
             this.definition = definition; // Assign the definition to use
             this.memoryData = new DataTable(); // Blank data by default
 
@@ -87,7 +91,7 @@ namespace TNDStudios.DataPortals.Data
                 // Read the data from the stream provided
                 using (StreamReader textReader = new StreamReader(stream))
                 {
-                    this.memoryData = FixedWidthFileHelper.TextToDataTable(definition, textReader.ReadToEnd());
+                    this.memoryData = FixedWidthFileHelper.TextToDataTable(definition, connection, textReader.ReadToEnd());
                     base.connected = true; // Mark the provider as connected
                     return true; // Connected without any errors
                 }
@@ -191,16 +195,16 @@ namespace TNDStudios.DataPortals.Data
             Boolean result = false; // Failed by default
 
             // Generate the flat file content based on the definition when connecting
-            String flatFileContent = FixedWidthFileHelper.DataTableToString(this.definition, this.memoryData);
+            String flatFileContent = FixedWidthFileHelper.DataTableToString(this.definition, this.Connection, this.memoryData);
 
             // Try and write the file to disk
             try
             {
                 // Write the file
-                File.WriteAllText(this.connectionString, flatFileContent, definition.EncodingFormat);
+                File.WriteAllText(this.Connection.ConnectionString, flatFileContent, definition.EncodingFormat);
 
                 // Does the file now exist (and there were no errors writing)
-                result = File.Exists(this.connectionString);
+                result = File.Exists(this.Connection.ConnectionString);
             }
             catch
             {
@@ -241,7 +245,7 @@ namespace TNDStudios.DataPortals.Data
         /// </summary>
         public FixedWidthFileProvider() : base()
         {
-            connectionString = ""; // No connection string by default
+            Connection = null; // No connection string by default
             connected = false; // Not connected until the file can be proven as existing
 
         }

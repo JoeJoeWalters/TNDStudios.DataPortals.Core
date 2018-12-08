@@ -98,7 +98,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             if (provider != null)
             {
                 // Can we connect?
-                response.Success = response.Success = provider.Test(connection.ConnectionString);
+                response.Success = response.Success = provider.Test(connection);
                 provider = null; // Kill the provider now
             }
 
@@ -310,7 +310,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             {
                 // Get the appropriate provider object to analyse
                 IDataProvider provider = (new DataProviderFactory()).Get(connection, false);
-                if (provider.Connect(definition, connection.ConnectionString))
+                if (provider.Connect(definition, connection))
                 {
                     result.Values = new DataItemValuesModel(); // Create a new values model
 

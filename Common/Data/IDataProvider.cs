@@ -58,7 +58,7 @@ namespace TNDStudios.DataPortals.Data
         /// The connection string for the data provider
         /// e.g. SQL connection string or path for a file etc.
         /// </summary>
-        String ConnectionString { get; }
+        DataConnection Connection { get; set; }
 
         /// <summary>
         /// The property bag types that can be used to define this connection
@@ -71,7 +71,7 @@ namespace TNDStudios.DataPortals.Data
         /// <param name="definition">The data defintion of the source of the data</param>
         /// <param name="connectionString">The connection string</param>
         /// <returns></returns>
-        Boolean Connect(DataItemDefinition definition, String connectionString);
+        Boolean Connect(DataItemDefinition definition, DataConnection connection);
 
         /// <summary>
         /// Connect to a given stream of data (could be a flat file, xml etc.)
@@ -79,7 +79,7 @@ namespace TNDStudios.DataPortals.Data
         /// <param name="definition">The data defintion of the source of the data</param>
         /// <param name="stream">The stream of data to process</param>
         /// <returns></returns>
-        Boolean Connect(DataItemDefinition definition, Stream stream);
+        Boolean Connect(DataItemDefinition definition, DataConnection connection, Stream stream);
 
         /// <summary>
         /// If the provider is connected
@@ -134,6 +134,6 @@ namespace TNDStudios.DataPortals.Data
         /// Test a connection string for this provider type
         /// </summary>
         /// <returns>Success or failure of the connection string test</returns>
-        Boolean Test(String connectionString);
+        Boolean Test(DataConnection connection);
     }
 }

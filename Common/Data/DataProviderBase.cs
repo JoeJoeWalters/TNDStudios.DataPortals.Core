@@ -48,8 +48,7 @@ namespace TNDStudios.DataPortals.Data
         /// <summary>
         /// Provide a read-only view of the connection string
         /// </summary>
-        protected internal String connectionString;
-        public String ConnectionString => connectionString;
+        public DataConnection Connection { get; set; }
 
         /// <summary>
         /// Is the flat file provider connected to it's source?
@@ -86,7 +85,7 @@ namespace TNDStudios.DataPortals.Data
         /// <param name="definition">The definition of the data in the connection</param>
         /// <param name="connectionString">The connection string to connect to</param>
         /// <returns>If the system connected ok</returns>
-        public virtual bool Connect(DataItemDefinition definition, String connectionString)
+        public virtual bool Connect(DataItemDefinition definition, DataConnection connection)
             => throw new NotImplementedException();
 
         /// <summary>
@@ -95,7 +94,7 @@ namespace TNDStudios.DataPortals.Data
         /// <param name="definition">The definition of the data in the connection</param>
         /// <param name="stream">The stream to connect to</param>
         /// <returns>If the system connected ok</returns>
-        public virtual bool Connect(DataItemDefinition definition, Stream stream)
+        public virtual bool Connect(DataItemDefinition definition, DataConnection connection, Stream stream)
             => throw new NotImplementedException();
 
         /// <summary>
@@ -141,10 +140,10 @@ namespace TNDStudios.DataPortals.Data
         /// Test a connection string for this provider type
         /// </summary>
         /// <returns>Success or failure of the connection string test</returns>
-        public virtual Boolean Test(String connectionString)
+        public virtual Boolean Test(DataConnection connection)
         {
             // Get the initial connection result
-            Boolean result = this.Connect(null, connectionString);
+            Boolean result = this.Connect(null, connection);
             if (result)
                 this.Disconnect(); // If we managed to connect, now disconnect
 
