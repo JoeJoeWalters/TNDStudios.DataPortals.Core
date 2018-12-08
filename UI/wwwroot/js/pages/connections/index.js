@@ -24,13 +24,30 @@
     },
     methods: {
 
+        resetPropertyBagItem: function (propertyBagItem) {
+
+            // Did we get a valid property bag item?
+            if (propertyBagItem != null &&
+                propertyBagItem.itemType != null) {
+
+                propertyBagItem.value = propertyBagItem.itemType.defaultValue;
+
+            }
+
+        },
+
         // Is the form type one that can be displayed
-        isCorrectFormType: function (sourceType, typeToCheck) {
+        isCorrectFormType: function (propertyBagItem, typeToCheck) {
 
             var visible = false; // Not visible by default
 
             // Got something to work with?
-            if (sourceType != undefined && typeToCheck != undefined) {
+            if (propertyBagItem != undefined &&
+                propertyBagItem.itemType != undefined &&
+                typeToCheck != undefined) {
+
+                // Get the source type
+                var sourceType = propertyBagItem.itemType.dataType;
 
                 // Lowercase the source type for comparison
                 sourceType = sourceType.toLowerCase();
@@ -44,14 +61,38 @@
                         break;
 
                     case "text":
-                        if (sourceType == "string" || sourceType == "char") {
+                        if (sourceType == "string") {
+                            visible = true;
+                        }
+                        break;
+
+                    case "char":
+                        if (sourceType == "char") {
+                            visible = true;
+                        }
+                        break;
+
+                    case "integer":
+                        if (sourceType == "uint" ||
+                            sourceType == "int" ||
+                            sourceType == "int16" ||
+                            sourceType == "int32" ||
+                            sourceType == "int64" ||
+                            sourceType == "single") {
+                            visible = true;
+                        }
+                        break;
+
+                    case "decimal":
+                        if (sourceType == "decimal" ||
+                            sourceType == "double") {
                             visible = true;
                         }
                         break;
                 }
             }
 
-            return visible ? "visible" : "hidden";
+            return visible;
         },
 
         // Add a new item to the definition list
