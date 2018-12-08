@@ -103,7 +103,16 @@ namespace TNDStudios.DataPortals.UI
                                 Description = "Data Connection Description",
                                 Name = "Data Connection",
                                 ProviderType = DataProviderType.DelimitedFileProvider,
-                                Credentials = CredentialsId
+                                Credentials = CredentialsId,
+                                PropertyBag = (new PropertyBagFactory())
+                                    .Get(ObjectTypes.Providers, (Int32)DataProviderType.DelimitedFileProvider)
+                                    .Select(type =>
+                                        new PropertyBagItem()
+                                        {
+                                            Value = type.DefaultValue,
+                                            ItemType = type
+                                        })
+                                    .ToList()
                             }
                         },
                         DataDefinitions = new List<DataItemDefinition>()

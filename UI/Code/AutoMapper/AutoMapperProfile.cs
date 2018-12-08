@@ -217,7 +217,7 @@ namespace TNDStudios.DataPortals.UI
                 .ForMember(
                     item => item.DataType,
                     opt => opt.MapFrom(
-                        src => typeof(String)
+                        src => src.DataType.FromShortName()
                         )
                     );
         }

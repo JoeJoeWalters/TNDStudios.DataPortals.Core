@@ -26,6 +26,33 @@ namespace TNDStudios.DataPortals.Helpers
             return splitString[splitString.Length - 1];
         }
 
+        /// <summary>
+        /// Converts a string short name to a type
+        /// </summary>
+        /// <param name="value">The string value to convert</param>
+        /// <returns>The derived type value</returns>
+        public static Type FromShortName(this String value)
+        {
+            Type result = typeof(Object);
+
+            try
+            {
+                result = Type.GetType($"System.{value.UppercaseFirst()}");
+                if (result == null)
+                    throw new Exception(); // Failed, go to the back plan
+            }
+            catch
+            {
+                try
+                {
+                    result = Type.GetType($"{value}");
+                }
+                catch { }
+            }
+
+            return result;
+        }
+
         // Capitalise the first character of a string
         public static String UppercaseFirst(this String s)
         {
@@ -54,7 +81,7 @@ namespace TNDStudios.DataPortals.Helpers
             {
                 // Do we have a description attribute?
                 String description = ((Enum)item).GetEnumDescription();
-                
+
                 // Add the result to the return dictionary
                 result.Add(new KeyValuePair<int, string>((Int32)item, description));
             }

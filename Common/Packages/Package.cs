@@ -242,7 +242,7 @@ namespace TNDStudios.DataPortals.Repositories
                         // Does this data definition already exist?
                         DataItemDefinition existingDataItemDefinition =
                             (dataItemDefinition.Id == Guid.Empty) ? null : this.DataDefinition(dataItemDefinition.Id);
-
+                        
                         // No data definition found?
                         if (existingDataItemDefinition == null)
                         {

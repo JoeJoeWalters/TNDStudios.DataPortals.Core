@@ -129,7 +129,7 @@
                                             </td>
                                             <td>
                                                 <input type="text"
-                                                       v-bind:style="{visibility: (isCorrectFormType(property.itemType.dataType, 'text') ? 'visible' : 'hidden'), display: (isCorrectFormType(property.itemType.dataType, 'text') ? 'inline' : 'none') }"
+                                                       v-bind:style="{visibility: (isCorrectFormType(property, 'text') ? 'visible' : 'hidden'), display: (isCorrectFormType(property, 'text') ? 'inline' : 'none') }"
                                                        v-model="property.value" class="form-control" />
                                                 <input type="text"
                                                        v-bind:style="{visibility: (isCorrectFormType(property, 'char') ? 'visible' : 'hidden'), display: (isCorrectFormType(property, 'char') ? 'inline' : 'none') }"

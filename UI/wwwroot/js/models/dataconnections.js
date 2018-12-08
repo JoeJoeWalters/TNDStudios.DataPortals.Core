@@ -49,10 +49,7 @@ tndStudios.models.dataConnections =
 
             // Create a formatted object that can be passed to the server
             this.toObject = function () {
-
-                // Construct the property bag model
-                var constructedPropertyBag = [];
-
+                
                 var result =
                 {
                     Id: this.id,
@@ -61,7 +58,7 @@ tndStudios.models.dataConnections =
                     ProviderType: this.providerType,
                     ConnectionString: this.connectionString,
                     Credentials: this.credentials,
-                    PropertyBag: constructedPropertyBag
+                    PropertyBag: this.propertyBag
                 };
 
                 return result;
