@@ -39,7 +39,7 @@ namespace TNDStudios.DataPortals.Tests.Core
         /// <param name="data"></param>
         public ProviderFactoryTests(ProviderFactoryTestsFixture data)
             => fixture = data;
-
+        
         [Fact]
         public void Get_Providers_From_Factory()
         {

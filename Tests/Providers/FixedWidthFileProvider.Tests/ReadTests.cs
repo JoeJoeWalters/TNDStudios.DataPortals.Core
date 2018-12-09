@@ -37,7 +37,6 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
         {
             // Arrange
             TestHelper testHelper = new TestHelper();
-
             DataConnection connection = testHelper.TestConnection(); // Get a test connection
             PropertyBagHelper propertyBagHelper = new PropertyBagHelper(connection);
             propertyBagHelper.Set<Int32>(PropertyBagItemTypeEnum.RowsToSkip, 1);
