@@ -62,12 +62,12 @@ namespace TNDStudios.DataPortals.Data
                 return false;
 
             // Does the file that we are trying to connect to exist?
-            if (File.Exists(Connection.ConnectionString))
+            if (File.Exists(connection.ConnectionString))
             {
                 // Connect to the file and read the data from it
-                using (Stream fileStream = File.OpenRead(Connection.ConnectionString))
+                using (Stream fileStream = File.OpenRead(connection.ConnectionString))
                 {
-                    result = Connect(definition, Connection, fileStream); // Do a standard stream connect to reuse that code
+                    result = Connect(definition, connection, fileStream); // Do a standard stream connect to reuse that code
                     if (result)
                         this.Connection = connection; // Remember the connection string
                 }

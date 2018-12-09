@@ -241,7 +241,7 @@
         // The provider was changed (Get the property bag etc.)
         providerChanged: function () {
             tndStudios.models.propertyBag.getDefaults(
-                tndStudios.models.common.objectTypes.Providers,
+                tndStudios.models.common.objectTypes.Connections,
                 app.page.editor.providerType,
                 this.propertyBagCallback
             );

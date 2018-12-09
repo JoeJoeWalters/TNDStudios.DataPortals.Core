@@ -8,8 +8,7 @@ tndStudios.models.common =
             DataDefinitions: 2,
             Connections: 3,
             Credentials: 4,
-            Transformations: 5,
-            Providers: 6
+            Transformations: 5
         },
 
         // Key Value Pair definition

@@ -24,7 +24,7 @@ namespace TNDStudios.DataPortals.PropertyBag
             switch (objectType)
             {
                 // We are checking data provider types
-                case ObjectTypes.Providers:
+                case ObjectTypes.Connections:
 
                     IDataProvider provider = null;
 

@@ -26,10 +26,7 @@ namespace TNDStudios.DataPortals
         Credentials = 4,
 
         [Description("Transformations")]
-        Transformations = 5,
-
-        [Description("Providers")]
-        Providers = 6
+        Transformations = 5
 
     }
 
