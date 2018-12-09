@@ -39,11 +39,13 @@ namespace TNDStudios.DataPortals.UI
                 PackageRepository = new MemoryPackageRepository();
 
                 // Initialisation Id's
-                Guid dataConnectionId = Guid.NewGuid();
+                Guid dataTextConnectionId = Guid.NewGuid();
+                Guid dataSqlConnectionId = Guid.NewGuid();
                 Guid dataDefinitionId = Guid.NewGuid();
                 Guid apiId = Guid.NewGuid();
                 Guid transformationId = Guid.NewGuid();
-                Guid CredentialsId = Guid.NewGuid();
+                Guid delimitedCredentialsId = Guid.NewGuid();
+                Guid sqlCredentialsId = Guid.NewGuid();
 
                 // Set up a new test package in the repository
                 PackageRepository.Save(
@@ -56,9 +58,9 @@ namespace TNDStudios.DataPortals.UI
                         {
                             new Credentials()
                             {
-                                Id = CredentialsId,
-                                Name = "Default Credentials",
-                                Description = "Credentials Description",
+                                Id = delimitedCredentialsId,
+                                Name = "Delimited File Credentials",
+                                Description = "Delimited File Credentials",
                                 Properties = new List<Credential>()
                                 {
                                     new Credential(){ Name = "Username", Value = "username" },
@@ -66,13 +68,24 @@ namespace TNDStudios.DataPortals.UI
                                     new Credential(){ Name = "ClientId", Value = "client id" },
                                     new Credential(){ Name = "ClientSecret", Value = "client secret" }
                                 }
+                            },
+                            new Credentials()
+                            {
+                                Id = sqlCredentialsId,
+                                Name = "SQL Credentials",
+                                Description = "SQL Credentials",
+                                Properties = new List<Credential>()
+                                {
+                                    new Credential(){ Name = "Username", Value = "username" },
+                                    new Credential(){ Name = "Password", Value = "password", Encrypted = true }
+                                }
                             }
                         },
                         ApiDefinitions = new List<ApiDefinition>()
                         {
                             new ApiDefinition()
                             {
-                                DataConnection = dataConnectionId,
+                                DataConnection = dataTextConnectionId,
                                 DataDefinition = dataDefinitionId,
                                 Description = "Flat File Api Definition",
                                 Id = apiId,
@@ -89,7 +102,7 @@ namespace TNDStudios.DataPortals.UI
                                             CanUpdate = true,
                                             Filter = "[Column 3] > 1.5"
                                         },
-                                        Credentials = CredentialsId
+                                        Credentials = delimitedCredentialsId
                                     }
                                 }
                             }
@@ -98,14 +111,32 @@ namespace TNDStudios.DataPortals.UI
                         {
                             new DataConnection()
                             {
-                                Id = dataConnectionId,
+                                Id = dataTextConnectionId,
                                 ConnectionString = @"C:\Users\Joe\Documents\Git\TNDStudios.DataPortals.Core\Tests\Providers\DelimitedFileProvider.Tests\TestFiles\DataTypesTest.txt",
-                                Description = "Data Connection Description",
-                                Name = "Data Connection",
+                                Description = "Delimited Data Connection Description",
+                                Name = "Delimited Data Connection",
                                 ProviderType = DataProviderType.DelimitedFileProvider,
-                                Credentials = CredentialsId,
+                                Credentials = delimitedCredentialsId,
                                 PropertyBag = (new PropertyBagFactory())
                                     .Get(ObjectTypes.Connections, (Int32)DataProviderType.DelimitedFileProvider)
+                                    .Select(type =>
+                                        new PropertyBagItem()
+                                        {
+                                            Value = type.DefaultValue,
+                                            ItemType = type
+                                        })
+                                    .ToList()
+                            },
+                            new DataConnection()
+                            {
+                                Id = dataSqlConnectionId,
+                                ConnectionString = @"",
+                                Description = "SQL Data Connection Description",
+                                Name = "SQL Data Connection",
+                                ProviderType = DataProviderType.SQLProvider,
+                                Credentials = sqlCredentialsId,
+                                PropertyBag = (new PropertyBagFactory())
+                                    .Get(ObjectTypes.Connections, (Int32)DataProviderType.SQLProvider)
                                     .Select(type =>
                                         new PropertyBagItem()
                                         {
