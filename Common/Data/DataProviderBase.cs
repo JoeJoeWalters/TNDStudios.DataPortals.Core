@@ -27,6 +27,11 @@ namespace TNDStudios.DataPortals.Data
         public virtual Boolean CanAnalyse { get => false; }
 
         /// <summary>
+        /// Can this provider list objects to connect to 
+        /// </summary>
+        public virtual Boolean CanList { get => false;  }
+
+        /// <summary>
         /// The property bag types that can be used to define this connection
         /// </summary>
         public virtual List<PropertyBagItemType> PropertyBagTypes() => new List<PropertyBagItemType>() { };
@@ -149,5 +154,11 @@ namespace TNDStudios.DataPortals.Data
 
             return result; // Return the result
         }
+
+        /// <summary>
+        /// Get a list of the objects that this provider can read
+        /// </summary>
+        public List<KeyValuePair<String, String>> ObjectList()
+            => throw new NotImplementedException();
     }
 }

@@ -50,6 +50,12 @@ namespace TNDStudios.DataPortals.Data
         Boolean CanAnalyse { get; }
 
         /// <summary>
+        /// Can this provider list objects (such as data tables, objects etc.) to 
+        /// connect to
+        /// </summary>
+        Boolean CanList { get; }
+
+        /// <summary>
         /// Is the data provider marked as being in test mode
         /// </summary>
         Boolean TestMode { get; set; }
@@ -135,5 +141,10 @@ namespace TNDStudios.DataPortals.Data
         /// </summary>
         /// <returns>Success or failure of the connection string test</returns>
         Boolean Test(DataConnection connection);
+
+        /// <summary>
+        /// Get a list of the objects that this provider can read
+        /// </summary>
+        List<KeyValuePair<String, String>> ObjectList();
     }
 }
