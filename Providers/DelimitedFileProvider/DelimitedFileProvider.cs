@@ -298,7 +298,8 @@ namespace TNDStudios.DataPortals.Data
             AnalyseRequest<String> analyseTextRequest =
                 new AnalyseRequest<String>()
                 {
-                    Data = rawData
+                    Data = rawData,
+                    Connection = request.Connection
                 };
             result = DelimitedFileHelper.AnalyseText(analyseTextRequest);
 

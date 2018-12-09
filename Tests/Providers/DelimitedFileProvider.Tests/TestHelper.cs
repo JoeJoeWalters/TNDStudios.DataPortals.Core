@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using TNDStudios.DataPortals.Data;
@@ -31,7 +32,23 @@ namespace TNDStudios.DataPortals.Tests.DelimitedFile
         /// Get a test connection for use with the readers
         /// </summary>
         /// <returns>A test connection</returns>
-        public DataConnection TestConnection() => new DataConnection() { };
+        public DataConnection TestConnection()
+        => new DataConnection()
+            {
+                ProviderType = DataProviderType.DelimitedFileProvider,
+                LastUpdated = DateTime.Now,
+                Id = Guid.NewGuid(),
+                PropertyBag =
+                    (new DelimitedFileProvider())
+                    .PropertyBagTypes()
+                    .Select(type =>
+                        new PropertyBagItem()
+                        {
+                            Value = type.DefaultValue,
+                            ItemType = type
+                        })
+                    .ToList()
+            };
 
         /// <summary>
         /// Generate the data set for the testing of different different types
@@ -39,15 +56,14 @@ namespace TNDStudios.DataPortals.Tests.DelimitedFile
         /// <param name="testDefinition">Which test file to load</param>
         /// <returns>The prepared data table</returns>
         public DataTable PopulateDataTable(String testDefinition)
+            => PopulateDataTable(testDefinition, TestConnection());
+        public DataTable PopulateDataTable(String testDefinition, DataConnection connection)
         {
             // Get the test data from the resource in the manifest
             Stream resourceStream = GetResourceStream(testDefinition);
 
             // Get the test definition (The columns, data types etc. for this file)
             DataItemDefinition definition = TestDefinition(testDefinition);
-
-            // Get a test connection
-            DataConnection connection = TestConnection();
 
             // Create a new flat file provider
             IDataProvider provider = new DelimitedFileProvider()
@@ -95,7 +111,7 @@ namespace TNDStudios.DataPortals.Tests.DelimitedFile
                                                 },
                                                 Value = false
                                             }); // There is a header record
-                    
+
                     break;
 
                 case TestFile_Headers:

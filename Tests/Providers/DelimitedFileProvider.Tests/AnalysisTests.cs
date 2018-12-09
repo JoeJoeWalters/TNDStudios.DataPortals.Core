@@ -17,15 +17,18 @@ namespace TNDStudios.DataPortals.Tests.DelimitedFile
         public void Analyse_BigData_ColumnCount()
         {
             // Arrange
-            String file = (new TestHelper()).GetResourceString(
+            TestHelper testHelper = new TestHelper();
+            String file = testHelper.GetResourceString(
                 TestHelper.TestFile_BigFileSalesRecords);
+            DataConnection connection = testHelper.TestConnection();
             DelimitedFileProvider provider = new DelimitedFileProvider();
 
             // Act
             DataItemDefinition definition = provider.Analyse(
                 new AnalyseRequest<object>
                 {
-                    Data = file
+                    Data = file,
+                    Connection = connection
                 }
                 );
 
@@ -37,15 +40,17 @@ namespace TNDStudios.DataPortals.Tests.DelimitedFile
         public void Analyse_BigData_RowCount()
         {
             // Arrange
-            Stream file = (new TestHelper()).GetResourceStream(
+            TestHelper testHelper = new TestHelper();
+            Stream file = testHelper.GetResourceStream(
                 TestHelper.TestFile_BigFileSalesRecords);
+            DataConnection connection = testHelper.TestConnection();
             DelimitedFileProvider provider = new DelimitedFileProvider();
 
             // Act
             AnalyseRequest<Object> analysisRequest = new AnalyseRequest<Object>()
             {
                 Data = file,
-                Connection = new DataConnection() { }
+                Connection = connection
             };
             DataItemDefinition definition = provider.Analyse(analysisRequest);
 
