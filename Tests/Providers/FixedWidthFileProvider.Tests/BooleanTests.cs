@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using TNDStudios.DataPortals.Data;
+using TNDStudios.DataPortals.PropertyBag;
 using Xunit;
 
 namespace TNDStudios.DataPortals.Tests.FixedWidthFile
@@ -19,9 +21,12 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
         public void Boolean_Values_Of_Different_Types()
         {
             // Arrange
+            TestHelper testHelper = new TestHelper();
+            DataConnection connection = testHelper.TestConnection();
+            PropertyBagHelper propertyBagHelper = new PropertyBagHelper(connection.PropertyBag);
 
             // Act
-            DataTable data = (new TestHelper()).PopulateDataTable(TestHelper.TestFile_DataTypes); // Get the data
+            DataTable data = testHelper.PopulateDataTable(TestHelper.TestFile_DataTypes, connection); // Get the data
 
             // Assert
             Assert.True(data.Rows.Count != 0); // It actually got some data rows

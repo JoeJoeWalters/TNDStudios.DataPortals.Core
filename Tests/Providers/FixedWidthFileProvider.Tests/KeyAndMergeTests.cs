@@ -5,6 +5,7 @@ using System.IO;
 using TNDStudios.DataPortals.Data;
 using System.Data;
 using System.Globalization;
+using TNDStudios.DataPortals.PropertyBag;
 
 namespace TNDStudios.DataPortals.Tests.FixedWidthFile
 {
@@ -17,10 +18,14 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
             TestHelper testHelper = new TestHelper();
 
             DataConnection connection = testHelper.TestConnection(); // Get a test connection
+            PropertyBagHelper propertyBagHelper = new PropertyBagHelper(connection.PropertyBag);
+            propertyBagHelper.Set<Int32>(PropertyBagItemTypeEnum.RowsToSkip, 1);
+            propertyBagHelper.Set<Boolean>(PropertyBagItemTypeEnum.HasHeaderRecord, true);
+
             DataItemDefinition definition = testHelper.TestDefinition(TestHelper.TestFile_GenericFixedWidth); // Get the test definition of what to merge from (but also to)
 
-            DataTable baseData = testHelper.PopulateDataTable(TestHelper.TestFile_GenericFixedWidth); // Get the data
-            DataTable mergeData = testHelper.PopulateDataTable(TestHelper.TestFile_MergeData); // Get the data
+            DataTable baseData = testHelper.PopulateDataTable(TestHelper.TestFile_GenericFixedWidth, connection); // Get the data
+            DataTable mergeData = testHelper.PopulateDataTable(TestHelper.TestFile_MergeData, connection); // Get the data
 
             Stream testStream = new MemoryStream(); // A blank stream to write data to
             IDataProvider provider = new FixedWidthFileProvider(); // A flat file provider to use to write the data

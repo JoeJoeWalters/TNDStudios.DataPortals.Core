@@ -26,7 +26,7 @@ namespace TNDStudios.DataPortals.PropertyBag
         /// <typeparam name="T">The type of data that is requested</typeparam>
         /// <param name="key">The key for the data</param>
         /// <returns>The data formatted as the correct type</returns>
-        public T GetPropertyBagItem<T>(PropertyBagItemTypeEnum key, T defaultValue)
+        public T Get<T>(PropertyBagItemTypeEnum key, T defaultValue)
         {
             // Check to see if the item exists in the property bag list
             PropertyBagItem propertyBagItem = propertyBagItems
@@ -35,6 +35,32 @@ namespace TNDStudios.DataPortals.PropertyBag
 
             // Return the value
             return (T)((propertyBagItem == null) ? defaultValue : propertyBagItem.Value);
+        }
+
+        /// <summary>
+        /// Set the value of the property bag item
+        /// </summary>
+        /// <typeparam name="T">The type of data being sent</typeparam>
+        /// <param name="key">The key of the item to be changed</param>
+        /// <param name="value"></param>
+        /// <returns>Success or not</returns>
+        public Boolean Set<T>(PropertyBagItemTypeEnum key, T value)
+        {
+            Boolean result = false;
+
+            // Scan the property bag and change all the items that match
+            propertyBagItems
+                .ForEach(item =>
+                {
+                    if (item.ItemType.PropertyType == key)
+                    {
+                        item.Value = value;
+                        result = true; // Set as a success
+                    }
+                });
+            
+            // Tell the caller if it worked or not
+            return result;
         }
     }
 }

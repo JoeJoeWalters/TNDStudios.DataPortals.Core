@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using TNDStudios.DataPortals.Data;
+using TNDStudios.DataPortals.PropertyBag;
 using Xunit;
 
 namespace TNDStudios.DataPortals.Tests.FixedWidthFile
@@ -18,9 +20,14 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
         public void Custom_Dates_Can_Be_Read()
         {
             // Arrange
+            TestHelper testHelper = new TestHelper();
+            DataConnection connection = testHelper.TestConnection();
+            PropertyBagHelper propertyBagHelper = new PropertyBagHelper(connection.PropertyBag);
+            propertyBagHelper.Set<Int32>(PropertyBagItemTypeEnum.RowsToSkip, 1);
+            propertyBagHelper.Set<Boolean>(PropertyBagItemTypeEnum.HasHeaderRecord, true);
 
             // Act
-            DataTable data = (new TestHelper()).PopulateDataTable(TestHelper.TestFile_GenericFixedWidth); // Get the data
+            DataTable data = testHelper.PopulateDataTable(TestHelper.TestFile_GenericFixedWidth, connection); // Get the data
 
             // Assert
             Assert.True(data.Rows.Count != 0); // It actually got some data rows

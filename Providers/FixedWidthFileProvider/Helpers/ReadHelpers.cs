@@ -33,8 +33,8 @@ namespace TNDStudios.DataPortals.Helpers
                     // Get properties needed to process the file (total lines to skip etc.)
                     Int32 lineNo = 0;
                     Int32 linesToSkip =
-                        propertyBagHelper.GetPropertyBagItem<Int32>(PropertyBagItemTypeEnum.RowsToSkip, 0) +
-                        (propertyBagHelper.GetPropertyBagItem<Boolean>(PropertyBagItemTypeEnum.HasHeaderRecord, false) ? 1 : 0);
+                        propertyBagHelper.Get<Int32>(PropertyBagItemTypeEnum.RowsToSkip, 0) +
+                        (propertyBagHelper.Get<Boolean>(PropertyBagItemTypeEnum.HasHeaderRecord, false) ? 1 : 0);
                     
                     // Loop each line of the file (ignoring lines that do not need to be processed)
                     String line = "";

@@ -3,6 +3,7 @@ using Xunit;
 using System.Data;
 using TNDStudios.DataPortals.Helpers;
 using TNDStudios.DataPortals.Data;
+using TNDStudios.DataPortals.PropertyBag;
 
 namespace TNDStudios.DataPortals.Tests.FixedWidthFile
 {
@@ -35,9 +36,15 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
         public void Data_Read_From_Headers()
         {
             // Arrange
+            TestHelper testHelper = new TestHelper();
 
+            DataConnection connection = testHelper.TestConnection(); // Get a test connection
+            PropertyBagHelper propertyBagHelper = new PropertyBagHelper(connection.PropertyBag);
+            propertyBagHelper.Set<Int32>(PropertyBagItemTypeEnum.RowsToSkip, 1);
+            propertyBagHelper.Set<Boolean>(PropertyBagItemTypeEnum.HasHeaderRecord, true);
+            
             // Act
-            DataTable data = (new TestHelper()).PopulateDataTable(TestHelper.TestFile_GenericFixedWidth); // Get the data
+            DataTable data = testHelper.PopulateDataTable(TestHelper.TestFile_GenericFixedWidth, connection); // Get the data
             DataRow dataRow = (data.Rows.Count >= 1) ? data.Rows[0] : null; // Get row 3 to check the data against later
 
             // Assert

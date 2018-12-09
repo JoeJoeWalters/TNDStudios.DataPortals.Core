@@ -24,15 +24,8 @@ namespace TNDStudios.DataPortals.Tests.DelimitedFile
             // Arrange
             TestHelper testHelper = new TestHelper();
             DataConnection connection = testHelper.TestConnection();
-            connection.PropertyBag.ForEach(item => 
-                {
-                    switch (item.ItemType.PropertyType)
-                    {
-                        case PropertyBagItemTypeEnum.HasHeaderRecord:
-                            item.Value = false;
-                            break;
-                    }
-                });
+            PropertyBagHelper propertyBagHelper = new PropertyBagHelper(connection.PropertyBag);
+            propertyBagHelper.Set<Boolean>(PropertyBagItemTypeEnum.HasHeaderRecord, false);
 
             // Act
             DataTable data = testHelper.PopulateDataTable(TestHelper.TestFile_DataTypes, connection); // Get the data

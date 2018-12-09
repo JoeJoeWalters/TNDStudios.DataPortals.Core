@@ -30,7 +30,7 @@ namespace TNDStudios.DataPortals.Helpers
                 using (CsvWriter writer = SetupWriter(definition, streamWriter))
                 {
                     // Do we need to write a header?
-                    if (propertyBagHelper.GetPropertyBagItem<Boolean>(PropertyBagItemTypeEnum.HasHeaderRecord, false))
+                    if (propertyBagHelper.Get<Boolean>(PropertyBagItemTypeEnum.HasHeaderRecord, false))
                     {
                         // Loop the header records and output the header record line manually
                         definition.ItemProperties
@@ -89,7 +89,7 @@ namespace TNDStudios.DataPortals.Helpers
 
             // Force all fields to be quoted or not
             writer.Configuration.QuoteAllFields =
-                propertyBagHelper.GetPropertyBagItem<Boolean>(PropertyBagItemTypeEnum.QuoteAllFields, false);
+                propertyBagHelper.Get<Boolean>(PropertyBagItemTypeEnum.QuoteAllFields, false);
 
             return writer;
         }
