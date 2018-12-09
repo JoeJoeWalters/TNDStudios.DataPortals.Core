@@ -27,11 +27,6 @@ namespace TNDStudios.DataPortals.Data
         public Guid Credentials { get; set; }
 
         /// <summary>
-        /// Adhoc configuration items for different providers
-        /// </summary>
-        public List<PropertyBagItem> PropertyBag { get; set; }
-
-        /// <summary>
         /// Default Constructor
         /// </summary>
         public DataConnection()
@@ -39,7 +34,6 @@ namespace TNDStudios.DataPortals.Data
             Credentials = Guid.Empty; // No credentials by default
             ProviderType = DataProviderType.Unknown; // No provider type by default
             ConnectionString = String.Empty; // No connection string by default
-            PropertyBag = new List<PropertyBagItem>(); // No properties by default
         }
     }
 }

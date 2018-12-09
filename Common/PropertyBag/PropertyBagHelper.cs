@@ -10,14 +10,14 @@ namespace TNDStudios.DataPortals.PropertyBag
         /// <summary>
         /// Property Bag Items referenced by the calling object
         /// </summary>
-        private List<PropertyBagItem> propertyBagItems { get; set; }
+        private CommonObject commonObject { get; set; }
 
         /// <summary>
         /// Constructor that takes the list of items from the calling object
         /// </summary>
         /// <param name="propertyBag"></param>
-        public PropertyBagHelper(List<PropertyBagItem> propertyBag)
-            => propertyBagItems = propertyBag;
+        public PropertyBagHelper(CommonObject commonObject)
+            => this.commonObject = commonObject;
 
         /// <summary>
         /// Get a configuration item from the property bag
@@ -29,7 +29,7 @@ namespace TNDStudios.DataPortals.PropertyBag
         public T Get<T>(PropertyBagItemTypeEnum key, T defaultValue)
         {
             // Check to see if the item exists in the property bag list
-            PropertyBagItem propertyBagItem = propertyBagItems
+            PropertyBagItem propertyBagItem = commonObject.PropertyBag
                 .Where(item => item.ItemType.PropertyType == key)
                 .FirstOrDefault();
 
@@ -49,7 +49,7 @@ namespace TNDStudios.DataPortals.PropertyBag
             Boolean result = false;
 
             // Scan the property bag and change all the items that match
-            propertyBagItems
+            commonObject.PropertyBag
                 .ForEach(item =>
                 {
                     if (item.ItemType.PropertyType == key)

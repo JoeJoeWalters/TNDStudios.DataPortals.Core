@@ -21,11 +21,6 @@ namespace TNDStudios.DataPortals.Data
         public List<DataItemProperty> ItemProperties { get; set; }
 
         /// <summary>
-        /// Adhoc configuration items for different providers
-        /// </summary>
-        public List<PropertyBagItem> PropertyBag { get; set; }
-
-        /// <summary>
         /// The specific culture information for this definition
         /// </summary>
         public CultureInfo Culture { get; set; }
@@ -42,7 +37,6 @@ namespace TNDStudios.DataPortals.Data
         {
             Name = $"Item Definition {Id.ToString()}";
             ItemProperties = new List<DataItemProperty>();
-            PropertyBag = new List<PropertyBagItem>();
             EncodingFormat = Encoding.Default;
             Culture = CultureInfo.CurrentCulture;
         }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using TNDStudios.DataPortals.PropertyBag;
 
 namespace TNDStudios.DataPortals
 {
@@ -61,14 +62,20 @@ namespace TNDStudios.DataPortals
         public DateTime LastUpdated { get; set; }
 
         /// <summary>
+        /// Adhoc configuration items for different providers
+        /// </summary>
+        public List<PropertyBagItem> PropertyBag { get; set; }
+
+        /// <summary>
         /// Default Constructor
         /// </summary>
         public CommonObject()
         {
-            Id = Guid.NewGuid();
-            Name = "";
-            Description = "";
+            Id = Guid.NewGuid(); // A new identifier by default
+            Name = String.Empty; // The name is empty by default
+            Description = String.Empty; // No description by default
             LastUpdated = DateTime.Now; // Default value (Mainly used for refreshing caches)
+            PropertyBag = new List<PropertyBagItem>(); // New empty property bag by default
         }
     }
 }

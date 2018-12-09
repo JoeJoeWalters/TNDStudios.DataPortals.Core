@@ -23,7 +23,7 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
             // Arrange
             TestHelper testHelper = new TestHelper();
             DataConnection connection = testHelper.TestConnection();
-            PropertyBagHelper propertyBagHelper = new PropertyBagHelper(connection.PropertyBag);
+            PropertyBagHelper propertyBagHelper = new PropertyBagHelper(connection);
 
             // Act
             DataTable data = testHelper.PopulateDataTable(TestHelper.TestFile_DataTypes, connection); // Get the data

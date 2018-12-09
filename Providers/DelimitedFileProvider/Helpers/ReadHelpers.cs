@@ -229,21 +229,21 @@ namespace TNDStudios.DataPortals.Helpers
             CsvReader result = new CsvReader(textReader);
 
             // Create a helper to read the property bag items
-            PropertyBagHelper propertyBagHelper = new PropertyBagHelper(connection.PropertyBag);
+            PropertyBagHelper propertyBagHelper = new PropertyBagHelper(connection);
 
             // Configure the CSV Reader
             result.Configuration.HasHeaderRecord = (definition == null) ? true :
-                propertyBagHelper.GetPropertyBagItem<Boolean>(PropertyBagItemTypeEnum.HasHeaderRecord, true);
+                propertyBagHelper.Get<Boolean>(PropertyBagItemTypeEnum.HasHeaderRecord, true);
             result.Configuration.BadDataFound = null; // Don't pipe bad data
             result.Configuration.CultureInfo = (definition == null) ?
                 CultureInfo.CurrentCulture : definition.Culture;
             result.Configuration.TrimOptions = TrimOptions.Trim;
             result.Configuration.Delimiter = (definition == null) ? "," :
-                propertyBagHelper.GetPropertyBagItem<String>(PropertyBagItemTypeEnum.DelimiterCharacter, ",");
+                propertyBagHelper.Get<String>(PropertyBagItemTypeEnum.DelimiterCharacter, ",");
             result.Configuration.Quote = (definition == null) ? '"' :
-                propertyBagHelper.GetPropertyBagItem<Char>(PropertyBagItemTypeEnum.QuoteCharacter, '"');
+                propertyBagHelper.Get<Char>(PropertyBagItemTypeEnum.QuoteCharacter, '"');
             result.Configuration.IgnoreQuotes = (definition == null) ? true :
-                propertyBagHelper.GetPropertyBagItem<Boolean>(PropertyBagItemTypeEnum.IgnoreQuotes, true);
+                propertyBagHelper.Get<Boolean>(PropertyBagItemTypeEnum.IgnoreQuotes, true);
             result.Configuration.MissingFieldFound = null;
             result.Configuration.ReadingExceptionOccurred = null;
 

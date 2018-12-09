@@ -24,7 +24,7 @@ namespace TNDStudios.DataPortals.Tests.DelimitedFile
             // Arrange
             TestHelper testHelper = new TestHelper();
             DataConnection connection = testHelper.TestConnection();
-            PropertyBagHelper propertyBagHelper = new PropertyBagHelper(connection.PropertyBag);
+            PropertyBagHelper propertyBagHelper = new PropertyBagHelper(connection);
             propertyBagHelper.Set<Boolean>(PropertyBagItemTypeEnum.HasHeaderRecord, false);
 
             // Act

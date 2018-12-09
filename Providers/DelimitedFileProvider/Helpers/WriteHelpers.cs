@@ -20,7 +20,7 @@ namespace TNDStudios.DataPortals.Helpers
             String result = ""; // New empty string to populate
             
             // Create a helper to read the property bag items
-            PropertyBagHelper propertyBagHelper = new PropertyBagHelper(connection.PropertyBag);
+            PropertyBagHelper propertyBagHelper = new PropertyBagHelper(connection);
 
             // Get the stream from the file
             using (MemoryStream textStream = new MemoryStream())
@@ -85,7 +85,7 @@ namespace TNDStudios.DataPortals.Helpers
             CsvWriter writer = new CsvWriter(textWriter);
 
             // Create a helper to read the property bag items
-            PropertyBagHelper propertyBagHelper = new PropertyBagHelper(definition.PropertyBag);
+            PropertyBagHelper propertyBagHelper = new PropertyBagHelper(definition);
 
             // Force all fields to be quoted or not
             writer.Configuration.QuoteAllFields =

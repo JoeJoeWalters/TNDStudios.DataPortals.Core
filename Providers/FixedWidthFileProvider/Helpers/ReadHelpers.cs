@@ -22,7 +22,7 @@ namespace TNDStudios.DataPortals.Helpers
             DataTable dataItems = definition.ToDataTable();
 
             // Create a helper to read the property bag items
-            PropertyBagHelper propertyBagHelper = new PropertyBagHelper(connection.PropertyBag);
+            PropertyBagHelper propertyBagHelper = new PropertyBagHelper(connection);
 
             // Raw data has something to convert?
             if ((rawData ?? "") != "")
