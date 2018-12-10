@@ -59,7 +59,7 @@ namespace TNDStudios.DataPortals.Data
         /// Is the flat file provider connected to it's source?
         /// </summary>
         protected internal Boolean connected;
-        public Boolean Connected
+        public virtual Boolean Connected
         {
             get { return connected; }
         }

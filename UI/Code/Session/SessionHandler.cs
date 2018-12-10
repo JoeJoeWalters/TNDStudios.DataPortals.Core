@@ -76,7 +76,7 @@ namespace TNDStudios.DataPortals.UI
                                 Description = "SQL Credentials",
                                 Properties = new List<Credential>()
                                 {
-                                    new Credential(){ Name = "Username", Value = "username" },
+                                    new Credential(){ Name = "Username", Value = "TransactionUser" },
                                     new Credential(){ Name = "Password", Value = "password", Encrypted = true }
                                 }
                             }
