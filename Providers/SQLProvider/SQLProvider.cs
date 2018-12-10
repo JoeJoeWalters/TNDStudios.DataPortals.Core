@@ -29,7 +29,31 @@ namespace TNDStudios.DataPortals.Data
         /// <returns>The data item definition derived from the connection and object</returns>
         public override DataItemDefinition Analyse(AnalyseRequest<object> request)
         {
-            return base.Analyse(request);
+            DataItemDefinition result = new DataItemDefinition(); // Empty Response By Default
+
+            // Are we connected and have an object name?
+            if ((ObjectName ?? String.Empty) != String.Empty &&
+                this.Connected)
+            {
+                // Set up the command to run and select all columns from the object
+                using (SqlCommand command = 
+                    new SqlCommand($"select top {request.SampleSize.ToString()} * from {ObjectName}"))
+                {
+                    // Run the command
+                    using (SqlDataReader dataReader = command.ExecuteReader())
+                    {
+                        DataTable tempTable = new DataTable(); // Create a temporary table
+                        tempTable.Load(dataReader); // Run the data reader to load the results
+                        result.FromDataTable(tempTable); // Tell the definition to load itself from the data table provided
+                        
+                        // Clean up
+                        tempTable = null;
+                    }
+                }
+            }
+
+            // Send the result back
+            return result;
         }
 
         /// <summary>

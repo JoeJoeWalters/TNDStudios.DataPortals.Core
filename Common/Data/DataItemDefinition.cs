@@ -90,5 +90,15 @@ namespace TNDStudios.DataPortals.Data
 
             return result; // Return the data table
         }
+
+        /// <summary>
+        /// Populate this definition from a given data table
+        /// </summary>
+        /// <param name="dataTable">The data table to load the definition from</param>
+        /// <returns>Success or Failure flag</returns>
+        public Boolean FromDataTable(DataTable dataTable)
+        {
+            return true;
+        }
     }
 }
