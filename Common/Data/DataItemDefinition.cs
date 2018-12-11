@@ -98,6 +98,36 @@ namespace TNDStudios.DataPortals.Data
         /// <returns>Success or Failure flag</returns>
         public Boolean FromDataTable(DataTable dataTable)
         {
+            // Clear out the item properties
+            this.ItemProperties = new List<DataItemProperty>();
+            
+            // Loop the columns in the data table and assign new item properties
+            // for each of them
+            foreach (DataColumn column in dataTable.Columns)
+            {
+                // Create the new item property
+                DataItemProperty itemProperty = new DataItemProperty()
+                {
+                    DataType = column.DataType,
+                    Description = column.ColumnName,
+                    Id = Guid.NewGuid(),
+                    Key = dataTable.PrimaryKey.Contains<DataColumn>(column),
+                    Name = column.ColumnName,
+                    OrdinalPosition = column.Ordinal,
+                    Path = column.ColumnName,
+                    PropertyType = DataItemPropertyType.Property,
+                    Quoted = false,
+                    Size = column.MaxLength                     
+                };
+
+                // Add the property to the property array
+                this.ItemProperties.Add(itemProperty);
+            }
+
+            // Assign any culture info etc. that it can glean
+            this.Culture = dataTable.Locale;
+            this.EncodingFormat = Encoding.UTF8; // Default
+
             return true;
         }
     }
