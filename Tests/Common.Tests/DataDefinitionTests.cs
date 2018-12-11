@@ -47,6 +47,7 @@ namespace TNDStudios.DataPortals.Tests.Common
             Data.Columns.Add(new DataColumn("IntegerColumn", typeof(Int32)));
             Data.Columns.Add(new DataColumn("FloatColumn", typeof(Double)));
             Data.Columns.Add(calculatedColumn);
+            Data.PrimaryKey = new DataColumn[1] { primaryKeyColumn }; // Assign the primary key column
 
             // Create a new data item definition to test converting from and
             // checking as a reference once converted in to
@@ -166,7 +167,14 @@ namespace TNDStudios.DataPortals.Tests.Common
             result.FromDataTable(fixture.Data);
 
             // Assert
-            Assert.True(false); // Fail always until the test is finished
+            Assert.True(fixture.Data.Columns.Count == result.ItemProperties.Count); // Correct amount of columns?
+            result.ItemProperties.ForEach(itemProperty => 
+            {
+                // Get the source column and check it actually exists
+                Assert.True(fixture.Data.Columns.Contains(itemProperty.Name)); // Column Exists Test
+                DataColumn sourceColumn = fixture.Data.Columns[itemProperty.Name]; // Get the column for further tests
+                Assert.Equal(sourceColumn.DataType, itemProperty.DataType);
+            });
         }
 
         [Fact]
