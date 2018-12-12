@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using TNDStudios.DataPortals.Data;
 using Xunit;
@@ -168,13 +169,40 @@ namespace TNDStudios.DataPortals.Tests.Common
 
             // Assert
             Assert.True(fixture.Data.Columns.Count == result.ItemProperties.Count); // Correct amount of columns?
-            result.ItemProperties.ForEach(itemProperty => 
+            result.ItemProperties.ForEach(itemProperty =>
             {
                 // Get the source column and check it actually exists
                 Assert.True(fixture.Data.Columns.Contains(itemProperty.Name)); // Column Exists Test
                 DataColumn sourceColumn = fixture.Data.Columns[itemProperty.Name]; // Get the column for further tests
+
+                // Data in the converted item are what we expect them to be?
                 Assert.Equal(sourceColumn.DataType, itemProperty.DataType);
+                Assert.Equal(sourceColumn.ColumnName, itemProperty.Description);
+                Assert.Equal(sourceColumn.ColumnName, itemProperty.Path);
+
+                // In the right order?
+                Assert.Equal(sourceColumn.Ordinal, itemProperty.OrdinalPosition);
+
+                // If the source column is an expression, did it cast over?
+                if ((sourceColumn.Expression ?? String.Empty) != String.Empty)
+                {
+                    Assert.Equal(DataItemPropertyType.Calculated, itemProperty.PropertyType); // Made the data item definition property a "calculated" column?
+                    Assert.Equal(sourceColumn.Expression, itemProperty.Calculation); // Calculation the same as the source expression?
+                }
             });
+
+            // Any primary keys? Check to see if they were copied over
+            (new List<DataColumn>(fixture.Data.PrimaryKey))
+                .ForEach(column =>
+                    {
+                        // Do the checks to see if primary keys were identified correctly
+                        DataItemProperty property = result.ItemProperties
+                                .Where(prop => prop.Name == column.ColumnName)
+                                .FirstOrDefault();
+
+                        Assert.NotNull(property); // We actually have a column converted with the right name
+                        Assert.True(property.Key); // The property is marked as being a key
+                    });
         }
 
         [Fact]
@@ -187,7 +215,45 @@ namespace TNDStudios.DataPortals.Tests.Common
             result = fixture.Definition.ToDataTable();
 
             // Assert
-            Assert.True(false); // Fail always until the test is finished
+            Assert.True(fixture.Definition.ItemProperties.Count == result.Columns.Count); // Correct amount of columns?
+
+            fixture.Definition.ItemProperties.ForEach(itemProperty =>
+            {
+                // Get the source column and check it actually exists
+                Assert.True(result.Columns.Contains(itemProperty.Name)); // Column Exists Test
+                DataColumn generatedColumn = result.Columns[itemProperty.Name]; // Get the column for further tests
+
+                // Data in the converted item are what we expect them to be?
+                Assert.Equal(generatedColumn.DataType, itemProperty.DataType);
+                Assert.Equal(generatedColumn.ColumnName, itemProperty.Description);
+                Assert.Equal(generatedColumn.ColumnName, itemProperty.Path);
+
+                // In the right order?
+                Assert.Equal(generatedColumn.Ordinal, itemProperty.OrdinalPosition);
+
+                // If the source column is an expression, did it cast over?
+                if ((generatedColumn.Expression ?? String.Empty) != String.Empty)
+                {
+                    Assert.Equal(generatedColumn.Expression, itemProperty.Calculation); // Calculation the same as the source expression?
+                }
+            });
+
+            // Any primary keys? Check to see if they were copied over
+            Assert.Equal(
+                fixture.Definition.ItemProperties.Where(prop => prop.Key).Count(), 
+                result.PrimaryKey.Length);
+
+            (new List<DataColumn>(result.PrimaryKey))
+                .ForEach(column =>
+                {
+                    // Do the checks to see if primary keys were identified correctly
+                    DataItemProperty property = fixture.Definition.ItemProperties
+                            .Where(prop => prop.Name == column.ColumnName)
+                            .FirstOrDefault();
+
+                    Assert.NotNull(property); // We actually have a column converted with the right name
+                    Assert.True(property.Key); // The property is marked as being a key
+                });
         }
     }
 }

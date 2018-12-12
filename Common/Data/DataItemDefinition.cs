@@ -56,10 +56,17 @@ namespace TNDStudios.DataPortals.Data
                 {
                     case DataItemPropertyType.Property:
 
-                        result.Columns.Add(
-                            new DataColumn(property.Name, property.DataType)
-                            {
-                            });
+                        // Create the new column
+                        DataColumn newColumn = new DataColumn(property.Name, property.DataType)
+                        {
+                        };
+
+                        // Add the column to the array
+                        result.Columns.Add(newColumn);
+
+                        // If this is a key column, add it to the table primary keys list
+                        if (property.Key)
+                            result.PrimaryKey = result.PrimaryKey.Append(newColumn).ToArray(); // Append to the end
 
                         break;
 
@@ -100,7 +107,7 @@ namespace TNDStudios.DataPortals.Data
         {
             // Clear out the item properties
             this.ItemProperties = new List<DataItemProperty>();
-            
+
             // Loop the columns in the data table and assign new item properties
             // for each of them
             foreach (DataColumn column in dataTable.Columns)
@@ -108,6 +115,7 @@ namespace TNDStudios.DataPortals.Data
                 // Create the new item property
                 DataItemProperty itemProperty = new DataItemProperty()
                 {
+                    Calculation = (column.Expression ?? String.Empty),
                     DataType = column.DataType,
                     Description = column.ColumnName,
                     Id = Guid.NewGuid(),
@@ -115,9 +123,12 @@ namespace TNDStudios.DataPortals.Data
                     Name = column.ColumnName,
                     OrdinalPosition = column.Ordinal,
                     Path = column.ColumnName,
-                    PropertyType = DataItemPropertyType.Property,
+                    PropertyType =
+                        (column.Expression ?? String.Empty) != "" ?
+                        DataItemPropertyType.Calculated :
+                        DataItemPropertyType.Property,
                     Quoted = false,
-                    Size = column.MaxLength                     
+                    Size = column.MaxLength
                 };
 
                 // Add the property to the property array
