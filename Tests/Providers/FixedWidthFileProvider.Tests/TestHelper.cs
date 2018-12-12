@@ -27,21 +27,31 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
         /// </summary>
         /// <returns>A test connection</returns>
         public DataConnection TestConnection()
-        => new DataConnection()
         {
-            ProviderType = DataProviderType.FixedWidthFileProvider,
-            LastUpdated = DateTime.Now,
-            Id = Guid.NewGuid(),
-            PropertyBag =
-                    (new FixedWidthFileProvider()).PropertyBagTypes()
-                    .Select(type =>
-                        new PropertyBagItem()
-                        {
-                            Value = type.DefaultValue,
-                            ItemType = type
-                        })
-                    .ToList()
-        };
+            DataConnection connection = new DataConnection()
+            {
+                ProviderType = DataProviderType.FixedWidthFileProvider,
+                LastUpdated = DateTime.Now,
+                Id = Guid.NewGuid(),
+                PropertyBag =
+                        (new FixedWidthFileProvider()).PropertyBagTypes()
+                        .Select(type =>
+                            new PropertyBagItem()
+                            {
+                                Value = type.DefaultValue,
+                                ItemType = type
+                            })
+                        .ToList()
+            };
+
+            // Create a property bag helper to set some defaults
+            PropertyBagHelper propertyBagHelper = new PropertyBagHelper(connection);
+            propertyBagHelper.Set<Boolean>(PropertyBagItemTypeEnum.HasHeaderRecord, true);
+            propertyBagHelper.Set<Int32>(PropertyBagItemTypeEnum.RowsToSkip, 1);
+
+            return connection;
+        }
+
         /// <summary>
         /// Generate the data set for the testing of different different types
         /// </summary>
@@ -90,19 +100,6 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "DateType", DataType = typeof(DateTime), OrdinalPosition = 16, Size = 15 });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "NumericType", DataType = typeof(Double), OrdinalPosition = 32, Size = 15 });
 
-                    // Property bag items to define how the provider should handle custom settings
-                    definition.PropertyBag.Add(
-                        new PropertyBagItem()
-                        {
-                            ItemType = new PropertyBagItemType()
-                            {
-                                DataType = typeof(Boolean),
-                                DefaultValue = true,
-                                PropertyType = PropertyBagItemTypeEnum.HasHeaderRecord
-                            },
-                            Value = true
-                        }); // There is a header record
-
                     break;
 
                 case TestFile_MergeData:
@@ -121,31 +118,6 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Debit", DataType = typeof(Decimal), OrdinalPosition = 87, Size = 17 });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Credit", DataType = typeof(Decimal), OrdinalPosition = 104, Size = 20 });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "All", DataType = typeof(Boolean), OrdinalPosition = 130, Size = 3 });
-
-                    // Property bag items to define how the provider should handle custom settings
-                    definition.PropertyBag.Add(
-                                            new PropertyBagItem()
-                                            {
-                                                ItemType = new PropertyBagItemType()
-                                                {
-                                                    DataType = typeof(Boolean),
-                                                    DefaultValue = true,
-                                                    PropertyType = PropertyBagItemTypeEnum.HasHeaderRecord
-                                                },
-                                                Value = true
-                                            }); // There is a header record
-
-                    definition.PropertyBag.Add(
-                        new PropertyBagItem()
-                        {
-                            ItemType = new PropertyBagItemType()
-                            {
-                                DataType = typeof(Int32),
-                                DefaultValue = 1,
-                                PropertyType = PropertyBagItemTypeEnum.RowsToSkip
-                            },
-                            Value = 1
-                        });  // .. but we also want to skip a record as it is a spacer
 
                     break;
 
@@ -176,31 +148,6 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
                         PropertyType = DataItemPropertyType.Calculated,
                         Calculation = "IIF(Post, Debit, 0)"
                     });
-
-                    // Property bag items to define how the provider should handle custom settings
-                    definition.PropertyBag.Add(
-                                            new PropertyBagItem()
-                                            {
-                                                ItemType = new PropertyBagItemType()
-                                                {
-                                                    DataType = typeof(Boolean),
-                                                    DefaultValue = true,
-                                                    PropertyType = PropertyBagItemTypeEnum.HasHeaderRecord
-                                                },
-                                                Value = true
-                                            }); // There is a header record
-
-                    definition.PropertyBag.Add(
-                        new PropertyBagItem()
-                        {
-                            ItemType = new PropertyBagItemType()
-                            {
-                                DataType = typeof(Int32),
-                                DefaultValue = 1,
-                                PropertyType = PropertyBagItemTypeEnum.RowsToSkip
-                            },
-                            Value = 1
-                        });  // .. but we also want to skip a record as it is a spacer
 
                     break;
             }

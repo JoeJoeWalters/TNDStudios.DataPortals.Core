@@ -24,6 +24,7 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
             TestHelper testHelper = new TestHelper();
             DataConnection connection = testHelper.TestConnection();
             PropertyBagHelper propertyBagHelper = new PropertyBagHelper(connection);
+            propertyBagHelper.Set<Int32>(PropertyBagItemTypeEnum.RowsToSkip, 0); // Override the default setting to 0 rows to skip
 
             // Act
             DataTable data = testHelper.PopulateDataTable(TestHelper.TestFile_DataTypes, connection); // Get the data
