@@ -27,6 +27,18 @@ namespace TNDStudios.DataPortals.Data
         public Guid Credentials { get; set; }
 
         /// <summary>
+        /// Returns the connection string formatted with any replacement text injected in to it
+        /// </summary>
+        /// <returns>The formatted connection string</returns>
+        public virtual String ConnectionStringProcessed
+        {
+            get
+            {
+                return ConnectionString;
+            }
+        }
+
+        /// <summary>
         /// Default Constructor
         /// </summary>
         public DataConnection()

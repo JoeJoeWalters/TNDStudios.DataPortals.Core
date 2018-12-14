@@ -111,14 +111,17 @@ namespace TNDStudios.DataPortals.Data
             if (!this.Connected)
             {
                 // Connect to the sql server
-                this.sqlConnection = new SqlConnection(connection.ConnectionString);
+                this.sqlConnection = new SqlConnection(connection.ConnectionStringProcessed);
                 try
                 {
                     this.sqlConnection.Open(); // Start the connection
                     this.definition = definition; // Assign the definition
                     return true; // Success!
                 }
-                catch { return false; }
+                catch(Exception ex)
+                {
+                    return false;
+                }
             }
             else
                 return false;

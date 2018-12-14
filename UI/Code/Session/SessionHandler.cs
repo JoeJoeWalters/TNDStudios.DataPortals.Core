@@ -130,7 +130,7 @@ namespace TNDStudios.DataPortals.UI
                             new DataConnection()
                             {
                                 Id = dataSqlConnectionId,
-                                ConnectionString = @"",
+                                ConnectionString = @"Server=.;Database=TransactionRepository;User Id={{Username}};Password={{Password}}",
                                 Description = "SQL Data Connection Description",
                                 Name = "SQL Data Connection",
                                 ProviderType = DataProviderType.SQLProvider,

@@ -50,11 +50,14 @@ namespace TNDStudios.DataPortals.Data
             if (connection == null)
                 return false;
 
+            // Get the processed connection string (with any injected items)
+            String connectionString = this.Connection.ConnectionStringProcessed;
+
             // Does the file that we are trying to connet to exist?
-            if (File.Exists(connection.ConnectionString))
+            if (File.Exists(connectionString))
             {
                 // Connect to the file and read the data from it
-                using (Stream fileStream = File.OpenRead(connection.ConnectionString))
+                using (Stream fileStream = File.OpenRead(connectionString))
                 {
                     result = Connect(definition, Connection, fileStream); // Do a standard stream connect to reuse that code
                     if (result)
@@ -200,11 +203,14 @@ namespace TNDStudios.DataPortals.Data
             // Try and write the file to disk
             try
             {
+                // Get the processed connection string (with any injected items)
+                String connectionString = this.Connection.ConnectionStringProcessed;
+
                 // Write the file
-                File.WriteAllText(this.Connection.ConnectionString, flatFileContent, definition.EncodingFormat);
+                File.WriteAllText(connectionString, flatFileContent, definition.EncodingFormat);
 
                 // Does the file now exist (and there were no errors writing)
-                result = File.Exists(this.Connection.ConnectionString);
+                result = File.Exists(connectionString);
             }
             catch
             {
