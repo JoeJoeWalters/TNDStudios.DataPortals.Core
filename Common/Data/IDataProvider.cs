@@ -6,6 +6,7 @@ using System.IO;
 using System.Text;
 using TNDStudios.DataPortals.Helpers;
 using TNDStudios.DataPortals.PropertyBag;
+using TNDStudios.DataPortals.Security;
 
 namespace TNDStudios.DataPortals.Data
 {
@@ -75,7 +76,7 @@ namespace TNDStudios.DataPortals.Data
         /// Connect to the location of the data (Database connection, flat file, xml, etc.)
         /// </summary>
         /// <param name="definition">The data defintion of the source of the data</param>
-        /// <param name="connectionString">The connection string</param>
+        /// <param name="connection">The connection</param>
         /// <returns></returns>
         Boolean Connect(DataItemDefinition definition, DataConnection connection);
 
@@ -83,6 +84,7 @@ namespace TNDStudios.DataPortals.Data
         /// Connect to a given stream of data (could be a flat file, xml etc.)
         /// </summary>
         /// <param name="definition">The data defintion of the source of the data</param>
+        /// <param name="connection">The connection</param>
         /// <param name="stream">The stream of data to process</param>
         /// <returns></returns>
         Boolean Connect(DataItemDefinition definition, DataConnection connection, Stream stream);

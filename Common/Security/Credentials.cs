@@ -27,6 +27,27 @@ namespace TNDStudios.DataPortals.Security
                         .Select(prop => prop.Value).FirstOrDefault();
 
         /// <summary>
+        /// Transform the property bag provided using the template
+        /// given to the method
+        /// </summary>
+        /// <param name="template"></param>
+        /// <returns>The transformed template</returns>
+        public String Transform(String template)
+        {
+            // Make sure it's not an empty template
+            if (template != String.Empty)
+            {
+                // For each of the property items, do the transformation
+                this.Properties.ForEach(property =>
+                {
+                    template = template.Replace("{{" + property.Name + "}}", property.Value);
+                });
+            }
+
+            return template; // Return the transformed template
+        }
+
+        /// <summary>
         /// The default constructor
         /// </summary>
         public Credentials()

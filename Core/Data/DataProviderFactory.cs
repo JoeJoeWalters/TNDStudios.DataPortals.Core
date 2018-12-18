@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TNDStudios.DataPortals.Data;
+using TNDStudios.DataPortals.Repositories;
 
 namespace TNDStudios.DataPortals.Data
 {
@@ -25,8 +26,10 @@ namespace TNDStudios.DataPortals.Data
         /// </summary>
         /// <param name="provider">The provider to be resolved</param>
         /// <returns>The resolved data provider</returns>
-        public IDataProvider Get(DataConnection connection, Boolean addToCache) => Get(connection, null, addToCache);
+        public IDataProvider Get(Package package, DataConnection connection, Boolean addToCache) => 
+            Get(package, connection, null, addToCache);
         public IDataProvider Get(
+            Package package,
             DataConnection connection, 
             DataItemDefinition definition,
             Boolean addToCache)
@@ -77,12 +80,16 @@ namespace TNDStudios.DataPortals.Data
             if (result != null &&
                 result.LastAction <= connection.LastUpdated)
             {
+#warning "Need a simple way of reseting a connection rather than doing each change manually"
 
             }
 
             // Did we get a provider?
             if (result != null)
             {
+                // Set the package if it is not assigned
+                connection.ParentPackage = (connection.ParentPackage ?? package);
+
                 // Set the provider to be connected if it is not already connected
                 // or if the provider has an updated definition
                 if ((!result.Connected || (result.LastAction <= definition.LastUpdated))

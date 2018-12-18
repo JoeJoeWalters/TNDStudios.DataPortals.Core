@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using TNDStudios.DataPortals.PropertyBag;
+using TNDStudios.DataPortals.Repositories;
 
 namespace TNDStudios.DataPortals
 {
@@ -37,6 +38,13 @@ namespace TNDStudios.DataPortals
     /// </summary>
     public class CommonObject
     {
+        /// <summary>
+        /// The parent package object (not always assigned but 
+        /// if it is needed for external references to get data)
+        /// </summary>
+        [JsonIgnore]
+        public Package ParentPackage { get; set; }
+
         /// <summary>
         /// The identifier of this object
         /// </summary>

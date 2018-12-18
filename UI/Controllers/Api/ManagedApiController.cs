@@ -289,18 +289,18 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                         // Close the web response
                         webResponse.Close();
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         if (ex.GetType() == typeof(WebException))
                         {
                             WebException webException = (WebException)ex;
                             if (webException != null)
-                            { 
+                            {
                                 HttpStatusCode statusCode = ((HttpWebResponse)webException.Response).StatusCode;
                                 return StatusCode((Int32)statusCode, webException.Message);
-                        }
-                        else
-                            return StatusCode((Int32)HttpStatusCode.ServiceUnavailable, "Failure in preview service. Please contact your administrator.");
+                            }
+                            else
+                                return StatusCode((Int32)HttpStatusCode.ServiceUnavailable, "Failure in preview service. Please contact your administrator.");
                         }
                         else
                             return StatusCode((Int32)HttpStatusCode.ServiceUnavailable, "Failure in preview service. Please contact your administrator.");
@@ -317,7 +317,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             // Something was very wrong that there could be no service available
             return StatusCode((Int32)HttpStatusCode.ServiceUnavailable, $"There was not package loaded to search for an endpoint of type '{objectType}'");
         }
-        
+
         [HttpGet]
         [Route("objects/{objectType}")]
         public ActionResult<Boolean> Get([FromRoute]Guid packageId, [FromRoute]String objectType)
@@ -339,9 +339,10 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                             // Use the api definition to get the data connection and 
                             // definition from the package and then try to connect
                             IDataProvider provider = providerFactory.Get(
-                            package.DataConnection(apiDefinition.DataConnection),
-                            package.DataDefinition(apiDefinition.DataDefinition),
-                            true);
+                                package,
+                                package.DataConnection(apiDefinition.DataConnection),
+                                package.DataDefinition(apiDefinition.DataDefinition),
+                                true);
 
                             // Are we connected?
                             if (provider.Connected)
@@ -355,7 +356,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                                 return StatusCode((Int32)HttpStatusCode.InternalServerError, "Could not connect to the data source");
                             }
                         }
-                        else                        
+                        else
                             // Return a failure to authenticate
                             return StatusCode((Int32)HttpStatusCode.Unauthorized, $"Endpoint of type '{objectType}' was not authorized for these credentials");
                     }

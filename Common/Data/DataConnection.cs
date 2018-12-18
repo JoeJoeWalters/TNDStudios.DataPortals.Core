@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using TNDStudios.DataPortals.PropertyBag;
+using TNDStudios.DataPortals.Security;
 
 namespace TNDStudios.DataPortals.Data
 {
@@ -30,11 +31,33 @@ namespace TNDStudios.DataPortals.Data
         /// Returns the connection string formatted with any replacement text injected in to it
         /// </summary>
         /// <returns>The formatted connection string</returns>
+        private String connectionStringProcessed;
         public virtual String ConnectionStringProcessed
         {
             get
             {
-                return ConnectionString;
+                // Do we have a package reference to go get the credentials etc.
+                if (ParentPackage != null &&
+                    Credentials != Guid.Empty &&
+                    ConnectionString != String.Empty)
+                {
+                    // Already processed?
+                    if ((connectionStringProcessed ?? String.Empty) == String.Empty)
+                    {
+                        // Get the credentials package
+                        Credentials credentials = ParentPackage.Credentials(this.Credentials);
+                        if (credentials != null)
+                        {
+                            // Transform the connection string
+                            this.connectionStringProcessed = credentials.Transform(this.ConnectionString);
+                        }
+                    }
+
+                    // Send back the processed string
+                    return (connectionStringProcessed ?? String.Empty);
+                }
+                else
+                    return (ConnectionString ?? String.Empty);
             }
         }
 

@@ -85,21 +85,26 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// <returns>A success or failure state for the connection</returns>
         [HttpPost]
         [Route("connection/test")]
-        public ApiResponse<Boolean> Test([FromBody] DataConnectionModel request)
+        public ApiResponse<Boolean> Test([FromRoute]Guid packageId, [FromBody] DataConnectionModel request)
         {
             // Create a default response object
             ApiResponse<Boolean> response = new ApiResponse<Boolean>();
 
-            // Map the connection to something we can use
-            DataConnection connection = mapper.Map<DataConnection>(request);
-
-            // Create a new factory class and get the provider from the connection given
-            IDataProvider provider = (new DataProviderFactory()).Get(connection, false);
-            if (provider != null)
+            // Did we find a package?
+            Package package = SessionHandler.PackageRepository.Get(packageId);
+            if (package != null)
             {
-                // Can we connect?
-                response.Success = response.Success = provider.Test(connection);
-                provider = null; // Kill the provider now
+                // Map the connection to something we can use
+                DataConnection connection = mapper.Map<DataConnection>(request);
+
+                // Create a new factory class and get the provider from the connection given
+                IDataProvider provider = (new DataProviderFactory()).Get(package, connection, false);
+                if (provider != null)
+                {
+                    // Can we connect?
+                    response.Success = response.Success = provider.Test(connection);
+                    provider = null; // Kill the provider now
+                }
             }
 
             // Send the response back
@@ -210,29 +215,34 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// <param name="connection">The connection to analyse</param>
         /// <param name="includeSample">Include sample data with the analysis</param>
         /// <returns>The data item model for the UI to consume</returns>
-        private DataItemModel AnalyseConnection(Guid packageId, DataConnection connection)
+        private DataItemModel AnalyseConnection([FromRoute]Guid packageId, DataConnection connection)
         {
             DataItemModel result = new DataItemModel(); // The result to return
 
             // Valid connection?
             if (connection != null)
             {
-                // Get the appropriate provider object to analyse
-                IDataProvider provider = (new DataProviderFactory()).Get(connection, false);
-
-                // Get the results of the analysis of this connection
-                DataItemDefinition definition =
-                    provider.Analyse(new AnalyseRequest<object>()
-                    {
-                        Data = null,
-                        Connection = connection
-                    });
-
-                // Did we get a result back?
-                if (definition.ItemProperties.Count != 0)
+                // Did we find a package?
+                Package package = SessionHandler.PackageRepository.Get(packageId);
+                if (package != null)
                 {
-                    // Assign the definition to the result
-                    result.Definition = mapper.Map<DataItemDefinitionModel>(definition);
+                    // Get the appropriate provider object to analyse
+                    IDataProvider provider = (new DataProviderFactory()).Get(package, connection, false);
+
+                    // Get the results of the analysis of this connection
+                    DataItemDefinition definition =
+                        provider.Analyse(new AnalyseRequest<object>()
+                        {
+                            Data = null,
+                            Connection = connection
+                        });
+
+                    // Did we get a result back?
+                    if (definition.ItemProperties.Count != 0)
+                    {
+                        // Assign the definition to the result
+                        result.Definition = mapper.Map<DataItemDefinitionModel>(definition);
+                    }
                 }
             }
 
@@ -286,7 +296,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                 DataItemDefinition dataDefinition = mapper.Map<DataItemDefinition>(request);
 
                 // Get the sample result 
-                result.Data = SampleConnection(connection, dataDefinition, 10);
+                result.Data = SampleConnection(package, connection, dataDefinition, 10);
 
                 // Send the resulting analysis back
                 result.Success = (result.Data != null && result.Data.Values != null);
@@ -301,7 +311,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// </summary>
         /// <param name="connection">The connection to analyse</param>
         /// <returns>The data item model for the UI to consume</returns>
-        private DataItemModel SampleConnection(DataConnection connection, DataItemDefinition definition, Int32 sampleSize)
+        private DataItemModel SampleConnection(Package package, DataConnection connection, DataItemDefinition definition, Int32 sampleSize)
         {
             DataItemModel result = new DataItemModel(); // The result to return
 
@@ -309,7 +319,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             if (connection != null)
             {
                 // Get the appropriate provider object to analyse
-                IDataProvider provider = (new DataProviderFactory()).Get(connection, false);
+                IDataProvider provider = (new DataProviderFactory()).Get(package, connection, false);
                 if (provider.Connect(definition, connection))
                 {
                     result.Values = new DataItemValuesModel(); // Create a new values model

@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using TNDStudios.DataPortals.Helpers;
 using TNDStudios.DataPortals.PropertyBag;
+using TNDStudios.DataPortals.Security;
 
 namespace TNDStudios.DataPortals.Data
 {
@@ -88,7 +89,7 @@ namespace TNDStudios.DataPortals.Data
         /// Connect to this connection
         /// </summary>
         /// <param name="definition">The definition of the data in the connection</param>
-        /// <param name="connectionString">The connection string to connect to</param>
+        /// <param name="connection">The connection</param>
         /// <returns>If the system connected ok</returns>
         public virtual bool Connect(DataItemDefinition definition, DataConnection connection)
             => throw new NotImplementedException();
@@ -97,6 +98,7 @@ namespace TNDStudios.DataPortals.Data
         /// Connect to this connection
         /// </summary>
         /// <param name="definition">The definition of the data in the connection</param>
+        /// <param name="connection">The connection</param>
         /// <param name="stream">The stream to connect to</param>
         /// <returns>If the system connected ok</returns>
         public virtual bool Connect(DataItemDefinition definition, DataConnection connection, Stream stream)
