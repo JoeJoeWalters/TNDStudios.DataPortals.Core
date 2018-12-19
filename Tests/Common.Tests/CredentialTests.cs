@@ -75,6 +75,27 @@ namespace TNDStudios.DataPortals.Tests.Common
         }
 
         /// <summary>
+        /// Test that when a template string has a set of credentials applied
+        /// to it that the appropriate markers are replaced with the appropriate
+        /// credentials when the same credential replacement might appear more than once
+        /// </summary>
+        [Fact]
+        public void Replace_Placeholders_In_Template_String_With_Multiple_Instances()
+        {
+            // Arrange
+            fixture.Initialise(); // Reset the fixture
+            String template = "username={{Username}};password={{Password}};username={{Username}};password={{Password}}"; // Template where the markers need replacing
+            String expectedOutcome = "username=username;password=password;username=username;password=password"; // The expected result
+            String result = String.Empty; // The result which is empty by default
+
+            // Act
+            result = fixture.Credentials.Transform(template); // Transform the template using the credentials
+
+            // Assert
+            Assert.Equal(expectedOutcome, result); // Does the expected outcome conform to the result?
+        }
+
+        /// <summary>
         /// Set a credential in to a set of credentials
         /// </summary>
         [Fact]
