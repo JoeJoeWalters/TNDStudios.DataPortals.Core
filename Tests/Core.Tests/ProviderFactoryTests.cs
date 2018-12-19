@@ -58,7 +58,7 @@ namespace TNDStudios.DataPortals.Tests.Core
             expectedOutcomes.ForEach(outcome =>
             {
                 // Get the provider based on the provider type
-                IDataProvider provider = factory.Get(
+                IDataProvider provider = factory.Get(null,
                     new DataConnection()
                     {
                         ProviderType = outcome.Key
