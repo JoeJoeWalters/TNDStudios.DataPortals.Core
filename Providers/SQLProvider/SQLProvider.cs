@@ -191,6 +191,20 @@ namespace TNDStudios.DataPortals.Data
         }
 
         /// <summary>
+        /// List the tables and views in the SQL Connection
+        /// </summary>
+        /// <returns>The list of tables and views in the SQL Connection</returns>
+        public override List<KeyValuePair<String, String>> ObjectList()
+        {
+            // Set up the result 
+            List<KeyValuePair<String, String>> result = 
+                new List<KeyValuePair<String, String>>() { };
+
+            // Send the result back to the caller
+            return result;
+        }
+
+        /// <summary>
         /// Default Constructor
         /// </summary>
         public SQLProvider() : base()

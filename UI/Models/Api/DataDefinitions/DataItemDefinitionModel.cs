@@ -22,13 +22,7 @@ namespace TNDStudios.DataPortals.UI.Models.Api
         /// </summary>
         [JsonProperty]
         public List<DataItemPropertyModel> ItemProperties { get; set; }
-
-        /// <summary>
-        /// Adhoc configuration items for different providers
-        /// </summary>
-        [JsonProperty]
-        public Dictionary<String, Object> PropertyBag { get; set; }
-
+        
         /// <summary>
         /// The specific culture information for this definition
         /// </summary>
@@ -49,7 +43,6 @@ namespace TNDStudios.DataPortals.UI.Models.Api
             Name = "";
             Description = "";
             ItemProperties = new List<DataItemPropertyModel>();
-            PropertyBag = new Dictionary<String, Object>();
             EncodingFormat = Encoding.Default.WebName;
             Culture = CultureInfo.CurrentCulture.Name;
         }

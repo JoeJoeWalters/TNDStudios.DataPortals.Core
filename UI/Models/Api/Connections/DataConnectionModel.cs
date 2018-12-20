@@ -32,10 +32,10 @@ namespace TNDStudios.DataPortals.UI.Models.Api
         public KeyValuePair<Guid, String> Credentials { get; set; }
 
         /// <summary>
-        /// The property bag for the connection object
+        /// The name of the object in the connection that the connection
+        /// is pointing to (such as the name of the table or spreadsheet)
         /// </summary>
-        [JsonProperty]
-        public List<PropertyBagItemModel> PropertyBag { get; set; }
+        public String ObjectName { get; set; }
 
         /// <summary>
         /// Default Constructor
@@ -45,7 +45,7 @@ namespace TNDStudios.DataPortals.UI.Models.Api
             ProviderType = 0; // No provider type by default
             ConnectionString = String.Empty; // No connection string by default
             Credentials = new KeyValuePair<Guid, String>(Guid.Empty, ""); // No credentials by default
-            PropertyBag = new List<PropertyBagItemModel>(); // No properties by default
+            ObjectName = String.Empty;
         }
     }
 }

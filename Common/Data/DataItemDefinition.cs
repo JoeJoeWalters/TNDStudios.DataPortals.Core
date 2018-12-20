@@ -5,7 +5,6 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using TNDStudios.DataPortals.PropertyBag;
 
 namespace TNDStudios.DataPortals.Data
 {

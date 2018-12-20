@@ -160,7 +160,7 @@ namespace TNDStudios.DataPortals.Data
         /// <summary>
         /// Get a list of the objects that this provider can read
         /// </summary>
-        public List<KeyValuePair<String, String>> ObjectList()
+        public virtual List<KeyValuePair<String, String>> ObjectList()
             => throw new NotImplementedException();
     }
 }

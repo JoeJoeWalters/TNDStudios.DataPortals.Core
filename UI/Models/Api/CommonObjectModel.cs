@@ -37,12 +37,21 @@ namespace TNDStudios.DataPortals.UI.Models.Api
         public DateTime LastUpdated { get; set; }
 
         /// <summary>
+        /// The property bag for the connection object
+        /// </summary>
+        [JsonProperty]
+        public List<PropertyBagItemModel> PropertyBag { get; set; }
+
+        /// <summary>
         /// Default Constructor
         /// </summary>
         public CommonObjectModel()
         {
             Id = Guid.Empty; // No Id by default but not null too
             LastUpdated = DateTime.Now; // Default date
+            Name = String.Empty; // No name by default
+            Description = String.Empty; // No description by default
+            PropertyBag = new List<PropertyBagItemModel>(); // No properties by default
         }
 
     }

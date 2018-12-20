@@ -62,6 +62,12 @@ namespace TNDStudios.DataPortals.Data
         }
 
         /// <summary>
+        /// The object that this connection is pointing to
+        /// (e.g. the table name or the spreadsheet reference)
+        /// </summary>
+        public String ObjectName { get; set; }
+
+        /// <summary>
         /// Default Constructor
         /// </summary>
         public DataConnection()
@@ -69,6 +75,7 @@ namespace TNDStudios.DataPortals.Data
             Credentials = Guid.Empty; // No credentials by default
             ProviderType = DataProviderType.Unknown; // No provider type by default
             ConnectionString = String.Empty; // No connection string by default
+            ObjectName = String.Empty; // No object by default
         }
     }
 }
