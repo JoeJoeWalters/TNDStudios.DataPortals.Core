@@ -199,6 +199,9 @@ namespace TNDStudios.DataPortals.Data
             // Set up the result 
             List<KeyValuePair<String, String>> result = 
                 new List<KeyValuePair<String, String>>() { };
+            
+            // Get the raw tables list
+            DataTable rawTables = this.sqlConnection.GetSchema("Tables");
 
             // Send the result back to the caller
             return result;

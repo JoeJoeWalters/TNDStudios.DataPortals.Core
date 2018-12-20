@@ -57,6 +57,32 @@ namespace TNDStudios.DataPortals.Tests.UI
             => fixture = data;
 
         /// <summary>
+        /// Passthrough to automappers stability check to see if the mappings
+        /// pass their own internal sanity checks
+        /// </summary>
+        [Fact]
+        public void Verify_Mappings()
+        {
+            // Arrange
+            Boolean result = true;
+
+            // Act
+            try
+            {
+                // Ask Automapper to raise an exception if the configuration is not
+                // deemed to be valid
+                fixture.TestMapper.ConfigurationProvider.AssertConfigurationIsValid();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+
+            // Assert
+            Assert.True(result);
+        }
+
+        /// <summary>
         /// Test the linking of Guid key's from one object to the other 
         /// with a name value being brought along for population
         /// (Used when foreign keys to other objects are needed without
