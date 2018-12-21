@@ -29,6 +29,14 @@ namespace TNDStudios.DataPortals.UI
             CreateMap<DataItemDefinition, KeyValuePair<Guid, String>>()
                 .ConstructUsing(api => new KeyValuePair<Guid, string>(api.Id, api.Name));
 
+            // Base transformation for common object model to and from domain object
+            CreateMap<CommonObject, CommonObjectModel>();
+            CreateMap<CommonObjectModel, CommonObject>()
+                .ForMember(
+                    item => item.ParentPackage,
+                    opt => opt.Ignore()
+                    );
+
             // Map from the data item definition to the web model
             CreateMap<DataItemDefinition, DataItemDefinitionModel>()
                 .ForMember(
@@ -67,8 +75,8 @@ namespace TNDStudios.DataPortals.UI
                     opt => opt.MapFrom(
                         src => Encoding.GetEncoding(src.EncodingFormat)
                         )
-                    );
-            CreateMap<CommonObjectModel, DataItemDefinition>();
+                    )
+                .ForMember(item => item.ParentPackage, opt => opt.Ignore());
 
             // Map from the web view model sub-property of the data item definition
             // back to the domain object type
@@ -101,8 +109,8 @@ namespace TNDStudios.DataPortals.UI
                     opt => opt.MapFrom(
                         src => src.DataDefinition.Key
                         )
-                    );
-            CreateMap<CommonObjectModel, ApiDefinition>();
+                    )
+                .ForMember(item => item.ParentPackage, opt => opt.Ignore());
 
             // Map from the data connection domain object to a key/value pairing
             CreateMap<DataConnection, KeyValuePair<Guid, String>>()
@@ -119,9 +127,8 @@ namespace TNDStudios.DataPortals.UI
                     opt => opt.MapFrom(
                         src => src.Credentials.Key
                         )
-                    );
-
-            CreateMap<CommonObjectModel, DataConnection>();
+                    )
+                .ForMember(item => item.ParentPackage, opt => opt.Ignore());
 
             // Create a generic key pair to id mapping
             CreateMap<KeyValuePair<Guid, String>, Guid>()
@@ -130,7 +137,7 @@ namespace TNDStudios.DataPortals.UI
             // Create a generic id to key pair mapping
             CreateMap<Guid, KeyValuePair<Guid, String>>()
                 .ConstructUsing(key => new KeyValuePair<Guid, String>(key, ""));
-            
+
             // Map from the web view model of the transformation model to the domain object
             CreateMap<TransformationModel, Transformation>()
                 .ForMember(
@@ -144,8 +151,8 @@ namespace TNDStudios.DataPortals.UI
                     opt => opt.MapFrom(
                         src => src.Destination.Key
                         )
-                    );
-            CreateMap<CommonObjectModel, Transformation>();
+                    )
+                .ForMember(item => item.ParentPackage, opt => opt.Ignore());
 
             // Map from the transformation domain object to a key/value pairing
             CreateMap<Transformation, KeyValuePair<Guid, String>>()
@@ -160,8 +167,13 @@ namespace TNDStudios.DataPortals.UI
             CreateMap<Package, CommonObjectModel>();
 
             // Map from the package web view model to the domain object
-            CreateMap<PackageModel, Package>();
-            CreateMap<CommonObjectModel, Package>();
+            CreateMap<PackageModel, Package>()
+                .ForMember(item => item.ApiDefinitions, opt => opt.Ignore())
+                .ForMember(item => item.DataDefinitions, opt => opt.Ignore())
+                .ForMember(item => item.DataConnections, opt => opt.Ignore())
+                .ForMember(item => item.Transformations, opt => opt.Ignore())
+                .ForMember(item => item.CredentialsStore, opt => opt.Ignore())
+                .ForMember(item => item.ParentPackage, opt => opt.Ignore());
 
             // Map from the Credentials object to a key/value pairing
             CreateMap<Credentials, KeyValuePair<Guid, String>>()
@@ -174,9 +186,9 @@ namespace TNDStudios.DataPortals.UI
             CreateMap<CredentialsLink, CredentialsLinkModel>();
 
             // Map from the credentials web view model to the domain object
-            CreateMap<CredentialsModel, Credentials>();
+            CreateMap<CredentialsModel, Credentials>()
+                .ForMember(item => item.ParentPackage, opt => opt.Ignore());
             CreateMap<CredentialModel, Credential>();
-            CreateMap<CommonObjectModel, Credentials>();
             CreateMap<CredentialsLinkModel, CredentialsLink>();
 
             // Map from the permissions domain object to the web view model
@@ -192,7 +204,7 @@ namespace TNDStudios.DataPortals.UI
                     item => item.PropertyType,
                     opt => opt.MapFrom(
                         src => new KeyValuePair<Int32, String>(
-                            (Int32)src.PropertyType, 
+                            (Int32)src.PropertyType,
                             src.PropertyType.GetEnumDescription()
                             )
                         )
@@ -205,7 +217,6 @@ namespace TNDStudios.DataPortals.UI
                     );
 
             // Map from the property bag web view model to the domain object
-#warning Conversion back from proeprty bag item type model is probably not needed but right now it only converts the type back a type of "System.String"
             CreateMap<PropertyBagItemModel, PropertyBagItem>();
             CreateMap<PropertyBagItemTypeModel, PropertyBagItemType>()
                 .ForMember(
