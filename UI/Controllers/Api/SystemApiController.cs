@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TNDStudios.DataPortals.Data;
 using TNDStudios.DataPortals.PropertyBag;
 using TNDStudios.DataPortals.UI.Models.Api;
 
@@ -55,5 +56,17 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                 Data = mapper.Map<List<PropertyBagItemTypeModel>>((new PropertyBagFactory()).Get(objectType, value)),
                 Success = true
             };
+
+        /// <summary>
+        /// Get information about the service data provider given
+        /// </summary>
+        [HttpGet]
+        [Route("provider/{providerId}/summary")]
+        public ApiResponse<DataProviderModel> GetDataProviderSummary(DataProviderType providerId)
+            => new ApiResponse<DataProviderModel>(
+                mapper.Map<DataProviderModel>(
+                    (new DataProviderFactory()).Get(providerId)
+                    )
+                );
     }
 }

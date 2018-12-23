@@ -41,7 +41,35 @@ namespace TNDStudios.DataPortals.Tests.Core
             => fixture = data;
         
         [Fact]
-        public void Get_Providers_From_Factory()
+        public void Get_Providers_From_Factory_WithOut_Connection()
+        {
+            // Arrange
+            List<KeyValuePair<DataProviderType, Type>>
+                expectedOutcomes = new List<KeyValuePair<DataProviderType, Type>>()
+                {
+                    new KeyValuePair<DataProviderType, Type>(DataProviderType.DelimitedFileProvider, typeof(DelimitedFileProvider)),
+                    new KeyValuePair<DataProviderType, Type>(DataProviderType.FixedWidthFileProvider, typeof(FixedWidthFileProvider)),
+                    new KeyValuePair<DataProviderType, Type>(DataProviderType.SQLProvider, typeof(SQLProvider)),
+                    new KeyValuePair<DataProviderType, Type>(DataProviderType.Unknown, null)
+                };
+            DataProviderFactory factory = new DataProviderFactory();
+
+            // Assert & Act
+            expectedOutcomes.ForEach(outcome =>
+            {
+                // Get the provider based on the provider type
+                IDataProvider provider = factory.Get(outcome.Key);
+
+                // Is it the right type?
+                if (outcome.Key == DataProviderType.Unknown)
+                    Assert.Null(provider);
+                else
+                    Assert.True(outcome.Value == provider.GetType()); // Can't use Assert.Type as it's a runtime type
+            });
+        }
+
+        [Fact]
+        public void Get_Providers_From_Factory_With_Connection()
         {
             // Arrange
             List<KeyValuePair<DataProviderType, Type>>

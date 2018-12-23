@@ -26,8 +26,42 @@ namespace TNDStudios.DataPortals.Data
         /// </summary>
         /// <param name="provider">The provider to be resolved</param>
         /// <returns>The resolved data provider</returns>
+        public IDataProvider Get(DataProviderType providerType)
+        {
+            IDataProvider result = null; // No provider by default
+
+            // Decide on the type of object to create based on the enumeration
+            // rather than storing the "type" in the object due to issues
+            // with serialisation and portability
+            Type type;
+            switch (providerType)
+            {
+                case DataProviderType.DelimitedFileProvider:
+                    type = typeof(DelimitedFileProvider);
+                    break;
+                case DataProviderType.FixedWidthFileProvider:
+                    type = typeof(FixedWidthFileProvider);
+                    break;
+                case DataProviderType.SQLProvider:
+                    type = typeof(SQLProvider);
+                    break;
+                default:
+                    type = null;
+                    break;
+            }
+
+            // Did we actually get a type?
+            if (type != null)
+                result = (IDataProvider)Activator.CreateInstance(type);
+            else
+                result = null;
+
+            return result; // Return the provider
+        }
+
         public IDataProvider Get(Package package, DataConnection connection, Boolean addToCache) => 
             Get(package, connection, null, addToCache);
+
         public IDataProvider Get(
             Package package,
             DataConnection connection, 
@@ -46,33 +80,7 @@ namespace TNDStudios.DataPortals.Data
 
             Boolean existingProvider = providers.ContainsKey(uniqueKey);
             if (!existingProvider)
-            {
-                // Decide on the type of object to create based on the enumeration
-                // rather than storing the "type" in the object due to issues
-                // with serialisation and portability
-                Type type;
-                switch (connection.ProviderType)
-                {
-                    case DataProviderType.DelimitedFileProvider:
-                        type = typeof(DelimitedFileProvider);
-                        break;
-                    case DataProviderType.FixedWidthFileProvider:
-                        type = typeof(FixedWidthFileProvider);
-                        break;
-                    case DataProviderType.SQLProvider:
-                        type = typeof(SQLProvider);
-                        break;
-                    default:
-                        type = null;
-                        break;
-                }
-
-                // Did we actually get a type?
-                if (type != null)
-                    result = (IDataProvider)Activator.CreateInstance(type);
-                else
-                    result = null;
-            }
+                result = Get(connection.ProviderType);
             else
                 result = providers[uniqueKey];
 
