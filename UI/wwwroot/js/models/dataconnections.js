@@ -25,6 +25,7 @@ tndStudios.models.dataConnections =
             this.name = '';
             this.description = '';
             this.providerType = 0;
+            this.providerData = new tndStudios.models.dataProviders.dataProvider();
             this.connectionString = '';
             this.credentials = new tndStudios.models.common.keyValuePair();
             this.credentials.key = '00000000-0000-0000-0000-000000000000';
@@ -42,6 +43,7 @@ tndStudios.models.dataConnections =
                 this.name = fromObject.name;
                 this.description = fromObject.description;
                 this.providerType = fromObject.providerType;
+                this.providerData = fromObject.providerData;
                 this.connectionString = fromObject.connectionString;
                 this.credentials = fromObject.credentials;
                 this.propertyBag = fromObject.propertyBag;
@@ -49,7 +51,7 @@ tndStudios.models.dataConnections =
 
             // Create a formatted object that can be passed to the server
             this.toObject = function () {
-                
+
                 var result =
                 {
                     Id: this.id,
@@ -72,6 +74,7 @@ tndStudios.models.dataConnections =
                 this.name = '';
                 this.description = '';
                 this.providerType = 0;
+                this.providerData = new tndStudios.models.dataProviders.dataProvider();
                 this.connectionString = '';
                 this.credentials = new tndStudios.models.common.keyValuePair();
                 this.credentials.key = '00000000-0000-0000-0000-000000000000';

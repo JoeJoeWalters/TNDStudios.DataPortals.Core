@@ -240,23 +240,26 @@
 
         // The provider was changed (Get the property bag etc.)
         providerChanged: function () {
-            tndStudios.models.propertyBag.getDefaults(
-                tndStudios.models.common.objectTypes.Connections,
+            tndStudios.models.dataProviders.summary(
                 app.page.editor.providerType,
-                this.propertyBagCallback
+                this.providerChangedCallback
             );
         },
 
-        // When the property bag is loaded (or not, call this)
-        propertyBagCallback: function (success, data) {
+        // When the provider type is changed
+        providerChangedCallback: function (success, data) {
+
             if (success) {
-                if (data.data) {
+                if (data && data.data) {
+
+                    // Assign the overall object
+                    app.page.editor.providerData = data.data;
 
                     // Clear the property bag
                     app.page.editor.propertyBag = [];
 
                     // Loop the incoming defaults and create new property bag items
-                    data.data.forEach(function (propertyBagDefault) {
+                    data.data.propertyBagTypes.forEach(function (propertyBagDefault) {
 
                         // Create a new property bag item
                         var propertyBagItem = new tndStudios.models.propertyBag.propertyBagItem();

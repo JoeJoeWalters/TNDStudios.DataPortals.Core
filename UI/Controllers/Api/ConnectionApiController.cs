@@ -157,6 +157,14 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                     response.Data.Credentials =
                                 mapper.Map<KeyValuePair<Guid, String>>
                                     (package.Credentials(response.Data.Credentials.Key));
+
+                    // Add the provider data which can't be automapped
+                    // As it connects to an enum
+                    response.Data.ProviderData =
+                        mapper.Map<DataProviderModel>(
+                            (new DataProviderFactory())
+                                .Get((DataProviderType)response.Data.ProviderType)
+                            );
                 }
 
                 // Success as we got here

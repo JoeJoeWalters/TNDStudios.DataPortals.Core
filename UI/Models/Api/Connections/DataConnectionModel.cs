@@ -19,6 +19,13 @@ namespace TNDStudios.DataPortals.UI.Models.Api
         public Int32 ProviderType { get; set; }
 
         /// <summary>
+        /// Get the provider data for this data connection
+        /// (The abilities of the provider, one way only)
+        /// </summary>
+        [JsonProperty]
+        public DataProviderModel ProviderData { get; set; }
+
+        /// <summary>
         /// The connection string for this connection
         /// </summary>
         [JsonProperty]
