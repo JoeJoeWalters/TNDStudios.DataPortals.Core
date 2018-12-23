@@ -34,8 +34,26 @@ namespace TNDStudios.DataPortals.PropertyBag
                 .Where(item => item.ItemType.PropertyType == key)
                 .FirstOrDefault();
 
-            // Return the value
-            return (T)((propertyBagItem == null) ? defaultValue : propertyBagItem.Value);
+            // The result to return
+            T result;
+
+#warning [Make the string to char a base class extension later if you find it needed]
+            // Do a sanity check for strings first incase a string was saved
+            // in to the the property bag but a char is requested
+            if (typeof(T) == typeof(Char) &&
+                propertyBagItem != null &&
+                propertyBagItem.Value.GetType() == typeof(String))
+            {
+                // Is this string not empty?
+                if (propertyBagItem.Value.ToString().Length != 0)
+                    result = (T)((Object)propertyBagItem.Value.ToString().ToCharArray()[0]);
+                else
+                    result = (T)propertyBagItem.Value; // Return the origional value
+            }
+            else
+                result = (T)((propertyBagItem == null) ? defaultValue : propertyBagItem.Value);
+
+            return result; // Send the found item back
         }
 
         /// <summary>
