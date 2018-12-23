@@ -231,6 +231,15 @@ namespace TNDStudios.DataPortals.UI
                         src => src.DataType.FromShortName()
                         )
                     );
+
+            // Map the data provider base class to a model to represent it
+            CreateMap<IDataProvider, DataProviderModel>()
+                .ForMember(
+                    item => item.PropertyBagTypes,
+                    opt => opt.MapFrom(
+                        src => src.PropertyBagTypes()
+                        )
+                    );
         }
     }
 }

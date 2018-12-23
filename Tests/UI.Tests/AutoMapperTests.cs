@@ -386,5 +386,63 @@ namespace TNDStudios.DataPortals.Tests.UI
             Assert.Equal(model.PropertyType, property.PropertyType);
             Assert.Equal(model.Quoted, property.Quoted);
         }
+
+        /// <summary>
+        /// Test The Base Data Provider Domain Object transformed to the Model
+        /// Note: Property Bag Types cannot be tested from the provider base
+        /// </summary>
+        [Fact]
+        public void DataProviderBase_To_Model()
+        {
+            // Arrange
+            IDataProvider dataProvider = new DataProviderBase()
+            {
+                CanAnalyse = true,
+                CanList = true,
+                CanRead = true, 
+                CanWrite = true,
+                Connection = null,
+                ObjectName = "",
+                TestMode = false
+            };
+
+            // Act
+            DataProviderModel result = fixture.TestMapper.Map<DataProviderModel>(dataProvider);
+
+            // Assert
+            Assert.Equal(dataProvider.CanAnalyse, result.CanAnalyse);
+            Assert.Equal(dataProvider.CanList, result.CanList);
+            Assert.Equal(dataProvider.CanRead, result.CanRead);
+            Assert.Equal(dataProvider.CanWrite, result.CanWrite);
+        }
+
+        /// <summary>
+        /// Test A Concreate Data Provider Domain Object transformed to the Model
+        /// </summary>
+        [Fact]
+        public void DelimitedDataProvider_To_Model()
+        {
+            // Arrange
+            DelimitedFileProvider dataProvider = new DelimitedFileProvider()
+            {
+                CanAnalyse = true,
+                CanList = true,
+                CanRead = true,
+                CanWrite = true,
+                Connection = null,
+                ObjectName = "",
+                TestMode = false
+            };
+
+            // Act
+            DataProviderModel result = fixture.TestMapper.Map<DataProviderModel>(dataProvider);
+
+            // Assert
+            Assert.Equal(dataProvider.CanAnalyse, result.CanAnalyse);
+            Assert.Equal(dataProvider.CanList, result.CanList);
+            Assert.Equal(dataProvider.CanRead, result.CanRead);
+            Assert.Equal(dataProvider.CanWrite, result.CanWrite);
+        }
+
     }
 }

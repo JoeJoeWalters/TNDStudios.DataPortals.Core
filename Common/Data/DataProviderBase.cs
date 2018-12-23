@@ -14,23 +14,23 @@ namespace TNDStudios.DataPortals.Data
         /// <summary>
         /// Can this provider read (as a data source)
         /// </summary>
-        public virtual Boolean CanRead { get => true; }
+        public virtual Boolean CanRead { get; set; }
 
         /// <summary>
         /// Can this provider write (as a data destination)
         /// </summary>
-        public virtual Boolean CanWrite { get => false; }
+        public virtual Boolean CanWrite { get; set; }
 
         /// <summary>
         /// Can this provider expose analysis services (to reveal the 
         /// structure of the object being read)
         /// </summary>
-        public virtual Boolean CanAnalyse { get => false; }
+        public virtual Boolean CanAnalyse { get; set; }
 
         /// <summary>
         /// Can this provider list objects to connect to 
         /// </summary>
-        public virtual Boolean CanList { get => false;  }
+        public virtual Boolean CanList { get; set; }
 
         /// <summary>
         /// The property bag types that can be used to define this connection
@@ -42,6 +42,12 @@ namespace TNDStudios.DataPortals.Data
         /// </summary>
         public DataProviderBase()
         {
+            // Defaults
+            this.CanAnalyse = true;
+            this.CanList = false;
+            this.CanRead = true;
+            this.CanWrite = false;
+
             this.MarkLastAction(); // Tell the provider that it did something
         }
 
