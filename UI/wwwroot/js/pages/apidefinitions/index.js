@@ -245,7 +245,7 @@
 
                     // Add the connection objects back in with wrapper for additional functions
                     data.data.forEach(function (connection) {
-                        app.page.dataConnections.push(new tndStudios.models.dataConnections.dataConnection(connection)); // Assign the Json package to the data definition
+                        app.page.dataConnections.push(new tndStudios.models.common.commonObject(connection)); // Assign the Json package to the data definition
                     });
                 };
             }
@@ -274,7 +274,7 @@
 
                     // Add the data definitions objects back in with wrapper for additional functions
                     data.data.forEach(function (dataDefinition) {
-                        app.page.dataDefinitions.push(new tndStudios.models.dataDefinitions.dataItemDefinition(dataDefinition)); // Assign the Json package to the data definition
+                        app.page.dataDefinitions.push(new tndStudios.models.common.commonObject(dataDefinition)); // Assign the Json package to the data definition
                     });
                 };
             }
