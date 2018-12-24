@@ -100,7 +100,7 @@
                             <div class="form-group">
                                 <label for="dataConnection">Object</label>
                                 <!-- If this connection can list objects then list them here -->
-                                <select class="form-control" id="credentials" name="objectList">
+                                <select class="form-control" id="credentials" name="objectList" v-bind:disabled="!page.editor.providerData.canList">
                                     <option value=""></option>
                                     <!--
                                     <option v-bind:value="item.id" v-for="item in page.credentialsStore">
