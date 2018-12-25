@@ -30,6 +30,8 @@ tndStudios.models.dataConnections =
             this.credentials = new tndStudios.models.common.keyValuePair();
             this.credentials.key = '00000000-0000-0000-0000-000000000000';
             this.propertyBag = []; // Property bag for this connection
+            this.objectName = ""; // The name of the object to connect to in this connection
+            this.objectList = []; // The list of objects from the provider
 
             // Copy the content of this connection from another connection
             // e.g. when editing in a secondary editor object
@@ -47,6 +49,7 @@ tndStudios.models.dataConnections =
                 this.connectionString = fromObject.connectionString;
                 this.credentials = fromObject.credentials;
                 this.propertyBag = fromObject.propertyBag;
+                this.objectName = fromObject.objectName;
             }
 
             // Create a formatted object that can be passed to the server
@@ -60,7 +63,8 @@ tndStudios.models.dataConnections =
                     ProviderType: this.providerType,
                     ConnectionString: this.connectionString,
                     Credentials: this.credentials,
-                    PropertyBag: this.propertyBag
+                    PropertyBag: this.propertyBag,
+                    ObjectName: this.objectName
                 };
 
                 return result;
@@ -79,6 +83,8 @@ tndStudios.models.dataConnections =
                 this.credentials = new tndStudios.models.common.keyValuePair();
                 this.credentials.key = '00000000-0000-0000-0000-000000000000';
                 this.propertyBag = [];
+                this.objectName = "";
+                this.objectList = [];
             }
 
             // Any data passed in?
@@ -93,6 +99,15 @@ tndStudios.models.dataConnections =
                 '/api/package/' + packageId + '/data/connection',
                 'GET',
                 null,
+                callback);
+        },
+
+        // List the objects in this connection
+        listObjects: function (packageId, saveObject, callback) {
+            tndStudios.utils.api.call(
+                '/api/package/' + packageId + '/data/connection/queryobjects',
+                'POST',
+                saveObject,
                 callback);
         },
 

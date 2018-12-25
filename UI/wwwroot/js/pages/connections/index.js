@@ -222,6 +222,27 @@
                 tndStudios.utils.ui.notify(0, "Connection Test Failed");
         },
 
+        // List the objects in the given connection
+        listObjects: function (testItem) {
+
+            // The the api call to list the objects in the connection
+            tndStudios.models.dataConnections.listObjects(
+                app.page.packageId,
+                app.page.editor.toObject(),
+                app.listObjectsCallback);
+        },
+
+        // List Objects was successful?
+        listObjectsCallback: function (success, data) {
+            
+            if (success)
+            {
+                app.page.editor.objectList = data.data;
+            }
+            else
+                tndStudios.utils.ui.notify(0, "Could not retrieve a list of objects from this provider");
+        },
+
         // Start the load process
         load: function () {
 

@@ -111,6 +111,44 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             return response;
         }
 
+        /// <summary>
+        /// Query the objects associated with a given provider type and the 
+        /// connection details
+        /// </summary>
+        /// <param name="request">The data connection model to query the objects</param>
+        /// <returns>A list of objects associated with this connection / provider</returns>
+        [HttpPost]
+        [Route("connection/queryobjects")]
+        public ApiResponse<List<KeyValuePair<String, String>>> QueryObjects([FromRoute]Guid packageId, [FromBody] DataConnectionModel request)
+        {
+            // Create a default response object
+            ApiResponse<List<KeyValuePair<String, String>>> response = 
+                new ApiResponse<List<KeyValuePair<String, String>>>()
+                {
+                    Data = new List<KeyValuePair<String, String>>()
+                };
+
+            // Did we find a package?
+            Package package = SessionHandler.PackageRepository.Get(packageId);
+            if (package != null)
+            {
+                // Map the connection to something we can use
+                DataConnection connection = mapper.Map<DataConnection>(request);
+
+                // Create a new factory class and get the provider from the connection given
+                IDataProvider provider = (new DataProviderFactory()).Get(package, connection, false);
+                if (provider != null)
+                {
+                    response.Data = provider.ObjectList();
+                    response.Success = response.Success = true;
+                    provider = null; // Kill the provider now
+                }
+            }
+
+            // Send the response back
+            return response;
+        }
+
         [HttpDelete]
         [Route("connection/{id}")]
         public ApiResponse<Boolean> Delete([FromRoute]Guid packageId, [FromRoute]Guid id)

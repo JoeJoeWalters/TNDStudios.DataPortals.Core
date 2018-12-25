@@ -100,8 +100,7 @@ namespace TNDStudios.DataPortals.Data
 
                 // Set the provider to be connected if it is not already connected
                 // or if the provider has an updated definition
-                if ((!result.Connected || (result.LastAction <= definition.LastUpdated))
-                    && definition != null)
+                if (!result.Connected || (definition != null && result.LastAction <= definition.LastUpdated))
                 {
                     result.Connect(definition, connection); // Connect attempt
                     existingProvider = false; // Re-connected potentially so reset to make sure it's added to the cache
