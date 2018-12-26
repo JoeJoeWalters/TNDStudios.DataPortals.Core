@@ -124,7 +124,7 @@ namespace TNDStudios.DataPortals.Data
                 }
             }
             else
-                return false;
+                return true; // Already connected, why return false?
         }
 
         /// <summary>
@@ -203,13 +203,22 @@ namespace TNDStudios.DataPortals.Data
             // Get the raw tables list
             DataTable rawTables = this.sqlConnection.GetSchema("Tables");
             foreach (DataRow row in rawTables.Rows)
-                result.Add(
-                    new KeyValuePair<String, String>(row["TABLE_NAME"].ToString(), row["TABLE_NAME"].ToString())
-                    );
+                result.Add(CreateObjectReference(row));
 
             // Send the result back to the caller
             return result;
         }
+
+        /// <summary>
+        /// Given the datarow with the data in create the referenece that can
+        /// access a given table / view
+        /// </summary>
+        /// <param name="row">The data row containing the table data</param>
+        /// <returns>A Key Value Pair with the table name as the value and the key as the fully qualified path</returns>
+        private KeyValuePair<String, String> CreateObjectReference(DataRow row)
+            => new KeyValuePair<String, String>(
+                $"{(row["TABLE_CATALOG"] ?? "").ToString()}.{(row["TABLE_SCHEMA"] ?? "").ToString()}.{(row["TABLE_NAME"] ?? "").ToString()}", 
+                row["TABLE_NAME"].ToString());
 
         /// <summary>
         /// Default Constructor

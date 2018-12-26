@@ -110,7 +110,7 @@ tndStudios.models.dataConnections =
                 saveObject,
                 callback);
         },
-
+        
         // Get the full version of the connection
         get: function (packageId, id, callback) {
             tndStudios.utils.api.call(

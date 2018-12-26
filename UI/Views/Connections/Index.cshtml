@@ -98,15 +98,19 @@
                                 <textarea class="form-control" id="connectionString" name="connectionString" v-model="page.editor.connectionString"></textarea>
                             </div>
                             <div class="form-group">
-                                <label for="dataConnection">Object</label>
+                                <label for="dataConnection">Available Object(s)</label>
                                 <!-- If this connection can list objects then list them here -->
-                                <select class="form-control" id="credentials" name="objectList" v-bind:disabled="!page.editor.providerData.canList">
+                                <select class="form-control" id="objectList" name="objectList" v-model="page.editor.objectName" v-bind:disabled="!page.editor.providerData.canList">
                                     <option value=""></option>
                                     <option v-bind:value="item.key" v-for="item in page.editor.objectList">
                                         {{ item.value }}
                                     </option>
                                 </select>
-                                <input type="button" class="btn btn-sm" value="Refresh" v-on:click="listObjects()" />
+                                <input type="button" class="form-control btn btn-sm" value="Refresh List" v-on:click="listObjects()" />
+                            </div>
+                            <div class="form-group">
+                                <label for="dataConnection">Selected Object</label>
+                                <input class="form-control" id="objectName" name="objectName" v-model="page.editor.objectName" />
                             </div>
                             <div class="form-group">
                                 <label for="dataConnection">Credentials</label>

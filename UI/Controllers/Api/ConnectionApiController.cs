@@ -44,6 +44,32 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             };
 
         /// <summary>
+        /// Makes sure that any additional items that cannot be automapped
+        /// are attached to the model to be returned
+        /// </summary>
+        /// <param name="model">The model to be populated</param>
+        /// <returns>The populated model</returns>
+        private DataConnectionModel PopulateModel(Package package, DataConnectionModel model)
+        {
+            // Post processing to fill in the missing titles
+            // as this doesn't really fit well in Automapper due 
+            // to the source column type
+            model.Credentials =
+                        mapper.Map<KeyValuePair<Guid, String>>
+                            (package.Credentials(model.Credentials.Key));
+
+            // Add the provider data which can't be automapped
+            // As it connects to an enum
+            model.ProviderData =
+                mapper.Map<DataProviderModel>(
+                    (new DataProviderFactory())
+                        .Get((DataProviderType)model.ProviderType)
+                    );
+
+            return model; // Send the model back (it's byref anyway but ..)
+        }
+
+        /// <summary>
         /// Get a list (or singular) data connection model 
         /// based on a set of criteria
         /// </summary>
@@ -122,7 +148,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         public ApiResponse<List<KeyValuePair<String, String>>> QueryObjects([FromRoute]Guid packageId, [FromBody] DataConnectionModel request)
         {
             // Create a default response object
-            ApiResponse<List<KeyValuePair<String, String>>> response = 
+            ApiResponse<List<KeyValuePair<String, String>>> response =
                 new ApiResponse<List<KeyValuePair<String, String>>>()
                 {
                     Data = new List<KeyValuePair<String, String>>()
@@ -189,20 +215,8 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                             (def => (id == Guid.Empty || def.Id == id)).FirstOrDefault()
                         );
 
-                    // Post processing to fill in the missing titles
-                    // as this doesn't really fit well in Automapper due 
-                    // to the source column type
-                    response.Data.Credentials =
-                                mapper.Map<KeyValuePair<Guid, String>>
-                                    (package.Credentials(response.Data.Credentials.Key));
-
-                    // Add the provider data which can't be automapped
-                    // As it connects to an enum
-                    response.Data.ProviderData =
-                        mapper.Map<DataProviderModel>(
-                            (new DataProviderFactory())
-                                .Get((DataProviderType)response.Data.ProviderType)
-                            );
+                    // Fill in the blanks
+                    response.Data = PopulateModel(package, response.Data);
                 }
 
                 // Success as we got here
@@ -244,6 +258,9 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                 {
                     // Map the connection back to a model type and send it back to the user
                     response.Data = mapper.Map<DataConnectionModel>(savedConnection);
+
+                    // Fill in the blanks
+                    response.Data = PopulateModel(package, response.Data);
                 }
 
                 // Nothing died .. Success
