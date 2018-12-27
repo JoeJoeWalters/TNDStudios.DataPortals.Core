@@ -32,13 +32,12 @@ namespace TNDStudios.DataPortals.Data
             DataItemDefinition result = new DataItemDefinition(); // Empty Response By Default
 
             // Are we connected and have an object name?
-            if ((request.Connection.ObjectName ?? String.Empty) != String.Empty &&
-                this.Connected &&
-                this.sqlConnection != null)
+            if ((this.ObjectName ?? String.Empty) != String.Empty &&
+                this.Connected)
             {
                 // Set up the command to run and select all columns from the object
                 using (SqlCommand command = 
-                    new SqlCommand($"select top {request.SampleSize.ToString()} * from {request.Connection.ObjectName}", this.sqlConnection))
+                    new SqlCommand($"select top {request.SampleSize.ToString()} * from {this.ObjectName}", this.sqlConnection))
                 {
                     // Run the command
                     using (SqlDataReader dataReader = command.ExecuteReader())
@@ -117,6 +116,7 @@ namespace TNDStudios.DataPortals.Data
                 {
                     this.sqlConnection.Open(); // Start the connection
                     this.definition = definition; // Assign the definition
+                    this.ObjectName = connection.ObjectName; // Assign the object name being set to
                     return true; // Success!
                 }
                 catch(Exception ex)
@@ -136,9 +136,24 @@ namespace TNDStudios.DataPortals.Data
         public override DataTable Read(string command)
         {
             // Create the default view of the results to return
-            DataTable result = definition.ToDataTable();
+            DataTable result = this.definition.ToDataTable();
 
-            base.MarkLastAction(); // Mark the last time the command ran
+            // Are we connected and have an object name?
+            if ((this.ObjectName ?? String.Empty) != String.Empty &&
+                this.Connected)
+            {
+                // Set up the command to run and select all columns from the object
+                using (SqlCommand sqlCommand =
+                    new SqlCommand($"select * from {this.ObjectName}", this.sqlConnection))
+                {
+                    // Run the command
+                    using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                    {
+                        result.Load(dataReader); // Run the data reader to load the results
+                        base.MarkLastAction(); // Mark the last time the command ran
+                    }
+                }
+            }
 
             // Return the results
             return result;

@@ -382,7 +382,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             if (connection != null)
             {
                 // Get the appropriate provider object to analyse
-                IDataProvider provider = (new DataProviderFactory()).Get(package, connection, false);
+                IDataProvider provider = (new DataProviderFactory()).Get(package, connection, definition, false);
                 if (provider.Connect(definition, connection))
                 {
                     result.Values = new DataItemValuesModel(); // Create a new values model
