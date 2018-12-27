@@ -32,12 +32,13 @@ namespace TNDStudios.DataPortals.Data
             DataItemDefinition result = new DataItemDefinition(); // Empty Response By Default
 
             // Are we connected and have an object name?
-            if ((ObjectName ?? String.Empty) != String.Empty &&
-                this.Connected)
+            if ((request.Connection.ObjectName ?? String.Empty) != String.Empty &&
+                this.Connected &&
+                this.sqlConnection != null)
             {
                 // Set up the command to run and select all columns from the object
                 using (SqlCommand command = 
-                    new SqlCommand($"select top {request.SampleSize.ToString()} * from {ObjectName}"))
+                    new SqlCommand($"select top {request.SampleSize.ToString()} * from {request.Connection.ObjectName}", this.sqlConnection))
                 {
                     // Run the command
                     using (SqlDataReader dataReader = command.ExecuteReader())

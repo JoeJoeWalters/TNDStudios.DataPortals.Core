@@ -143,7 +143,8 @@ namespace TNDStudios.DataPortals.UI
                                             Value = type.DefaultValue,
                                             ItemType = type
                                         })
-                                    .ToList()
+                                    .ToList(),
+                                ObjectName = "TransactionRepository.dbo.Workers"
                             }
                         },
                         DataDefinitions = new List<DataItemDefinition>()
