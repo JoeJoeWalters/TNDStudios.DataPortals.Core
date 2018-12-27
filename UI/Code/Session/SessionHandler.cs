@@ -40,12 +40,17 @@ namespace TNDStudios.DataPortals.UI
 
                 // Initialisation Id's
                 Guid dataTextConnectionId = Guid.NewGuid();
-                Guid dataSqlConnectionId = Guid.NewGuid();
                 Guid dataDefinitionId = Guid.NewGuid();
                 Guid apiId = Guid.NewGuid();
-                Guid transformationId = Guid.NewGuid();
                 Guid delimitedCredentialsId = Guid.NewGuid();
+
+                Guid dataSqlConnectionId = Guid.NewGuid();
+                Guid dataSqlDefinitionId = Guid.NewGuid();
+                Guid apiSqlId = Guid.NewGuid();
                 Guid sqlCredentialsId = Guid.NewGuid();
+                Guid sqlApiCredentialsId = Guid.NewGuid();
+
+                Guid transformationId = Guid.NewGuid();
 
                 // Set up a new test package in the repository
                 PackageRepository.Save(
@@ -79,6 +84,17 @@ namespace TNDStudios.DataPortals.UI
                                     new Credential(){ Name = "Username", Value = "TransactionUser" },
                                     new Credential(){ Name = "Password", Value = "password", Encrypted = true }
                                 }
+                            },
+                            new Credentials()
+                            {
+                                Id = sqlApiCredentialsId,
+                                Name = "SQL API Credentials",
+                                Description = "SQL API Credentials",
+                                Properties = new List<Credential>()
+                                {
+                                    new Credential(){ Name = "Username", Value = "username" },
+                                    new Credential(){ Name = "Password", Value = "password", Encrypted = true }
+                                }
                             }
                         },
                         ApiDefinitions = new List<ApiDefinition>()
@@ -103,6 +119,29 @@ namespace TNDStudios.DataPortals.UI
                                             Filter = "[Column 3] > 1.5"
                                         },
                                         Credentials = delimitedCredentialsId
+                                    }
+                                }
+                            },
+                            new ApiDefinition()
+                            {
+                                DataConnection = dataSqlConnectionId,
+                                DataDefinition = dataSqlDefinitionId,
+                                Description = "SQL Api Definition",
+                                Id = apiSqlId,
+                                Name = "sql",
+                                CredentialsLinks = new List<CredentialsLink>()
+                                {
+                                    new CredentialsLink()
+                                    {
+                                        Permissions = new Permissions()
+                                        {
+                                            CanCreate = true,
+                                            CanDelete = true,
+                                            CanRead = true,
+                                            CanUpdate = true,
+                                            Filter = "TR_ApiVersion > 1.0"
+                                        },
+                                        Credentials = sqlApiCredentialsId
                                     }
                                 }
                             }
@@ -189,6 +228,74 @@ namespace TNDStudios.DataPortals.UI
                                     }
                                 },
                                 Name = "Data Item Definition",
+                                PropertyBag = new List<PropertyBagItem>()
+                                {
+                                }
+                            },
+                            new DataItemDefinition()
+                            {
+                                Id = dataSqlDefinitionId,
+                                Culture = CultureInfo.GetCultureInfo("en-GB"),
+                                Description = "SQL Data Item Definition Description",
+                                EncodingFormat = Encoding.UTF8,
+                                ItemProperties = new List<DataItemProperty>()
+                                {
+                                    new DataItemProperty()
+                                    {
+                                        DataType = typeof(Int64),
+                                        Name = "TR_PkId",
+                                        Description = "TR_PkId",
+                                        Path = "TR_PkId",
+                                        PropertyType = DataItemPropertyType.Property,
+                                        OrdinalPosition = 0,
+                                        Quoted = false,
+                                        Key = true
+                                    },
+                                    new DataItemProperty()
+                                    {
+                                        DataType = typeof(Decimal),
+                                        Name = "TR_ApiVersion",
+                                        Description = "TR_ApiVersion",
+                                        Path = "TR_ApiVersion",
+                                        PropertyType = DataItemPropertyType.Property,
+                                        OrdinalPosition = 1,
+                                        Quoted = false
+                                    },
+                                    new DataItemProperty()
+                                    {
+                                        DataType = typeof(DateTime),
+                                        Name = "TR_CreatedDateTime",
+                                        Description = "TR_CreatedDateTime",
+                                        Path = "TR_CreatedDateTime",
+                                        PropertyType = DataItemPropertyType.Property,
+                                        OrdinalPosition = 2,
+                                        Quoted = false,
+                                        Key = true
+                                    },
+                                    new DataItemProperty()
+                                    {
+                                        DataType = typeof(String),
+                                        Name = "Email",
+                                        Description = "Email",
+                                        Path = "Email",
+                                        PropertyType = DataItemPropertyType.Property,
+                                        OrdinalPosition = 8,
+                                        Quoted = false,
+                                        Key = true
+                                    },
+                                    new DataItemProperty()
+                                    {
+                                        DataType = typeof(String),
+                                        Name = "Name",
+                                        Description = "Name",
+                                        Path = "Name",
+                                        PropertyType = DataItemPropertyType.Property,
+                                        OrdinalPosition = 8,
+                                        Quoted = false,
+                                        Key = true
+                                    }
+                                },
+                                Name = "SQL Data Item Definition",
                                 PropertyBag = new List<PropertyBagItem>()
                                 {
                                 }
