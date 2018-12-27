@@ -35,6 +35,7 @@ namespace TNDStudios.DataPortals.Security
         public String Transform(String template)
         {
             // Make sure it's not an empty template
+            template = template ?? String.Empty; // Set to default in case none was provided
             if (template != String.Empty)
             {
                 // For each of the property items, do the transformation

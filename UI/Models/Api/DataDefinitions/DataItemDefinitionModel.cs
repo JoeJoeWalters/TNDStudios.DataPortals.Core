@@ -46,5 +46,19 @@ namespace TNDStudios.DataPortals.UI.Models.Api
             EncodingFormat = Encoding.Default.WebName;
             Culture = CultureInfo.CurrentCulture.Name;
         }
+
+        /// <summary>
+        /// Check to see if the data definition is valid
+        /// and passes a certain amount of checks
+        /// </summary>
+        /// <returns>If the data definition appears to be valid</returns>
+        public Boolean IsValid
+        {
+            get =>
+                (EncodingFormat != String.Empty &&
+                    Culture != String.Empty &&
+                    ItemProperties != null &&
+                    ItemProperties.Count != 0);
+        }
     }
 }

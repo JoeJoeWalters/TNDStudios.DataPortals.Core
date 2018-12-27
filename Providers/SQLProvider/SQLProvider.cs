@@ -142,9 +142,14 @@ namespace TNDStudios.DataPortals.Data
             if ((this.ObjectName ?? String.Empty) != String.Empty &&
                 this.Connected)
             {
+                // Construct the query to the SQL Source
+                String commandText = $"select * from {this.ObjectName}";
+                if ((command ?? String.Empty) != String.Empty)
+                    commandText = $"{commandText} where {command}";
+
                 // Set up the command to run and select all columns from the object
                 using (SqlCommand sqlCommand =
-                    new SqlCommand($"select * from {this.ObjectName}", this.sqlConnection))
+                    new SqlCommand(commandText, this.sqlConnection))
                 {
                     // Run the command
                     using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
@@ -177,6 +182,7 @@ namespace TNDStudios.DataPortals.Data
                 try
                 {
                     sqlConnection.Close(); // Close the connection
+                    connected = false; // Mark the connection as being disconnected
                     return true; // Didn't fail so is closed
                 }
                 catch { return false; } // Failed to close 

@@ -356,13 +356,18 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                 DataConnection connection = package.DataConnection(id);
 
                 // Get the definition from the model provided
-                DataItemDefinition dataDefinition = mapper.Map<DataItemDefinition>(request);
+                if (request != null && request.IsValid)
+                {
+                    DataItemDefinition dataDefinition = mapper.Map<DataItemDefinition>(request);
 
-                // Get the sample result 
-                result.Data = SampleConnection(package, connection, dataDefinition, 10);
+                    // Get the sample result 
+                    result.Data = SampleConnection(package, connection, dataDefinition, 10);
 
-                // Send the resulting analysis back
-                result.Success = (result.Data != null && result.Data.Values != null);
+                    // Send the resulting analysis back
+                    result.Success = (result.Data != null && result.Data.Values != null);
+                }
+                else
+                    result.Success = false;
             }
 
             return result;

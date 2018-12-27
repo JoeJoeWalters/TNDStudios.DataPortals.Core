@@ -51,7 +51,7 @@ namespace TNDStudios.DataPortals.Data
                 return false;
 
             // Get the processed connection string (with any injected items)
-            String connectionString = this.Connection.ConnectionStringProcessed;
+            String connectionString = connection.ConnectionStringProcessed;
 
             // Does the file that we are trying to connet to exist?
             if (File.Exists(connectionString))
