@@ -22,15 +22,15 @@ namespace TNDStudios.DataPortals.Api
         public Guid DataConnection { get; set; }
 
         /// <summary>
-        /// Adhoc configuration items for different settings
-        /// </summary>
-        public List<PropertyBagItem> PropertyBag { get; set; }
-
-        /// <summary>
         /// Links to credentials and what each set of credentials will
         /// allow the credentials to do
         /// </summary>
         public List<CredentialsLink> CredentialsLinks { get; set; }
+
+        /// <summary>
+        /// List of property aliases (as the raw definition might want to be overridden)
+        /// </summary>
+        public List<KeyValuePair<String, String>> Aliases { get; set; }
 
         /// <summary>
         /// Default constructor
@@ -41,6 +41,7 @@ namespace TNDStudios.DataPortals.Api
             DataConnection = Guid.Empty; // No Connection by default
             CredentialsLinks = new List<CredentialsLink>(); // Create an empty list of credential links
             PropertyBag = new List<PropertyBagItem>(); // No properties by default
+            Aliases = new List<KeyValuePair<String, String>>(); // New empty list of aliases
         }
     }
 }

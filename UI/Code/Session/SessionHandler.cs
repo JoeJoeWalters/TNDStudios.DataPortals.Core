@@ -120,6 +120,10 @@ namespace TNDStudios.DataPortals.UI
                                         },
                                         Credentials = delimitedCredentialsId
                                     }
+                                },
+                                Aliases = new List<KeyValuePair<String, String>>()
+                                {
+                                    new KeyValuePair<String, String>("Column 3", "Altered Column")
                                 }
                             },
                             new ApiDefinition()

@@ -9,6 +9,8 @@ using System.Globalization;
 using System.Text;
 using System.Collections.Generic;
 using TNDStudios.DataPortals.Api;
+using TNDStudios.DataPortals.PropertyBag;
+using TNDStudios.DataPortals.Helpers;
 
 namespace TNDStudios.DataPortals.Tests.UI
 {
@@ -73,7 +75,7 @@ namespace TNDStudios.DataPortals.Tests.UI
                 // deemed to be valid
                 fixture.TestMapper.ConfigurationProvider.AssertConfigurationIsValid();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -132,7 +134,7 @@ namespace TNDStudios.DataPortals.Tests.UI
 
             // Assert
             Assert.Equal(keys.Count, keyValuePairs.Count);
-            for (Int32 itemId = 0; itemId < keys.Count; itemId ++)
+            for (Int32 itemId = 0; itemId < keys.Count; itemId++)
                 Assert.Equal(keys[itemId], keyValuePairs[itemId].Key);
         }
 
@@ -234,7 +236,32 @@ namespace TNDStudios.DataPortals.Tests.UI
                 Name = "Name",
                 Description = "Description",
                 DataConnection = new KeyValuePair<Guid, String>(Guid.NewGuid(), "Connection"),
-                DataDefinition = new KeyValuePair<Guid, String>(Guid.NewGuid(), "Definition")
+                DataDefinition = new KeyValuePair<Guid, String>(Guid.NewGuid(), "Definition"),
+                LastUpdated = new DateTime(2018, 12, 23),
+                CredentialsLinks = new List<CredentialsLinkModel>()
+                {
+                    new CredentialsLinkModel(){ Credentials = new KeyValuePair<Guid, String>(Guid.NewGuid(), "Test Credentials Link") }
+                },
+                PropertyBag = new List<PropertyBagItemModel>()
+                {
+                    new PropertyBagItemModel()
+                    {
+                        ItemType = new PropertyBagItemTypeModel()
+                        {
+                            DataType = "System.Int64",
+                            DefaultValue = (Int64)5,
+                            PropertyType = 
+                                new KeyValuePair<int, String>(
+                                    (Int32)PropertyBagItemTypeEnum.RowsToSkip, 
+                                    PropertyBagItemTypeEnum.RowsToSkip.GetEnumDescription()
+                                    )
+                        }
+                    }
+                },
+                Aliases = new List<KeyValuePair<String, String>>()
+                {
+                    new KeyValuePair<String, String>("Column 1", "Alias Column 1")
+                }
             };
 
             // Act
@@ -247,6 +274,9 @@ namespace TNDStudios.DataPortals.Tests.UI
             Assert.Equal(definition.Description, model.Description);
             Assert.Equal(definition.DataConnection, model.DataConnection.Key);
             Assert.Equal(definition.DataDefinition, model.DataDefinition.Key);
+            Assert.Equal(definition.LastUpdated, model.LastUpdated);
+            Assert.Equal(definition.CredentialsLinks.Count, model.CredentialsLinks.Count);
+            Assert.Equal(definition.Aliases.Count, model.Aliases.Count);
         }
 
         /// <summary>
@@ -399,7 +429,7 @@ namespace TNDStudios.DataPortals.Tests.UI
             {
                 CanAnalyse = true,
                 CanList = true,
-                CanRead = true, 
+                CanRead = true,
                 CanWrite = true,
                 Connection = null,
                 ObjectName = "",

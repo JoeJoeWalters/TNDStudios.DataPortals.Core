@@ -28,7 +28,13 @@ namespace TNDStudios.DataPortals.UI.Models.Api
         /// </summary>
         [JsonProperty]
         public List<CredentialsLinkModel> CredentialsLinks { get; set; }
-        
+
+        /// <summary>
+        /// List of property aliases (as the raw definition might want to be overridden)
+        /// </summary>
+        [JsonProperty]
+        public List<KeyValuePair<String, String>> Aliases { get; set; }
+
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -37,6 +43,7 @@ namespace TNDStudios.DataPortals.UI.Models.Api
             DataDefinition = new KeyValuePair<Guid, String>(Guid.Empty, ""); // No link by default
             DataConnection = new KeyValuePair<Guid, String>(Guid.Empty, ""); // No link by default
             CredentialsLinks = new List<CredentialsLinkModel>(); // No credential links by default
+            Aliases = new List<KeyValuePair<String, String>>(); // No aliases by default
         }
     }
 }
