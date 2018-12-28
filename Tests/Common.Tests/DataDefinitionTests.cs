@@ -158,6 +158,11 @@ namespace TNDStudios.DataPortals.Tests.Common
         public DataDefinitionTests(DataDefinitionTestsFixture data)
             => fixture = data;
 
+        /// <summary>
+        /// Test converting a native data table to a data definition 
+        /// object (mainly used for analysing data sources when discovering
+        /// by the user)
+        /// </summary>
         [Fact]
         public void Convert_DataTable_To_DataDefinition()
         {
@@ -205,6 +210,29 @@ namespace TNDStudios.DataPortals.Tests.Common
                     });
         }
 
+        /// <summary>
+        /// Test the merging of column names (the actual column names (path) not the name)
+        /// together so they can be passed to queries
+        /// </summary>
+        [Fact]
+        public void Convert_DataDefinition_ToCSVString()
+        {
+            // Arrange
+            String result = String.Empty; // Empty by default
+            String expectedResult = $"{DataDefinitionTestsFixture.PrimaryKeyName},StringColumn,DateColumn,BooleanColumn,IntegerColumn,FloatColumn,CalculatedColumn"; // What we expect to get
+
+            // Act
+            result = fixture.Definition.ToItemCSV();
+
+            // Assert
+            Assert.Equal(expectedResult, result);
+
+        }
+
+        /// <summary>
+        /// Test converting a data definition object to a native datatable object
+        /// and that all of the columns, primary keys etc are all transformed
+        /// </summary>
         [Fact]
         public void Convert_DataDefinition_ToDataTable()
         {

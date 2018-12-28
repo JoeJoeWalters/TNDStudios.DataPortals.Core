@@ -41,6 +41,19 @@ namespace TNDStudios.DataPortals.Data
         }
 
         /// <summary>
+        /// Convert this definition to a CSV representation of the headers
+        /// (e.g. to use in a query etc.)
+        /// </summary>
+        /// <returns></returns>
+        public String ToItemCSV()
+            => (this.ItemProperties != null && this.ItemProperties.Count > 0) ?
+                String.Join(',', this.ItemProperties
+                                .Select(item => item.Path)
+                                .ToList<String>()
+                                .ToArray())
+                : String.Empty;
+
+        /// <summary>
         /// Convert this definition to a data table so it can be populated
         /// </summary>
         /// <returns></returns>

@@ -137,13 +137,14 @@ namespace TNDStudios.DataPortals.Data
         {
             // Create the default view of the results to return
             DataTable result = this.definition.ToDataTable();
+            String columnsToRead = this.definition.ToItemCSV();
 
             // Are we connected and have an object name?
             if ((this.ObjectName ?? String.Empty) != String.Empty &&
                 this.Connected)
             {
                 // Construct the query to the SQL Source
-                String commandText = $"select * from {this.ObjectName}";
+                String commandText = $"select {columnsToRead} from {this.ObjectName}";
                 if ((command ?? String.Empty) != String.Empty)
                     commandText = $"{commandText} where {command}";
 
