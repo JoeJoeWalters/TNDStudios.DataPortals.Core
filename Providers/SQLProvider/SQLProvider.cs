@@ -222,11 +222,15 @@ namespace TNDStudios.DataPortals.Data
             // Set up the result 
             List<KeyValuePair<String, String>> result = 
                 new List<KeyValuePair<String, String>>() { };
-            
-            // Get the raw tables list
-            DataTable rawTables = this.sqlConnection.GetSchema("Tables");
-            foreach (DataRow row in rawTables.Rows)
-                result.Add(CreateObjectReference(row));
+
+            // Is the data provider connected? If not don't attempt to read the schema
+            if (this.connected)
+            {
+                // Get the raw tables list
+                DataTable rawTables = this.sqlConnection.GetSchema("Tables");
+                foreach (DataRow row in rawTables.Rows)
+                    result.Add(CreateObjectReference(row));
+            }
 
             // Send the result back to the caller
             return result;
