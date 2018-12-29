@@ -304,7 +304,6 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                         }
                         else
                             return StatusCode((Int32)HttpStatusCode.ServiceUnavailable, "Failure in preview service. Please contact your administrator.");
-
                     }
 
                     // Return the data to the caller
@@ -348,7 +347,23 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                             if (provider.Connected)
                             {
                                 // Return the data with the appropriate filter
-                                return DataTableToJsonFormat(provider.Read(permissions.Filter));
+                                DataTable results = provider.Read(permissions.Filter);
+
+                                // Loop the alias's for this Api and inject them
+                                apiDefinition.Aliases.ForEach(pair => 
+                                {
+                                    // Do we have a column with the correct name
+                                    if (results.Columns.Contains(pair.Key))
+                                    {
+                                        // Get the column
+                                        DataColumn column = results.Columns[pair.Key];
+                                        if (column != null)
+                                            column.ExtendedProperties["Alias"] = pair.Value;
+                                    }
+                                });
+
+                                // Format the data table as Json
+                                return DataTableToJsonFormat(results);
                             }
                             else
                             {

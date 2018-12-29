@@ -18,14 +18,30 @@ namespace TNDStudios.DataPortals.Json
         /// <param name="value">The value.</param>
         public override void WriteJson(JsonWriter writer, object dataRow, JsonSerializer jsonSerializer)
         {
+            // Cast the incoming object signature as a proper data row to avoid multiple casts
             DataRow row = dataRow as DataRow;
 
+            // Start the tags to open an object
             writer.WriteStartObject();
+
+            // Loop the columns in the row
             foreach (DataColumn column in row.Table.Columns)
             {
-                writer.WritePropertyName(column.ColumnName);
+                // Check and see if we have an alias for the name of the column
+                // in the extended properties, if so then render this as the column
+                // name instead
+                String columnName = (column.ExtendedProperties.ContainsKey("Alias") && (column.ExtendedProperties["Alias"].ToString() ?? String.Empty) != String.Empty) ? 
+                    column.ExtendedProperties["Alias"].ToString() : 
+                    column.ColumnName;
+
+                // Write the name of the column (or alias)
+                writer.WritePropertyName(columnName);
+
+                // Write out the object itself associated with the column
                 jsonSerializer.Serialize(writer, row[column]);
             }
+
+            // Write the tags to close and object
             writer.WriteEndObject();
         }
 
