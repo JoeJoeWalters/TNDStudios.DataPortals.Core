@@ -5,6 +5,7 @@ using System.Text;
 using TNDStudios.DataPortals.Data;
 using TNDStudios.DataPortals.Repositories;
 using TNDStudios.DataPortals.Security;
+using TNDStudios.DataPortals.UI;
 using TNDStudios.DataPortals.UI.Controllers.Api.Helpers;
 using TNDStudios.DataPortals.UI.Models.Api;
 using Xunit;
@@ -42,11 +43,7 @@ namespace TNDStudios.DataPortals.Tests.UI
             };
 
             // Set up the mapper to map any needed objects
-            Mapper.Reset(); // Only used for tests, clear other mappings
-            Mapper.Initialize(cfg =>
-            {
-                cfg.AddProfiles("TNDStudios.DataPortals.UI");
-            });
+            AutoMapperProfile.Initialise();
             IMapper mapper = new Mapper(Mapper.Configuration);
 
             // Act

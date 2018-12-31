@@ -27,11 +27,7 @@ namespace TNDStudios.DataPortals.Tests.UI
         public AutoMapperTestsFixture()
         {
             // Initialise the mapper with the correct namespace
-            Mapper.Reset(); // Only used for tests, clear other mappings
-            Mapper.Initialize(cfg =>
-            {
-                cfg.AddProfiles("TNDStudios.DataPortals.UI");
-            });
+            AutoMapperProfile.Initialise();
 
             // Create the test mapper
             TestMapper = new Mapper(Mapper.Configuration);

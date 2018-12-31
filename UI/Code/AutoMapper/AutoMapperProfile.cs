@@ -21,6 +21,33 @@ namespace TNDStudios.DataPortals.UI
     public class AutoMapperProfile : Profile
     {
         /// <summary>
+        /// Initialise the automapper (hide failures if it is already initialised)
+        /// so that it can be used across multiple test instances
+        /// </summary>
+        private static Boolean initialised;
+        public static void Initialise()
+        {
+            if (!initialised)
+            {
+                try
+                {
+                    Mapper.Reset(); // Only used for tests, clear other mappings
+                    Mapper.Initialize(cfg =>
+                    {
+                        cfg.AddProfiles("TNDStudios.DataPortals.UI");
+                    });
+                    initialised = true;
+                }
+                catch (Exception ex)
+                {
+                    // If not an "already initialised" error
+                    if (!ex.Message.Contains("already initialized"))
+                        throw ex;
+                }
+            }
+        }
+
+        /// <summary>
         /// Set up the mappings
         /// </summary>
         public AutoMapperProfile()
