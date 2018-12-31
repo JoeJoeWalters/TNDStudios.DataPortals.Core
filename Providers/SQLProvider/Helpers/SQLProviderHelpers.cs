@@ -24,19 +24,23 @@ namespace TNDStudios.DataPortals.Helpers
                 row.Table.Columns.Contains("TABLE_NAME") &&
                 (row["TABLE_NAME"].ToString() ?? String.Empty) != String.Empty)
             {
+                // Create a new list to hold the path items
                 List<String> items = new List<String>();
 
-                // Process the possible items 
+                // Add the database / catalog name
                 items.Add(row.Table.Columns.Contains("TABLE_CATALOG") ?
                     (row["TABLE_CATALOG"].ToString() ?? String.Empty) :
                     String.Empty);
 
+                // Add the schema
                 items.Add(row.Table.Columns.Contains("TABLE_SCHEMA") ?
                     (row["TABLE_SCHEMA"].ToString() ?? String.Empty) :
                     String.Empty);
 
+                // Add the table name
                 items.Add(row["TABLE_NAME"].ToString() ?? String.Empty);
                 
+                // Join the path together
                 return new KeyValuePair<String, String>(
                     items[items.Count - 1],
                     String.Join('.', items.Where(x => x != String.Empty).ToArray())
