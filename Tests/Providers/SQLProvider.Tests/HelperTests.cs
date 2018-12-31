@@ -62,9 +62,8 @@ namespace TNDStudios.DataPortals.Tests.SQLProvider
         public void ObjectReference_With_2_Components()
         {
             // Arrange
-            String expectedResult = "Database.Schema.Table";
+            String expectedResult = "Schema.Table";
             DataRow row = CreateDataRow();
-            row["TABLE_CATALOG"] = "Database";
             row["TABLE_SCHEMA"] = "Schema";
             row["TABLE_NAME"] = "Table";
 
@@ -81,10 +80,8 @@ namespace TNDStudios.DataPortals.Tests.SQLProvider
         public void ObjectReference_With_1_Component()
         {
             // Arrange
-            String expectedResult = "Database.Schema.Table";
+            String expectedResult = "Table";
             DataRow row = CreateDataRow();
-            row["TABLE_CATALOG"] = "Database";
-            row["TABLE_SCHEMA"] = "Schema";
             row["TABLE_NAME"] = "Table";
 
             // Act
