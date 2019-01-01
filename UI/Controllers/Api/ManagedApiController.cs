@@ -11,9 +11,9 @@ using System.Net;
 using System.Text;
 using TNDStudios.DataPortals.Api;
 using TNDStudios.DataPortals.Data;
-using TNDStudios.DataPortals.Json;
 using TNDStudios.DataPortals.Repositories;
 using TNDStudios.DataPortals.Security;
+using TNDStudios.DataPortals.UI.Controllers.Api.Helpers;
 using TNDStudios.DataPortals.UI.Models.Api;
 
 namespace TNDStudios.DataPortals.UI.Controllers.Api
@@ -46,25 +46,9 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         private static WebAuthHelper webAuthHelper;
 
         /// <summary>
-        /// Convert a data table to the correct format for returning to the user
+        /// Reference to the helpers object
         /// </summary>
-        /// <returns></returns>
-        private JsonResult DataTableToJsonFormat(DataTable data)
-        {
-            // Define the way the serialisation should be done
-            JsonSerializerSettings serializerSettings = new JsonSerializerSettings()
-            {
-                Formatting = Formatting.Indented,
-                NullValueHandling = NullValueHandling.Ignore,
-                ObjectCreationHandling = ObjectCreationHandling.Replace,
-                MissingMemberHandling = MissingMemberHandling.Ignore,
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                Converters = new List<JsonConverter>() { new DataRowConverter() }
-            };
-
-            // Send back the formatted results
-            return new JsonResult(data.Rows, serializerSettings);
-        }
+        private static ManagedApiHelpers helpers;
 
         /// <summary>
         /// Default Constructor
@@ -82,6 +66,9 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
 
                 // Create a provider factory so that connections can be pooled
                 providerFactory = new DataProviderFactory();
+
+                // Set up an instance of the helper class across all sessions
+                helpers = new ManagedApiHelpers();
 
                 // Mark the system as initialised
                 initialised = true;
@@ -350,7 +337,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                                 DataTable results = provider.Read(permissions.Filter);
 
                                 // Loop the alias's for this Api and inject them
-                                apiDefinition.Aliases.ForEach(pair => 
+                                apiDefinition.Aliases.ForEach(pair =>
                                 {
                                     // Do we have a column with the correct name
                                     if (results.Columns.Contains(pair.Key))
@@ -363,7 +350,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                                 });
 
                                 // Format the data table as Json
-                                return DataTableToJsonFormat(results);
+                                return helpers.DataTableToJsonFormat(results);
                             }
                             else
                             {

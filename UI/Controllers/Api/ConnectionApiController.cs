@@ -22,19 +22,32 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// Automapper set by the dependency injection to the constructor
         /// </summary>
         private readonly IMapper mapper;
+        
+        /// <summary>
+        /// Has the connection api controller been initialised?
+        /// </summary>
+        private static Boolean initialised = false;
 
         /// <summary>
         /// Reference to the helpers object
         /// </summary>
-        private ConnectionApiHelpers helpers;
+        private static ConnectionApiHelpers helpers;
 
         /// <summary>
         /// Default Constructor
         /// </summary>
         public ConnectionApiController(IMapper mapper) : base()
         {
-            this.helpers = new ConnectionApiHelpers(); // Create an instance of the helpers class
             this.mapper = mapper; // Assign the mapper from the dependency injection
+
+            // Has the controller been initialised?
+            if (initialised)
+            {
+                helpers = new ConnectionApiHelpers(); // Create an instance of the helpers class
+
+                // Set the controller as being initialised
+                initialised = true;
+            }
         }
 
         /// <summary>
