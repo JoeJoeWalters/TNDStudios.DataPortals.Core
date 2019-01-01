@@ -54,7 +54,7 @@ namespace TNDStudios.DataPortals.Tests.UI
             Assert.DoesNotContain("\"HasErrors\":", result); // Standard DataTable Tags Should Be Stripped Out
             Assert.Contains($"\"StringData\": \"{stringToTest}\"", result); // Element Exists
             Assert.Contains($"\"BooleanData\": true", result); // Element Exists
-            Assert.Contains($"\"DateData\": \"{dateToTest.ToString("yyyy-MM-ddTHH:mm:ss")}\"", result); // Element Exists
+            Assert.Contains($"\"DateData\": \"{dateToTest.ToString("yyyy")}", result); // Element Exists (We only care about the first part of the date here)
             Assert.Contains($"\"NumericData\": {numberToTest.ToString()}", result); // Element Exists
         }
     }
