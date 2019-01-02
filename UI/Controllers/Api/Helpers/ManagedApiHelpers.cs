@@ -16,6 +16,27 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api.Helpers
     public class ManagedApiHelpers
     {
         /// <summary>
+        /// Handle the datatable injection of aliases in to the column headers
+        /// </summary>
+        /// <param name="data">The table to have the aliases injected into</param>
+        /// <param name="aliases">The aliases to be injected</param>
+        public void HandleAliases(DataTable data, List<KeyValuePair<String, String>> aliases)
+        {
+            // Loop the alias's for this Api and inject them
+            aliases.ForEach(pair =>
+            {
+                // Do we have a column with the correct name
+                if (data.Columns.Contains(pair.Key))
+                {
+                    // Get the column
+                    DataColumn column = data.Columns[pair.Key];
+                    if (column != null)
+                        column.ExtendedProperties["Alias"] = pair.Value;
+                }
+            });
+        }
+
+        /// <summary>
         /// Convert a data table to the correct format for returning to the user
         /// </summary>
         /// <returns></returns>

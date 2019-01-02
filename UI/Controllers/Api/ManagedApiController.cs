@@ -336,19 +336,9 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                                 // Return the data with the appropriate filter
                                 DataTable results = provider.Read(permissions.Filter);
 
-                                // Loop the alias's for this Api and inject them
-                                apiDefinition.Aliases.ForEach(pair =>
-                                {
-                                    // Do we have a column with the correct name
-                                    if (results.Columns.Contains(pair.Key))
-                                    {
-                                        // Get the column
-                                        DataColumn column = results.Columns[pair.Key];
-                                        if (column != null)
-                                            column.ExtendedProperties["Alias"] = pair.Value;
-                                    }
-                                });
-
+                                // Manage any aliases for the results table
+                                helpers.HandleAliases(results, apiDefinition.Aliases);
+ 
                                 // Format the data table as Json
                                 return helpers.DataTableToJsonFormat(results);
                             }
