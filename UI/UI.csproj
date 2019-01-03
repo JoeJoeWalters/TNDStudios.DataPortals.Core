@@ -50,6 +50,7 @@
 
   <ItemGroup>
     <Folder Include="Code\Api\" />
+    <Folder Include="wwwroot\lib\fontawesome\" />
   </ItemGroup>
 
 </Project>
