@@ -173,7 +173,7 @@
                                                v-model="property.value" class="form-control" />
                                         <input type="checkbox"
                                                v-bind:style="{visibility: (isCorrectFormType(property, 'checkbox') ? 'visible' : 'hidden'), display: (isCorrectFormType(property, 'checkbox') ? 'inline' : 'none') }"
-                                               v-model="property.value" class="form-control" />
+                                               v-model="property.value" />
                                     </td>
                                     <td>
                                         <input type="button" v-on:click="resetPropertyBagItem(property)" class="btn btn-info btn-sm" value="Use Default" />

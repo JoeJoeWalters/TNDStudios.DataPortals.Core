@@ -41,7 +41,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             this.mapper = mapper; // Assign the mapper from the dependency injection
 
             // Has the controller been initialised?
-            if (initialised)
+            if (!initialised)
             {
                 helpers = new ConnectionApiHelpers(); // Create an instance of the helpers class
 
@@ -216,7 +216,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                 // Success as we got here
                 response.Success = true;
             }
-            catch
+            catch(Exception ex)
             {
                 response.Data = null; // Clear the data as we don't want to send back partial data
                 response.Success = false; // Failed due to hard failure
