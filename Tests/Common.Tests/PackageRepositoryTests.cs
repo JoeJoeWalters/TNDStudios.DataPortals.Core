@@ -43,6 +43,9 @@ namespace TNDStudios.DataPortals.Tests.Common
         public PackageRepositoryTests(PackageRepositoryTestsFixture data)
             => fixture = data;
         
+        /// <summary>
+        /// Test to save a package to the repository
+        /// </summary>
         [Fact]
         public void PackageRepository_Save_Package()
         {
@@ -59,6 +62,9 @@ namespace TNDStudios.DataPortals.Tests.Common
             Assert.Equal(savedPackage.Id, package.Id);
         }
 
+        /// <summary>
+        /// Test getting a single package from the repository
+        /// </summary>
         [Fact]
         public void PackageRepository_Get_Package()
         {
@@ -75,6 +81,9 @@ namespace TNDStudios.DataPortals.Tests.Common
             Assert.NotEqual(retrievedPackage.Id, Guid.Empty);
         }
 
+        /// <summary>
+        /// Test getting a list of packages from the repository
+        /// </summary>
         [Fact]
         public void PackageRepository_Get_PackageList()
         {
@@ -89,6 +98,6 @@ namespace TNDStudios.DataPortals.Tests.Common
 
             // Assert
             Assert.Equal(packages.Count, packageCount);
-        }
+        }        
     }
 }
