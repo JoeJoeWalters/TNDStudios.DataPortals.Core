@@ -401,6 +401,10 @@ namespace TNDStudios.DataPortals.Repositories
                     break;
             }
 
+            // Make sure as the item is saved to this package that the 
+            // reference to it is inside the object
+            dataToSave.ParentPackage = this; 
+
             // Return the data that was saved
             return dataToSave;
         }
