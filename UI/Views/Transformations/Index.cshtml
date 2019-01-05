@@ -22,27 +22,19 @@
     <div class="col-md-3">
         <div class="card">
             <div class="card-header">
-                <div class="row">
-                    <div class="col-lg-10">
-                        <div class="form-group">
-                            <!-- The Search Criteria -->
-                            <input type="text" class="form-control" id="searchCriteria" name="searchCriteria" v-model="page.searchCriteria" />
-                        </div>
-                    </div>
-                    <div class="col-lg-2">
-                        <div class="form-group">
-                            <!-- "New" button -->
-                            <input type="button" class="btn" id="new" name="new" value="+" v-on:click="newTransformation" />
-                        </div>
-                    </div>
-                </div>
+                <span class="float-left">
+                    <input type="text" placeholder="Search Transformations .." class="form-control form-control-sm" id="searchCriteria" name="searchCriteria" v-model="page.searchCriteria" />
+                </span>
+                <button v-on:click="newTransformation" class="btn btn-sm btn-info float-right">
+                    <span class="fa fa-plus-circle"></span>
+                </button>
             </div>
             <div class="card-body">
                 <ul class="list-group list-group-flush">
                     <!-- List of transformations -->
                     <li class="list-group-item" v-for="item in filteredTransformations">
                         <!-- Edit the transformation in the list -->
-                        <a v-on:click="edit(item)" href="#">{{item.name}}</a>
+                        <i class="fa fa-dice-d6"></i><a v-on:click="edit(item)" href="#">{{item.name}}</a>
                     </li>
                 </ul>
             </div>
