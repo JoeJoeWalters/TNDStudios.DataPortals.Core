@@ -78,12 +78,21 @@ tndStudios.models.packages =
 
             // The the api call to load the provider types
             tndStudios.utils.api.call(
-                '/api/package',
+                '/api/package/list',
                 'GET',
                 null,
                 callback
             );
 
+        },
+        
+        // Get the full version of the package
+        get: function (packageId, callback) {
+            tndStudios.utils.api.call(
+                '/api/package/' + packageId,
+                'GET',
+                null,
+                callback);
         },
 
         // The api call to delete a package

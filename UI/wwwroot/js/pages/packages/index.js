@@ -34,12 +34,22 @@
 
         // Edit an existing item by assigning it to the editor object
         edit: function (editorItem) {
-
-            // Copy the data to the package editor from the selected object
-            //app.page.editor.fromObject(editorItem);
-            app.page.packageId = editorItem.key; // Set the global key that the common page uses so links can be enabled
             app.page.editorItem = editorItem; // Reference to the origional item being edited
-            app.loadPackageComponents(); // Load the dependant items (that are not directly part of the model)
+            tndStudios.models.packages.get(editorItem.key, this.editCallback); // Start the load
+        },
+
+        // Callback to load the item
+        editCallback: function (success, data) {
+
+            if (success) {
+                // Copy the data to the package editor from the selected object
+                app.page.packageId = app.page.packageId; // Set the global key that the common page uses so links can be enabled
+                app.page.editor.fromObject(data.data);
+                app.loadPackageComponents(); // Load the dependant items (that are not directly part of the model)
+            }
+            else {
+                app.page.editorItem = null;
+            }
         },
 
         // Delete the current package
@@ -212,6 +222,16 @@
             return tndStudios.models.common.calculatedLink(link, this.page.packageId, id);
         },
 
+        // General "load" entry point
+        load: function () {
+
+            // Start the load process to initialise the form
+            app.loadPackages();
+
+            // Check to see if a package has been asked to be loaded from the Url on first load
+            app.loadAtStart();
+        },
+
         // Load the list of available packages
         loadPackages: function () {
             tndStudios.models.packages.list('', this.loadPackagesCallback);
@@ -223,12 +243,12 @@
                 app.page.packages = data.data; // Assign the Json package to the packages list
             };
         },
-        
+
         // Load a package at the start if one is specified
         // Can't use the standard one as that searches for the item in the form
         loadAtStart: function () {
             if (app.page.packageId != '00000000-0000-0000-0000-000000000000') {
-                app.edit({key: app.page.packageId, value: ''})
+                app.edit({ key: app.page.packageId, value: '' })
             }
         },
     }
@@ -247,8 +267,4 @@ var validator = $("#editorForm").validate(
         }
     });
 
-// Start the load process to initialise the form
-app.loadPackages();
-
-// Check to see if a package has been asked to be loaded from the Url on first load
-app.loadAtStart();
+app.load();

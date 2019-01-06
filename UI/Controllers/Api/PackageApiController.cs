@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using TNDStudios.DataPortals.UI;
 using TNDStudios.DataPortals.UI.Controllers;
 using TNDStudios.DataPortals.UI.Controllers.Api;
+using TNDStudios.DataPortals.UI.Models.Api;
 
 namespace UI.Controllers.Api
 {
@@ -35,8 +36,23 @@ namespace UI.Controllers.Api
         /// </summary>
         /// <returns>A list of a given type</returns>
         [HttpGet]
-        [Route("/api/package")]
-        public ApiResponse<List<KeyValuePair<String, String>>> Get()
+        [Route("/api/package/{packageId}")]
+        public ApiResponse<PackageModel> Get([FromRoute]Guid packageId)
+            => new ApiResponse<PackageModel>()
+            {
+                Data = mapper.Map<PackageModel>(
+                    SessionHandler.PackageRepository.Get(packageId)
+                    ),
+                Success = true
+            };
+
+        /// <summary>
+        /// Get a list from the given lookup
+        /// </summary>
+        /// <returns>A list of a given type</returns>
+        [HttpGet]
+        [Route("/api/package/list")]
+        public ApiResponse<List<KeyValuePair<String, String>>> List()
             => new ApiResponse<List<KeyValuePair<String, String>>>()
             {
                 Data = SessionHandler.PackageRepository
