@@ -8,7 +8,7 @@
         // Searchable list of the packages
         filteredPackages() {
             return this.page.packages.filter(function (item) {
-                return item.name.toLowerCase().indexOf(app.page.searchCriteria.toLowerCase()) > -1
+                return item.value.toLowerCase().indexOf(app.page.searchCriteria.toLowerCase()) > -1
             });
         },
 
@@ -36,8 +36,10 @@
         edit: function (editorItem) {
 
             // Copy the data to the package editor from the selected object
-            app.page.editor.fromObject(editorItem);
+            //app.page.editor.fromObject(editorItem);
+            app.page.packageId = editorItem.key; // Set the global key that the common page uses so links can be enabled
             app.page.editorItem = editorItem; // Reference to the origional item being edited
+            app.loadPackageComponents(); // Load the dependant items (that are not directly part of the model)
         },
 
         // Delete the current package
@@ -137,22 +139,22 @@
         },
 
         // Start the load process for this package
-        load: function () {
+        loadPackageComponents: function () {
 
             // Load the API Definitions for this package
-            tndStudios.models.apiDefinitions.list(app.page.packageId, null, this.loadApiDefinitionsCallback);
+            tndStudios.models.apiDefinitions.list(app.page.editorItem.key, null, this.loadApiDefinitionsCallback);
 
             // Load the Data Connections for this package
-            tndStudios.models.dataConnections.list(app.page.packageId, null, this.loadConnectionsCallback);
+            tndStudios.models.dataConnections.list(app.page.editorItem.key, null, this.loadConnectionsCallback);
 
             // Load the Data Definitions for this package
-            tndStudios.models.dataDefinitions.list(app.page.packageId, null, this.loadDataDefinitionsCallback);
+            tndStudios.models.dataDefinitions.list(app.page.editorItem.key, null, this.loadDataDefinitionsCallback);
 
             // Load the Transformations for this package
-            tndStudios.models.transformations.list(app.page.packageId, null, this.loadTransformationsCallback);
+            tndStudios.models.transformations.list(app.page.editorItem.key, null, this.loadTransformationsCallback);
 
             // Load the Credentials for this package
-            tndStudios.models.credentials.list(app.page.packageId, null, this.loadCredentialsStoreCallback);
+            tndStudios.models.credentials.list(app.page.editorItem.key, null, this.loadCredentialsStoreCallback);
         },
 
         // Callback for when the API Definitions are loaded
@@ -209,6 +211,26 @@
         calculatedLink: function (link, id) {
             return tndStudios.models.common.calculatedLink(link, this.page.packageId, id);
         },
+
+        // Load the list of available packages
+        loadPackages: function () {
+            tndStudios.models.packages.list('', this.loadPackagesCallback);
+        },
+
+        // Load callback, assign the data
+        loadPackagesCallback: function (success, data) {
+            if (success, data.data) {
+                app.page.packages = data.data; // Assign the Json package to the packages list
+            };
+        },
+        
+        // Load a package at the start if one is specified
+        // Can't use the standard one as that searches for the item in the form
+        loadAtStart: function () {
+            if (app.page.packageId != '00000000-0000-0000-0000-000000000000') {
+                app.edit({key: app.page.packageId, value: ''})
+            }
+        },
     }
 });
 
@@ -226,4 +248,7 @@ var validator = $("#editorForm").validate(
     });
 
 // Start the load process to initialise the form
-app.load();
+app.loadPackages();
+
+// Check to see if a package has been asked to be loaded from the Url on first load
+app.loadAtStart();

@@ -7,6 +7,7 @@ tndStudios.models.packages =
 
             // The properties of the object            
             this.editor = new tndStudios.models.packages.package(null); // The editor object
+            this.searchCriteria = ""; // The filter for the packages list
 
             // Attached items (connections, api definitions etc.)
             this.apiDefinitions = [];
@@ -14,6 +15,7 @@ tndStudios.models.packages =
             this.dataDefinitions = [];
             this.transformations = [];
             this.credentialsStore = [];
+            this.packages = [];
 
             this.packageId = $("#packageId").val(); // Get the package Id from the field on the page
         },
@@ -73,6 +75,15 @@ tndStudios.models.packages =
 
         // The api call to list the packages
         list: function (filter, callback) {
+
+            // The the api call to load the provider types
+            tndStudios.utils.api.call(
+                '/api/package',
+                'GET',
+                null,
+                callback
+            );
+
         },
 
         // The api call to delete a package

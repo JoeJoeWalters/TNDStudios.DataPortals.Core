@@ -21,12 +21,6 @@ tndStudios.models.common =
         // Page Header Model
         header: function () {
 
-            // List of available packages
-            this.packages = [];
-
-            // The currently selected package (for the drop down)
-            this.selectedPackage = new tndStudios.models.common.keyValuePair();
-
             // The actual package for the page itself
             this.packageId = $("#packageId").val(); // Get the package Id from the field on the page
 

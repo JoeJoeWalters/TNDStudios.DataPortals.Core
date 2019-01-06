@@ -21,90 +21,115 @@
     <li class="breadcrumb-item active">Summary</li>
 </ol>
 
-<!-- Main Content -->
 <div class="row">
-    <div class="col-lg-4 col-md-6 col-sm-12">
+    <div class="col-md-3">
         <div class="card">
             <div class="card-header">
-                <span class="float-left">API Definitions</span>
-                <a v-bind:href="calculatedLink('~/package/{packageId}/apidefinitions/{id}', '00000000-0000-0000-0000-000000000000')" class="btn btn-sm btn-info float-right"><span class="fa fa-plus-circle"></span></a> <!-- uses solid style -->
+                <span class="float-left">
+                    <input type="text" placeholder="Search Packages .." class="form-control form-control-sm" id="searchCriteria" name="searchCriteria" v-model="page.searchCriteria" />
+                </span>
+                <button v-on:click="newPackage" class="btn btn-sm btn-info float-right">
+                    <span class="fa fa-plus-circle"></span>
+                </button>
             </div>
             <div class="card-body">
                 <ul class="list-group list-group-flush">
-                    <!-- List of Api Definitions -->
-                    <li class="list-group-item" v-for="item in page.apiDefinitions">
-                        <!-- Edit the api definition in the list -->
-                        <i class="fa fa-tasks"></i><a v-bind:href="calculatedLink('~/package/{packageId}/apidefinitions/{id}', item.id)">{{item.name}}</a>
+                    <!-- List of packages -->
+                    <li class="list-group-item" v-for="item in filteredPackages">
+                        <!-- Edit the packages in the list -->
+                        <i class="fa fa-group"></i><a v-on:click="edit(item)" href="#">{{item.value}}</a>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
-    <div class="col-lg-4 col-md-6 col-sm-12">
-        <div class="card">
-            <div class="card-header">
-                <span class="float-left">Connections</span>
-                <a v-bind:href="calculatedLink('~/package/{packageId}/connections/{id}', '00000000-0000-0000-0000-000000000000')" class="btn btn-sm btn-info float-right"><span class="fa fa-plus-circle"></span></a> <!-- uses solid style -->
+    <div class="col-md-9">
+        <!-- Main Content -->
+        <div class="row">
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="float-left">API Definitions</span>
+                        <a v-bind:href="calculatedLink('~/package/{packageId}/apidefinitions/{id}', '00000000-0000-0000-0000-000000000000')" class="btn btn-sm btn-info float-right"><span class="fa fa-plus-circle"></span></a> <!-- uses solid style -->
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <!-- List of Api Definitions -->
+                            <li class="list-group-item" v-for="item in page.apiDefinitions">
+                                <!-- Edit the api definition in the list -->
+                                <i class="fa fa-tasks"></i><a v-bind:href="calculatedLink('~/package/{packageId}/apidefinitions/{id}', item.id)">{{item.name}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <ul class="list-group list-group-flush">
-                    <!-- List of Connections -->
-                    <li class="list-group-item" v-for="item in page.connections">
-                        <!-- Edit the connections in the list -->
-                        <i class="fa fa-plug"></i><a v-bind:href="calculatedLink('~/package/{packageId}/connections/{id}', item.id)">{{item.name}}</a>
-                    </li>
-                </ul>
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="float-left">Connections</span>
+                        <a v-bind:href="calculatedLink('~/package/{packageId}/connections/{id}', '00000000-0000-0000-0000-000000000000')" class="btn btn-sm btn-info float-right"><span class="fa fa-plus-circle"></span></a> <!-- uses solid style -->
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <!-- List of Connections -->
+                            <li class="list-group-item" v-for="item in page.connections">
+                                <!-- Edit the connections in the list -->
+                                <i class="fa fa-plug"></i><a v-bind:href="calculatedLink('~/package/{packageId}/connections/{id}', item.id)">{{item.name}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="col-lg-4 col-md-6 col-sm-12">
-        <div class="card">
-            <div class="card-header">
-                <span class="float-left">Data Definitions</span>
-                <a v-bind:href="calculatedLink('~/package/{packageId}/datadefinitions/{id}', '00000000-0000-0000-0000-000000000000')" class="btn btn-sm btn-info float-right"><span class="fa fa-plus-circle"></span></a> <!-- uses solid style -->
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="float-left">Data Definitions</span>
+                        <a v-bind:href="calculatedLink('~/package/{packageId}/datadefinitions/{id}', '00000000-0000-0000-0000-000000000000')" class="btn btn-sm btn-info float-right"><span class="fa fa-plus-circle"></span></a> <!-- uses solid style -->
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <!-- List of Data Definitions -->
+                            <li class="list-group-item" v-for="item in page.dataDefinitions">
+                                <!-- Edit the data definition in the list -->
+                                <i class="fa fa-database"></i><a v-bind:href="calculatedLink('~/package/{packageId}/datadefinitions/{id}', item.id)">{{item.name}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <ul class="list-group list-group-flush">
-                    <!-- List of Data Definitions -->
-                    <li class="list-group-item" v-for="item in page.dataDefinitions">
-                        <!-- Edit the data definition in the list -->
-                        <i class="fa fa-database"></i><a v-bind:href="calculatedLink('~/package/{packageId}/datadefinitions/{id}', item.id)">{{item.name}}</a>
-                    </li>
-                </ul>
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="float-left">Transformations</span>
+                        <a v-bind:href="calculatedLink('~/package/{packageId}/transformations/{id}', '00000000-0000-0000-0000-000000000000')" class="btn btn-sm btn-info float-right"><span class="fa fa-plus-circle"></span></a> <!-- uses solid style -->
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <!-- List of Transformations -->
+                            <li class="list-group-item" v-for="item in page.transformations">
+                                <!-- Edit the transformations in the list -->
+                                <i class="fa fa-dice-d6"></i><a v-bind:href="calculatedLink('~/package/{packageId}/transformations/{id}', item.id)">{{item.name}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="col-lg-4 col-md-6 col-sm-12">
-        <div class="card">
-            <div class="card-header">
-                <span class="float-left">Transformations</span>
-                <a v-bind:href="calculatedLink('~/package/{packageId}/transformations/{id}', '00000000-0000-0000-0000-000000000000')" class="btn btn-sm btn-info float-right"><span class="fa fa-plus-circle"></span></a> <!-- uses solid style -->
-            </div>
-            <div class="card-body">
-                <ul class="list-group list-group-flush">
-                    <!-- List of Transformations -->
-                    <li class="list-group-item" v-for="item in page.transformations">
-                        <!-- Edit the transformations in the list -->
-                        <i class="fa fa-dice-d6"></i><a v-bind:href="calculatedLink('~/package/{packageId}/transformations/{id}', item.id)">{{item.name}}</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4 col-md-6 col-sm-12">
-        <div class="card">
-            <div class="card-header">
-                <span class="float-left">Credentials</span>
-                <a v-bind:href="calculatedLink('~/package/{packageId}/credentials/{id}', '00000000-0000-0000-0000-000000000000')" class="btn btn-sm btn-info float-right"><span class="fa fa-plus-circle"></span></a> <!-- uses solid style -->
-            </div>
-            <div class="card-body">
-                <ul class="list-group list-group-flush">
-                    <!-- List of Credentials -->
-                    <li class="list-group-item" v-for="item in page.credentialsStore">
-                        <!-- Edit the credentials in the list -->
-                        <i class="fa fa-user-alt"></i><a v-bind:href="calculatedLink('~/package/{packageId}/credentials/{id}', item.id)">{{item.name}}</a>
-                    </li>
-                </ul>
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="float-left">Credentials</span>
+                        <a v-bind:href="calculatedLink('~/package/{packageId}/credentials/{id}', '00000000-0000-0000-0000-000000000000')" class="btn btn-sm btn-info float-right"><span class="fa fa-plus-circle"></span></a> <!-- uses solid style -->
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <!-- List of Credentials -->
+                            <li class="list-group-item" v-for="item in page.credentialsStore">
+                                <!-- Edit the credentials in the list -->
+                                <i class="fa fa-user-alt"></i><a v-bind:href="calculatedLink('~/package/{packageId}/credentials/{id}', item.id)">{{item.name}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
