@@ -22,6 +22,12 @@
                 return "hidden";
         }
     },
+    watch: {
+        'page.diagramLogic': function(val, oldVal)
+        {
+            app.drawPackage();
+        }
+    },
     methods: {
 
         // Add a new item to the definition list
@@ -52,6 +58,7 @@
                 // Copy the data to the package editor from the selected object
                 app.page.editor.fromObject(data.data);
                 app.loadPackageComponents(); // Load the dependant items (that are not directly part of the model)
+                app.drawPackage(); // Try and draw the package
             }
             else {
                 app.page.editItem = null;
@@ -260,6 +267,17 @@
                 app.edit({ key: app.page.packageId, value: '' })
             }
         },
+
+        // Draw the diagram of the current package
+        drawPackage: function () {
+            if (app.page.packageId != null &&
+                app.page.packageId != '00000000-0000-0000-0000-000000000000' &&
+                app.page.diagramLogic != '') {
+                $("#diagram").html('');
+                var diagramParsed = flowchart.parse(app.page.diagramLogic);
+                diagramParsed.drawSVG('diagram');
+            }
+        }
     }
 });
 

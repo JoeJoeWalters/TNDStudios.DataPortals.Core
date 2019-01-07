@@ -18,6 +18,24 @@ tndStudios.models.packages =
             this.credentialsStore = [];
             this.packages = [];
 
+            // Diagram Drawing etc.
+            var diagramValue = 'st=>start: Start:>Start[blank]\n';
+            diagramValue += 'e=>end:>End\n';
+            diagramValue += 'op1=>operation: My Operation\n';
+            diagramValue += 'sub1=>subroutine: My Subroutine\n';
+            diagramValue += 'cond=>condition: Yes\n';
+            diagramValue += 'or No?:>Go Somewhere\n';
+            diagramValue += 'io=>inputoutput: catch something...\n';
+            diagramValue += 'para=>parallel: parallel tasks\n';
+
+            diagramValue += 'st->op1->cond\n';
+            diagramValue += 'cond(yes)->io->e\n';
+            diagramValue += 'cond(no)->para\n';
+            diagramValue += 'para(path1, bottom)->sub1(right)->op1\n';
+            diagramValue += 'para(path2, top)->op1';
+
+            this.diagramLogic = diagramValue;
+
             this.packageId = $("#packageId").val(); // Get the package Id from the field on the page
         },
 
