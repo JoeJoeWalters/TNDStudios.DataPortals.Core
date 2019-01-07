@@ -30,5 +30,12 @@ namespace TNDStudios.DataPortals.Repositories
         /// <param name="package">The package to be saved</param>
         /// <returns>The package that has been saved</returns>
         Package Save(Package package);
+
+        /// <summary>
+        /// Delete a package with a given Id
+        /// </summary>
+        /// <param name="id">The Id of the package to be deleted</param>
+        /// <returns>A success or failure flag</returns>
+        Boolean Delete(Guid id);
     }
 }

@@ -71,6 +71,7 @@ namespace TNDStudios.DataPortals.Data
                         // Create the new column
                         DataColumn newColumn = new DataColumn(property.Name, property.DataType)
                         {
+                            AllowDBNull = true
                         };
 
                         // Add the column to the array
@@ -90,6 +91,7 @@ namespace TNDStudios.DataPortals.Data
                             result.Columns.Add(
                                 new DataColumn(property.Name, property.DataType, property.Calculation)
                                 {
+                                    AllowDBNull = true
                                 });
                         }
                         catch
@@ -100,6 +102,7 @@ namespace TNDStudios.DataPortals.Data
                             result.Columns.Add(
                                 new DataColumn(property.Name, property.DataType, "")
                                 {
+                                    AllowDBNull = true
                                 });
                         }
 

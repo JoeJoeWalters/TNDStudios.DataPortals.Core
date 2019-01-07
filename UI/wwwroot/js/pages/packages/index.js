@@ -29,26 +29,30 @@
 
             // Clear the editor
             app.page.editor.clear();
-            app.page.editorItem = null; // No longer attached to an editing object
+            app.page.editItem = null; // No longer attached to an editing object
         },
 
         // Edit an existing item by assigning it to the editor object
-        edit: function (editorItem) {
-            app.page.editorItem = editorItem; // Reference to the origional item being edited
-            tndStudios.models.packages.get(editorItem.key, this.editCallback); // Start the load
+        edit: function (editItem) {
+            app.page.editItem = editItem; // Reference to the origional item being edited
+            tndStudios.models.packages.get(editItem.key, this.editCallback); // Start the load
         },
 
         // Callback to load the item
         editCallback: function (success, data) {
 
             if (success) {
+                
+                // Set the global key that the common page uses so links can be enabled
+                tndStudios.models.common.packageId = data.data.id;
+                app.page.packageId = data.data.id; 
+
                 // Copy the data to the package editor from the selected object
-                app.page.packageId = app.page.packageId; // Set the global key that the common page uses so links can be enabled
                 app.page.editor.fromObject(data.data);
                 app.loadPackageComponents(); // Load the dependant items (that are not directly part of the model)
             }
             else {
-                app.page.editorItem = null;
+                app.page.editItem = null;
             }
         },
 
@@ -65,12 +69,8 @@
             // someone clicked the delete before it was saved
             if (idString != "") {
 
-                tndStudios.utils.api.call(
-                    '/api/' + app.page.packageId + '/data/packages/' + idString,
-                    'DELETE',
-                    null,
-                    app.deleteCallback
-                );
+                // Call the delete
+                tndStudios.models.packages.delete(idString, app.deleteCallback);
             }
             else
                 tndStudios.utils.ui.notify(0, 'Cannot Delete An Item That Is Not Saved Yet');
@@ -88,10 +88,10 @@
                 // Remove the item from the packages list
                 app.page.packages = app.page.packages.filter(
                     function (package) {
-                        return package.id !== app.page.editorItem.id;
+                        return package.key != app.page.editItem.key;
                     });
 
-                app.page.editorItem = null; // No longer attached to an editing object
+                app.page.editItem = null; // No longer attached to an editing object
 
                 // Notify the user
                 tndStudios.utils.ui.notify(1, "Package Deleted Successfully");
@@ -108,7 +108,6 @@
 
                 // The the api call to save the package
                 tndStudios.models.packages.save(
-                    app.page.packageId,
                     app.page.editor.toObject(),
                     app.saveCallback
                 );
@@ -128,16 +127,19 @@
                     app.page.editor.fromObject(data.data);
 
                     // Were we editing an existing item?
-                    if (app.page.editorItem != null) {
+                    if (app.page.editItem != null) {
 
                         // Update the existing item
-                        app.page.editorItem.fromObject(data.data);
+                        app.page.editItem.key = data.data.id;
+                        app.page.editItem.value = data.data.name;
                     }
                     else {
 
                         // Add the new item to the list
-                        app.page.editorItem = new tndStudios.models.common.commonObject(data.data);
-                        app.page.packages.push(app.page.editorItem);
+                        app.page.editItem = new tndStudios.models.common.keyValuePair();
+                        app.page.editItem.key = data.data.id;
+                        app.page.editItem.value = data.data.name;
+                        app.page.packages.push(app.page.editItem);
                     }
 
                     // Notify the user
@@ -152,19 +154,19 @@
         loadPackageComponents: function () {
 
             // Load the API Definitions for this package
-            tndStudios.models.apiDefinitions.list(app.page.editorItem.key, null, this.loadApiDefinitionsCallback);
+            tndStudios.models.apiDefinitions.list(app.page.editItem.key, null, this.loadApiDefinitionsCallback);
 
             // Load the Data Connections for this package
-            tndStudios.models.dataConnections.list(app.page.editorItem.key, null, this.loadConnectionsCallback);
+            tndStudios.models.dataConnections.list(app.page.editItem.key, null, this.loadConnectionsCallback);
 
             // Load the Data Definitions for this package
-            tndStudios.models.dataDefinitions.list(app.page.editorItem.key, null, this.loadDataDefinitionsCallback);
+            tndStudios.models.dataDefinitions.list(app.page.editItem.key, null, this.loadDataDefinitionsCallback);
 
             // Load the Transformations for this package
-            tndStudios.models.transformations.list(app.page.editorItem.key, null, this.loadTransformationsCallback);
+            tndStudios.models.transformations.list(app.page.editItem.key, null, this.loadTransformationsCallback);
 
             // Load the Credentials for this package
-            tndStudios.models.credentials.list(app.page.editorItem.key, null, this.loadCredentialsStoreCallback);
+            tndStudios.models.credentials.list(app.page.editItem.key, null, this.loadCredentialsStoreCallback);
         },
 
         // Callback for when the API Definitions are loaded

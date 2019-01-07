@@ -7,6 +7,7 @@ tndStudios.models.packages =
 
             // The properties of the object            
             this.editor = new tndStudios.models.packages.package(null); // The editor object
+            this.editItem = null; // Reference to the item that is being edited for saving changes back to it
             this.searchCriteria = ""; // The filter for the packages list
 
             // Attached items (connections, api definitions etc.)
@@ -70,7 +71,12 @@ tndStudios.models.packages =
         },
 
         // The the api call to save the package
-        save: function (packageId, saveObject, callback) {
+        save: function (saveObject, callback) {
+            tndStudios.utils.api.call(
+                '/api/package',
+                'POST',
+                saveObject,
+                callback);
         },
 
         // The api call to list the packages
@@ -78,14 +84,14 @@ tndStudios.models.packages =
 
             // The the api call to load the provider types
             tndStudios.utils.api.call(
-                '/api/package/list',
+                '/api/package',
                 'GET',
                 null,
                 callback
             );
 
         },
-        
+
         // Get the full version of the package
         get: function (packageId, callback) {
             tndStudios.utils.api.call(
@@ -96,6 +102,11 @@ tndStudios.models.packages =
         },
 
         // The api call to delete a package
-        delete: function () {
+        delete: function (packageId, callback) {
+            tndStudios.utils.api.call(
+                '/api/package/' + packageId,
+                'DELETE',
+                null,
+                callback);
         }
     };

@@ -40,12 +40,34 @@ namespace TNDStudios.DataPortals.Repositories
                 existingPackage = package; // Replace with the saved package
             else
             {
+                package.Id = (package.Id == Guid.Empty) ? Guid.NewGuid() : package.Id; // Give the package a new Guid as it doesn'g have one
                 packages.Add(package); // Add the package
                 existingPackage = package; // It now exists so assign the reference
             }
 
             // Return the saved (now existing) package
             return existingPackage;
+        }
+
+        /// <summary>
+        /// Delete a package with a given Id
+        /// </summary>
+        /// <param name="id">The Id of the package to be deleted</param>
+        /// <returns>A success or failure flag</returns>
+        public Boolean Delete(Guid id)
+        {
+            // Check the package is gone
+            Package package = Get(id);
+            if (package != null)
+            {
+                // Delete the package
+                packages.Remove(package);
+
+                // Check the package is gone
+                return (Get(id) == null);
+            }
+            else
+                return true; // Already been deleted
         }
 
         /// <summary>
