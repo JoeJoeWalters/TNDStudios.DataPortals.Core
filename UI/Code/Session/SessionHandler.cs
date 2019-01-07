@@ -274,7 +274,7 @@ namespace TNDStudios.DataPortals.UI
                                         PropertyType = DataItemPropertyType.Property,
                                         OrdinalPosition = 2,
                                         Quoted = false,
-                                        Key = true
+                                        Key = false
                                     },
                                     new DataItemProperty()
                                     {
@@ -285,7 +285,7 @@ namespace TNDStudios.DataPortals.UI
                                         PropertyType = DataItemPropertyType.Property,
                                         OrdinalPosition = 8,
                                         Quoted = false,
-                                        Key = true
+                                        Key = false
                                     },
                                     new DataItemProperty()
                                     {
@@ -296,7 +296,7 @@ namespace TNDStudios.DataPortals.UI
                                         PropertyType = DataItemPropertyType.Property,
                                         OrdinalPosition = 8,
                                         Quoted = false,
-                                        Key = true
+                                        Key = false
                                     }
                                 },
                                 Name = "SQL Data Item Definition",
