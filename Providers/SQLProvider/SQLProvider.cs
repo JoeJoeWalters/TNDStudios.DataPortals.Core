@@ -224,7 +224,7 @@ namespace TNDStudios.DataPortals.Data
                 new List<KeyValuePair<String, String>>() { };
 
             // Is the data provider connected? If not don't attempt to read the schema
-            if (this.connected)
+            if (this.Connected)
             {
                 // Get the raw tables list
                 DataTable rawTables = this.sqlConnection.GetSchema("Tables");
