@@ -30,7 +30,7 @@
             // Clear the editor
             app.page.editor.clear();
             app.page.packageId = '00000000-0000-0000-0000-000000000000';
-            tndStudios.models.common.packageId = '00000000-0000-0000-0000-000000000000';
+            if (appHeader) { appHeader.page.packageId = '00000000-0000-0000-0000-000000000000'; };
             app.page.editItem = null; // No longer attached to an editing object
         },
 
@@ -46,7 +46,7 @@
             if (success) {
                 
                 // Set the global key that the common page uses so links can be enabled
-                tndStudios.models.common.packageId = data.data.id;
+                if (appHeader) { appHeader.page.packageId = data.data.id; };
                 app.page.packageId = data.data.id; 
 
                 // Copy the data to the package editor from the selected object
@@ -127,7 +127,7 @@
 
                     // Set the new global pointers
                     app.page.packageId = data.data.id;
-                    tndStudios.models.common.packageId = data.data.id;
+                    if (appHeader) { appHeader.page.packageId = data.data.id; };
 
                     // Update the editor itself (possibily with new links or id if a new item)
                     app.page.editor.fromObject(data.data);
