@@ -57,7 +57,7 @@ tndStudios.models.packages =
 
             // Clear this package object (i.e. make it ready for editing)
             this.clear = function () {
-
+                
                 // Clear the properties
                 this.id = null;
                 this.name = '';

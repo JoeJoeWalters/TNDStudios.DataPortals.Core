@@ -29,6 +29,8 @@
 
             // Clear the editor
             app.page.editor.clear();
+            app.page.packageId = '00000000-0000-0000-0000-000000000000';
+            tndStudios.models.common.packageId = '00000000-0000-0000-0000-000000000000';
             app.page.editItem = null; // No longer attached to an editing object
         },
 
@@ -122,6 +124,10 @@
 
                 // Some data came back?
                 if (data.data) {
+
+                    // Set the new global pointers
+                    app.page.packageId = data.data.id;
+                    tndStudios.models.common.packageId = data.data.id;
 
                     // Update the editor itself (possibily with new links or id if a new item)
                     app.page.editor.fromObject(data.data);
@@ -249,7 +255,8 @@
         // Load a package at the start if one is specified
         // Can't use the standard one as that searches for the item in the form
         loadAtStart: function () {
-            if (app.page.packageId != '00000000-0000-0000-0000-000000000000') {
+            if (app.page.packageId != null &&
+                app.page.packageId != '00000000-0000-0000-0000-000000000000') {
                 app.edit({ key: app.page.packageId, value: '' })
             }
         },
