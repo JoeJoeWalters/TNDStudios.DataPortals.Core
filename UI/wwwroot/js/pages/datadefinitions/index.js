@@ -337,11 +337,18 @@
 
         // Sample callback, get the data from the result
         sampleConnectionCallback: function (success, data) {
+
             if (success) {
                 if (data.data) {
                     // Assign the data payload to the appropriate object in the editor
                     app.page.editorValues = data.data.values;
                 };
+            }
+            else {
+                // Loop the messages
+                data.messages.forEach(function (message) {
+                    tndStudios.utils.ui.notify(0, message);
+                });
             }
         },
 
@@ -381,6 +388,14 @@
                     app.page.editor.name = oldObject.Name;
                     app.page.editor.description = oldObject.Description;
                 };
+            }
+            else
+            {
+                // Loop the messages
+                data.messages.forEach(function (message)
+                {
+                    tndStudios.utils.ui.notify(0, message);
+                });
             }
         },
     }

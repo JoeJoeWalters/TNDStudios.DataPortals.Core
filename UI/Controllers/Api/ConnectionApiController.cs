@@ -272,34 +272,48 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// <param name="connection">The connection to analyse</param>
         /// <param name="includeSample">Include sample data with the analysis</param>
         /// <returns>The data item model for the UI to consume</returns>
-        private DataItemModel AnalyseConnection([FromRoute]Guid packageId, DataConnection connection)
+        private ApiResponse<DataItemModel> AnalyseConnection([FromRoute]Guid packageId, DataConnection connection)
         {
-            DataItemModel result = new DataItemModel(); // The result to return
+            ApiResponse<DataItemModel> result =
+                new ApiResponse<DataItemModel>()
+                {
+                    Success = false,
+                    Data = new DataItemModel()
+                }; // The result to return
 
             // Valid connection?
             if (connection != null)
             {
-                // Did we find a package?
-                Package package = SessionHandler.PackageRepository.Get(packageId);
-                if (package != null)
+                try
                 {
-                    // Get the appropriate provider object to analyse
-                    IDataProvider provider = (new DataProviderFactory()).Get(package, connection, false);
-
-                    // Get the results of the analysis of this connection
-                    DataItemDefinition definition =
-                        provider.Analyse(new AnalyseRequest<object>()
-                        {
-                            Data = null,
-                            Connection = connection
-                        });
-
-                    // Did we get a result back?
-                    if (definition.ItemProperties.Count != 0)
+                    // Did we find a package?
+                    Package package = SessionHandler.PackageRepository.Get(packageId);
+                    if (package != null)
                     {
-                        // Assign the definition to the result
-                        result.Definition = mapper.Map<DataItemDefinitionModel>(definition);
+                        // Get the appropriate provider object to analyse
+                        IDataProvider provider = (new DataProviderFactory()).Get(package, connection, false);
+
+                        // Get the results of the analysis of this connection
+                        DataItemDefinition definition =
+                            provider.Analyse(new AnalyseRequest<object>()
+                            {
+                                Data = null,
+                                Connection = connection
+                            });
+
+                        // Did we get a result back?
+                        if (definition.ItemProperties.Count != 0)
+                        {
+                            // Assign the definition to the result
+                            result.Data.Definition = mapper.Map<DataItemDefinitionModel>(definition);
+                            result.Success = true;
+                        }
                     }
+                }
+                catch(Exception ex)
+                {
+                    result.Messages = new List<String>() { ex.Message };
+                    result.Success = false;
                 }
             }
 
@@ -321,10 +335,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                 DataConnection connection = package.DataConnection(id);
 
                 // Get the analysis result
-                result.Data = AnalyseConnection(packageId, connection);
-
-                // Send the resulting analysis back
-                result.Success = (result.Data != null && result.Data.Definition != null);
+                result = AnalyseConnection(packageId, connection);
             }
 
             return result;
@@ -355,10 +366,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                     DataItemDefinition dataDefinition = mapper.Map<DataItemDefinition>(request);
 
                     // Get the sample result 
-                    result.Data = SampleConnection(package, connection, dataDefinition, 10);
-
-                    // Send the resulting analysis back
-                    result.Success = (result.Data != null && result.Data.Values != null);
+                    result = SampleConnection(package, connection, dataDefinition, 10);
                 }
                 else
                     result.Success = false;
@@ -373,51 +381,72 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// </summary>
         /// <param name="connection">The connection to analyse</param>
         /// <returns>The data item model for the UI to consume</returns>
-        private DataItemModel SampleConnection(Package package, DataConnection connection, DataItemDefinition definition, Int32 sampleSize)
+        private ApiResponse<DataItemModel> SampleConnection(Package package, DataConnection connection, DataItemDefinition definition, Int32 sampleSize)
         {
-            DataItemModel result = new DataItemModel(); // The result to return
+            // The result to return
+            ApiResponse<DataItemModel> result = new ApiResponse<DataItemModel>()
+            {
+                Data = new DataItemModel(),
+                Success = false
+            }; 
 
             // Valid connection?
             if (connection != null)
             {
-                // Get the appropriate provider object to analyse
-                IDataProvider provider = (new DataProviderFactory()).Get(package, connection, definition, false);
-                if (provider.Connect(definition, connection))
+                try
                 {
-                    result.Values = new DataItemValuesModel(); // Create a new values model
 
-                    // Read the data from the connection to the stream
-                    DataTable data = provider.Read("");
-
-                    // Did we get some rows back?
-                    Int32 rowId = 0;
-                    while (rowId < sampleSize && rowId < data.Rows.Count)
+                    // Get the appropriate provider object to analyse
+                    IDataProvider provider = (new DataProviderFactory()).Get(package, connection, definition, false);
+                    if (provider.Connect(definition, connection))
                     {
-                        // Get the next row
-                        DataRow row = data.Rows[rowId];
-                        if (row != null)
-                        {
-                            // Create a new blank data line to cast the data to
-                            Dictionary<String, String> line = new Dictionary<string, string>();
+                        result.Data.Values = new DataItemValuesModel(); // Create a new values model
 
-                            // Loop the headers to get the values
-                            foreach (DataItemProperty property in definition.ItemProperties)
+                        // Read the data from the connection to the stream
+                        DataTable data = provider.Read("");
+
+                        // Did we get some rows back?
+                        Int32 rowId = 0;
+                        while (rowId < sampleSize && rowId < data.Rows.Count)
+                        {
+                            // Get the next row
+                            DataRow row = data.Rows[rowId];
+                            if (row != null)
                             {
-                                // Cast the data as appropriate and add it to the line
-                                line[property.Name] =
-                                    DataFormatHelper.WriteData(
-                                        row[property.Name],
-                                        property,
-                                        definition);
+                                // Create a new blank data line to cast the data to
+                                Dictionary<String, String> line = new Dictionary<string, string>();
+
+                                // Loop the headers to get the values
+                                foreach (DataItemProperty property in definition.ItemProperties)
+                                {
+                                    // Cast the data as appropriate and add it to the line
+                                    line[property.Name] =
+                                        DataFormatHelper.WriteData(
+                                            row[property.Name],
+                                            property,
+                                            definition);
+                                }
+
+                                // Add the line to the result values
+                                result.Data.Values.Lines.Add(line);
                             }
 
-                            // Add the line to the result values
-                            result.Values.Lines.Add(line);
+                            // Move to the next row
+                            rowId++;
                         }
 
-                        // Move to the next row
-                        rowId++;
+                        // Send the resulting analysis back
+                        result.Success = (result.Data != null && result.Data.Values != null);
                     }
+                    else
+                    {
+                        result.Messages.Add("Could not connect to the provider");
+                    }
+                }
+                catch(Exception ex)
+                {
+                    result.Messages = new List<String>() { ex.Message };
+                    result.Success = false;
                 }
             }
 

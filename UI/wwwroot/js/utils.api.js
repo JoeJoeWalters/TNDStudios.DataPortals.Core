@@ -45,18 +45,15 @@ tndStudios.utils.api =
                     tndStudios.utils.ui.progress(false);
 
                     // Success?
-                    if (data.success)
-                        callback(true, data);
-                    else
-                        callback(false, null);
+                    callback(data.success, data);
                 },
                 error: function (jgXHR, status) {
 
                     // Stop the progress spinner
                     tndStudios.utils.ui.progress(false);
 
-                    // Do the failure call
-                    callback(false, null);
+                    // Do the failure calls
+                    callback(false, { data: null, messsages: ["Error Connecting To Api"]});
                 }
             });
         }
