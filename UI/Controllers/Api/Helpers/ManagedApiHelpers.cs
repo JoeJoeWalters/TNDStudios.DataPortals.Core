@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using TNDStudios.DataPortals.Json;
 
 namespace TNDStudios.DataPortals.UI.Controllers.Api.Helpers
@@ -32,6 +34,25 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api.Helpers
                         column.ExtendedProperties["Alias"] = pair.Value;
                 }
             });
+        }
+
+        /// <summary>
+        /// Get the content of the request body and give it back to the 
+        /// caller as a string
+        /// </summary>
+        /// <param name="request">The raw Http Request object</param>
+        /// <returns>A string representing the request body</returns>
+        public String RequestBodyToString(HttpRequest request)
+        {
+            String result = String.Empty; // No content by default
+
+            // Create a reader to read the request body
+            using (StreamReader reader = new StreamReader(request.Body))
+            {
+                result = reader.ReadToEnd();
+            }
+
+            return result; // Give the result back
         }
 
         /// <summary>

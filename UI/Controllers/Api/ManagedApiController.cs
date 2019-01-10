@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -379,12 +380,45 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                     );
 
             // Everything work ok? Then continue to the important bits
-            if (authResult.StatusCode == HttpStatusCode.OK)
-            {
-                return StatusCode((Int32)HttpStatusCode.OK, "");
-            }
-            else
+            if (authResult.StatusCode != HttpStatusCode.OK)
                 return StatusCode((Int32)authResult.StatusCode, authResult.StatusDescription);
+
+            // Get the body of the request from the stream
+            String body = helpers.RequestBodyToString(Request);
+            if (body == String.Empty)
+                return StatusCode((Int32)HttpStatusCode.BadRequest, "Request body contained no data");
+
+            // Translate the body
+            try
+            {
+                // Translate the content type
+                switch (Request.ContentType.Trim().ToLower())
+                {
+                    case "application/json":
+                        
+                        // Parse the body to a queryable Json Object (bad formatting will fail it)
+                        JObject json = JObject.Parse(body);
+
+                        break;
+
+                    case "application/xml":
+                    case "text/xml":
+
+#warning "[Handle XML requests as well as json requests]"
+
+                        break;
+
+                    default:
+                        return StatusCode((Int32)HttpStatusCode.BadRequest, $"Unhandled content type ({Request.ContentType})");
+                }
+            }
+            catch(Exception ex)
+            {
+                return StatusCode((Int32)HttpStatusCode.BadRequest, $"Malformed body content in request ({ex.Message})");
+            }
+
+            // Got to the end so must be ok
+            return StatusCode((Int32)HttpStatusCode.OK, "");
         }
 
         /// <summary>
@@ -439,12 +473,16 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                     );
 
             // Everything work ok? Then continue to the important bits
-            if (authResult.StatusCode == HttpStatusCode.OK)
-            {
-                return StatusCode((Int32)HttpStatusCode.OK, "");
-            }
-            else
+            if (authResult.StatusCode != HttpStatusCode.OK)
                 return StatusCode((Int32)authResult.StatusCode, authResult.StatusDescription);
+
+            // Get the body of the request from the stream
+            String body = helpers.RequestBodyToString(Request);
+            if (body == String.Empty)
+                return StatusCode((Int32)HttpStatusCode.BadRequest, "Request body contained no data");
+            
+            // Got to the end so must be ok
+            return StatusCode((Int32)HttpStatusCode.OK, "");
         }
     }
 }
