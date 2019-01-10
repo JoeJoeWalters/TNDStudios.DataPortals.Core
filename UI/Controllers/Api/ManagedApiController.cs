@@ -304,96 +304,148 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             return StatusCode((Int32)HttpStatusCode.ServiceUnavailable, $"There was not package loaded to search for an endpoint of type '{objectType}'");
         }
 
+        /// <summary>
+        /// Handle the GET verb of the managed Api by checking permissions and then
+        /// translating the Api Definition in to a readable form to the caller
+        /// </summary>
+        /// <param name="packageId">The package that is being referenced containing the Api Definition</param>
+        /// <param name="objectType">The "name" of the Api endpoint being referenced</param>
+        /// <returns></returns>
         [HttpGet]
         [Route("objects/{objectType}")]
         public ActionResult<Boolean> Get([FromRoute]Guid packageId, [FromRoute]String objectType)
         {
-            try
+            // Do the authentication process with the given request and helpers 
+            // to determine the result
+            ApiAuthenticationResult authResult =
+                webAuthHelper.AuthenticateApiRequest(
+                    packageId,
+                    objectType,
+                    SessionHandler.PackageRepository,
+                    Request
+                    );
+
+            // Everything work ok? Then continue to the important bits
+            if (authResult.StatusCode == HttpStatusCode.OK)
             {
-                // Get the package from the repository
-                Package package = SessionHandler.PackageRepository.Get(packageId);
-                if (package != null)
+                // Use the api definition to get the data connection and 
+                // definition from the package and then try to connect
+                IDataProvider provider = providerFactory.Get(
+                    authResult.Package,
+                    authResult.Package.DataConnection(authResult.ApiDefinition.DataConnection),
+                    authResult.Package.DataDefinition(authResult.ApiDefinition.DataDefinition),
+                    true);
+
+                // Are we connected?
+                if (provider.Connected)
                 {
-                    // Get the definition for this object type
-                    ApiDefinition apiDefinition = package.Api(objectType);
-                    if (apiDefinition != null)
-                    {
-                        // Authenticate this request against the Api Definition
-                        Permissions permissions = webAuthHelper.AuthenticateRequest(Request, package, apiDefinition);
-                        if (permissions != null && permissions.CanRead)
-                        {
-                            // Use the api definition to get the data connection and 
-                            // definition from the package and then try to connect
-                            IDataProvider provider = providerFactory.Get(
-                                package,
-                                package.DataConnection(apiDefinition.DataConnection),
-                                package.DataDefinition(apiDefinition.DataDefinition),
-                                true);
+                    // Return the data with the appropriate filter
+                    DataTable results = provider.Read(authResult.Permissions.Filter);
 
-                            // Are we connected?
-                            if (provider.Connected)
-                            {
-                                // Return the data with the appropriate filter
-                                DataTable results = provider.Read(permissions.Filter);
+                    // Manage any aliases for the results table
+                    helpers.HandleAliases(results, authResult.ApiDefinition.Aliases);
 
-                                // Manage any aliases for the results table
-                                helpers.HandleAliases(results, apiDefinition.Aliases);
- 
-                                // Format the data table as Json
-                                return helpers.DataTableToJsonFormat(results);
-                            }
-                            else
-                            {
-                                // Could not connect to the data source, return the appropriate error code
-                                return StatusCode((Int32)HttpStatusCode.InternalServerError, "Could not connect to the data source");
-                            }
-                        }
-                        else
-                            // Return a failure to authenticate
-                            return StatusCode((Int32)HttpStatusCode.Unauthorized, $"Endpoint of type '{objectType}' was not authorized for these credentials");
-                    }
-                    else
-                    {
-                        // Return a failure to find the object if we get to here
-                        return StatusCode((Int32)HttpStatusCode.NotFound, $"Endpoint of type '{objectType}' was not found");
-                    }
+                    // Format the data table as Json
+                    return helpers.DataTableToJsonFormat(results);
+                }
+                else
+                {
+                    // Could not connect to the data source, return the appropriate error code
+                    return StatusCode((Int32)HttpStatusCode.InternalServerError, "Could not connect to the data source");
                 }
             }
-            catch (Exception ex)
-            {
-                return StatusCode((Int32)HttpStatusCode.InternalServerError, $"Could not perform operation due to '{ex.Message}'");
-            }
-
-            // Something was very wrong that there could be no service available
-            return StatusCode((Int32)HttpStatusCode.ServiceUnavailable, $"There was not package loaded to search for an endpoint of type '{objectType}'");
+            else
+                return StatusCode((Int32)authResult.StatusCode, authResult.StatusDescription);            
         }
 
+        /// <summary>
+        /// Handle the POST verb of the managed Api by checking permissions and then
+        /// translating the request to save data in to a process to save that data to the data source
+        /// </summary>
+        /// <param name="packageId">The package that is being referenced containing the Api Definition</param>
+        /// <param name="objectType">The "name" of the Api endpoint being referenced</param>
+        /// <returns></returns>
         [HttpPost]
         [Route("objects/{objectType}")]
-        public ActionResult<Boolean> Post([FromRoute]String packageId, [FromRoute]String objectType)
+        public ActionResult<Boolean> Post([FromRoute]Guid packageId, [FromRoute]String objectType)
         {
-            return true;
+            // Do the authentication process with the given request and helpers 
+            // to determine the result
+            ApiAuthenticationResult authResult =
+                webAuthHelper.AuthenticateApiRequest(
+                    packageId,
+                    objectType,
+                    SessionHandler.PackageRepository,
+                    Request
+                    );
+
+            // Everything work ok? Then continue to the important bits
+            if (authResult.StatusCode == HttpStatusCode.OK)
+            {
+                return StatusCode((Int32)HttpStatusCode.OK, "");
+            }
+            else
+                return StatusCode((Int32)authResult.StatusCode, authResult.StatusDescription);
         }
 
+        /// <summary>
+        /// Handle the DELETE verb of the managed Api by checking permissions and then
+        /// translating the request to delete data in to a process to delete data in the data source
+        /// </summary>
+        /// <param name="packageId">The package that is being referenced containing the Api Definition</param>
+        /// <param name="objectType">The "name" of the Api endpoint being referenced</param>
+        /// <returns></returns>
         [HttpDelete]
         [Route("objects/{objectType}")]
-        public ActionResult<Boolean> Delete([FromRoute]String packageId, [FromRoute]String objectType)
+        public ActionResult<Boolean> Delete([FromRoute]Guid packageId, [FromRoute]String objectType)
         {
-            return true;
+            // Do the authentication process with the given request and helpers 
+            // to determine the result
+            ApiAuthenticationResult authResult =
+                webAuthHelper.AuthenticateApiRequest(
+                    packageId,
+                    objectType,
+                    SessionHandler.PackageRepository,
+                    Request
+                    );
+
+            // Everything work ok? Then continue to the important bits
+            if (authResult.StatusCode == HttpStatusCode.OK)
+            {
+                return StatusCode((Int32)HttpStatusCode.OK, "");
+            }
+            else
+                return StatusCode((Int32)authResult.StatusCode, authResult.StatusDescription);
         }
 
+        /// <summary>
+        /// Handle the PATCH verb of the managed Api by checking permissions and then
+        /// translating the request to update data in to a process to update that data to the data source
+        /// </summary>
+        /// <param name="packageId">The package that is being referenced containing the Api Definition</param>
+        /// <param name="objectType">The "name" of the Api endpoint being referenced</param>
+        /// <returns></returns>
         [HttpPatch]
         [Route("objects/{objectType}")]
-        public ActionResult<Boolean> Patch([FromRoute]String packageId, [FromRoute]String objectType)
+        public ActionResult<Boolean> Patch([FromRoute]Guid packageId, [FromRoute]String objectType)
         {
-            return true;
-        }
+            // Do the authentication process with the given request and helpers 
+            // to determine the result
+            ApiAuthenticationResult authResult =
+                webAuthHelper.AuthenticateApiRequest(
+                    packageId,
+                    objectType,
+                    SessionHandler.PackageRepository,
+                    Request
+                    );
 
-        [HttpPut]
-        [Route("objects/{objectType}")]
-        public ActionResult<Boolean> Put([FromRoute]String packageId, [FromRoute]String objectType)
-        {
-            return true;
+            // Everything work ok? Then continue to the important bits
+            if (authResult.StatusCode == HttpStatusCode.OK)
+            {
+                return StatusCode((Int32)HttpStatusCode.OK, "");
+            }
+            else
+                return StatusCode((Int32)authResult.StatusCode, authResult.StatusDescription);
         }
     }
 }
