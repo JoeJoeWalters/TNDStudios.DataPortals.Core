@@ -1,16 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using TNDStudios.DataPortals.Api;
 using TNDStudios.DataPortals.Json;
-using TNDStudios.DataPortals.Repositories;
-using TNDStudios.DataPortals.Security;
 
 namespace TNDStudios.DataPortals.UI.Controllers.Api.Helpers
 {

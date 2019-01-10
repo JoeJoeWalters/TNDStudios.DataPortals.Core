@@ -16,15 +16,21 @@ namespace TNDStudios.DataPortals.Security
         /// Authenticate an incoming request before farming off the result to the 
         /// calling method
         /// </summary>
-        /// <returns></returns>
-        public ApiAuthenticationResult AuthenticateApiRequest(Guid packageId, 
-            String objectType, IPackageRepository packageRepository, 
+        /// <param name="packageId">The identifier of the package to be checked</param>
+        /// <param name="objectType">The "real" name of the api endpoint</param>
+        /// <param name="packageRepository">The package repository to load the definitions from</param>
+        /// <param name="request">The Http Request to determine the verbs etc.</param>
+        /// <returns>A package that contains the status of the result but also the associated 
+        /// items needed to process the request</returns>        
+        public ApiAuthenticationResult AuthenticateApiRequest(Guid packageId,
+            String objectType, IPackageRepository packageRepository,
             HttpRequest request)
         {
+            // Create a result object (default Http status etc.)
             ApiAuthenticationResult result = new ApiAuthenticationResult();
 
-            //try
-            //{
+            try
+            {
                 // Get the package from the repository
                 result.Package = packageRepository.Get(packageId);
                 if (result.Package != null)
@@ -42,33 +48,33 @@ namespace TNDStudios.DataPortals.Security
                         }
                         else
                         {
-                        // Check permissions here
-                        switch (request.Method.Trim().ToUpper())
-                        {
-                            case "GET":
-                                result.StatusCode = result.Permissions.CanRead ? HttpStatusCode.OK : HttpStatusCode.Unauthorized;
-                                break;
+                            // Check permissions here
+                            switch (request.Method.Trim().ToUpper())
+                            {
+                                case "GET":
+                                    result.StatusCode = result.Permissions.CanRead ? HttpStatusCode.OK : HttpStatusCode.Unauthorized;
+                                    break;
 
-                            case "POST":
-                                result.StatusCode = result.Permissions.CanCreate ? HttpStatusCode.OK : HttpStatusCode.Unauthorized;
-                                break;
+                                case "POST":
+                                    result.StatusCode = result.Permissions.CanCreate ? HttpStatusCode.OK : HttpStatusCode.Unauthorized;
+                                    break;
 
-                            case "PATCH":
-                                result.StatusCode = result.Permissions.CanUpdate ? HttpStatusCode.OK : HttpStatusCode.Unauthorized;
-                                break;
+                                case "PATCH":
+                                    result.StatusCode = result.Permissions.CanUpdate ? HttpStatusCode.OK : HttpStatusCode.Unauthorized;
+                                    break;
 
-                            case "DELETE":
-                                result.StatusCode = result.Permissions.CanDelete ? HttpStatusCode.OK : HttpStatusCode.Unauthorized;
-                                break;
+                                case "DELETE":
+                                    result.StatusCode = result.Permissions.CanDelete ? HttpStatusCode.OK : HttpStatusCode.Unauthorized;
+                                    break;
 
-                            default:
-                                result.StatusCode = HttpStatusCode.Unauthorized; // Not a recognised verb so deny it
-                                break;
+                                default:
+                                    result.StatusCode = HttpStatusCode.Unauthorized; // Not a recognised verb so deny it
+                                    break;
+                            }
+
+                            // Not authorised? Give the reason why 
+                            result.StatusDescription = result.StatusCode == HttpStatusCode.OK ? String.Empty : "Unauthorized to access this resource with the given verb.";
                         }
-
-                        // Not authorised? Give the reason why 
-                        result.StatusDescription = result.StatusCode == HttpStatusCode.OK ? String.Empty : "Unauthorized to access this resource with the given verb.";
-                    }
                     }
                     else
                     {
@@ -81,12 +87,12 @@ namespace TNDStudios.DataPortals.Security
                     result.StatusCode = HttpStatusCode.ServiceUnavailable;
                     result.StatusDescription = $"There was not package loaded to search for an endpoint of type '{objectType}'";
                 }
-            /*}
+            }
             catch (Exception ex)
             {
                 result.StatusCode = HttpStatusCode.InternalServerError;
                 result.StatusDescription = $"Could not perform operation due to '{ex.Message}'";
-            }*/
+            }
 
             // Send the result of the authentication process back with any 
             // required objects attached
