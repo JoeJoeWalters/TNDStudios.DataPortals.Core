@@ -9,7 +9,7 @@ namespace TNDStudios.DataPortals.Helpers
     /// Helpers for the SQL Provider where items fall outside the 
     /// standard pattern of the data provider interface
     /// </summary>
-    public partial class SQLProviderHelpers
+    public partial class SQLProviderHelper
     {
         /// <summary>
         /// Given the datarow with the data in create the referenece that can

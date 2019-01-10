@@ -13,7 +13,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api.Helpers
     /// Helper functions for the connection Api, no public items
     /// are allowed in the Api itself so located here for testability
     /// </summary>
-    public class ConnectionApiHelpers
+    public class ConnectionApiHelper
     {
         /// <summary>
         /// Makes sure that any additional items that cannot be automapped
@@ -21,7 +21,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api.Helpers
         /// </summary>
         /// <param name="model">The model to be populated</param>
         /// <returns>The populated model</returns>
-        public DataConnectionModel PopulateModel(IMapper mapper, Package package, DataConnectionModel model)
+        public static DataConnectionModel PopulateModel(IMapper mapper, Package package, DataConnectionModel model)
         {
             // Post processing to fill in the missing titles
             // as this doesn't really fit well in Automapper due 

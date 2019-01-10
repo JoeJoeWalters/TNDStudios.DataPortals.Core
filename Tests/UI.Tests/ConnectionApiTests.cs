@@ -47,8 +47,7 @@ namespace TNDStudios.DataPortals.Tests.UI
             IMapper mapper = new Mapper(Mapper.Configuration);
 
             // Act
-            model = (new ConnectionApiHelpers())
-                .PopulateModel(mapper, package, model);
+            model = ConnectionApiHelper.PopulateModel(mapper, package, model);
 
             // Assert
             Assert.True(model.Credentials.Value != String.Empty);

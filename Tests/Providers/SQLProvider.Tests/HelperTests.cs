@@ -32,7 +32,7 @@ namespace TNDStudios.DataPortals.Tests.SQLProvider
 
             // Act
             KeyValuePair<String, String> result = 
-                SQLProviderHelpers.CreateObjectReference(row);
+                SQLProviderHelper.CreateObjectReference(row);
 
             // Assert
             Assert.Equal(expectedResult, result.Value);
@@ -51,7 +51,7 @@ namespace TNDStudios.DataPortals.Tests.SQLProvider
 
             // Act
             KeyValuePair<String, String> result =
-                SQLProviderHelpers.CreateObjectReference(row);
+                SQLProviderHelper.CreateObjectReference(row);
 
             // Assert
             Assert.Equal(expectedResult, result.Value);
@@ -69,7 +69,7 @@ namespace TNDStudios.DataPortals.Tests.SQLProvider
 
             // Act
             KeyValuePair<String, String> result =
-                SQLProviderHelpers.CreateObjectReference(row);
+                SQLProviderHelper.CreateObjectReference(row);
 
             // Assert
             Assert.Equal(expectedResult, result.Value);
@@ -86,7 +86,7 @@ namespace TNDStudios.DataPortals.Tests.SQLProvider
 
             // Act
             KeyValuePair<String, String> result =
-                SQLProviderHelpers.CreateObjectReference(row);
+                SQLProviderHelper.CreateObjectReference(row);
 
             // Assert
             Assert.Equal(expectedResult, result.Value);

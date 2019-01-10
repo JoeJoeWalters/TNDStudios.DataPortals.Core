@@ -27,12 +27,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// Has the connection api controller been initialised?
         /// </summary>
         private static Boolean initialised = false;
-
-        /// <summary>
-        /// Reference to the helpers object
-        /// </summary>
-        private static ConnectionApiHelpers helpers;
-
+        
         /// <summary>
         /// Default Constructor
         /// </summary>
@@ -43,8 +38,6 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             // Has the controller been initialised?
             if (!initialised)
             {
-                helpers = new ConnectionApiHelpers(); // Create an instance of the helpers class
-
                 // Set the controller as being initialised
                 initialised = true;
             }
@@ -210,7 +203,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                         );
 
                     // Fill in the blanks
-                    response.Data = helpers.PopulateModel(mapper, package, response.Data);
+                    response.Data = ConnectionApiHelper.PopulateModel(mapper, package, response.Data);
                 }
 
                 // Success as we got here
@@ -254,7 +247,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                     response.Data = mapper.Map<DataConnectionModel>(savedConnection);
 
                     // Fill in the blanks
-                    response.Data = helpers.PopulateModel(mapper, package, response.Data);
+                    response.Data = ConnectionApiHelper.PopulateModel(mapper, package, response.Data);
                 }
 
                 // Nothing died .. Success

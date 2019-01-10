@@ -230,7 +230,7 @@ namespace TNDStudios.DataPortals.Data
                 // Get the raw tables list
                 DataTable rawTables = this.sqlConnection.GetSchema("Tables");
                 foreach (DataRow row in rawTables.Rows)
-                    result.Add(SQLProviderHelpers.CreateObjectReference(row));
+                    result.Add(SQLProviderHelper.CreateObjectReference(row));
             }
 
             // Send the result back to the caller
