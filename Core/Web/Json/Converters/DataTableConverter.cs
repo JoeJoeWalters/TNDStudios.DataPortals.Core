@@ -4,33 +4,33 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 
-namespace TNDStudios.DataPortals.Json
+namespace TNDStudios.DataPortals.Web.Json
 {
     /// <summary>
-    /// Converts a <see cref="DataSet"/> object to JSON. No support for reading.
+    /// Converts a DataTable to JSON. Note no support for deserialization
     /// </summary>
-    public class DataSetConverter : JsonConverter
+    public class DataTableConverter : JsonConverter
     {
         /// <summary>
         /// Writes the JSON representation of the object.
         /// </summary>
         /// <param name="writer">The <see cref="JsonWriter"/> to write to.</param>
         /// <param name="value">The value.</param>
-        public override void WriteJson(JsonWriter writer, object dataset, JsonSerializer jsonSerializer)
+        public override void WriteJson(JsonWriter writer, object dataTable, JsonSerializer jsonSerializer)
         {
-            DataSet dataSet = dataset as DataSet;
-
-            DataTableConverter converter = new DataTableConverter();
+            DataTable table = dataTable as DataTable;
+            DataRowConverter converter = new DataRowConverter();
 
             writer.WriteStartObject();
 
-            writer.WritePropertyName("Tables");
+            writer.WritePropertyName("Rows");
             writer.WriteStartArray();
 
-            foreach (DataTable table in dataSet.Tables)
+            foreach (DataRow row in table.Rows)
             {
-                converter.WriteJson(writer, table, jsonSerializer);
+                converter.WriteJson(writer, row, jsonSerializer);
             }
+
             writer.WriteEndArray();
             writer.WriteEndObject();
         }
@@ -44,7 +44,7 @@ namespace TNDStudios.DataPortals.Json
         /// </returns>
         public override bool CanConvert(Type valueType)
         {
-            return typeof(DataSet).IsAssignableFrom(valueType);
+            return typeof(DataTable).IsAssignableFrom(valueType);
         }
 
         /// <summary>

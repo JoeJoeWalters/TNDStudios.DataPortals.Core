@@ -8,7 +8,7 @@ namespace TNDStudios.DataPortals.Helpers
     /// <summary>
     /// Helpers to format data in to a specific pattern
     /// </summary>
-    public class DataFormatHelper
+    public static class DataFormatHelper
     {
         // List of cultures to test in by commonality
         // https://stackoverflow.com/questions/9711066/most-common-locales-for-worldwide-compatibility

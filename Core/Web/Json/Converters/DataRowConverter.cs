@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 
-namespace TNDStudios.DataPortals.Json
+namespace TNDStudios.DataPortals.Web.Json
 {
     /// <summary>
     /// Converts a <see cref="DataRow"/> object to and from JSON.

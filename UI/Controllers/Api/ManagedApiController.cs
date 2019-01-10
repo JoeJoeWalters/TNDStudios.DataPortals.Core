@@ -15,6 +15,7 @@ using TNDStudios.DataPortals.Repositories;
 using TNDStudios.DataPortals.Security;
 using TNDStudios.DataPortals.UI.Controllers.Api.Helpers;
 using TNDStudios.DataPortals.UI.Models.Api;
+using TNDStudios.DataPortals.Web;
 
 namespace TNDStudios.DataPortals.UI.Controllers.Api
 {
@@ -41,16 +42,6 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         private static DataProviderFactory providerFactory;
 
         /// <summary>
-        /// Helper classes that are set up and used often across multiple sessions
-        /// </summary>
-        private static WebAuthHelper webAuthHelper;
-
-        /// <summary>
-        /// Reference to the helpers object
-        /// </summary>
-        private static ManagedApiHelpers helpers;
-
-        /// <summary>
         /// Default Constructor
         /// </summary>
         public ManagedApiController(IMapper mapper) : base()
@@ -60,15 +51,8 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             // Is the API system initialised?
             if (!initialised)
             {
-                // Create an instance of the web authorisation helper (static as it will be used quite often
-                // and this controller is session based)
-                webAuthHelper = new WebAuthHelper();
-
                 // Create a provider factory so that connections can be pooled
                 providerFactory = new DataProviderFactory();
-
-                // Set up an instance of the helper class across all sessions
-                helpers = new ManagedApiHelpers();
 
                 // Mark the system as initialised
                 initialised = true;
@@ -318,7 +302,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             // Do the authentication process with the given request and helpers 
             // to determine the result
             ApiAuthenticationResult authResult =
-                webAuthHelper.AuthenticateApiRequest(
+                WebAuthHelper.AuthenticateApiRequest(
                     packageId,
                     objectType,
                     SessionHandler.PackageRepository,
@@ -343,10 +327,10 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                     DataTable results = provider.Read(authResult.Permissions.Filter);
 
                     // Manage any aliases for the results table
-                    helpers.HandleAliases(results, authResult.ApiDefinition.Aliases);
+                    ManagedApiHelper.HandleAliases(results, authResult.ApiDefinition.Aliases);
 
                     // Format the data table as Json
-                    return helpers.DataTableToJsonFormat(results);
+                    return ManagedApiHelper.DataTableToJsonFormat(results);
                 }
                 else
                 {
@@ -355,7 +339,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                 }
             }
             else
-                return StatusCode((Int32)authResult.StatusCode, authResult.StatusDescription);            
+                return StatusCode((Int32)authResult.StatusCode, authResult.StatusDescription);
         }
 
         /// <summary>
@@ -372,7 +356,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             // Do the authentication process with the given request and helpers 
             // to determine the result
             ApiAuthenticationResult authResult =
-                webAuthHelper.AuthenticateApiRequest(
+                WebAuthHelper.AuthenticateApiRequest(
                     packageId,
                     objectType,
                     SessionHandler.PackageRepository,
@@ -384,7 +368,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                 return StatusCode((Int32)authResult.StatusCode, authResult.StatusDescription);
 
             // Get the body of the request from the stream
-            String body = helpers.RequestBodyToString(Request);
+            String body = HttpRequestHelper.GetBody(Request);
             if (body == String.Empty)
                 return StatusCode((Int32)HttpStatusCode.BadRequest, "Request body contained no data");
 
@@ -395,7 +379,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                 switch (Request.ContentType.Trim().ToLower())
                 {
                     case "application/json":
-                        
+
                         // Parse the body to a queryable Json Object (bad formatting will fail it)
                         JObject json = JObject.Parse(body);
 
@@ -412,7 +396,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                         return StatusCode((Int32)HttpStatusCode.BadRequest, $"Unhandled content type ({Request.ContentType})");
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode((Int32)HttpStatusCode.BadRequest, $"Malformed body content in request ({ex.Message})");
             }
@@ -435,7 +419,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             // Do the authentication process with the given request and helpers 
             // to determine the result
             ApiAuthenticationResult authResult =
-                webAuthHelper.AuthenticateApiRequest(
+                WebAuthHelper.AuthenticateApiRequest(
                     packageId,
                     objectType,
                     SessionHandler.PackageRepository,
@@ -465,7 +449,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             // Do the authentication process with the given request and helpers 
             // to determine the result
             ApiAuthenticationResult authResult =
-                webAuthHelper.AuthenticateApiRequest(
+                WebAuthHelper.AuthenticateApiRequest(
                     packageId,
                     objectType,
                     SessionHandler.PackageRepository,
@@ -477,10 +461,10 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                 return StatusCode((Int32)authResult.StatusCode, authResult.StatusDescription);
 
             // Get the body of the request from the stream
-            String body = helpers.RequestBodyToString(Request);
+            String body = HttpRequestHelper.GetBody(Request);
             if (body == String.Empty)
                 return StatusCode((Int32)HttpStatusCode.BadRequest, "Request body contained no data");
-            
+
             // Got to the end so must be ok
             return StatusCode((Int32)HttpStatusCode.OK, "");
         }

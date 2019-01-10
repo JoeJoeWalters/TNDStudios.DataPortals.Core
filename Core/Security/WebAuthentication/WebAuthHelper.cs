@@ -9,9 +9,11 @@ using TNDStudios.DataPortals.Repositories;
 
 namespace TNDStudios.DataPortals.Security
 {
-    public class WebAuthHelper
+    /// <summary>
+    /// Hanlde web authentications
+    /// </summary>
+    public static class WebAuthHelper
     {
-
         /// <summary>
         /// Authenticate an incoming request before farming off the result to the 
         /// calling method
@@ -22,7 +24,7 @@ namespace TNDStudios.DataPortals.Security
         /// <param name="request">The Http Request to determine the verbs etc.</param>
         /// <returns>A package that contains the status of the result but also the associated 
         /// items needed to process the request</returns>        
-        public ApiAuthenticationResult AuthenticateApiRequest(Guid packageId,
+        public static ApiAuthenticationResult AuthenticateApiRequest(Guid packageId,
             String objectType, IPackageRepository packageRepository,
             HttpRequest request)
         {
@@ -105,7 +107,7 @@ namespace TNDStudios.DataPortals.Security
         /// <param name="package">The Package To Check Against</param>
         /// <param name="apiDefinition">The Api Definition found</param>
         /// <returns></returns>
-        public Permissions AuthenticateRequest(HttpRequest request, Package package, ApiDefinition apiDefinition)
+        public static Permissions AuthenticateRequest(HttpRequest request, Package package, ApiDefinition apiDefinition)
         {
             // Result
             Permissions result = new Permissions();

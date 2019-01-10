@@ -17,9 +17,6 @@ namespace TNDStudios.DataPortals.Tests.UI
         // The table to test
         public DataTable Data; 
 
-        // The helpers to test
-        public ManagedApiHelpers Helpers = new ManagedApiHelpers();
-
         // Static reference data for the data table
         public String StringToTest = "String To Test";
         public Boolean BooleanToTest = true;
@@ -48,8 +45,6 @@ namespace TNDStudios.DataPortals.Tests.UI
             row["DateData"] = DateToTest;
             row["NumericData"] = NumberToTest;
             Data.Rows.Add(row);
-
-            Helpers = new ManagedApiHelpers();
         }
 
         /// <summary>
@@ -98,7 +93,7 @@ namespace TNDStudios.DataPortals.Tests.UI
                 };
 
             // Act
-            fixture.Helpers.HandleAliases(fixture.Data, aliases);
+            ManagedApiHelper.HandleAliases(fixture.Data, aliases);
             DataColumn dataColumn = fixture.Data.Columns["StringData"];
 
             // Assert
@@ -117,7 +112,7 @@ namespace TNDStudios.DataPortals.Tests.UI
             fixture.Initialise();
 
             // Act
-            JsonResult jsonResult = fixture.Helpers.DataTableToJsonFormat(fixture.Data);
+            JsonResult jsonResult = ManagedApiHelper.DataTableToJsonFormat(fixture.Data);
             var result = JsonConvert.SerializeObject(jsonResult.Value, jsonResult.SerializerSettings);
 
             // Assert 
