@@ -330,7 +330,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                     ManagedApiHelper.HandleAliases(results, authResult.ApiDefinition.Aliases);
 
                     // Format the data table as Json
-                    return ManagedApiHelper.DataTableToJsonFormat(results);
+                    return ManagedApiHelper.ToJson(results);
                 }
                 else
                 {
@@ -375,26 +375,18 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             // Translate the body
             try
             {
-                // Translate the content type
-                switch (Request.ContentType.Trim().ToLower())
+                DataTable data = null;
+
+                // Parse the body to a queryable Json Object (bad formatting will fail it)
+                data = ManagedApiHelper.ToDataTable(Request.ContentType.Trim().ToLower(), body);
+
+                // Did we get some data from the conversion (depending on the type format)
+                if (data != null)
                 {
-                    case "application/json":
 
-                        // Parse the body to a queryable Json Object (bad formatting will fail it)
-                        JObject json = JObject.Parse(body);
-
-                        break;
-
-                    case "application/xml":
-                    case "text/xml":
-
-#warning "[Handle XML requests as well as json requests]"
-
-                        break;
-
-                    default:
-                        return StatusCode((Int32)HttpStatusCode.BadRequest, $"Unhandled content type ({Request.ContentType})");
                 }
+                else
+                    return StatusCode((Int32)HttpStatusCode.BadRequest, "Request body contained no valid data or the format was incorrect");
             }
             catch (Exception ex)
             {

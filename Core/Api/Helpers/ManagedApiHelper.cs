@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
 using TNDStudios.DataPortals.Web.Json;
 
-namespace TNDStudios.DataPortals.UI.Controllers.Api.Helpers
+namespace TNDStudios.DataPortals.Api
 {
     /// <summary>
     /// Helpers to enable the UI / Service portion of the managed APIs
@@ -40,7 +40,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api.Helpers
         /// Convert a data table to the correct format for returning to the user
         /// </summary>
         /// <returns></returns>
-        public static JsonResult DataTableToJsonFormat(DataTable data)
+        public static JsonResult ToJson(DataTable data)
         {
             // Define the way the serialisation should be done
             JsonSerializerSettings serializerSettings = new JsonSerializerSettings()
@@ -55,6 +55,49 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api.Helpers
 
             // Send back the formatted results
             return new JsonResult(data.Rows, serializerSettings);
+        }
+
+        /// <summary>
+        /// Take some raw Json text and convert it to a datatable for the provider
+        /// to handle e.g. updates or insertions
+        /// </summary>
+        /// <param name="json"></param>
+        /// <returns>A datatable with the given format</returns>
+        public static DataTable ToDataTable(String contentType, String json)
+        {
+            try
+            {
+                // Translate the content type
+                switch (contentType.Trim().ToLower())
+                {
+                    case "application/json":
+
+                        return ToDataTable(JObject.Parse(json));
+
+                    case "application/xml":
+                    case "text/xml":
+
+                        break;
+                }
+            }
+            catch { }
+
+            // Catch all (including errors)
+            return null;
+        }
+
+        /// <summary>
+        /// Take some raw Json text and convert it to a datatable for the provider
+        /// to handle e.g. updates or insertions
+        /// </summary>
+        /// <param name="json">A JObject (Queryable) representation of the json data</param>
+        /// <returns>A datatable with the given format</returns>
+        public static DataTable ToDataTable(JObject json)
+        {
+            // Is this an array of objects?
+            
+
+            return new DataTable();
         }
     }
 }

@@ -6,7 +6,7 @@ using Xunit;
 using Newtonsoft.Json;
 using TNDStudios.DataPortals.Api;
 
-namespace TNDStudios.DataPortals.Tests.UI
+namespace TNDStudios.DataPortals.Tests.Core
 {
     /// <summary>
     /// Setup fixture for the tests
@@ -23,7 +23,7 @@ namespace TNDStudios.DataPortals.Tests.UI
         public Double NumberToTest = (Double)1.5;
 
         // Amount of rows expected
-        public const Int32 ExpectedRowCount = 3;
+        public readonly Int32 ExpectedRowCount = 3;
 
         /// <summary>
         /// Configure the test fixture
@@ -67,8 +67,12 @@ namespace TNDStudios.DataPortals.Tests.UI
     /// Tests to validate the managed API helper classes and general
     /// functionality
     /// </summary>
-    public class ManagedApiTests : IClassFixture<ManagedApiTestsFixture>
+    public class ManagedApiTests : EmbeddedTestHelperBase, IClassFixture<ManagedApiTestsFixture>
     {
+        // Test file references
+        public const String TestFile_SingleRecord = "TestFiles.ManagedApi.SingleRecord.json";
+        public const String TestFile_MultipleRecords = "TestFiles.ManagedApi.MultipleRecords.json";
+
         /// <summary>
         /// The injected fixture
         /// </summary>
@@ -135,17 +139,38 @@ namespace TNDStudios.DataPortals.Tests.UI
 
         /// <summary>
         /// Convert an incoming data set that for example needs updating etc.
-        /// from Json to a Datatable for the provider to handle
+        /// from Json to a Datatable for the provider to handle where there is only
+        /// one record in the json (it is not an array)
         /// </summary>
         [Fact]
-        public void DataTable_From_Json()
+        public void DataTable_From_SingleRecord_Json()
         {
             // Arrange
-
+            String json = GetResourceString(TestFile_SingleRecord);
 
             // Act
+            DataTable dataTable = ManagedApiHelper.ToDataTable("application/json", json);
 
             // Assert
+            Assert.Equal(1, dataTable.Rows.Count);
+        }
+
+        /// <summary>
+        /// Convert an incoming data set that for example needs updating etc.
+        /// from Json to a Datatable for the provider to handle where there are
+        /// multiple records in the json (it's an array)
+        /// </summary>
+        [Fact]
+        public void DataTable_From_MultipleRecords_Json()
+        {
+            // Arrange
+            String json = GetResourceString(TestFile_MultipleRecords);
+
+            // Act
+            DataTable dataTable = ManagedApiHelper.ToDataTable("application/json", json);
+
+            // Assert
+            Assert.Equal(fixture.ExpectedRowCount, dataTable.Rows.Count);
         }
     }
 }
