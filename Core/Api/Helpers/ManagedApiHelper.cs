@@ -80,7 +80,9 @@ namespace TNDStudios.DataPortals.Api
                         break;
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+            }
 
             // Catch all (including errors)
             return null;
@@ -95,7 +97,8 @@ namespace TNDStudios.DataPortals.Api
         public static DataTable ToDataTable(JObject json)
         {
             // Is this an array of objects?
-            
+            //Boolean isArray = (json.First is JArray);
+
 
             return new DataTable();
         }
