@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using TNDStudios.DataPortals.Api;
+using TNDStudios.DataPortals.Data;
 using TNDStudios.DataPortals.Repositories;
 
 namespace TNDStudios.DataPortals.Security
@@ -36,6 +37,11 @@ namespace TNDStudios.DataPortals.Security
         /// The Api Definition that was found as part of the request
         /// </summary>
         public ApiDefinition ApiDefinition { get; set; } 
+
+        /// <summary>
+        /// The Data Definition that is part of the definition
+        /// </summary>
+        public DataItemDefinition DataDefinition { get; set; }
 
         /// <summary>
         /// Default Constructor

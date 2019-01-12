@@ -76,6 +76,10 @@ namespace TNDStudios.DataPortals.Security
 
                             // Not authorised? Give the reason why 
                             result.StatusDescription = result.StatusCode == HttpStatusCode.OK ? String.Empty : "Unauthorized to access this resource with the given verb.";
+
+                            // Go get the data definition if all is ok
+                            if (result.StatusCode == HttpStatusCode.OK)
+                                result.DataDefinition = result.Package.DataDefinition(result.ApiDefinition.DataDefinition);
                         }
                     }
                     else

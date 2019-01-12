@@ -378,7 +378,11 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                 DataTable data = null;
 
                 // Parse the body to a queryable Json Object (bad formatting will fail it)
-                data = ManagedApiHelper.ToDataTable(Request.ContentType.Trim().ToLower(), body);
+                data = ManagedApiHelper.ToDataTable(
+                    Request.ContentType.Trim().ToLower(), 
+                    body, 
+                    authResult.ApiDefinition, 
+                    authResult.DataDefinition);
 
                 // Did we get some data from the conversion (depending on the type format)
                 if (data != null)

@@ -5,6 +5,9 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using TNDStudios.DataPortals.Data;
+using TNDStudios.DataPortals.Helpers;
 using TNDStudios.DataPortals.Web.Json;
 
 namespace TNDStudios.DataPortals.Api
@@ -63,26 +66,27 @@ namespace TNDStudios.DataPortals.Api
         /// </summary>
         /// <param name="json"></param>
         /// <returns>A datatable with the given format</returns>
-        public static DataTable ToDataTable(String contentType, String json)
+        public static DataTable ToDataTable(String contentType, String json, 
+            ApiDefinition apiDefinition, DataItemDefinition dataItemDefinition)
         {
-            try
+            //try
+            //{
+            // Translate the content type
+            switch (contentType.Trim().ToLower())
             {
-                // Translate the content type
-                switch (contentType.Trim().ToLower())
-                {
-                    case "application/json":
+                case "application/json":
 
-                        return ToDataTable(JObject.Parse(json));
+                    return ToDataTable(JObject.Parse(json), apiDefinition, dataItemDefinition);
 
-                    case "application/xml":
-                    case "text/xml":
+                case "application/xml":
+                case "text/xml":
 
-                        break;
-                }
+                    break;
             }
+            /*}
             catch (Exception ex)
             {
-            }
+            }*/
 
             // Catch all (including errors)
             return null;
@@ -94,13 +98,71 @@ namespace TNDStudios.DataPortals.Api
         /// </summary>
         /// <param name="json">A JObject (Queryable) representation of the json data</param>
         /// <returns>A datatable with the given format</returns>
-        public static DataTable ToDataTable(JObject json)
+        public static DataTable ToDataTable(JObject json, ApiDefinition apiDefinition, 
+            DataItemDefinition dataItemDefinition)
         {
+            // Create the table from the definition
+            DataTable result = dataItemDefinition.ToDataTable(); 
+
             // Is this an array of objects?
-            //Boolean isArray = (json.First is JArray);
+            dynamic dataArray = json["records"];
+            Boolean isArray = (dataArray != null && dataArray is JArray);
+            List<JObject> items = new List<JObject>();
+            if (isArray)
+            {
+                // For each item in the array, call the data conversion
+                foreach (JObject item in dataArray.Children())
+                    items.Add(item);
+            }
+            else
+               items.Add(json);
 
+            // Process each of the items
+            items.ForEach(item => 
+            {
+                // Call the data conversion for the root object
+                DataRow row = ToDataRow(item, apiDefinition, dataItemDefinition, result);
+                if (row != null)
+                {
+                    result.Rows.Add(row); // Add the row to the results table
+                }
+            });
 
-            return new DataTable();
+            return result;
+        }
+
+        /// <summary>
+        /// Convert the JObject to a data row
+        /// </summary>
+        /// <param name="json"></param>
+        public static DataRow ToDataRow(JObject json, ApiDefinition apiDefinition, 
+            DataItemDefinition definition, DataTable table)
+        {
+            DataRow result = table.NewRow(); // Create a new row to populate
+
+            // Loop the properties in the data definition object
+            definition.ItemProperties.ForEach(property => 
+            {
+                // Check and see if there is an alias
+                String alias = apiDefinition.Aliases.Where(a => a.Key == property.Name).FirstOrDefault().Value;
+
+                // Check and see if the property exists in the json object
+                // with the alias if one is given, but the name if one is not
+                JProperty found = (json.Children<JProperty>())
+                    .FirstOrDefault(prop => prop.Name == property.Name || 
+                                            prop.Name == (alias ?? String.Empty));
+
+                // Found the property?
+                if (found != null)
+                {
+                    Object parsedValue = DataFormatHelper.ReadData(
+                            found.Value.ToString(), property, definition);
+                    result[property.Name] = parsedValue;
+                }
+            });
+
+            // Send back the row
+            return result;
         }
     }
 }

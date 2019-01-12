@@ -5,6 +5,9 @@ using System.Data;
 using Xunit;
 using Newtonsoft.Json;
 using TNDStudios.DataPortals.Api;
+using TNDStudios.DataPortals.Data;
+using System.Globalization;
+using System.Text;
 
 namespace TNDStudios.DataPortals.Tests.Core
 {
@@ -14,7 +17,13 @@ namespace TNDStudios.DataPortals.Tests.Core
     public class ManagedApiTestsFixture : IDisposable
     {
         // The table to test
-        public DataTable Data; 
+        public DataTable Data;
+
+        // Data Item definition to test
+        public DataItemDefinition Definition;
+
+        // Api Definition to test
+        public ApiDefinition ApiDefinition;
 
         // Static reference data for the data table
         public String StringToTest = "String To Test";
@@ -52,6 +61,52 @@ namespace TNDStudios.DataPortals.Tests.Core
                 row["NumericData"] = NumberToTest;
                 Data.Rows.Add(row);
             }
+
+            // Set up the data item definition for the equivalent table
+            Definition = new DataItemDefinition()
+            {
+                Culture = new CultureInfo("en-GB"),
+                Description = "Data Item Definition Description",
+                EncodingFormat = Encoding.UTF8,
+                Id = Guid.NewGuid(),
+                ItemProperties = new List<DataItemProperty>()
+                {
+                    new DataItemProperty()
+                    {
+                        Name = "StringData",
+                        OrdinalPosition = 0,
+                        DataType = typeof(String)
+                    },
+                    new DataItemProperty()
+                    {
+                        Name = "BooleanData",
+                        OrdinalPosition = 1,
+                        DataType = typeof(Boolean)
+                    },
+                    new DataItemProperty()
+                    {
+                        Name = "DateData",
+                        OrdinalPosition = 2,
+                        DataType = typeof(DateTime)
+                    },
+                    new DataItemProperty()
+                    {
+                        Name = "NumericData",
+                        OrdinalPosition = 3,
+                        DataType = typeof(Double)
+                    }
+                },
+                Name = "Data Item Definition"                 
+            };
+
+            // Define the API definition to test
+            ApiDefinition = new ApiDefinition()
+            {
+                Aliases = new List<KeyValuePair<String, String>>()
+                {
+                    new KeyValuePair<String, String>("BooleanData", "AliasColumn")
+                }
+            };
         }
 
         /// <summary>
@@ -97,7 +152,7 @@ namespace TNDStudios.DataPortals.Tests.Core
             // Arrange
             fixture.Initialise();
             String aliasName = "Alias Name";
-            List<KeyValuePair<String, String>> aliases = 
+            List<KeyValuePair<String, String>> aliases =
                 new List<KeyValuePair<String, String>>()
                 {
                     new KeyValuePair<String, String>("StringData", aliasName)
@@ -149,7 +204,12 @@ namespace TNDStudios.DataPortals.Tests.Core
             String json = GetResourceString(TestFile_SingleRecord);
 
             // Act
-            DataTable dataTable = ManagedApiHelper.ToDataTable("application/json", json);
+            DataTable dataTable = 
+                ManagedApiHelper.ToDataTable(
+                    "application/json", 
+                    json, 
+                    fixture.ApiDefinition, 
+                    fixture.Definition);
 
             // Assert
             Assert.Equal(1, dataTable.Rows.Count);
@@ -167,7 +227,11 @@ namespace TNDStudios.DataPortals.Tests.Core
             String json = GetResourceString(TestFile_MultipleRecords);
 
             // Act
-            DataTable dataTable = ManagedApiHelper.ToDataTable("application/json", json);
+            DataTable dataTable = ManagedApiHelper.ToDataTable(
+                "application/json", 
+                json, 
+                fixture.ApiDefinition, 
+                fixture.Definition);
 
             // Assert
             Assert.Equal(fixture.ExpectedRowCount, dataTable.Rows.Count);

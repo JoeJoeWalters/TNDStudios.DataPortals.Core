@@ -1,7 +1,22 @@
 {
-  "Values": [
+  "records": [
     {
-      "Value": "Value"
+      "StringData": "Value",
+      "AliasColumn": "1",
+      "DateData": "01/12/2018",
+      "NumericData": 32.222
+    },
+    {
+      "StringData": "Value",
+      "AliasColumn": "1",
+      "DateData": "01/12/2018",
+      "NumericData": 32.222
+    },
+    {
+      "StringData": "Value",
+      "AliasColumn": "1",
+      "DateData": "01/12/2018",
+      "NumericData": 32.222
     }
   ]
 }
