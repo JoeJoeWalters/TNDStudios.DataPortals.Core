@@ -165,6 +165,10 @@
                 this.loadDataTypesLookup);
 
             tndStudios.utils.api.lookup(
+                tndStudios.utils.api.lookupTypes.DataKeyTypes,
+                this.loadDataKeyTypesLookup);
+
+            tndStudios.utils.api.lookup(
                 tndStudios.utils.api.lookupTypes.DataPropertyTypes,
                 this.loadDataPropertyTypesLookup);
         },
@@ -194,6 +198,13 @@
         loadDataTypesLookup: function (success, data) {
             if (success, data.data) {
                 app.page.dataTypesLookup = data.data;
+            }
+        },
+
+        // Load was successful, assign the data
+        loadDataKeyTypesLookup: function (success, data) {
+            if (success, data.data) {
+                app.page.dataKeyTypesLookup = data.data;
             }
         },
 

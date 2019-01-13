@@ -23,6 +23,7 @@ tndStudios.models.dataDefinitions =
             this.cultureLookup = []; // Culture lookup codes
             this.encodingLookup = []; // Encoding lookup codes
             this.dataTypesLookup = []; // Data Types lookup codes
+            this.dataKeyTypesLookup = []; // Data Key Types lookup codes
             this.dataPropertyTypesLookup = []; // Data Property types lookup codes
 
             this.packageId = $("#packageId").val(); // Get the package Id from the field on the page
@@ -151,7 +152,7 @@ tndStudios.models.dataDefinitions =
             // Model Properties
             this.dataType = 'System.String';
             this.propertyType = 0;
-            this.key = false;
+            this.key = 0;
             this.name = 'New Column';
             this.description = 'Column Description';
             this.path = '';
@@ -166,7 +167,7 @@ tndStudios.models.dataDefinitions =
 
                 this.dataType = 'System.String';
                 this.propertyType = 0;
-                this.key = false;
+                this.key = 0;
                 this.name = 'New Column';
                 this.description = 'Column Description';
                 this.path = '';
