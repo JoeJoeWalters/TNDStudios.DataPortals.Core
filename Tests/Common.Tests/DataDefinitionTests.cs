@@ -63,7 +63,7 @@ namespace TNDStudios.DataPortals.Tests.Common
                 {
                     new DataItemProperty()
                     {
-                        Key = true,
+                        Key = DataItemKeyType.ManualKey,
                         Name = PrimaryKeyName,
                         Description = PrimaryKeyName,
                         DataType = typeof(Int32),
@@ -73,7 +73,7 @@ namespace TNDStudios.DataPortals.Tests.Common
                     },
                     new DataItemProperty()
                     {
-                        Key = false,
+                        Key = DataItemKeyType.None,
                         Name = "StringColumn",
                         Description = "StringColumn",
                         DataType = typeof(String),
@@ -83,7 +83,7 @@ namespace TNDStudios.DataPortals.Tests.Common
                     },
                     new DataItemProperty()
                     {
-                        Key = false,
+                        Key = DataItemKeyType.None,
                         Name = "DateColumn",
                         Description = "DateColumn",
                         DataType = typeof(DateTime),
@@ -93,7 +93,7 @@ namespace TNDStudios.DataPortals.Tests.Common
                     },
                     new DataItemProperty()
                     {
-                        Key = false,
+                        Key = DataItemKeyType.None,
                         Name = "BooleanColumn",
                         Description = "BooleanColumn",
                         DataType = typeof(Boolean),
@@ -103,7 +103,7 @@ namespace TNDStudios.DataPortals.Tests.Common
                     },
                     new DataItemProperty()
                     {
-                        Key = false,
+                        Key = DataItemKeyType.None,
                         Name = "IntegerColumn",
                         Description = "IntegerColumn",
                         DataType = typeof(Int32),
@@ -113,7 +113,7 @@ namespace TNDStudios.DataPortals.Tests.Common
                     },
                     new DataItemProperty()
                     {
-                        Key = false,
+                        Key = DataItemKeyType.None,
                         Name = "FloatColumn",
                         Description = "FloatColumn",
                         DataType = typeof(Double),
@@ -123,7 +123,7 @@ namespace TNDStudios.DataPortals.Tests.Common
                     },
                     new DataItemProperty()
                     {
-                        Key = false,
+                        Key = DataItemKeyType.None,
                         Name = CalculatedColumnName,
                         Description = CalculatedColumnName,
                         DataType = typeof(Int32),
@@ -206,7 +206,7 @@ namespace TNDStudios.DataPortals.Tests.Common
                                 .FirstOrDefault();
 
                         Assert.NotNull(property); // We actually have a column converted with the right name
-                        Assert.True(property.Key); // The property is marked as being a key
+                        Assert.True(property.Key != DataItemKeyType.None); // The property is marked as being a key
                     });
         }
 
@@ -268,7 +268,7 @@ namespace TNDStudios.DataPortals.Tests.Common
 
             // Any primary keys? Check to see if they were copied over
             Assert.Equal(
-                fixture.Definition.ItemProperties.Where(prop => prop.Key).Count(), 
+                fixture.Definition.ItemProperties.Where(prop => prop.Key != DataItemKeyType.None).Count(), 
                 result.PrimaryKey.Length);
 
             (new List<DataColumn>(result.PrimaryKey))
@@ -280,7 +280,7 @@ namespace TNDStudios.DataPortals.Tests.Common
                             .FirstOrDefault();
 
                     Assert.NotNull(property); // We actually have a column converted with the right name
-                    Assert.True(property.Key); // The property is marked as being a key
+                    Assert.True(property.Key != DataItemKeyType.None); // The property is marked as being a key
                 });
         }
     }
