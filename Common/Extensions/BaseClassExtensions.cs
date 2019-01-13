@@ -112,7 +112,7 @@ namespace TNDStudios.DataPortals.Helpers
         }
 
         // Get the list of columns from a data table
-        public static String ColumnCSV(this DataTable value)
+        public static String ColumnCSV(this DataTable value, String[] ignore)
         {
             String result = String.Empty; // No columns by default
 

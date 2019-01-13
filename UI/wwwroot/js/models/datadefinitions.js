@@ -161,6 +161,7 @@ tndStudios.models.dataDefinitions =
             this.quoted = false;
             this.calculation = '';
             this.size = 0;
+            this.providerGenerated = false;
 
             // Clear the property values
             this.clear = function () {
@@ -176,6 +177,7 @@ tndStudios.models.dataDefinitions =
                 this.quoted = false;
                 this.calculation = '';
                 this.size = 0;
+                this.providerGenerated = false;
             };
 
             // Copy the content of this data item property from another data item property
@@ -197,6 +199,7 @@ tndStudios.models.dataDefinitions =
                 this.quoted = fromObject.quoted;
                 this.calculation = fromObject.calculation;
                 this.size = fromObject.size;
+                this.providerGenerated = fromObject.providerGenerated;
             };
 
             // Create a formatted object that can be passed to the server
@@ -214,7 +217,8 @@ tndStudios.models.dataDefinitions =
                     Pattern: this.pattern,
                     Quoted: this.quoted,
                     Calculation: this.calculation,
-                    Size: this.size
+                    Size: this.size,
+                    ProviderGenerated: this.providerGenerated
                 };
 
                 return result;

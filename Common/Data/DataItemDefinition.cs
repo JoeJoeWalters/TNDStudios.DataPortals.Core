@@ -45,10 +45,11 @@ namespace TNDStudios.DataPortals.Data
         /// (e.g. to use in a query etc.)
         /// </summary>
         /// <returns></returns>
-        public String ToItemCSV()
+        public String ToItemCSV(Boolean includeAutoKeys)
             => (this.ItemProperties != null && this.ItemProperties.Count > 0) ?
                 String.Join(',', this.ItemProperties
-                                .Select(item => item.Path)
+                                .Where(item => { return includeAutoKeys || (item.Key != DataItemKeyType.AutoKey); })
+                                .Select(item => item.Name)
                                 .ToList<String>()
                                 .ToArray())
                 : String.Empty;

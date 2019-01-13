@@ -208,7 +208,8 @@ namespace TNDStudios.DataPortals.UI
                                         Path = "",
                                         PropertyType = DataItemPropertyType.Property,
                                         OrdinalPosition = 0,
-                                        Quoted = false
+                                        Quoted = false,
+                                        ProviderGenerated = false
                                     },
                                     new DataItemProperty()
                                     {
@@ -218,7 +219,8 @@ namespace TNDStudios.DataPortals.UI
                                         Path = "",
                                         PropertyType = DataItemPropertyType.Property,
                                         OrdinalPosition = 1,
-                                        Quoted = false
+                                        Quoted = false,
+                                        ProviderGenerated = false
                                     },
                                     new DataItemProperty()
                                     {
@@ -228,7 +230,8 @@ namespace TNDStudios.DataPortals.UI
                                         Path = "",
                                         PropertyType = DataItemPropertyType.Property,
                                         OrdinalPosition = 2,
-                                        Quoted = false
+                                        Quoted = false,
+                                        ProviderGenerated = false
                                     }
                                 },
                                 Name = "Data Item Definition",
@@ -253,7 +256,8 @@ namespace TNDStudios.DataPortals.UI
                                         PropertyType = DataItemPropertyType.Property,
                                         OrdinalPosition = 0,
                                         Quoted = false,
-                                        Key = DataItemKeyType.AutoKey
+                                        Key = DataItemKeyType.AutoKey,
+                                        ProviderGenerated = true
                                     },
                                     new DataItemProperty()
                                     {
@@ -264,7 +268,8 @@ namespace TNDStudios.DataPortals.UI
                                         PropertyType = DataItemPropertyType.Property,
                                         OrdinalPosition = 1,
                                         Quoted = false,
-                                        Key = DataItemKeyType.None
+                                        Key = DataItemKeyType.None,
+                                        ProviderGenerated = false
                                     },
                                     new DataItemProperty()
                                     {
@@ -275,7 +280,8 @@ namespace TNDStudios.DataPortals.UI
                                         PropertyType = DataItemPropertyType.Property,
                                         OrdinalPosition = 2,
                                         Quoted = false,
-                                        Key = DataItemKeyType.None
+                                        Key = DataItemKeyType.None,
+                                        ProviderGenerated = false
                                     },
                                     new DataItemProperty()
                                     {
@@ -286,7 +292,8 @@ namespace TNDStudios.DataPortals.UI
                                         PropertyType = DataItemPropertyType.Property,
                                         OrdinalPosition = 8,
                                         Quoted = false,
-                                        Key = DataItemKeyType.None
+                                        Key = DataItemKeyType.None,
+                                        ProviderGenerated = false
                                     },
                                     new DataItemProperty()
                                     {
@@ -297,7 +304,8 @@ namespace TNDStudios.DataPortals.UI
                                         PropertyType = DataItemPropertyType.Property,
                                         OrdinalPosition = 8,
                                         Quoted = false,
-                                        Key = DataItemKeyType.None
+                                        Key = DataItemKeyType.None,
+                                        ProviderGenerated = false
                                     }
                                 },
                                 Name = "SQL Data Item Definition",

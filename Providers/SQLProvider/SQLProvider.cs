@@ -138,7 +138,7 @@ namespace TNDStudios.DataPortals.Data
         {
             // Create the default view of the results to return
             DataTable result = this.definition.ToDataTable();
-            String columnsToRead = this.definition.ToItemCSV();
+            String columnsToRead = this.definition.ToItemCSV(true);
 
             // Are we connected and have an object name?
             if ((this.ObjectName ?? String.Empty) != String.Empty &&
@@ -213,24 +213,26 @@ namespace TNDStudios.DataPortals.Data
         {
             // Create the default view of the results to return
             DataTable result = this.definition.ToDataTable();
-            String columnsToRead = this.definition.ToItemCSV();
 
             // Are we connected and have an object name?
             if ((this.ObjectName ?? String.Empty) != String.Empty &&
                 this.Connected)
             {
-                /*
+                // Calculate the column CSV
+                String allColumns = definition.ToItemCSV(true);
+                String withoutAutoKeyColumns = definition.ToItemCSV(false);
+
                 // Create the DataAdapter
-                SqlDataAdapter adapter =
+                /*SqlDataAdapter adapter =
                     new SqlDataAdapter(
-                    $"SELECT {data.ColumnCSV()} FROM {this.ObjectName}",
+                    $"SELECT {allColumns} FROM {this.ObjectName}",
                     sqlConnection);
 
                 //Add the InsertCommand to retrieve new identity value.
                 adapter.InsertCommand = new SqlCommand(
-                    "INSERT INTO dbo.Shippers (CompanyName) " +
+                    $"INSERT INTO {this.ObjectName} ({withoutAutoKeyColumns}) " +
                     "VALUES (@CompanyName); " +
-                    "SELECT ShipperID, CompanyName FROM dbo.Shippers " +
+                    $"SELECT {allColumns} FROM dbo.Shippers " +
                     "WHERE ShipperID = SCOPE_IDENTITY();", sqlConnection);
                 */
             }
