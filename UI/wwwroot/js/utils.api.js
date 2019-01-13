@@ -9,7 +9,8 @@ tndStudios.utils.api =
             DataTypes: 3,
             DataPropertyTypes: 4,
             DataItemPropertyBagItems: 5,
-            ObjectTypes: 6
+            ObjectTypes: 6,
+            DataKeyTypes: 7
         },
 
         // Get the data for a lookup from the API controller

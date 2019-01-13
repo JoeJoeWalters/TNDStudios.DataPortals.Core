@@ -20,7 +20,8 @@ namespace TNDStudios.DataPortals.UI
         DataTypes = 3,
         DataPropertyTypes = 4,
         DataItemPropertyBagItems = 5,
-        ObjectTypes = 6
+        ObjectTypes = 6,
+        DataKeyTypes = 7
     }
 
     /// <summary>
@@ -115,6 +116,13 @@ namespace TNDStudios.DataPortals.UI
 
                     // Cast the enumeration to a format that can be returned
                     result = EnumToList(typeof(ObjectTypes));
+
+                    break;
+
+                case LookupFactoryType.DataKeyTypes:
+
+                    // Cast the enumeration to a format that can be returned
+                    result = EnumToList(typeof(DataItemKeyType));
 
                     break;
             }
