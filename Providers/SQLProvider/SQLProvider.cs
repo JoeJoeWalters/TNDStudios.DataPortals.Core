@@ -211,7 +211,96 @@ namespace TNDStudios.DataPortals.Data
         /// <returns>If the write was successful</returns>
         public override Boolean Write(DataTable data, string command)
         {
-            return base.Write(data, command);
+            // Create the default view of the results to return
+            DataTable result = this.definition.ToDataTable();
+            String columnsToRead = this.definition.ToItemCSV();
+
+            // Are we connected and have an object name?
+            if ((this.ObjectName ?? String.Empty) != String.Empty &&
+                this.Connected)
+            {
+                /*
+                // Create the DataAdapter
+                SqlDataAdapter adapter =
+                    new SqlDataAdapter(
+                    $"SELECT {data.ColumnCSV()} FROM {this.ObjectName}",
+                    sqlConnection);
+
+                //Add the InsertCommand to retrieve new identity value.
+                adapter.InsertCommand = new SqlCommand(
+                    "INSERT INTO dbo.Shippers (CompanyName) " +
+                    "VALUES (@CompanyName); " +
+                    "SELECT ShipperID, CompanyName FROM dbo.Shippers " +
+                    "WHERE ShipperID = SCOPE_IDENTITY();", sqlConnection);
+                */
+            }
+
+
+            // https://docs.microsoft.com/en-us/dotnet/framework/data/adonet/retrieving-identity-or-autonumber-values
+            // Loop the values
+            /*
+
+        // Create the DataAdapter
+        SqlDataAdapter adapter =
+            new SqlDataAdapter(
+            "SELECT ShipperID, CompanyName FROM dbo.Shippers",
+            connection);
+
+        //Add the InsertCommand to retrieve new identity value.
+        adapter.InsertCommand = new SqlCommand(
+            "INSERT INTO dbo.Shippers (CompanyName) " +
+            "VALUES (@CompanyName); " +
+            "SELECT ShipperID, CompanyName FROM dbo.Shippers " +
+            "WHERE ShipperID = SCOPE_IDENTITY();", connection);
+
+        // Add the parameter for the inserted value.
+        adapter.InsertCommand.Parameters.Add(
+           new SqlParameter("@CompanyName", SqlDbType.NVarChar, 40,
+           "CompanyName"));
+        adapter.InsertCommand.UpdatedRowSource = UpdateRowSource.Both;
+
+        // MissingSchemaAction adds any missing schema to 
+        // the DataTable, including identity columns
+        adapter.MissingSchemaAction = MissingSchemaAction.AddWithKey;
+
+        // Fill the DataTable.
+        DataTable shipper = new DataTable();
+        adapter.Fill(shipper);
+
+        // Add a new shipper. 
+        DataRow newRow = shipper.NewRow();
+        newRow["CompanyName"] = "New Shipper";
+        shipper.Rows.Add(newRow);
+
+        // Add changed rows to a new DataTable. This
+        // DataTable will be used by the DataAdapter.
+        DataTable dataChanges = shipper.GetChanges();
+
+        // Add the event handler. 
+        adapter.RowUpdated +=
+            new SqlRowUpdatedEventHandler(OnRowUpdated);
+
+        adapter.Update(dataChanges);
+        connection.Close();
+
+        // Merge the updates.
+        shipper.Merge(dataChanges);
+
+        // Commit the changes.
+        shipper.AcceptChanges();
+
+        Console.WriteLine("Rows after merge.");
+        foreach (DataRow row in shipper.Rows)
+        {
+            {
+                Console.WriteLine("{0}: {1}", row[0], row[1]);
+            }
+        }
+            */
+
+            //return base.Write(data, command);
+
+            return true;
         }
 
         /// <summary>

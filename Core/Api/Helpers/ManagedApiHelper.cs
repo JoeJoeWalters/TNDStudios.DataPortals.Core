@@ -76,8 +76,29 @@ namespace TNDStudios.DataPortals.Api
             {
                 case "application/json":
 
-                    return ToDataTable(JObject.Parse(json), apiDefinition, dataItemDefinition);
+                    JObject jObjectParsed = null;
+                    JArray jArrayParsed = null;
+                    try
+                    {
+                        jObjectParsed = JObject.Parse(json);
+                    }
+                    catch
+                    {
+                        try
+                        {
+                            jArrayParsed = JArray.Parse(json);
+                        }
+                        catch{ }
+                    }
 
+                    // Was it an object?
+                    if (jObjectParsed != null)
+                        return ToDataTable(jObjectParsed, apiDefinition, dataItemDefinition);
+                    else if (jArrayParsed != null)
+                        return ToDataTable(jArrayParsed, apiDefinition, dataItemDefinition);
+                    else
+                        return null; // Failed
+                        
                 case "application/xml":
                 case "text/xml":
 
@@ -103,30 +124,34 @@ namespace TNDStudios.DataPortals.Api
         {
             // Create the table from the definition
             DataTable result = dataItemDefinition.ToDataTable(); 
+            
+            // Call the data conversion for the root object
+            DataRow row = ToDataRow(json, apiDefinition, dataItemDefinition, result);
+            if (row != null)
+                result.Rows.Add(row); // Add the row to the results table
 
-            // Is this an array of objects?
-            dynamic dataArray = json["records"];
-            Boolean isArray = (dataArray != null && dataArray is JArray);
-            List<JObject> items = new List<JObject>();
-            if (isArray)
-            {
-                // For each item in the array, call the data conversion
-                foreach (JObject item in dataArray.Children())
-                    items.Add(item);
-            }
-            else
-               items.Add(json);
+            return result;
+        }
 
-            // Process each of the items
-            items.ForEach(item => 
+        /// <summary>
+        /// Take some raw Json text and convert it to a datatable for the provider
+        /// to handle e.g. updates or insertions
+        /// </summary>
+        /// <param name="json">A JArray (Queryable) representation of the json data</param>
+        /// <returns>A datatable with the given format</returns>
+        public static DataTable ToDataTable(JArray json, ApiDefinition apiDefinition,
+            DataItemDefinition dataItemDefinition)
+        {
+            // Create the table from the definition
+            DataTable result = dataItemDefinition.ToDataTable();
+
+            // For each item in the array, call the data conversion
+            foreach (JObject item in json.Children())
             {
-                // Call the data conversion for the root object
                 DataRow row = ToDataRow(item, apiDefinition, dataItemDefinition, result);
                 if (row != null)
-                {
                     result.Rows.Add(row); // Add the row to the results table
-                }
-            });
+            };
 
             return result;
         }

@@ -1,22 +1,20 @@
-{
-  "records": [
-    {
-      "StringData": "Value",
-      "AliasColumn": "1",
-      "DateData": "2018-12-01 00:00:00",
-      "NumericData": 32.222
-    },
-    {
-      "StringData": "Value",
-      "AliasColumn": "1",
-      "DateData": "2018-12-01 00:00:00",
-      "NumericData": 32.222
-    },
-    {
-      "StringData": "Value",
-      "AliasColumn": "1",
-      "DateData": "2018-12-01 00:00:00",
-      "NumericData": 32.222
-    }
-  ]
-}
+[
+  {
+    "StringData": "Value",
+    "AliasColumn": "1",
+    "DateData": "2018-12-01 00:00:00",
+    "NumericData": 32.222
+  },
+  {
+    "StringData": "Value",
+    "AliasColumn": "1",
+    "DateData": "2018-12-01 00:00:00",
+    "NumericData": 32.222
+  },
+  {
+    "StringData": "Value",
+    "AliasColumn": "1",
+    "DateData": "2018-12-01 00:00:00",
+    "NumericData": 32.222
+  }
+]

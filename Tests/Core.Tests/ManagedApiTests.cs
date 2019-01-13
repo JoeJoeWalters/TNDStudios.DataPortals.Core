@@ -8,6 +8,7 @@ using TNDStudios.DataPortals.Api;
 using TNDStudios.DataPortals.Data;
 using System.Globalization;
 using System.Text;
+using Newtonsoft.Json.Linq;
 
 namespace TNDStudios.DataPortals.Tests.Core
 {

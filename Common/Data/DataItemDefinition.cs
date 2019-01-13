@@ -78,7 +78,7 @@ namespace TNDStudios.DataPortals.Data
                         result.Columns.Add(newColumn);
 
                         // If this is a key column, add it to the table primary keys list
-                        if (property.Key)
+                        if (property.Key != DataItemKeyType.None)
                             result.PrimaryKey = result.PrimaryKey.Append(newColumn).ToArray(); // Append to the end
 
                         break;
@@ -134,7 +134,7 @@ namespace TNDStudios.DataPortals.Data
                     DataType = column.DataType,
                     Description = column.ColumnName,
                     Id = Guid.NewGuid(),
-                    Key = dataTable.PrimaryKey.Contains<DataColumn>(column),
+                    Key = dataTable.PrimaryKey.Contains<DataColumn>(column) ? DataItemKeyType.ManualKey : DataItemKeyType.None,
                     Name = column.ColumnName,
                     OrdinalPosition = column.Ordinal,
                     Path = column.ColumnName,

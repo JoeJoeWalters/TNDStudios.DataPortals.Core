@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -108,6 +109,23 @@ namespace TNDStudios.DataPortals.Helpers
                 return attributes[0].Description;
             else
                 return value.ToString();
+        }
+
+        // Get the list of columns from a data table
+        public static String ColumnCSV(this DataTable value)
+        {
+            String result = String.Empty; // No columns by default
+
+            // Loop the columns
+            foreach (DataColumn column in value.Columns)
+            {
+                String columnName = column.ColumnName.Contains(' ') ? 
+                                        $"[{column.ColumnName}]" : 
+                                        column.ColumnName;
+                result += $",{columnName}";
+            }
+
+            return result; // Send the column list back
         }
     }
 }

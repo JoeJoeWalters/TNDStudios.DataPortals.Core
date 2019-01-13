@@ -106,7 +106,7 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
 
                     // Definition for different data types and the data defined by ordinal position
                     definition.Culture = new CultureInfo("en-US");
-                    definition.ItemProperties.Add(new DataItemProperty() { Key = true, Name = "Entry", DataType = typeof(Int32), OrdinalPosition = 0, Size = 6 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Key = DataItemKeyType.ManualKey, Name = "Entry", DataType = typeof(Int32), OrdinalPosition = 0, Size = 6 });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Per", DataType = typeof(String), OrdinalPosition = 8, Size = 4 });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "PostDate", DataType = typeof(DateTime), OrdinalPosition = 12, Size = 10 });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "GL Account", DataType = typeof(String), OrdinalPosition = 24, Size = 10 });
@@ -125,7 +125,7 @@ namespace TNDStudios.DataPortals.Tests.FixedWidthFile
 
                     // Definition for different data types and the data defined by ordinal position
                     definition.Culture = new CultureInfo("en-US");
-                    definition.ItemProperties.Add(new DataItemProperty() { Key = true, Name = "Entry", DataType = typeof(Int32), OrdinalPosition = 0, Size = 6 });
+                    definition.ItemProperties.Add(new DataItemProperty() { Key = DataItemKeyType.ManualKey, Name = "Entry", DataType = typeof(Int32), OrdinalPosition = 0, Size = 6 });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Per", DataType = typeof(String), OrdinalPosition = 8, Size = 4 });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "PostDate", DataType = typeof(DateTime), OrdinalPosition = 12, Size = 10 });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "GL Account", DataType = typeof(String), OrdinalPosition = 24, Size = 10 });

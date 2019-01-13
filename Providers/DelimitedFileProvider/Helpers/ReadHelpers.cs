@@ -62,7 +62,7 @@ namespace TNDStudios.DataPortals.Helpers
                                     DataType = typeof(String),
                                     Description = $"Column {headerId.ToString()}",
                                     Name = csvReader.Context.HeaderRecord[headerId],
-                                    Key = false,
+                                    Key = DataItemKeyType.None,
                                     OrdinalPosition = headerId,
                                     Path = csvReader.Context.HeaderRecord[headerId],
                                     Pattern = "",
