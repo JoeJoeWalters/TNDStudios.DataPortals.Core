@@ -132,6 +132,7 @@
                                                 <div class="dropdown">
                                                     <button class="btn btn-sm btn-outline-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         {{ item.name }}
+                                                        <span class="fa fa-key" v-bind:style="{visibility: ((item.key == 0) ? 'hidden' : 'visible'), display: ((item.key == 0) ? 'none' : 'inline')}"></span>
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                         <a class="dropdown-item" href="#" v-on:click="editProperty(item)">Edit</a>
