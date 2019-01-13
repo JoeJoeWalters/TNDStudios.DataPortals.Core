@@ -34,13 +34,13 @@ namespace TNDStudios.DataPortals.Web
 
             // Reset the stream regardless of it's type
             request.Body.Seek(0, SeekOrigin.Begin); // Reset the position
-
+            
             // Read the incoming body stream
             var reader = new StreamReader(request.Body);
             content = reader.ReadToEnd(); // Get the stream content
             reader = null; // Can't have a using statement as it kills the stream too
 
-            request.Body.Seek(0, SeekOrigin.Begin); // Reset the position
+            //request.Body.Seek(0, SeekOrigin.Begin); // Reset the position
             return content; // Send the content back
         }
     }

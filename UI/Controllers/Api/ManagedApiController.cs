@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,7 +12,6 @@ using TNDStudios.DataPortals.Api;
 using TNDStudios.DataPortals.Data;
 using TNDStudios.DataPortals.Repositories;
 using TNDStudios.DataPortals.Security;
-using TNDStudios.DataPortals.UI.Controllers.Api.Helpers;
 using TNDStudios.DataPortals.UI.Models.Api;
 using TNDStudios.DataPortals.Web;
 
@@ -333,10 +331,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                     return ManagedApiHelper.ToJson(results);
                 }
                 else
-                {
-                    // Could not connect to the data source, return the appropriate error code
                     return StatusCode((Int32)HttpStatusCode.InternalServerError, "Could not connect to the data source");
-                }
             }
             else
                 return StatusCode((Int32)authResult.StatusCode, authResult.StatusDescription);
@@ -379,15 +374,36 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
 
                 // Parse the body to a queryable Json Object (bad formatting will fail it)
                 data = ManagedApiHelper.ToDataTable(
-                    Request.ContentType.Trim().ToLower(), 
-                    body, 
-                    authResult.ApiDefinition, 
+                    Request.ContentType.Trim().ToLower(),
+                    body,
+                    authResult.ApiDefinition,
                     authResult.DataDefinition);
 
                 // Did we get some data from the conversion (depending on the type format)
                 if (data != null)
                 {
+                    // Use the api definition to get the data connection and 
+                    // definition from the package and then try to connect
+                    IDataProvider provider = providerFactory.Get(
+                        authResult.Package,
+                        authResult.Package.DataConnection(authResult.ApiDefinition.DataConnection),
+                        authResult.Package.DataDefinition(authResult.ApiDefinition.DataDefinition),
+                        true);
 
+                    // Are we connected?
+                    if (provider.Connected)
+                    {
+                        // Return the data with the appropriate filter
+                        // DataTable results = provider.Read(authResult.Permissions.Filter);
+                        if (provider.Write(data, ""))
+                        {
+
+                        }
+                        else
+                            return StatusCode((Int32)HttpStatusCode.InternalServerError, "Could not write the data");
+                    }
+                    else
+                        return StatusCode((Int32)HttpStatusCode.InternalServerError, "Could not connect to the data source");
                 }
                 else
                     return StatusCode((Int32)HttpStatusCode.BadRequest, "Request body contained no valid data or the format was incorrect");
