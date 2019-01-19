@@ -3,6 +3,11 @@
     ViewData["Title"] = "Data Definitions";
 }
 
+<!--
+<button type="button" class="btn btn-primary" data-toggle="collapse" v-bind:data-target="'#' + calculatedId(property.name) + '_Heading1'">Simple collapsible</button>
+<div class="collapse" v-bind:id="calculatedId(property.name) + '_Heading1'">
+-->
+
 @section Scripts {
 
     <!-- Models required for this page -->
@@ -122,122 +127,64 @@
                             <input v-on:click="addProperty()" type="button" style="margin-left: 0.1em; margin-right: 0.1em" class="btn btn-sm btn-primary float-right" id="addProperty" name="addProperty" value="Add Property" />
                         </div>
                     </div>
-                    <div class="row" v-for="property in page.editor.itemProperties">
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label for="propertyType">Name</label>
-                                <input type="text" class="form-control form-control-sm" id="name" name="name" v-model="property.name" />
-                            </div>
-                        </div>
-                        <div class="col-lg-9">
-                            <div class="row">
-                                <div id="accordion">
-                                    <div class="card">
-                                        <div class="card-header" id="heading1">
-                                            <a class="btn btn-link">Heading 1</a>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="col-lg-12">
-                                                <div class="form-group">
-                                                    <label for="propertyType">Property Type</label>
-                                                    <!-- The type of the editing property -->
-                                                    <select class="form-control form-control-sm" id="propertyType" name="propertyType" v-model="property.propertyType">
-                                                        <option v-bind:value="item.key" v-for="item in page.dataPropertyTypesLookup">
-                                                            {{ item.value }}
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="dataType">Data Type</label>
-                                                    <!-- The data type of the editing property -->
-                                                    <select class="form-control form-control-sm" id="dataType" name="dataType" v-model="property.dataType">
-                                                        <option v-bind:value="item.key" v-for="item in page.dataTypesLookup">
-                                                            {{ item.value }}
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="name">Key</label>
-                                                    <!-- If editing property is the key for the object -->
-                                                    <select class="form-control form-control-sm" id="key" name="key" v-model="property.key">
-                                                        <option v-bind:value="item.key" v-for="item in page.dataKeyTypesLookup">
-                                                            {{ item.value }}
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="name">Provider Generated?</label>
-                                                    <!-- If editing property is genrated by the provider for the object -->
-                                                    <select name="providerGenerated" id="providerGenerated" class="form-control form-control-sm" v-model="property.providerGenerated">
-                                                        <option value="false">No</option>
-                                                        <option value="true">Yes</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div class="card-header" id="heading2">
-                                            <a class="btn btn-link">Heading 2</a>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="col-lg-12">
-                                                <div class="form-group">
-                                                    <label for="ordinalPosition">Position</label>
-                                                    <!-- The position of the editing property -->
-                                                    <input type="text" class="form-control form-control-sm" id="ordinalPosition" name="ordinalPosition" v-model="property.ordinalPosition" />
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="pattern">Pattern</label>
-                                                    <!-- The pattern of the editing property -->
-                                                    <input type="text" class="form-control form-control-sm" id="pattern" name="pattern" v-model="property.pattern" />
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="calculation">Calculation</label>
-                                                    <!-- The calculation of the editing property -->
-                                                    <input type="text" class="form-control form-control-sm" id="calculation" name="calculation" v-model="property.calculation" />
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="size">Size</label>
-                                                    <!-- The size of the editing property (Could by data type size or width) -->
-                                                    <input type="text" class="form-control form-control-sm" id="size" name="size" v-model="property.size" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div class="card-header" id="heading3">
-                                            <a class="btn btn-link">Heading 3</a>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="col-lg-12">
-                                                <div class="form-group">
-                                                    <label for="description">Description</label>
-                                                    <!-- The description of the editing property -->
-                                                    <textarea class="form-control form-control-sm" id="description" name="description" v-model="property.description"></textarea>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="path">Path</label>
-                                                    <!-- The path to the editing property -->
-                                                    <textarea class="form-control form-control-sm" id="path" name="path" v-model="property.path"></textarea>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="quoted">Quoted</label>
-                                                    <!-- If editing property is quoted for the object -->
-                                                    <select name="quoted" id="quoted" class="form-control form-control-sm" v-model="property.quoted">
-                                                        <option value="false">No</option>
-                                                        <option value="true">Yes</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="col-lg-12">
+
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>&nbsp;</th>
+                                        <th>Name</th>
+                                        <th>Key</th>
+                                        <th>Type</th>
+                                        <th>Data Type</th>
+                                        <th>Pos.</th>
+                                        <th>Size</th>
+                                        <th>Description</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="item in page.editor.itemProperties">
+                                        <td>
+                                            <button v-on:click="removeProperty(item)" class="btn btn-sm btn-info float-right">
+                                                <span class="fa fa-edit"></span>
+                                            </button>
+                                        </td>
+                                        <td><input type="text" class="form-control form-control-sm" v-model="item.name" /></td>
+                                        <td>
+                                            <input type="checkbox" v-model="item.key" />
+                                        </td>
+                                        <td>
+                                            <select class="form-control form-control-sm" id="propertyType" name="propertyType" v-model="page.propertyEditor.propertyType">
+                                                <option v-bind:value="item.key" v-for="item in page.dataPropertyTypesLookup">
+                                                    {{ item.value }}
+                                                </option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control form-control-sm" id="dataType" name="dataType" v-model="page.propertyEditor.dataType">
+                                                <option v-bind:value="item.key" v-for="item in page.dataTypesLookup">
+                                                    {{ item.value }}
+                                                </option>
+                                            </select>
+                                        </td>
+                                        <td><input type="text" class="form-control form-control-sm" v-model="item.ordinalPosition" style="width: 5em" /></td>
+                                        <td><input type="text" class="form-control form-control-sm" v-model="item.size" style="width: 5em" /></td>
+                                        <td><input type="text" class="form-control form-control-sm" v-model="item.description" /></td>
+                                        <td>
+                                            <button v-on:click="editProperty(item)" class="btn btn-sm btn-danger float-right">
+                                                <span class="fa fa-times-circle"></span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+
+
+
                             <div class="w-100 h-auto" style="overflow: auto; min-height: 200px; max-height: 325px">
                                 <table class="table table-striped table-bordered">
                                     <thead>
@@ -246,7 +193,6 @@
                                                 <div class="dropdown">
                                                     <button class="btn btn-sm btn-outline-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         {{ item.name }}
-                                                        <span class="fa" v-bind:class="{'fa-key': (item.key != 0)}"></span>
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                         <a class="dropdown-item" href="#" v-on:click="editProperty(item)">Edit</a>
@@ -313,16 +259,7 @@
                                     <div class="form-group">
                                         <label for="name">Key</label>
                                         <!-- If editing property is the key for the object -->
-                                        <select class="form-control" id="key" name="key" v-model="page.propertyEditor.key">
-                                            <option v-bind:value="item.key" v-for="item in page.dataKeyTypesLookup">
-                                                {{ item.value }}
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="name">Provider Generated?</label>
-                                        <!-- If editing property is genrated by the provider for the object -->
-                                        <select name="providerGenerated" id="providerGenerated" class="form-control" v-model="page.propertyEditor.providerGenerated">
+                                        <select name="key" id="key" class="form-control" v-model="page.propertyEditor.key">
                                             <option value="false">No</option>
                                             <option value="true">Yes</option>
                                         </select>

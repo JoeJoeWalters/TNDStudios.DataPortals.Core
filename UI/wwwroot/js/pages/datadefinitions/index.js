@@ -24,6 +24,11 @@
     },
     methods: {
 
+        // Calculate a unique Id based on the name
+        calculatedId: function (name) {
+            return name.replace('_', '').replace('-', '').replace(' ', '');
+        },
+
         // Add a new item to the definition list
         newDataDefinition: function () {
 
