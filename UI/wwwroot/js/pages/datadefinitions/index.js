@@ -335,6 +335,9 @@
         // Load data from the selected connection using the editor definition
         sampleConnection: function () {
 
+            // Kick off the modal box
+            $('#dataPreviewDialog').modal('show');
+
             var connectionId = app.page.selectedConnection;
             if (app.page.selectedConnection != null &&
                 app.page.selectedConnection != "") {
