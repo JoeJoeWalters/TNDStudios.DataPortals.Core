@@ -118,13 +118,7 @@ namespace TNDStudios.DataPortals.UI
                     result = EnumToList(typeof(ObjectTypes));
 
                     break;
-
-                case LookupFactoryType.DataKeyTypes:
-
-                    // Cast the enumeration to a format that can be returned
-                    result = EnumToList(typeof(DataItemKeyType));
-
-                    break;
+                    
             }
 
             // Return the result

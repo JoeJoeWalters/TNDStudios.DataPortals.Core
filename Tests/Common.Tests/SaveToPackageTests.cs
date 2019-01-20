@@ -98,7 +98,7 @@ namespace TNDStudios.DataPortals.Tests.Common
                         DataType = typeof(String),
                         Description = "Item Description",
                         Name = "Item Name",
-                        Key = DataItemKeyType.None,
+                        Key = false,
                         OrdinalPosition = 0,
                         Path = "Path",
                         Pattern = "Pattern",

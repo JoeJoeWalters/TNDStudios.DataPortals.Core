@@ -210,8 +210,8 @@ namespace TNDStudios.DataPortals.Tests.DelimitedFile
                 case TestFile_PKMergeTo:
 
                     // Define lots of different data types to write to a file
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Primary Key Part 1", DataType = typeof(String), OrdinalPosition = 0, Key = DataItemKeyType.ManualKey });
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Primary Key Part 2", DataType = typeof(String), OrdinalPosition = 1, Key = DataItemKeyType.ManualKey });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Primary Key Part 1", DataType = typeof(String), OrdinalPosition = 0, Key = true });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Primary Key Part 2", DataType = typeof(String), OrdinalPosition = 1, Key = true });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Data", DataType = typeof(String), OrdinalPosition = 2 });
 
                     // Property bag items to define how the provider should handle custom settings
@@ -234,7 +234,7 @@ namespace TNDStudios.DataPortals.Tests.DelimitedFile
                 case TestFile_ExpressionTests:
 
                     // Define lots of different data types to write to a file
-                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Title", DataType = typeof(String), OrdinalPosition = 0, Key = DataItemKeyType.ManualKey });
+                    definition.ItemProperties.Add(new DataItemProperty() { Name = "Title", DataType = typeof(String), OrdinalPosition = 0, Key = true });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Value", DataType = typeof(int), OrdinalPosition = 1 });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Multiplier", DataType = typeof(Double), OrdinalPosition = 2 });
                     definition.ItemProperties.Add(new DataItemProperty() { Name = "Result", DataType = typeof(Double), OrdinalPosition = 3, Calculation = "(Value * Multiplier)", PropertyType = DataItemPropertyType.Calculated });

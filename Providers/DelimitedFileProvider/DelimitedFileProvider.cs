@@ -144,7 +144,7 @@ namespace TNDStudios.DataPortals.Data
                 // identify the unique records)
                 List<String> keys =
                     definition.ItemProperties
-                        .Where(prop => prop.Key != DataItemKeyType.None)
+                        .Where(prop => prop.Key)
                         .Select(prop => prop.Name)
                         .ToList();
 
