@@ -36,6 +36,7 @@ namespace TNDStudios.DataPortals.UI
             typeof(Int64),
             typeof(String),
             typeof(DateTime),
+            typeof(Decimal),
             typeof(Double),
             typeof(Single),
             typeof(Boolean)
@@ -50,7 +51,7 @@ namespace TNDStudios.DataPortals.UI
             => enumType.ToList()
                 .Select(item =>
                     new KeyValuePair<string, string>(item.Key.ToString(), item.Value)
-                    ).ToList();
+                    ).OrderBy(x => x.Value).ToList();
 
         /// <summary>
         /// Get a lookup of a given type
@@ -94,7 +95,7 @@ namespace TNDStudios.DataPortals.UI
                                 dataType.ToString(),
                                 dataType.ToShortName().UppercaseFirst()
                                 )
-                            ).ToList(); // Return the data types constant
+                            ).OrderBy(x => x.Value).ToList(); // Return the data types constant
 
                     break;
 
