@@ -32,9 +32,46 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         }
 
         /// <summary>
+        /// Generate a basic auth header from a given set of credentials
+        /// </summary>
+        /// <param name="request">The credentials model which needs to contain the username and password</param>
+        /// <returns>The basic auth header string</returns>
+        [Route("/api/system/credentials/token/basicauth")]
+        [HttpPost]
+        public ApiResponse<String> GenerateBasicAuth(String username, String password)
+        {
+            // Create a new response object
+            ApiResponse<String> response = new ApiResponse<string>() { Data = String.Empty, Success = false };
+
+            // Check for input
+            if ((username ?? String.Empty) == String.Empty)
+                response.Messages.Add("No username provided");
+
+            if ((password ?? String.Empty) == String.Empty)
+                response.Messages.Add("No password provided");
+
+            // No errors?
+            if (response.Messages.Count == 0)
+            {
+                // Try and get the token from the helper
+                response.Data = WebAuthHelper.GenerateBasicAuthString(username, password);
+                if (response.Data == String.Empty)
+                    response.Messages.Add("No token generated");
+
+                // Success?
+                response.Success = (response.Messages.Count == 0) &&
+                                ((response.Data ?? String.Empty) != String.Empty);
+            }
+
+            // Send the result back
+            return response;
+        }
+
+        /// <summary>
         /// Get a list (or singular) credentials model 
         /// based on a set of criteria
         /// </summary>
+        /// <param name="packageId">The package to connect to</param>
         /// <returns>An API response with a list of credentials models</returns>
         [HttpGet]
         public ApiResponse<List<CommonObjectModel>> Get([FromRoute]Guid packageId)
@@ -66,6 +103,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// <summary>
         /// Delete a credentials set
         /// </summary>
+        /// <param name="packageId">The package to connect to</param>
         /// <param name="id">The id of the credentials to delete</param>
         /// <returns>If the deletion was successful</returns>
         [HttpDelete]
@@ -89,6 +127,12 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             return response;
         }
 
+        /// <summary>
+        /// Get a set of credentials based on a given Id
+        /// </summary>
+        /// <param name="packageId">The package to connect to</param>
+        /// <param name="id">The Id of the credentials to get</param>
+        /// <returns>The set of credentials based on the Id given</returns>
         [HttpGet]
         [Route("{id}")]
         public ApiResponse<CredentialsModel> Get([FromRoute]Guid packageId, [FromRoute]Guid id)
@@ -121,6 +165,12 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             return response;
         }
         
+        /// <summary>
+        /// Save a set of credentials to the credentials portion of the package
+        /// </summary>
+        /// <param name="packageId">The package to save the credentials to</param>
+        /// <param name="request">The credentials to save</param>
+        /// <returns>An updated set of credentials with an Id assigned if saved</returns>
         [HttpPost]
         public ApiResponse<CredentialsModel> Post([FromRoute]Guid packageId, [FromBody] CredentialsModel request)
         {

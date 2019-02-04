@@ -104,6 +104,18 @@ namespace TNDStudios.DataPortals.Security
             // required objects attached
             return result;
         }
+
+        /// <summary>
+        /// Generate a basic auth token based on a username and password combo
+        /// </summary>
+        /// <param name="username">The username to encode</param>
+        /// <param name="password">The password to encode</param>
+        /// <returns>The encoded Basic Auth token</returns>
+        public static String GenerateBasicAuthString(String username, String password)
+            => Convert.ToBase64String(
+                ASCIIEncoding.ASCII.GetBytes(username + ":" + password)
+                );
+
         /// <summary>
         /// Authenticate the request made to the service
         /// </summary>
