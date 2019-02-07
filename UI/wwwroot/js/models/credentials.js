@@ -140,6 +140,20 @@ tndStudios.models.credentials =
             }
         },
 
+        // Call to generate a basic auth token (If possible)
+        generateBasicAuthToken: function (username, password, callback) {
+
+            // Generate the request object
+            var requestObject = { username: username, password: password };
+
+            // Send the request object to the endpoint
+            tndStudios.utils.api.call(
+                '/api/system/credentials/token/basicauth',
+                'POST',
+                requestObject,
+                callback);
+        },
+
         // Load the list of available credentials
         list: function (packageId, filter, callback) {
             tndStudios.utils.api.call(

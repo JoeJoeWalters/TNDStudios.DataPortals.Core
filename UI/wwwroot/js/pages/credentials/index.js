@@ -213,6 +213,47 @@
                     return credential !== item;
                 });
         },        
+
+        // Generate a basic auth token is the correct properties are available
+        generateBasicAuthToken: function () {
+
+            var username = ''; // No username by default as might not be a credential or empty
+            var password = ''; // No password by default as might not be a credential or empty
+
+            // Get the credential items if they are available
+            app.page.editor.properties.forEach(function (credential) {
+
+                // Cleanse the property name
+                var propertyName = credential.name.trim().toLowerCase();
+
+                // Match the property name against the needed credentials
+                if (propertyName == 'username')
+                    username = credential.value;
+                else if (propertyName == 'password')
+                    password = credential.value;
+            });
+
+            // Start the api call to get the token
+            tndStudios.models.credentials.generateBasicAuthToken(
+                username,
+                password,
+                app.generateBasicAuthTokenCallback);
+        },
+
+        // Get basic auth token callback
+        generateBasicAuthTokenCallback: function (success, data) {
+            if (success) {
+                if (data.data) {
+                    alert(data.data);
+                }
+            }
+            else {
+                // Loop the messages
+                data.messages.forEach(function (message) {
+                    tndStudios.utils.ui.notify(0, message);
+                });
+            }
+        },
     }
 });
 

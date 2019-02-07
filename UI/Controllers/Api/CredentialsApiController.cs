@@ -38,23 +38,23 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         /// <returns>The basic auth header string</returns>
         [Route("/api/system/credentials/token/basicauth")]
         [HttpPost]
-        public ApiResponse<String> GenerateBasicAuth(String username, String password)
+        public ApiResponse<String> GenerateBasicAuth([FromBody]BasicAuthTokenRequest request)
         {
             // Create a new response object
             ApiResponse<String> response = new ApiResponse<string>() { Data = String.Empty, Success = false };
 
             // Check for input
-            if ((username ?? String.Empty) == String.Empty)
+            if ((request.Username ?? String.Empty) == String.Empty)
                 response.Messages.Add("No username provided");
 
-            if ((password ?? String.Empty) == String.Empty)
+            if ((request.Password ?? String.Empty) == String.Empty)
                 response.Messages.Add("No password provided");
 
             // No errors?
             if (response.Messages.Count == 0)
             {
                 // Try and get the token from the helper
-                response.Data = WebAuthHelper.GenerateBasicAuthString(username, password);
+                response.Data = WebAuthHelper.GenerateBasicAuthString(request.Username, request.Password);
                 if (response.Data == String.Empty)
                     response.Messages.Add("No token generated");
 
@@ -112,7 +112,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
         {
             // Create the response object
             ApiResponse<Boolean> response = new ApiResponse<Boolean>();
-            
+
             // Did we find a package?
             Package package = SessionHandler.PackageRepository.Get(packageId);
             if (package != null)
@@ -164,7 +164,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
             // Return the response object
             return response;
         }
-        
+
         /// <summary>
         /// Save a set of credentials to the credentials portion of the package
         /// </summary>
