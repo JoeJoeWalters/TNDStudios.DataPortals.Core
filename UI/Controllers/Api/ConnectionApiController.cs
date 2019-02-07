@@ -354,7 +354,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                 DataConnection connection = package.DataConnection(id);
 
                 // Get the definition from the model provided
-                if (request != null && request.IsValid)
+                if ((Boolean)(request?.IsValid))
                 {
                     DataItemDefinition dataDefinition = mapper.Map<DataItemDefinition>(request);
 
@@ -429,7 +429,7 @@ namespace TNDStudios.DataPortals.UI.Controllers.Api
                         }
 
                         // Send the resulting analysis back
-                        result.Success = (result.Data != null && result.Data.Values != null);
+                        result.Success = (result.Data?.Values != null);
                     }
                     else
                     {

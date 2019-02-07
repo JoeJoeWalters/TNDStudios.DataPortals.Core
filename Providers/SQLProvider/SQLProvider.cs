@@ -94,7 +94,7 @@ namespace TNDStudios.DataPortals.Data
             {
                 try
                 {
-                    this.connected = (sqlConnection != null && sqlConnection.State != ConnectionState.Closed);
+                    this.connected = (sqlConnection?.State != ConnectionState.Closed);
                     return this.connected;
                 }
                 catch { return false; }

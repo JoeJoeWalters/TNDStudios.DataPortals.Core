@@ -57,8 +57,7 @@ namespace TNDStudios.DataPortals.UI.Models.Api
             get =>
                 (EncodingFormat != String.Empty &&
                     Culture != String.Empty &&
-                    ItemProperties != null &&
-                    ItemProperties.Count != 0);
+                    ItemProperties?.Count != 0);
         }
     }
 }

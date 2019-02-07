@@ -85,8 +85,7 @@ namespace TNDStudios.DataPortals.Data
                 result = providers[uniqueKey];
 
             // If the provider is stale (something configuration-wise has been changed)
-            if (result != null &&
-                result.LastAction <= connection.LastUpdated)
+            if (result?.LastAction <= connection.LastUpdated)
             {
 #warning "Need a simple way of reseting a connection rather than doing each change manually"
 

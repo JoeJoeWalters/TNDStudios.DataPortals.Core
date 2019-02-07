@@ -41,8 +41,7 @@ namespace TNDStudios.DataPortals.PropertyBag
             // Do a sanity check for strings first incase a string was saved
             // in to the the property bag but a char is requested
             if (typeof(T) == typeof(Char) &&
-                propertyBagItem != null &&
-                propertyBagItem.Value.GetType() == typeof(String))
+                propertyBagItem?.Value.GetType() == typeof(String))
             {
                 // Is this string not empty?
                 if (propertyBagItem.Value.ToString().Length != 0)

@@ -268,8 +268,7 @@ namespace TNDStudios.DataPortals.Data
             String rawData = ""; // The data which ultimately will be read from
 
             // Check to see what can of analysis is being requested
-            if (request.Connection != null &&
-                (request.Connection.ConnectionString ?? String.Empty) != String.Empty)
+            if ((request.Connection?.ConnectionString ?? String.Empty) != String.Empty)
             {
                 // Get the stream of data from the raw file
                 rawData = File.ReadAllText(request.Connection.ConnectionStringProcessed);
